@@ -1,0 +1,27 @@
+For drawing air tiles:
+
+Every tile has the following variable:
+/* ------------ */
+int tile_below;
+/* ------------ */
+
+When the map is loaded,
+/* ------------ */
+if(new_tile.layer != 0) //If the tile is not on the botomn of the map.
+{
+	new_tile.tile_below = fetch_tile_below(); //Grab the index of the tile below.
+}
+/* ------------ */
+
+Possibly how the fetch_tile_below function would look:
+/* ------------ */
+new_tile.tile_below = ID - (num_col_objects * num_row_objects * num_layers);
+/* ------------ */
+This is not actually a function. I simply showed it as being a function earlier becuase...Becuase I felt like it?
+
+Drawing idea(s):
+Overlay the sprite drawn with a fog.
+Make the sprite smaller.
+
+Well, here's something that requires thought:
+Draw several of the tiles next to the tile under the air tile. And resize them all to be smaller. And overlay with fog.

@@ -1,0 +1,31 @@
+So, how will 2D animation work? Time to find out.
+
+
+
+Unit Shovelling:
+
+This seems the easiest.
+So, have a file, "shovel_animation.2dap". (2da stands for 2d animation properties)
+In it, have things like, "[NUM_FRAMES](5)", "[IMG_SRC_FOLDER](shovel_animation)"
+
+First one, of course, lets the game know how many frames there are.
+
+Second one, which you may have guessed, is the path to the folder containing all the images involved in the animation.
+So, here's how that would look:
+
+In the folder "shovel_animation", the following files exist:
+1.png
+2.png
+3.png
+4.png
+5.png
+
+See what's happening? Yes, the names are not configurable, but you're just gonna have to deal with that.
+Support for .gif animations? Eh...Maybe. Dunno if I will...
+
+
+
+------------------------------------------------------------------------------------------------------------
+Another idea: Something regarding optimisations...
+
+Have a global animation list. All object types add their animations to this list. Then they simply have a vector that contains the index of all the entries of all the animations that belongs to them.

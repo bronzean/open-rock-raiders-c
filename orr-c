@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd /usr/local/share/games/orr-c/
+
+./ORR

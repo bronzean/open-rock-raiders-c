@@ -1,0 +1,11 @@
+1. Please comment your code.
+
+2. When you are working on a certain file(s), and doing stuff that you don't want other devs to 'mess up', please lock it in the repos, then begin working on it. When you are done making all your changes, commit your work and unlock that specific file(s).
+
+3. Please write readable code when possible.
+
+4. If you don't know what to work on, take a look at the todo.
+
+5. If you still don't know what to work on, look through the code and see what could be improved.
+
+6. What!? Still don't know!? ASK!

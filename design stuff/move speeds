@@ -1,0 +1,9 @@
+Every mobile object has this variable:
+move_speed
+
+Here's how it works:
+
+0 = move every frame
+1 = move this frame, don't move this frame, move this frame, don't move this frame, etc
+2 = move this frame, don't move this frame, don't move this frame, etc
+And so on.

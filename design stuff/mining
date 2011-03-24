@@ -1,0 +1,22 @@
+Mining has two methods:
+
+A hotkey, '4', for example.
+You select the raider, then press '4', then click on a wall.
+
+And, a button.
+You select a raider, left click on the button, then left click on the wall.
+
+
+If ore is generated and what type is generated is determined by the specific wall.
+
+
+How drill times work: 
+
+Each drill has a drill rate.
+Each wall has "health". 
+Every frame, the drill inflicts its drill rate on the wall.
+if(wall_health <= 0) { collapse(); }
+
+Each drillable tile has a "drill time multiplier" thing. For example:
+A value of 0.5 means all tools drill that tile at half of their drill rate.
+A value of 2 means they drill that tile twice as fast as their drill rate.

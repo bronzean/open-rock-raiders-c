@@ -1,0 +1,21 @@
+So, when looking for, for example, the tile that the mouse just clicked...
+//-------------------
+bool done = false;
+bool found = false;
+int i = Map.size() / 2;
+
+while(!done)
+{
+	if(Map[i].clicked == true)
+	{
+		found = true;
+		done = true;
+		id_of_clicked_tile = i;
+	}
+	else
+	{
+		//Blargh, here it sort of falls apart.
+		//What needs to be done:
+		//In a simple form, you'd jump to the halfway point in the range of possible values. And keeping doing that till you land on the value you're looking for.
+	}
+}

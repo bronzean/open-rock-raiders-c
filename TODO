@@ -1,0 +1,252 @@
+----------Addictgamer----------
+
+Not necessarily in this order.
+
+1. Look through the code and find the all the "TODO:"s, and do them.
+
+4. Make a real map creator.
+
+6. Un-hardcode pretty much everything that can (and should) be un-hardcoded.
+
+13. Pathfinding...
+
+14. Documentate the code.
+
+16. Tell each tile (on creation) what the locations in the map array of the tiles to the left/right/up/down/diagonals are. If it is needed.
+
+17. Texture reload button.
+
+21. Allow tabs to seperate tile IDs in the map files.
+
+22. Port buildings to new system.
+
+28. Program liquids.
+
+30. Program collecting resources and using them.
+
+31. Program vehicles.
+
+32. If you click and hold, have raider follow cursor.
+
+34. Allow changing resolutions and between fullscreen and window mode while in-game.
+
+37. Unhardcode tile size.
+
+40. Make a 'load level' button on the title screen.
+
+41. Create a job que...
+
+42. Currently, the number of tools a unit can start out carrying is hard coded to 1. Change the limit to the unit's carrying capacity.
+
+43. Add a carrying capacity to units.
+
+44. When a unit is selected, make it show all the tools it's carrying, and all the Ore and Energy Crystals it's carrying.
+
+45. Add a mass unit select feature.
+
+46. Add a mass designation set feaure.
+
+47. Add an ore and an energy crystal map.
+
+48. Add support for "drilling ground".
+
+50. Make units pick up ore and energy crystals.
+
+51. Implement temperature maps.
+
+52. Implement temperature.
+
+54. Display a message saying, "Whee, moving." while a unit is moving.
+
+57. Seems to me something in the install scripts or run scripts messed up. Fix whatever's wrong.
+NOTE: After further testing, running sudo orr-c works. Remove the need for sudo so that you don't need to be root to play ORR.
+
+59. Pretty up the interface.
+
+61. Update the unit select function to use the ID grabbed by the left click check in the update loop.
+
+63. Create popup menus.
+
+64. Make the draw_inventory function of the unit draw the text on top of the map.
+//Little idea on how to do it...
+SDL_Surface *inventory_spr = null;
+draw(0, 0, inventory_message_spr, inventory_spr);
+draw_all_carried_items_onto_inventory_spr_too();
+//Now, in interface update or something...
+draw(0, SCREEN_HEIGHT - inventory_spr->h, inventory_spr, screen);
+
+//Another idea:
+//When assigning units their tools, add the unit to a draw_sprite_on_top que or something.
+
+65. Um...Use zlib for memory compression or something?
+
+67. Certain places could do better with the for being changed to a while.
+
+68. In the terrain.cfg files and the rest, make the [] part be used as the ID of the object.
+
+69. Make which worker/helper threads are reserved for what controlled by the config file.
+
+71. Multithreading works now! BUT. The screen likes to flicker. Fix this. And, when using wasd to move the camera around, it likes to fly thousands of pixels in the specified direction...
+
+72. Add a pthreads_trylock() thing to every spot where something is drawn to the screen?
+
+74. Unhardcode tile size! - Yes, emphasized...
+
+75. Create a thread that handles keypresses...
+Maybe for checking repeating keypresses, do this:
+//--------------
+int ms_for_repeat; //or frames...or seconds...
+
+run_keycheck_thread()
+{
+	if(keystates(keyname) && can_repeat == true)
+	{
+		can_repeat = false;
+		do_stuff();
+	}
+	if(write_something_to_check_if_its_time_to_make_something_that_can_set_can_repeat_to__true)
+	{
+		can_repeat = true;
+	}
+}
+//--------------
+
+
+
+78. Add animations all over the place. Everybody likes eye candy!
+
+80. Time based messages, in addition to the current frame based ones.
+
+81. Allow -1 to be accepted as a value for number of threads. It lets the game know that it can use an infinite number of threads.
+
+82. Plop all the unit's stuff that require the unit to be selected into it's own broad check. Saves on some cpu later on when many units are in the level.
+
+84. Here's a bug: If, in the config file, I change GENERATE_ORE_ON_MINE to false, it still thinks it's set to true. Fix this bug.
+
+87. Add the option for mouse scrolling. And don't forget to limit how far offscreen the camera can move if mouse scrolling is enabled.
+
+91. Change all the tile types, unit types, tool types, etc, to be stored in a std::map. Unless it's better to just stick with vectors...
+
+92. Change the Map itself to be stored in a std::map with ID as their key?
+
+93. Raider walking animations.
+
+94. Raider walking around in the tile...
+
+95. Make it easy to handle multiple raiders on a tile.
+
+96. Raider activity animations.
+
+97. Basic constructions.
+
+98. Advanced constructions.
+
+99. Buildings.
+
+100. Bases.
+
+
+
+--Done--
+
+2. Finish the map layer parser. - DONE
+
+3. Write the map drawing code. And map navigation code. - DONE
+
+5. Un-hardcode the tile types. - DONE
+
+7. Make all sprites be loaded on startup. - DONE
+
+10. Create a loading screen - DONE
+
+11. Create a main menu/title screen.
+
+12. Make the game write everything it gernerally outputs to the command line to a log file instead. - DONE
+
+18. Fix movement bugs. - DONE
+
+19. Implement "Click and move". - DONE
+
+20. Re-add the ability to select units. - DONE
+
+23. Finish map code. - DONE
+
+24. Finish movement. - DONE
+
+25. Add real pathfinding. - DONE
+
+26. Program ramps (allows movent between layers). - DONE
+
+27. Program walls. - DONE
+
+29. Program mining a wall. - DONE
+
+33. Get sound in the game. - DONE
+
+35. Print (In game, not console) what layer the camera currently is on. - DONE
+
+36. Finish movement between layers. - DONE
+
+39. Change map to vector. Change unitlist to vector. - DONE
+
+49. Air tiles. - DONE
+
+53. Make the unit carry over it's inventory when it moves between tiles... - DONE
+
+55. Display a message saying, "Whee, mining." while a unit is mining. - DONE
+
+56. Make 'drill times' - DONE
+
+58. Rewrite the unit type stuff to be like the others. - DONE
+
+60. Create a 'message' class. Has the following data, for example: - DONE
+int wx;
+int wy;
+std::string message_str;
+SDL_Surface *rendered_message;
+
+62. Add support for 2D animations. - DONE.
+
+66. Increase game performance. Maybe add tiles that are offscreen and have nothing on them to an 'ignore' or 'inactive' list or flag them as inactive/igorned? - DONE
+
+70. The graphics functions are absolutely horrid. They mercilessly eat the cpu. FIX THIS!!!! - DONE.
+
+73. Create "shovelling stages" and "mining stages". I'm referring to image stuff.
+So, every x health lost, it scrolls to the next specified image.
+Hehehe, cheap animation! - CANCELLED. FOund better way.
+
+76. Change the health variable for tiles to be a vector... - DONE
+
+77. Change walls to have a series of drill stages (and trees too?), like rubble, that there may be basic 'animation'. I think it work better than TODO item 73. - DONE
+
+79. Implement optimisation 1. - DONE
+
+83. Make the unit say, "I'mma shovel some rubble!" - DONE
+
+85. There are some random segfaults when shovelling rubble. FIX THIS ASAP. - DONE
+
+86. Here's a queer bug: any raiders after a raider with a shovel (when placed in the ol) glitch badly with their tool... - DONE. Turns out some important variables were not reset.
+
+88. When a unit tried to cross a tile that has a unit allready on it, SEG FAULT! According to debugging, unitlist gets corrupted or something. - DONE. Was an easier fix than I thought it would be.
+
+89. Fix the animation crash... - DONE.
+
+90. Making a tool deconstructor might work in fixing the free(): invalid next size error. Try it. - DONE. This was part of the problem I think...
+
+
+
+--Cancelled--
+
+8. Make the spritelist thing work - CANCELLED
+
+9. Populate unitlist with the name of all the unit types on program startup... - CANCELLED
+
+
+
+
+
+---------Releases-------------
+End of 2010 alpha:
+Finish pathfinding. Reimplement buildings. Implement mining. Reimplement teleporting. Implement simple level goals. Implement 'load map'. Implement a better UI.
+And whatever else we can do before christmas/new years.
+Results: Buildings not re-implemented. Mining implemented. Teleporting not reimplemented. Simple level goals not implemened. 'load map' not implemented. A better UI did, sort of, get implemented.

@@ -1,0 +1,8 @@
+string status;
+
+What is that ^? That let's the game know what the unit currently is doing.
+
+If the unit's status is "IDLE", then check all the jobs in the job que. When it finds something it is allowed to do, then it does it.
+If it finds nothing, it then checks if it is allowed to pick up random resources laying around. If it is, it goes and picks up something.
+Finding something it can do is defined as: Finding a hob that it's ai options allow it to do. FOr example, it'll only collect ore automatically if it's ai options say, "You can automatically collect ore".
+Checking if it is allowed to pick up resources is defined as the following: It's ai options allow it, and it can hold said resource.

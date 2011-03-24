@@ -1,0 +1,79 @@
+So, this is what rubble has:
+
+//------------------------------
+int min_clearing_power; //The minimumn power a shovel needs to clear this rubble. Probably gonna reuse the "min_mining_power" variable.
+bool gens_ore_on_clear; //Does it generate ore every time it is "cleared"/"Shovelled"? This may be rebundat. Why? It can check the size of the ore_can_gen_ids vector. If it's equal to 0, can't gen ore, obviously. Otherwise, it can gen ore. SO...
+/* if(ore_can_gens_ids.size != 0)
+ * 	gen_ore();
+ */
+vector<int> ore_gen_ids; //A vector containing a list of the IDs of the types of ores it can generate. For weights, simply add multiple copies of that ID.
+int speed_modifier; //Ya, um...This is a reminder that a system that "affects speed of units and vehicles" thing is needed.
+int ore_per_clear; //Every time a shovel "works upon it", this much ore is genned.
+int health; //Every time a shovel of any sort "works upon it", the power of the shovel is subtracted from the health of this rubble. Every 'health' counts as a 'clear'. Remember RR? How shovelling occured in stages? Ya, that's what I'm reffering to.
+//------------------------------
+
+[MOVE_PERCENTAGE](50) 100 = normal speed.
+Something like that could be used. Dunno.
+
+-----------------------------------------------
+Oh! Oh! A great idea on display related stuff.
+Since the rubble system has been modified to use "number of shovels left" and whatnot...
+Each "x_amount_of_shovels_left" has it's own image. Thus, there's some 'animation'! 'Cheap', but it works.
+
+-----------------------------------------------
+
+Notes on the changes regarding rubble.
+
+First off, rubble has x numbers of shovels left. Let's say our example rubble has 5 shovels left.
+Every shovel has it's own health. Let's say ours has 100 health. So, basically what I did here was adjust the health variable to be used to control the health per shovel, not the tile's total health. Got it so far?
+So, every time the raider is allowed to shovel, x damage is inflicted on the rubble. Let's say the raider's shovel inflicts 1 damage a frame. In 100 frames, one shovel will have been completed.
+Now look at what happens here; Ore is generated based on the options in the config files. (IDEA! Make energy crystals, or, matter of fact, make anything be able to be generated. Not a priority, but something fun to consider later on in development.) Let's take a look at some of these options, shall we?
+
+
+[RUBBLE]
+Yay, the most important one! It lets the game know that this tile is a rubble tile.
+Usage:
+[RUBBLE](TRUE)
+This tells the game that this tile is a rubble tile.
+
+[TYPES_OF_ORE_GENERATED]
+Types of ore generated is an array that lets the game know what types of ore can be generated. Then, other options specify which one will be used. Randomally generating different types of ore! Here's an example of how this variable's usage.
+[TYPES_OF_ORE_GENERATED](0)(10)(19)
+This lets the game know that this rubble tile is able to generate ore of IDs 0, 10, and 19. Nice eh?
+Moving on!
+
+[ORE_PER_SHOVEL]
+This tells the game how many ore is generated every shovel.
+Example of usage:
+[ORE_PER_SHOVEL](1)
+This lets the game know that 1 ore is generated every shovel.
+
+[Health]
+This is the tile's health. Wait, no, it isn't. It is how much health every shovel gets.
+Example of usage:
+[Health](100)
+That lets the game know the tile has 100 health every shovel.
+NOTE TO THE DEVS: MAKE SURE TO INCLUDE THE POSSIBILITY FOR SHOVELS TO DIFFER IN HEALTH
+Example of this:
+[Health](50)(100)(10)(200)(100)
+for a 5 shovel rubble.
+Wait, dump that. Make it so that it is mandatory to assign the health of each individual shovel.
+So, it would have to look like this:
+[Health](50)(100)(10)(200)(100)
+for a 5 shovel rubble. Of course, I don't mean the exact values supplied, I just mean the ammount supplied.
+Also, instead of askil how many shovels there are, simply grab that value from the number of paramaters passed to the [HEALTH] variable.
+Liking this idea so far!
+
+[TO_GROUND_TYPE]
+Should be obvious. It's the ID of the tile it'll turn into after getting cleared. Rubble that transforms into walls, anyone?
+Usage:
+[TO_GROUND_TYPE](1)
+for example. It tells the game this tile turns into the tile with ID of 1 when it is shoveled.
+
+[MIN_SHOVELLING_POWER]
+Again, should be obvious. It let's the game know that a shovel needs a minimumn of this much power to be able to shovel this rubble.
+Usage:
+[MIN_SHOVELLING_POWER](5)
+Any shovel with a power greated than or equal to 5 is able to shovel that rubble.
+
+I've still not decided exactly how the randomally generate ore stuff will work, so I'll be leaving that part blank for now.

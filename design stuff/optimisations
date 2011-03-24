@@ -1,0 +1,22 @@
+Optimisation 1:
+
+Create a vector of tiles,
+std::vector<tile> update_map;
+What is the prupouse of this thing? All tiles that need updating are put in there. Whether it's simply a "Draw me!" thing, or a "I got units on me, man, let me update!".
+Actually, it might be a better idea to create a seperate 
+std::vector<tile> draw_map; 
+which will be used whenever it is tile to draw.
+
+When loading a map, there will be the initial calculation at the start. Once that's done...Well, read on to find out!
+Whenever any changes happen to the map, calculate whether or not any possibly affected tiles did indeed get affected.
+Camera moved? Great! Find the tiles that should be drawn now and add those to the update/draw list(s). Remove the old ones from the update/draw list(s) as neccessary...
+Unit moved? Great! Calculate whether or not the old tile should be left in the update/draw list(s), and add the new tile to the update/draw list(s).
+
+Idea regarding liquids:
+In the initial calculation, check wether or not any of the liquid tiles can flood. If none can, then don't add a single one of those tiles to the update/draw list(s).
+Later, when a raider comes by and drills into the bottom of the lake or something, then there are two options:
+A: Add the entire lake to the update/draw list(s).
+B: Add the necessary tiles to the update/draw list(s) and keep adding the adjacent tiles of these liquid tiles as neccessary...
+B is more feasible. Consider what would happen if you drilled into a huge lake! A bunch of Unnecessary  lag!
+
+Of course, this idea isn't perfect, but it's much better than updating/drawing 1 million tiles that don't need updating/drawing.

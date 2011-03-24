@@ -1,0 +1,9 @@
+When a tile is flagged unimportant, it is not updated; it's update function is skipped.
+
+Two ways to do this. At the top of the update function, add a check to see if it's important.
+Or keep an array of all important tiles...
+
+At the end of the map parser, importance is set for all tiles.
+Simply being onscreen flags the importace flag.
+
+When the camera moves, a variable is set and all tils check if they went on or off, and importance is set accordingally.

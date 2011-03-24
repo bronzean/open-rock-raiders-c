@@ -1,0 +1,9 @@
+
+
+
+
+World sim mode stuff:
+- Every piece of ore can be smelted/refined into x talents/pounds/grams of the material it's an ore of.
+- Number of talets/pounds/grams depends on the size of the ore, which is determined randomally according to its properties in the config files.
+- All items/buildings/vehicles use x talents/pounds/grams of that material.
+- There are different types of ore for different types of materials.

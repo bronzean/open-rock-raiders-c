@@ -1,0 +1,33 @@
+Controls:
+
+
+Title screen:
+
+
+Other:
+enter/return			Enter the test level
+
+
+In-game:
+
+
+View:
+w				Move camera north
+s				Move camera south
+a				Move camera east
+d				Move camera west
+2				Move camera up a layer
+3				Move camera down a layer
+
+Controlling your units:
+Left click			Select/deselect a unit, issue a mine command for if in mining mode
+Right click			Issue a move command if a unit is selected.
+4				Enter mining mode for that unit
+g				Issue a pick up command if a unit is selected.				
+
+Other:
+n				Increase FPS Cap
+m				Decrease FPS Cap
+p				Pause the game
+
+Edit data/game.cfg if you want to change any general settings, like resolution, whether or not to run fullscreen, etc.

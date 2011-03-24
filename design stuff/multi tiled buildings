@@ -1,0 +1,24 @@
+[7:30:25 AM PDT] Ciprian: See, the next step is to incorparte buildings/bases
+[7:31:42 AM PDT] Ciprian: You got any ideas codewise?
+[7:32:08 AM PDT] Ciprian: SHould a building be a bunch of smaller buildings connected together and functioning as one entity?
+[7:32:25 AM PDT] Ciprian: Kind of like how a car has all these different parts working together to create a car
+[7:35:05 AM PDT] Jared Amos: Hm, maybe we could have the main building which does a basic function. It can be upgraded to perform that function better. And then there are add-ons that have to be built next to the main building or a connector. The connectors being like an extension cord for the add-ons, so more than 4 can be installed. The add-ons further improve functionality or add new more advanced functions.
+[7:35:38 AM PDT] Ciprian: Hmm...Building upgrades also being visual
+[7:35:39 AM PDT] Ciprian: Nice
+[7:35:47 AM PDT] Ciprian: only the mining laser had that in RR
+[7:35:56 AM PDT] Ciprian: Now here's the problem
+[7:35:59 AM PDT] Ciprian: how is it done codewise?
+[7:36:32 AM PDT] Ciprian: class building
+{
+public:
+int parent_id;
+vextor<int> child_id;
+bool is_parent;
+}
+[7:36:47 AM PDT] Ciprian: Maybe having each componenet have those variables?
+[7:36:56 AM PDT] Ciprian: If it's a parent, it controls the building
+[7:37:06 AM PDT] Ciprian: If it's a child, it's function is mainly asthetic
+[7:37:26 AM PDT] Ciprian: Maybe it can be used to determine where tools are taken from, for example
+[7:37:31 AM PDT] Ciprian: or where ore is deposited
+[7:37:36 AM PDT] Ciprian: or where ECs are deposited...
+[7:37:42 AM PDT] Ciprian: But...I'mma write these two ideas down

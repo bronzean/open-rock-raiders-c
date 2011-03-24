@@ -1,0 +1,4 @@
+Ok, here's how threads are used.
+
+threads[0] is reserved for drawing the screen.
+The rest, at the moment, can be used dynamically.

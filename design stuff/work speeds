@@ -1,0 +1,9 @@
+So, movement speed affects how fast you travel...
+There should be "work speeds" which determine how fast something completes a specified job.
+
+For example:
+
+A shovelling speed of 10 means that unit shovels at a rate of the specified damage every 10 frames.
+A shovelling speed of 5 means that unit shovels at a rate of the specified damage every 5 frames.
+Here, shovelling is defined as "using your tool".
+So, said unit uses their tool once every x_speed frames.

@@ -1,0 +1,8 @@
+Player presses 'g' key or something.
+Selected unit enters 'pick_up_mode'.
+Player left clicks on tile he wants to pick something up from.
+If there is more than one item on it, a menu pops up asking him what he'd like to pick up.
+And finally, the unit goes to pick up the...whatever it is the player told it to pick up.
+
+Rubble can be picked up, carried, transported, etc and used in stone constructions.
+Like, sealing up leaks, reinforcing a cavern, making bridges, defensive walls, etc.

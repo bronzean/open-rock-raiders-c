@@ -1,0 +1,7 @@
+The map should be compressed. 127 mb at a million tile map in classic mode is all right.
+Several gigs for a tiny planet U in world sim mode is not ok.
+Actually, maybe there's a better way to save on memory usage without dropping features. If so, find it and implement it.
+
+
+Idea:
+Load and unload different parts of the map as neccessary.
