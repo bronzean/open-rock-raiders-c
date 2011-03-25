@@ -5,23 +5,26 @@
 //draw an image to the screen
 void draw( int x, int y, SDL_Surface* source, SDL_Surface* destination )
 {
-    SDL_Rect offset;
+	if(screen_needs_updating == false)
+	{
+		SDL_Rect offset;
 
-    offset.x = x;
-    offset.y = y;
-	//blit function
-    SDL_BlitSurface( source, NULL, destination, &offset );
+		offset.x = x;
+		offset.y = y;
+		//blit function
+		SDL_BlitSurface( source, NULL, destination, &offset );
+	}
 }
 
-void draw2( int x, int y, SDL_Surface* source, SDL_Surface &destination )
+void draw2( int x, int y, SDL_Surface* source, SDL_Surface* destination )
 {
-    SDL_Rect offset;
+	SDL_Rect offset;
 
-    offset.x = x;
-    offset.y = y;
+	offset.x = x;
+	offset.y = y;
 
 	//blit function
-    SDL_BlitSurface( source, NULL, &destination, &offset );
+	SDL_BlitSurface( source, NULL, destination, &offset );
 }
 
 //void ShrinkPicture (SDL_Surface *screen, SDL_Surface *picture) 

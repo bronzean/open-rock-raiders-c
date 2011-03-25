@@ -60,7 +60,9 @@ public:
 	int total_shovels; //The total number of shovels and drills.
 
 	static construction local_construction; //The construction that's on this tile
-	bool has_construction;
+	bool has_construction; //Does this tile have a construction present on it?
+
+	bool obstruction; //Is this tile an obstruction? Wall tiles, for example, are obstructions.
 
 	tile(); //Constructor. Initialize an empty tile.
 	~tile() //Deconstructor.

@@ -321,12 +321,7 @@ int update()
 			GameState = Loading; //Load everything.
 		}
 
-		if(screen_needs_updating == false)
-		{
-			//cout << "Drawing title screen stuff.\n";
-
-			draw(0, 0, title_screen, screen); //Draw the title screen's background.
-		}
+		draw(0, 0, title_screen, screen); //Draw the title screen's background.
 	}
 
 	else if(GameState == Loading && gameover != true)
@@ -493,17 +488,11 @@ int update()
 
 	else if(GameState == Level && gameover != true)
 	{
-		//vector<tile>::iterator iterator; //Used for navigating the tile array that we know as the map.
 		vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
 		int counter = 0; //Used in the for loop below...
 
-		/*for(iterator = Map.begin(); iterator < Map.end(); iterator++, counter++) //Loop through the map.
-		{
-			Map[counter].update(); //Update all the tiles that need updating.
-		}*/
 		for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
 		{
-			//cout << "At Active_Map: " << counter << "\n\n";
 			Map[Active_Map[counter]].update(); //Update all the tiles it holds.
 		}
 		counter = 0;
@@ -528,28 +517,13 @@ int update()
 			int current_tile = layer_offset; //The current tile it's working on.
 			int num_rows_done = 0; //The number of rows it's calculated.
 
-			//int top_left_tile_wx = Map[Draw_Map[0]].wx; //Copy the WX of the top left tile.
-			//int top_left_tile_wy = Map[Draw_Map[0]].wy; //Copy the WY of the top left tile.
-
 			bool done = false; //Is it done calculating the new Draw_Map?
 
 			/* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
 			int start_id = 0; //The ID of the starting tile.
 			int camera_wx = 0;
 			int camera_wy = 0;
-			/*if(PCamera->wx >= 0) //Check if the camera's wx is negative.
-			{
-				cout << "Camera's wx is not negative.\n";
-				start_id = (PCamera->wx / 32) + (PCamera->wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-				start_id += layer_offset; //Takes the layers into account!
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}
-			else //Ya, negative...
-			{
-				cout << "Negative!!!\n"; //Debugging.
-				start_id = layer_offset; //Simply assign the starting tile's ID to be the first tile in the layer.
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}*/
+
 			if(PCamera->wx >= 0 && PCamera->wx <= num_row_objects * 32)
 			{
 				camera_wx = PCamera->wx; //Since the wx of the camera is positive, copy it over.
@@ -562,70 +536,17 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			/*start_id = (camera_wx / 32) + (camera_wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-			start_id += layer_offset; //Takes the layers into account!
-			start_id += ((num_col_objects - 1) * ((camera_wy / 32) + 1) ) + 1;*/
 			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
 			Draw_Map.clear(); //Empty Draw_Map.
 
-			/*while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+			while(!done)
 			{
-				cout << "Current tile: " << current_tile << "\n";
 				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 				{
 					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-				}
-
-				current_tile++; //Increment current tile.
-			}*/
-
-			//So, here's how it's done.
-			/*
-			while(!done)
-			{
-				if(current_tile_is_not_in_view)
-				{
-					current_tile = move_to_the_leftmost_visible_tile_of_the_next_row();
-
-					if(current_tile_is_in_view)
-					{
-						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						cout << "Added index...\n";
-						cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-						current_tile++;
-					}
-					else
-					{
-						done = true;
-					}
-				}
-				else
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-					current_tile++;
-				}
-			}
-			*/
-
-			while(!done)
-			{
-				//cout << "Current tile: " << current_tile << "\n";
-				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					//cout << "Added index...\n";
-					//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 					current_tile++;
 				}
 				else //Oh dear, it's not onscreen. Find out more.
@@ -636,9 +557,6 @@ int update()
 					{
 						//Ok, it was simply the end of the row.
 						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						//cout << "Added index...\n";
-						//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 						current_tile++;
 					}
 					else
@@ -662,28 +580,13 @@ int update()
 			int current_tile = layer_offset; //The current tile it's working on.
 			int num_rows_done = 0; //The number of rows it's calculated.
 
-			//int top_left_tile_wx = Map[Draw_Map[0]].wx; //Copy the WX of the top left tile.
-			//int top_left_tile_wy = Map[Draw_Map[0]].wy; //Copy the WY of the top left tile.
-
 			bool done = false; //Is it done calculating the new Draw_Map?
 
 			/* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
 			int start_id = 0; //The ID of the starting tile.
 			int camera_wx = 0;
 			int camera_wy = 0;
-			/*if(PCamera->wx >= 0) //Check if the camera's wx is negative.
-			{
-				cout << "Camera's wx is not negative.\n";
-				start_id = (PCamera->wx / 32) + (PCamera->wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-				start_id += layer_offset; //Takes the layers into account!
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}
-			else //Ya, negative...
-			{
-				cout << "Negative!!!\n"; //Debugging.
-				start_id = layer_offset; //Simply assign the starting tile's ID to be the first tile in the layer.
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}*/
+
 			if(PCamera->wx >= 0 && PCamera->wx <= num_row_objects * 32)
 			{
 				camera_wx = PCamera->wx; //Since the wx of the camera is positive, copy it over.
@@ -696,70 +599,17 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			/*start_id = (camera_wx / 32) + (camera_wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-			start_id += layer_offset; //Takes the layers into account!
-			start_id += ((num_col_objects - 1) * ((camera_wy / 32) + 1) ) + 1;*/
 			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
 			Draw_Map.clear(); //Empty Draw_Map.
 
-			/*while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+			while(!done)
 			{
-				cout << "Current tile: " << current_tile << "\n";
 				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 				{
 					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-				}
-
-				current_tile++; //Increment current tile.
-			}*/
-
-			//So, here's how it's done.
-			/*
-			while(!done)
-			{
-				if(current_tile_is_not_in_view)
-				{
-					current_tile = move_to_the_leftmost_visible_tile_of_the_next_row();
-
-					if(current_tile_is_in_view)
-					{
-						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						cout << "Added index...\n";
-						cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-						current_tile++;
-					}
-					else
-					{
-						done = true;
-					}
-				}
-				else
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-					current_tile++;
-				}
-			}
-			*/
-
-			while(!done)
-			{
-				//cout << "Current tile: " << current_tile << "\n";
-				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					//cout << "Added index...\n";
-					//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 					current_tile++;
 				}
 				else //Oh dear, it's not onscreen. Find out more.
@@ -770,9 +620,6 @@ int update()
 					{
 						//Ok, it was simply the end of the row.
 						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						//cout << "Added index...\n";
-						//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 						current_tile++;
 					}
 					else
@@ -796,28 +643,13 @@ int update()
 			int current_tile = layer_offset; //The current tile it's working on.
 			int num_rows_done = 0; //The number of rows it's calculated.
 
-			//int top_left_tile_wx = Map[Draw_Map[0]].wx; //Copy the WX of the top left tile.
-			//int top_left_tile_wy = Map[Draw_Map[0]].wy; //Copy the WY of the top left tile.
-
 			bool done = false; //Is it done calculating the new Draw_Map?
 
 			/* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
 			int start_id = 0; //The ID of the starting tile.
 			int camera_wx = 0;
 			int camera_wy = 0;
-			/*if(PCamera->wx >= 0) //Check if the camera's wx is negative.
-			{
-				cout << "Camera's wx is not negative.\n";
-				start_id = (PCamera->wx / 32) + (PCamera->wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-				start_id += layer_offset; //Takes the layers into account!
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}
-			else //Ya, negative...
-			{
-				cout << "Negative!!!\n"; //Debugging.
-				start_id = layer_offset; //Simply assign the starting tile's ID to be the first tile in the layer.
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}*/
+
 			if(PCamera->wx >= 0 && PCamera->wx <= num_row_objects * 32)
 			{
 				camera_wx = PCamera->wx; //Since the wx of the camera is positive, copy it over.
@@ -830,70 +662,17 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			/*start_id = (camera_wx / 32) + (camera_wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-			start_id += layer_offset; //Takes the layers into account!
-			start_id += ((num_col_objects - 1) * ((camera_wy / 32) + 1) ) + 1;*/
 			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
 			Draw_Map.clear(); //Empty Draw_Map.
 
-			/*while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+			while(!done)
 			{
-				cout << "Current tile: " << current_tile << "\n";
 				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 				{
 					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-				}
-
-				current_tile++; //Increment current tile.
-			}*/
-
-			//So, here's how it's done.
-			/*
-			while(!done)
-			{
-				if(current_tile_is_not_in_view)
-				{
-					current_tile = move_to_the_leftmost_visible_tile_of_the_next_row();
-
-					if(current_tile_is_in_view)
-					{
-						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						cout << "Added index...\n";
-						cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-						current_tile++;
-					}
-					else
-					{
-						done = true;
-					}
-				}
-				else
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-					current_tile++;
-				}
-			}
-			*/
-
-			while(!done)
-			{
-				//cout << "Current tile: " << current_tile << "\n";
-				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					//cout << "Added index...\n";
-					//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 					current_tile++;
 				}
 				else //Oh dear, it's not onscreen. Find out more.
@@ -904,9 +683,6 @@ int update()
 					{
 						//Ok, it was simply the end of the row.
 						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						//cout << "Added index...\n";
-						//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 						current_tile++;
 					}
 					else
@@ -930,28 +706,13 @@ int update()
 			int current_tile = layer_offset; //The current tile it's working on.
 			int num_rows_done = 0; //The number of rows it's calculated.
 
-			//int top_left_tile_wx = Map[Draw_Map[0]].wx; //Copy the WX of the top left tile.
-			//int top_left_tile_wy = Map[Draw_Map[0]].wy; //Copy the WY of the top left tile.
-
 			bool done = false; //Is it done calculating the new Draw_Map?
 
 			/* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
 			int start_id = 0; //The ID of the starting tile.
 			int camera_wx = 0;
 			int camera_wy = 0;
-			/*if(PCamera->wx >= 0) //Check if the camera's wx is negative.
-			{
-				cout << "Camera's wx is not negative.\n";
-				start_id = (PCamera->wx / 32) + (PCamera->wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-				start_id += layer_offset; //Takes the layers into account!
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}
-			else //Ya, negative...
-			{
-				cout << "Negative!!!\n"; //Debugging.
-				start_id = layer_offset; //Simply assign the starting tile's ID to be the first tile in the layer.
-				cout << "Start id = " << start_id << "\n"; //Debugging output.
-			}*/
+
 			if(PCamera->wx >= 0 && PCamera->wx <= num_row_objects * 32)
 			{
 				camera_wx = PCamera->wx; //Since the wx of the camera is positive, copy it over.
@@ -964,70 +725,17 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			/*start_id = (camera_wx / 32) + (camera_wy / 32); //Divide the camera's wx by tile_width and store it in start_id.
-			start_id += layer_offset; //Takes the layers into account!
-			start_id += ((num_col_objects - 1) * ((camera_wy / 32) + 1) ) + 1;*/
 			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
 			Draw_Map.clear(); //Empty Draw_Map.
 
-			/*while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+			while(!done)
 			{
-				cout << "Current tile: " << current_tile << "\n";
 				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 				{
 					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-				}
-
-				current_tile++; //Increment current tile.
-			}*/
-
-			//So, here's how it's done.
-			/*
-			while(!done)
-			{
-				if(current_tile_is_not_in_view)
-				{
-					current_tile = move_to_the_leftmost_visible_tile_of_the_next_row();
-
-					if(current_tile_is_in_view)
-					{
-						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						cout << "Added index...\n";
-						cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-						current_tile++;
-					}
-					else
-					{
-						done = true;
-					}
-				}
-				else
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << "Added index...\n";
-					cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
-					current_tile++;
-				}
-			}
-			*/
-
-			while(!done)
-			{
-				//cout << "Current tile: " << current_tile << "\n";
-				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
-				{
-					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					//cout << "Added index...\n";
-					//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-					//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 					current_tile++;
 				}
 				else //Oh dear, it's not onscreen. Find out more.
@@ -1038,9 +746,6 @@ int update()
 					{
 						//Ok, it was simply the end of the row.
 						Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-						//cout << "Added index...\n";
-						//cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-						//out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 						current_tile++;
 					}
 					else
@@ -1050,14 +755,6 @@ int update()
 				}
 			}
 		}
-
-		/*if(buildingnum != 0)
-		{
-			for(int i = 0; i < buildingnum; ++i)
-			{
-				buildinglist[i].update();
-			}
-		}*/
 	}
 
 	Interface.update();

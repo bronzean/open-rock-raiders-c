@@ -238,6 +238,7 @@ bool tile_manager::load_tile(string folderpath)
 						if(num_command == "TRUE" || "true")
 						{
 							tile_wall = true;
+							new_tile.obstruction = true; //This tile is an obstruction.
 						}
 						else
 						{

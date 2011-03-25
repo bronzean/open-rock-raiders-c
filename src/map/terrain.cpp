@@ -34,6 +34,8 @@ tile::tile() //Constructor. Initialize an empty tile.
 	Active_Map_Entry = -1;
 	active_animation = false;
 	active_animation_entry = 0;
+	has_construction = false;
+	obstruction = false;
 }
 
 void tile::init(int ID, SDL_Surface *SPRITE, std::string NAME, bool WALL, bool RAMP, bool UP_RAMP, bool DOWN_RAMP, bool SELF_SUPPORTING, int ORE_TYPE, bool CAN_MINE, int MINIMUMN_MINING_POWER, bool AIR, bool TURN_TO_GROUND, int GROUND_TYPE, bool GENERATE_ORE_ON_MINE, int NUM_ORE_TO_GENERATE, bool TREE, bool RUBBLE)
@@ -81,6 +83,10 @@ void tile::draw_sprite()
 		if(orelist.size() != 0)
 		{
 			draw(wx - (PCamera->wx), wy - (PCamera->wy), orelist[orelist.size() - 1].sprite, screen); //Draw the ore's sprite.
+		}
+		if(unitlist.size() != 0)
+		{
+			unitlist[unitlist.size() - 1].draw_sprite(); //Draw the topmost unit's sprite.
 		}
 	}
 }

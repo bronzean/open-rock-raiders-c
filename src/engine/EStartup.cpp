@@ -8,10 +8,6 @@ using namespace std;
 bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::string screen_capt, bool load_from_cfg)
 {
 	std::cout << "\nInitializing\n";
-	//load the settings from the cfg
-	//if(load_from_cfg)
-	//{
-	//}
 
 	//Initialize everything
 	if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
@@ -56,8 +52,6 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		return false;
 	}
 
-	//screen_capt << " Version: " << VERSION;
-	//Set the window's caption
 	SDL_WM_SetCaption(screen_capt.c_str(), NULL);
 	std::cout << "\nSet caption to: " << screen_capt << std::endl;
 
@@ -68,8 +62,8 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 
 	std::cout << "\nSucesfully Initialized\n";
 
-    //If everything initialized fine
-    return true;
+	//If everything initialized fine
+	return true;
 }
 
 /*bool load_settings()

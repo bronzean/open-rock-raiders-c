@@ -133,7 +133,7 @@ public:
 	bool load_settings(); //Load the settings from the unit's cfg
 	std::string update(); //Update the object. It returns a string to let the calling tile know stuff.
 	void set_sprite(std::string sprite_name); //Set the object's sprite.
-	inline void draw_sprite(); //Draw the sprite.
+	void draw_sprite(); //Draw the sprite.
 	void draw_inventory(); //Lets the player know what tools this guy is carrying.
 
 	//Get and set the wx, and wy of the object.

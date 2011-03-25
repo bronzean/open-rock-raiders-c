@@ -6,7 +6,7 @@
 
 //draw the image
 void draw(int x, int y, SDL_Surface* source, SDL_Surface* destination);
-void draw2(int x, int y, SDL_Surface* source, SDL_Surface &destination);
+void draw2(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 
 /*
 //TODO: Write an image scaling function here
