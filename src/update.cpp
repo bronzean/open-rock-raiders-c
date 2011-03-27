@@ -103,15 +103,10 @@ int update()
 							}
 						}
 					}
-					else
+					else if(Interface.construct_wall_button.clicked())
 					{
-						/*if(buildingnum != 0)
-						{
-							for(int i = 0; i < buildingnum; ++i)
-							{
-								buildinglist[i].select();
-							}
-						}*/
+						std::cout << "\nConstruct wall button clicked.\n";
+						out_string << "\nConstruct wall button clicked.\n";
 					}
 				}
 				if(event_struct.button.button == SDL_BUTTON_RIGHT)
@@ -221,13 +216,9 @@ int update()
 
 							while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
 							{
-								cout << "Current tile: " << current_tile << "\n";
 								if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 								{
 									Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-									cout << "Added index...\n";
-									cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-									out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 								}
 
 								current_tile++; //Increment current tile.
@@ -255,13 +246,9 @@ int update()
 
 							while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
 							{
-								cout << "Current tile: " << current_tile << "\n";
 								if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 								{
 									Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-									cout << "Added index...\n";
-									cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-									out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 								}
 
 								current_tile++; //Increment current tile.
@@ -451,13 +438,9 @@ int update()
 		int current_tile = layer_offset; //The current tile it's working on.
 		while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
 		{
-			cout << "Current tile: " << current_tile << "\n";
 			if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 			{
 				Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-				cout << "Added index...\n";
-				cout << "Id of that tile: " << Map[current_tile].ID << "\n";
-				out_string << "Id of that tile: " << Map[current_tile].ID << "\n";
 			}
 
 			current_tile++; //Increment current tile.
@@ -477,7 +460,7 @@ int update()
 			return 1;
 		}
 		//TODO: load whatever else needs to be loaded...
-		Interface.g_teleport_button.init(teleport_button_spr->w, teleport_button_spr->h, teleport_button_spr, no_teleport_button_spr); //Initialize the teleport button.
+		//Interface.g_teleport_button.init(teleport_button_spr->w, teleport_button_spr->h, teleport_button_spr, no_teleport_button_spr); //Initialize the teleport button.
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
 		out_string.str(""); //Reset out_string
@@ -536,7 +519,7 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
+			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* (((camera_wy) / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
@@ -599,7 +582,7 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
+			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* (((camera_wy) / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
@@ -662,7 +645,7 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
+			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* (((camera_wy) / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 
@@ -725,7 +708,7 @@ int update()
 				cout << "Camera is in bounds wy-wise.\n";
 			}
 
-			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* ((camera_wy / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
+			start_id = (((((camera_wx) / 32) + ((camera_wy) / 32)) + ((num_col_objects - 1)* (((camera_wy) / 32)) ) )) + layer_offset; //Grab the ID of the topleftmost visible tile.
 			cout << "Start_id = " << start_id << "\n"; //Debugging output.
 			/* ------------------------------------ */
 

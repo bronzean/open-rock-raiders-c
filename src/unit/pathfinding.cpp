@@ -1,5 +1,5 @@
 /* Copright the ORR-C Dev Team */
-#include "unit.hpp" //Blablabla, include the game object class stuff header file.
+#include "unit.hpp" //Blablabla, include unit.hpp
 #include <queue> //Include this for pathfinding?
 
 /* --------------------------------------------------------------

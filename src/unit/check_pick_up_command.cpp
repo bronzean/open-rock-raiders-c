@@ -1,5 +1,9 @@
 /* Copright the ORR-C Dev Team */
-#include "unit.hpp" //Blablabla, include the game object class stuff header file.
+#include "unit.hpp" //Blablabla, include unit.hpp
+
+/* --------------------------------------------------------------
+ * Everything related to the "check if user has given a pick up object command" stuff is defined here.
+ * ----------------------------------------------------------- */
 
 bool bClassUnit::check_pick_up_command() //Checks if a pick up object command was issued.
 {

@@ -7,33 +7,32 @@
 //The timer, used mainly for the FPS, but probably can also be used in random functions and such.
 class Timer
 {
-    private:
-    //The clock time when the timer started
-    int startTicks;
+public:
+	//The clock time when the timer started
+	int startTicks;
 
-    //The ticks stored when the timer was paused
-    int pausedTicks;
+	//The ticks stored when the timer was paused
+	int pausedTicks;
 
-    //The timer status
-    bool paused;
-    bool started;
+	//The timer status
+	bool paused;
+	bool started;
 
-    public:
-    //Initializes variables
-    Timer();
+	//Initializes variables
+	Timer();
 
-    //The various clock actions
-    void start();
-    void stop();
-    void pause();
-    void unpause();
+	//The various clock actions
+	void start();
+	void stop();
+	void pause();
+	void unpause();
 
-    //Gets the timer's time
-    int get_ticks();
+	//Gets the timer's time
+	int get_ticks();
 
-    //Checks the status of the timer
-    bool is_started();
-    bool is_paused();
+	//Checks the status of the timer
+	bool is_started();
+	bool is_paused();
 };
 
 
@@ -43,16 +42,16 @@ class Timer
 class button
 {
 public:
-	int x1, y1, x2, y2, dx2, dy2; //Location related stuff.
+	int x1, y1, x2, y2/*, dx2, dy2*/; //Location related stuff.
 	int mx, my;
 	SDL_Surface *sprite; //The object's sprite.
 	SDL_Surface *d_sprite; //The disabled version's sprite
 	bool enabled; //Is it enabled?
-	int state; //Is it pressed, disabled (as in clicks don't count but it still draws), or is it just waiting to be clicked. 0 for disabled. 1 for enabled.
+	int state; //0 = Disabled; You can click it but it has no effect, yet it uses the enabled version's sprite. 1 = enabled; click it and it does whatever.
 
+	button(); //Constructor.
 	//Initializes the button
 	void init(int button_width, int button_height, int X, int Y, SDL_Surface *SPRITE, SDL_Surface *D_SPRITE); //TODO: Make it be able to recieve more than one sprite to set the sprites for a disbaled version, a highlighted version, and a pressed version of the button.
-	void init(int button_width, int button_height, SDL_Surface *SPRITE, SDL_Surface *D_SPRITE);
 
 	bool clicked(); //Check if the button was clicked.
 	void update(); //Updates whatever needs updating.

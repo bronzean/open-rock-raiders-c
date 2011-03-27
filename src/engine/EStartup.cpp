@@ -2,6 +2,7 @@
 //Contains all of the startup code
 #include "../Engine.hpp"
 #include "Interface.hpp"
+#include "EPrototypes.hpp"
 
 using namespace std;
 
@@ -60,9 +61,28 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	title_screen_text1_spr = TTF_RenderText_Solid(font1, "Press enter to enter the test level", c_white); //Let the player know they have to press enter to enter the game.
 	title_screen_text2_spr = TTF_RenderText_Solid(font1, "Tales of Mining and Great Riches", c_white); //Nifty little saying on the title screen.
 
+	cout << "Setting global teleport button's variables.\n";
+	Interface.g_teleport_button.sprite = img_load3(teleport_button_path); //Load the sprite.
+	Interface.g_teleport_button.d_sprite = img_load3(no_teleport_button_path); //Load the disabled button's sprites.
+	Interface.g_teleport_button.x2 = Interface.g_teleport_button.x1 + Interface.g_teleport_button.sprite->w; //Set the x of the botomn right corner of the teleport button.
+	cout << "2\n";
+	Interface.g_teleport_button.y2 = Interface.g_teleport_button.y1 + Interface.g_teleport_button.sprite->h; //Set the y of the botomn right corner of the teleport button.
+	cout << "3\n";
+
+	cout << "Loading title screen's sprite.\n";
+	title_screen = img_load3(title_screen_path);
+
 	std::cout << "\nSucesfully Initialized\n";
 
-	//If everything initialized fine
+	cout << "Setting the \"Construct Wall\" button's variables.\n";
+	SDL_Surface* temp_spr = NULL; //Temporary sprite holding the construct wall button's sprite.
+	temp_spr = img_load3("data/resource/interface/button/construction/build_wall.png");
+	Interface.construct_wall_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct wall button.
+	Interface.construct_wall_button.state = 1; //Make it start out enabled!
+	Interface.construct_wall_button.x1 = 550; //TODO: Make this be loaded from the interface cfg.
+	Interface.construct_wall_button.y1 = 100; //TODO: Make this be loaded from the interface cfg.
+
+	//Everything initialized fine.
 	return true;
 }
 
@@ -604,6 +624,7 @@ bool load_settings()
 						quit = true;
 						teleport_button_path = num_command;
 						std::cout << "\nTeleport button path = " << teleport_button_path << "\n";
+						//Interface.g_teleport_button.sprite = img_load2(num_command.c_str()); //Load the teleport button's sprite and assign it.
 						num_command = "";
 					}
 					else if(temp == '(')
@@ -705,7 +726,8 @@ bool load_settings()
 						start = false;
 						quit = true;
 						no_teleport_button_path = num_command;
-						std::cout << "\nTeleport button path = " << no_teleport_button_path << "\n";
+						std::cout << "\nTeleport button path = " << num_command << "\n";
+						//Interface.g_teleport_button.d_sprite = img_load2(num_command); //Load the teleport button's disabled sprite.
 						num_command = "";
 					}
 					else if(temp == '(')
@@ -914,15 +936,15 @@ bool load_settings()
 
 	c = 0;
 
-	std::string temp3 = "/data/units.cfg";
-	char* filepath2 = const_cast<char *>(temp3.c_str());
+	//std::string temp3 = "/data/units.cfg";
+	//char* filepath2 = const_cast<char *>(temp3.c_str());
 
-	file = fopen(filepath2, "r");
-	if(file == NULL)
-	{
-		cout << "The file \"" << filepath2 << "\" does not exist!\n";
-		return false;
-	}
+	//file = fopen(filepath2, "r");
+	//if(file == NULL)
+	//{
+	//	cout << "The file \"" << filepath2 << "\" does not exist!\n";
+	//	return false;
+	//}
 
 	return true;
 }

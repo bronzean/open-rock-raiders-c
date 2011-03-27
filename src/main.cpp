@@ -55,8 +55,6 @@ int main( int argc, char* argv[] )
 
 	fps2.start(); //Start the fps timers
 
-	title_screen = img_load3("data/resource/title.png"); //TODO: Fix the title screen bug. This is just a quick 'n dirty fix.
-
 	//We draw these next two here so that they don't need to be needlessely redrawn every frame.
 	draw2((SCREEN_WIDTH / 2) - (title_screen_text1_spr->w / 2), (SCREEN_HEIGHT - 100), title_screen_text1_spr, title_screen); //Let the player know they have to press enter to enter the game.
 	draw2((SCREEN_WIDTH / 2) - (title_screen_text2_spr->w / 2), 0, title_screen_text2_spr, title_screen); //Nifty little saying...TODO: Make it randomally choose between a list of sayings...

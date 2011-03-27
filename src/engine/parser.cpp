@@ -257,26 +257,16 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 			if(temp == '.' || temp == ',')
 			{
 				read_stage ++;
-				//cout << "\nAt stage " << read_stage + 1 << ".\n";
-				//out_string << "\nAt stage " << read_stage + 1 << ".\n";
 			}
 			else if(temp == '\n')
 			{
 				read_stage = 0;
 				parse_tile = true;
-				//cout << "\nContents: " << stage[0] << "." << stage[1] << "." << stage[2] << "\n";
-				//cout << "Encountered end of line.\n";
-				//out_string << "\nContents: " << stage[0] << "." << stage[1] << "." << stage[2] << "\n";
-				//out_string << "Encountered end of line.\n";
 			}
 			else if(temp == ' ')
 			{
 				read_stage = 0;
 				parse_tile = true;
-				//cout << "\nContents: " << stage[0] << "." << stage[1] << "." << stage[2] << "\n";
-				//cout << "Encountered space.\n";
-				//out_string << "\nContents: " << stage[0] << "." << stage[1] << "." << stage[2] << "\n";
-				//out_string << "Encountered space.\n";
 			}
 			else
 			{
@@ -288,10 +278,6 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 			if(parse_tile)
 			{
 				tile new_tile; //The tile we are are going to add to the map.
-
-				//cout << "Adding a tile. Cur tile = " << current_tile <<"\n";
-				//out_string << "Adding a tile. Cur tile = " << current_tile <<"\n";
-				//cout << "0\n";
 
 				new_tile.type = atoi(stage[0].c_str()); //This gives the tile its type.
 
@@ -316,9 +302,6 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 				new_tile.width = new_tile.sprite->w;
 				new_tile.height = new_tile.sprite->h;
 				new_tile.sprite = new_tile_temp.sprite;
-
-				//std::cout << "Made a tile with these properties:\nLocation: (" << new_tile.wx << "," << new_tile.wy << ")\nType: " << new_tile.type << "\nLayer: " << new_tile.layer << "\nID:" << new_tile.ID << "\n";
-				//out_string << "Made a tile with these properties:\nLocation: (" << new_tile.wx << "," << new_tile.wy << ")\nType: " << new_tile.type << "\nLayer: " << new_tile.layer << "\nID:" << new_tile.ID << "\n";
 						
 
 				for(int i = 0; i < 3; i++)
@@ -351,8 +334,6 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 
 
 		fclose(file);
-
-		//Not sure if I want to parse objects here or up where it parses the tiles...
 
 		cout << "\nParsing object layers...\n";
 
@@ -390,21 +371,16 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 			if(temp == '.')
 			{
 				read_stage ++;
-				//cout << "\nAt stage " << read_stage + 1 << ".\n";
 			}
 			else if(temp == '\n')
 			{
 				read_stage = 0;
 				parse_tile = true;
-				//cout << "\nContents: " << stage_object[0] << "." << stage_object[1] << "\n";
-				//cout << "Encountered end of line.\n";
 			}
 			else if(temp == ' ')
 			{
 				read_stage = 0;
 				parse_tile = true;
-				//cout << "\nContents: " << stage_object[0] << "." << stage_object[1] << "\n";
-				//cout << "Encountered space.\n";
 			}
 			else
 			{
@@ -435,32 +411,23 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 				//First check if stage_object[0] == something_in_unittypelist
 				if(stage_object[0] != "" && temp_unit.name != " ")
 				{
-					std::cout << "\nFound a match for ID " << stage_object[0] << "\n";
 					bClassUnit newUnit = temp_unit;
-					//std::cout << "Test\n";
 					newUnit.wx = Map[atoi(stage_object[1].c_str())].wx; //Assign the new unit's world x.
 					newUnit.wy = Map[atoi(stage_object[1].c_str())].wy; //Assign the new unit's world y.
 					newUnit.layer = Map[atoi(stage_object[1].c_str())].layer; //Assign the new unit's layer.
-					newUnit.c_health = 100; //Assign the new unit's current health.
-					//std::cout << "Test1\n";
-					//std::cout << "Test2\n";
-					//std::cout << "Test3\n";						
+					newUnit.c_health = 100; //Assign the new unit's current health.					
 					std::cout << "Created new unit.\n";
 
 					if(stage_object[2] != "0")
 					{
-						cout << "New unit is carrying tool with an ID of: " << stage_object[3] << "\n"; //Debugging output.
-						out_string << "New unit is carrying tool with an ID of: " << stage_object[3] << "\n"; //Debugging output.
 						tool new_tool = Tool_Type_Manager.get_by_id(atoi(stage_object[3].c_str())); //Find the tool with the specified ID.
 						newUnit.tool_list.push_back(new_tool); //Add the tool it found to the new unit's tool list.
 					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);
-					cout << "Test! Right before adding Active_Map entry!\n";
 
 					Active_Map.push_back(Map[atoi(stage_object[1].c_str())].ID); //Add this tile's index to Active_Map to know that this tile requires updating.
 					Map[atoi(stage_object[1].c_str())].Active_Map_Entry = Active_Map.size() - 1; //Let the tile know where its entry in Actve_Map is.
-					cout << "Tile's entry in Active_Map: " << Active_Map.size() - 1 << "\n"; //Debugging output.
 					
 				}
 

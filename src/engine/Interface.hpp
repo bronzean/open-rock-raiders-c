@@ -3,13 +3,14 @@
 #include "../main.hpp"
 #include "../Engine.hpp"
 
-class interface
+class interface //The interface class.
 {
 public:
-	button g_teleport_button;
+	button g_teleport_button; //The global teleport button.
+	button construct_wall_button; //The construct wall button.
 
-	void update();
-	void draw_ui();
+	void update(); //Update whatever needs to be updated.
+	void draw_ui(); //Draw everything that needs to be drawn.
 };
 
-extern interface Interface;
+extern interface Interface; //The interface object.
