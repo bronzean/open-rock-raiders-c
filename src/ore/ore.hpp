@@ -7,6 +7,8 @@
 #pragma once
 #include "../engine/EObject.hpp"
 
+class tile;
+
 class ore //It's Ore. Remember, there's not simply "ore". But there's "Iron Ore", "Copper Ore", etc.
 {
 public:
@@ -14,6 +16,7 @@ public:
 	int matter_value; //A building requires x matter. This ore provides x matter. Change this later...
 	int type_id; //Let's the game know what type of ore this is...
 	SDL_Surface *sprite; //The ore's sprite.
+	tile *containing_tile; //Points to the tile that this ore is laying on.
 
 	void init(int ID, int MATTER_VALUE, SDL_Surface *SPRITE, std::string NAME); //Initialize a new ore/ore type.
 

@@ -81,6 +81,8 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	Interface.construct_wall_button.state = 1; //Make it start out enabled!
 	Interface.construct_wall_button.x1 = 550; //TODO: Make this be loaded from the interface cfg.
 	Interface.construct_wall_button.y1 = 100; //TODO: Make this be loaded from the interface cfg.
+	Interface.construct_wall_button.x2 = Interface.construct_wall_button.x1 + Interface.construct_wall_button.sprite->w; //Set the construct wall button's bottom right corner's x.
+	Interface.construct_wall_button.y2 = Interface.construct_wall_button.y1 + Interface.construct_wall_button.sprite->h; //Set the construct wall button's bottom right corner's y.
 
 	//Everything initialized fine.
 	return true;

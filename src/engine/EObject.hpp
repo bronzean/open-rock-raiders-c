@@ -89,3 +89,5 @@ extern ore_manager Ore_Type_Manager; //Manages all the ore types.
 extern energy_crystal_manager Energy_Crystal_Type_Manager; //Manages all the Energy Crystal Types.
 
 extern draw_message_handler Draw_Message_Handler; //Handles all the messages to be drawn.
+
+static std::vector<ore*> ore_on_map; //Points to all the ore that is currently laying around the place.

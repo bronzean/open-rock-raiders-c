@@ -17,6 +17,7 @@ ore::ore() //Constructor. Initializes an empty ore.
 	matter_value = 0;
 	type_id = 0;
 	sprite = NULL;
+	containing_tile = NULL;
 }
 
 //Add a new ore type.

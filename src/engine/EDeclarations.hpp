@@ -135,6 +135,8 @@ extern SDL_Surface *title_screen_text1_spr; //Let the player know they have to p
 
 extern SDL_Surface *title_screen_text2_spr; //Nifty little saying on the title screen.
 
+static bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot can units be selected/deselected.
+
 //-----------MUSIC STUFF--------------
 static int audio_open = 0;
 static Mix_Music *music = NULL;

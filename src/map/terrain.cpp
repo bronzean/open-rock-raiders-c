@@ -439,6 +439,49 @@ void tile::move_unit(int i)
 
 				Map[unitlist[i].move_path[0]].orelist.erase(Map[unitlist[i].move_path[0]].orelist.begin()); //Remove the ore from the tile's orelist.
 
+				bool done = false; //Used to control the loop below.
+				int i2 = 0;
+				vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore list.
+
+				/*while(done == false) //So, here the game loops until it's either gone through the entire ore on map list or it's found the ore it's looking for.
+				{
+					cout << "Loop: " << i2 << "\n";
+					if(iterator >= ore_on_map.end())
+					{
+						done = true; //Uh oh, it reached the end of the ore on map list. Something done borked.
+						cout << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+						out_string << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+					}
+					else
+					{
+						if(ore_on_map[i2]->containing_tile->ID == ID) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+						{
+							cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+
+							ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+
+							done = true; //The ore has been found. No use lingering around in this loop.
+						}
+					}
+
+					i2++; //Obviously, increment this.
+					iterator++;
+				}*/
+
+				for(; iterator < ore_on_map.end(); iterator++, i2++)
+				{
+					cout << "Size: " << ore_on_map.size() << "\n";
+					cout << "ID: " << ore_on_map[i2]->containing_tile->ID << "\n";
+					if(ore_on_map[i2]->containing_tile->ID == ID && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+					{
+						cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+
+						ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+
+						done = true; //The ore has been found. No use lingering around in this loop.
+					}
+				}
+
 				cout << "Picked up ore!\n"; //Debugging output.
 			}
 		}
@@ -793,7 +836,11 @@ void tile::rubble_to_ground(int i)
 			for(int i2 = 0; i2 < num_to_gen; i2++) //Keep adding ore until all the requested ore have been generated.
 			{
 				ore new_ore = Ore_Type_Manager.get_by_id(ore_gen_ids[0]); //Grab the properties of the new ore. TODO: Make this randomally choose an ID from ore_gen_ids.
+				new_ore.containing_tile = this; //Let the newly created ore know which tile it's sitting on.
+				new_ore.containing_tile->ID = ID;
 				orelist.push_back(new_ore); //Add the new ore to the orelist.
+				ore_on_map.push_back(&orelist[orelist.size()]); //Add the ore that was just created into the ore one map list.
+				ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
 
 				cout << "Generating ore with type: " << ore_gen_ids[0] << "\n"; //Debugging output.
 			}
@@ -803,9 +850,9 @@ void tile::rubble_to_ground(int i)
 		}
 		else if(health[num_shovels - 1] > 0) //So, all the other checks returned false. Here the rubble's health is lowered by the unit's shovel.
 		{
-			cout << "Shovelling! Shovelling! Shovelling I am!\n"; //Debugging output.
+			//cout << "Shovelling! Shovelling! Shovelling I am!\n"; //Debugging output.
 
-			cout << "Health: " << health[num_shovels - 1] << ", num_shovels: " << num_shovels - 1 << "\n"; //Debugging output.
+			//cout << "Health: " << health[num_shovels - 1] << ", num_shovels: " << num_shovels - 1 << "\n"; //Debugging output.
 
 
 
@@ -819,7 +866,7 @@ void tile::rubble_to_ground(int i)
 				{
 					health[num_shovels - 1] -= unitlist[i].tool_list[counter].default_rubble_damage; //Subtract the tool's shovel rate from this tile's health.
 					found = true;
-					cout << "Rubble's new health: " << health[num_shovels - 1]<< "\n";
+					//cout << "Rubble's new health: " << health[num_shovels - 1]<< "\n";
 				}
 			}
 		}

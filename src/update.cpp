@@ -81,6 +81,8 @@ int update()
 				//I wonder if I should move code into the interface update function...
 				if(event_struct.button.button == SDL_BUTTON_LEFT)
 				{
+					std::cout << "Left click\n"; //Debugging output.
+					out_string << "Left click\n";
 					if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
 					{
 						//Teleport code here
@@ -108,6 +110,36 @@ int update()
 						std::cout << "\nConstruct wall button clicked.\n";
 						out_string << "\nConstruct wall button clicked.\n";
 					}
+					else
+					{
+						bool run = true; //Controls the loop below.
+
+						//Check if a tile was clicked
+						for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
+						{
+							if(run)
+							{
+
+								//Check if the tile is 'in bounds'.
+								if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+								{
+									if(Map[i].unitlist.size() == 0) //If there are no units on this tile...
+									{
+										cout << "Does not have units on it, saving tile id!\n";
+										leftclick_tile_id = i; //Save the ID of this tile only if no units are on this tile.
+
+										std::cout << "\nFound the tile that the left click took place over...\n";
+										out_string << "\nFound the tile that the left click took place over...\n";
+										std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+										out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+									}
+
+
+									run = false;
+								}
+							}
+						}
+					}
 				}
 				if(event_struct.button.button == SDL_BUTTON_RIGHT)
 				{
@@ -133,44 +165,6 @@ int update()
 								out_string << "\nFound the tile that the right click took place over...\n";
 								std::cout << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
 								out_string << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
-							}
-						}
-					}
-				}
-				if(event_struct.button.button == SDL_BUTTON_LEFT)
-				{
-					std::cout << "Left click\n"; //Debugging output.
-					out_string << "Left click\n";
-
-					bool run = true; //Controls the loop below.
-
-					//TODO: Do a:
-					//if(left_click_wx > 0 || left_click_wx < num_tiles * 32) //Don't forget the y checks.
-					//{
-					//blablabla
-					//}
-					//This should save some cpu in the cases when the player clicked offmap.
-
-					if(event_struct.button.x + PCamera->wx > 0 && event_struct.button.x + PCamera->wx < num_tiles * 32 && event_struct.button.y + PCamera->wy > 0 && event_struct.button.x + PCamera->wx < num_tiles * 32)
-					{
-						//Check if a tile was clicked
-						for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++)
-						{
-							if(run)
-							{
-
-								//Check if the tile is 'in bounds'.
-								if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
-								{
-									leftclick_tile_id = i; //Assign the tile id...
-
-									run = false;
-
-									std::cout << "\nFound the tile that the left click took place over...\n";
-									out_string << "\nFound the tile that the left click took place over...\n";
-									std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
-									out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
-								}
 							}
 						}
 					}
