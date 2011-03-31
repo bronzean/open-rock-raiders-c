@@ -101,22 +101,25 @@ void bClassUnit::init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface
 
 void bClassUnit::draw_sprite() //Draw the unit's sprite.
 {
-	if(wx + width >= PCamera->wx && wx <= (PCamera->wx + SCREEN_WIDTH) && wy + height >= PCamera->wy && wy <= (PCamera->wy + SCREEN_HEIGHT) && layer == PCamera->layer) //If the sprite is onscreen...
+	if(screen_needs_updating == false)
 	{
-		if(selected == false) //If the unit is not selected...
+		if(wx + width >= PCamera->wx && wx <= (PCamera->wx + SCREEN_WIDTH) && wy + height >= PCamera->wy && wy <= (PCamera->wy + SCREEN_HEIGHT) && layer == PCamera->layer) //If the sprite is onscreen...
 		{
-			draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+			if(selected == false) //If the unit is not selected...
+			{
+				draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+			}
+			else //If it is selected...
+			{
+				draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_select, screen); //Draw the selected sprite...
+			}
 		}
-		else //If it is selected...
+		if(selected || player) //If the unit is selected...Or it is th player's unit...
 		{
-			draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_select, screen); //Draw the selected sprite...
-		}
-	}
-	if(selected || player) //If the unit is selected...Or it is th player's unit...
-	{
-		if(tool_list.size() != 0) //If the unit's tool list size is not equal to 0.
-		{
-			draw_inventory(); //Let the player know what tools this guy is carrying.
+			if(tool_list.size() != 0) //If the unit's tool list size is not equal to 0.
+			{
+				draw_inventory(); //Let the player know what tools this guy is carrying.
+			}
 		}
 	}
 }

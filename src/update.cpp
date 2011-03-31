@@ -18,8 +18,8 @@ void *DrawScreen(void *param)
 		if(screen_needs_updating == true)
 		{
 			//std::cout << "\nNeeds updating!\n";
-			if(GameState != Loading)
-			{
+			//if(GameState != Loading)
+			//{
 				//cout << "Gamestate != loading!\n";
 				if(SDL_Flip(screen) == -1)
 				{
@@ -31,16 +31,18 @@ void *DrawScreen(void *param)
 					pthread_exit(NULL);
 				}
 				//cout << "Updated screen!\n";
-				SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
+				//SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
+				SDL_FillRect(screen, NULL, 0x00000000);
 				//cout << "Cleared screen!\n";
-			}
+			//}
 
 			screen_needs_updating = false;
 			//cout << "Screen set to not needing updating!\n";
 
-			SDL_Delay(GFPS);
+			//SDL_Delay(GFPS);
 			//cout << "Done with delay!\n";
 		}
+		SDL_Delay(GFPS);
 	}
 	pthread_exit(NULL);
 }
@@ -48,7 +50,7 @@ void *DrawScreen(void *param)
 int update()
 {
 
-	if(num_worker_threads == 0) //If not running with threads...
+	/*if(num_worker_threads == 0) //If not running with threads...
 	{
 		if(SDL_Flip(screen) == -1)
 		{
@@ -60,7 +62,7 @@ int update()
 		}
 		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
 		allow_draw = false;
-	}
+	}*/
 
 	rightclick_tile_id = -1; //Reset rightclick_tile_id
 	leftclick_tile_id = -1; //Reset leftclick_tile_id
@@ -302,7 +304,10 @@ int update()
 			GameState = Loading; //Load everything.
 		}
 
-		draw(0, 0, title_screen, screen); //Draw the title screen's background.
+		if(screen_needs_updating == false)
+		{
+			draw(0, 0, title_screen, screen); //Draw the title screen's background.
+		}
 	}
 
 	else if(GameState == Loading && gameover != true)
@@ -441,6 +446,8 @@ int update()
 			if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 			{
 				Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
+				cout << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
+				out_string << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
 			}
 
 			current_tile++; //Increment current tile.

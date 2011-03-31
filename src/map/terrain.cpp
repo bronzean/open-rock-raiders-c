@@ -64,31 +64,34 @@ void tile::init(int ID, SDL_Surface *SPRITE, std::string NAME, bool WALL, bool R
 
 void tile::draw_sprite()
 {
-	if(layer == PCamera->layer && get_wx() + get_width() >= PCamera->wx && get_wx() <= (PCamera->wx + SCREEN_WIDTH) && get_wy() + get_height() >= PCamera->wy && get_wy() <= (PCamera->wy + SCREEN_HEIGHT))
-	{
-		if(active_animation == true) //If an animation is going on...
+	//if(screen_needs_updating == false)
+	//{
+		if(layer == PCamera->layer && get_wx() + get_width() >= PCamera->wx && get_wx() <= (PCamera->wx + SCREEN_WIDTH) && get_wy() + get_height() >= PCamera->wy && get_wy() <= (PCamera->wy + SCREEN_HEIGHT))
 		{
-			cout << "Animated tile ID: " << ID << "\n";
-			/*if(active_animation_entry == drilling_animation_entry && animations[drilling_animation_entry].current_frame == 0) //If the current animation is the drilling animation, then...
+			if(active_animation == true) //If an animation is going on...
 			{
-				animations[drilling_animation_entry].proceed_animation(); //Increase the animation thingy.
-			}*/
-			animations[active_animation_entry].draw_sprite(wx, wy, layer);
+				cout << "Animated tile ID: " << ID << "\n";
+				/*if(active_animation_entry == drilling_animation_entry && animations[drilling_animation_entry].current_frame == 0) //If the current animation is the drilling animation, then...
+				{
+					animations[drilling_animation_entry].proceed_animation(); //Increase the animation thingy.
+				}*/
+				animations[active_animation_entry].draw_sprite(wx, wy, layer);
 			
+			}
+			else //If not, draw the 'normal' sprite.
+			{
+				draw(get_wx() - (PCamera->wx), get_wy() - (PCamera->wy), sprite, screen);
+			}
+			if(orelist.size() != 0)
+			{
+				draw(wx - (PCamera->wx), wy - (PCamera->wy), orelist[orelist.size() - 1].sprite, screen); //Draw the ore's sprite.
+			}
+			if(unitlist.size() != 0)
+			{
+				unitlist[unitlist.size() - 1].draw_sprite(); //Draw the topmost unit's sprite.
+			}
 		}
-		else //If not, draw the 'normal' sprite.
-		{
-			draw(get_wx() - (PCamera->wx), get_wy() - (PCamera->wy), sprite, screen);
-		}
-		if(orelist.size() != 0)
-		{
-			draw(wx - (PCamera->wx), wy - (PCamera->wy), orelist[orelist.size() - 1].sprite, screen); //Draw the ore's sprite.
-		}
-		if(unitlist.size() != 0)
-		{
-			unitlist[unitlist.size() - 1].draw_sprite(); //Draw the topmost unit's sprite.
-		}
-	}
+	//}
 }
 
 

@@ -36,12 +36,13 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	{
 		screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_FULLSCREEN);//Set video mode as fullscreen
 		std::cout << "\nRunning fullscreen\n";
+		//SDL_SWSURFACE|SDL_ANYFORMAT
 	}
 	else
 	{
 		if(true) //TODO: Change this to if(system_memory) { ... }
 		{
-    			screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_SWSURFACE); // Set video mode... A crucial part
+    			screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_HWSURFACE|SDL_ANYFORMAT|SDL_DOUBLEBUF); // Set video mode... A crucial part
 		}
 		std::cout << "\nRunning windowed\n";
 	}

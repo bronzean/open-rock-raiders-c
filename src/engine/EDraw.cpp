@@ -5,15 +5,15 @@
 //draw an image to the screen
 void draw( int x, int y, SDL_Surface* source, SDL_Surface* destination )
 {
-	if(screen_needs_updating == false)
-	{
+	//if(screen_needs_updating == false)
+	//{
 		SDL_Rect offset;
 
 		offset.x = x;
 		offset.y = y;
 		//blit function
 		SDL_BlitSurface( source, NULL, destination, &offset );
-	}
+	//}
 }
 
 void draw2( int x, int y, SDL_Surface* source, SDL_Surface* destination )

@@ -19,7 +19,10 @@ void interface::update()
 		construct_wall_button.update();
 	}
 
-	draw_ui();
+	if(screen_needs_updating == false)
+	{
+		draw_ui();
+	}
 }
 
 void interface::draw_ui()

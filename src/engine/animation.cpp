@@ -177,8 +177,11 @@ void animation::proceed_animation() //Proceeds the animation by one frame.
 
 void animation::draw_sprite(int wx, int wy, int layer) //Draw the current frame's sprite.
 {
-	if(layer == PCamera->layer && wx + frames_spr[current_frame]->w >= PCamera->wx && wx <= (PCamera->wx + SCREEN_WIDTH) && wy + frames_spr[current_frame]->h >= PCamera->wy && wy <= (PCamera->wy + SCREEN_HEIGHT)) //If the sprite is on screen...
+	if(screen_needs_updating == false)
 	{
-		draw(wx - (PCamera->wx), wy - (PCamera->wy), frames_spr[current_frame], screen); //Draw the sprite.
+		if(layer == PCamera->layer && wx + frames_spr[current_frame]->w >= PCamera->wx && wx <= (PCamera->wx + SCREEN_WIDTH) && wy + frames_spr[current_frame]->h >= PCamera->wy && wy <= (PCamera->wy + SCREEN_HEIGHT)) //If the sprite is on screen...
+		{
+			draw(wx - (PCamera->wx), wy - (PCamera->wy), frames_spr[current_frame], screen); //Draw the sprite.
+		}
 	}
 }

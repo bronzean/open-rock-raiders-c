@@ -60,6 +60,9 @@ void button::update()
 	//Else if 'state' equals '0'...
 	else if(state == 0)
 	{
-		draw(x1, y1, d_sprite, screen); //Draw the object's disabled sprite onto the screen.
+		if(screen_needs_updating == false)
+		{
+			draw(x1, y1, d_sprite, screen); //Draw the object's disabled sprite onto the screen.
+		}
 	}
 }
