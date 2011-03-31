@@ -35,15 +35,15 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	hovering = false;
 	hover_duration = 0;
 	carrying_message_string = "Inventory: ";
-	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	carrying_message_sprite = NULL;
 	carrying_resource = false;
 	mine_on_reach_goal = false;
 	mine_tile_id = 0;
 	mining_mode = false;
 	select_wall_to_mine_str = "Select the wall you want to mine. If ya dun know how, READ THE MANUAL."; //This message is displayed when the unit enters mining mode.
-	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
+	select_wall_to_mine_spr = NULL;
 	mining_message_str = "Whee, mining!"; //This message is displayed while the unit is mining.
-	mining_message_spr = TTF_RenderText_Solid(font2, mining_message_str.c_str(), c_green);
+	mining_message_spr = NULL;
 	mining = false;
 	allow_move = true;
 	frames_since_last_move = 0;
@@ -58,22 +58,22 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	status = "";
 	ai_pick_up_ore = true; //TODO: Make this be set in the config files or something?
 	select_object_to_pick_up_str = "Select an object to pick up. If ya dun know how, READ THE MANUAL.";
-	select_object_to_pick_up_spr = TTF_RenderText_Solid(font1, select_object_to_pick_up_str.c_str(), c_white);
+	select_object_to_pick_up_spr = NULL;
 	player = false;
 	chopping_message_str = "Die tree!"; //This message is displayed while the unit is chopping.
-	chopping_message_spr = TTF_RenderText_Solid(font2, chopping_message_str.c_str(), c_green);
+	chopping_message_spr = NULL;
 	chop_on_reach_goal = false;
 	chopping = false;
 	chop_mode = false;
 	select_tree_to_chop_str = "Select a tree to kill. If ya dun know how, READ THE MANUAL.";
-	select_tree_to_chop_spr = TTF_RenderText_Solid(font1, select_tree_to_chop_str.c_str(), c_white);
+	select_tree_to_chop_spr = NULL;
 	shovel_on_reach_goal = false;
 	shovelling = false;
 	shovel_mode = false;
 	select_rubble_to_shovel_str = "Select some rubble to shovel. If ya dun know how, READ THE MANUAL.";
-	select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, select_rubble_to_shovel_str.c_str(), c_white);
+	select_rubble_to_shovel_spr = NULL;
 	shovelling_message_str = "I'mma shovel some rubble!";
-	shovelling_message_spr = TTF_RenderText_Solid(font2, shovelling_message_str.c_str(), c_green);
+	shovelling_message_spr = NULL;
 	animation_playing = false;
 }
 
@@ -89,6 +89,14 @@ void bClassUnit::init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface
 	selectable = SELECTABLE;
 	move_speed = MOVE_SPEED;
 	type = ID;
+	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
+	mining_message_spr = TTF_RenderText_Solid(font2, mining_message_str.c_str(), c_green);
+	select_object_to_pick_up_spr = TTF_RenderText_Solid(font1, select_object_to_pick_up_str.c_str(), c_white);
+	chopping_message_spr = TTF_RenderText_Solid(font2, chopping_message_str.c_str(), c_green);
+	select_tree_to_chop_spr = TTF_RenderText_Solid(font1, select_tree_to_chop_str.c_str(), c_white);
+	shovelling_message_spr = TTF_RenderText_Solid(font2, shovelling_message_str.c_str(), c_green);
+	select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, select_rubble_to_shovel_str.c_str(), c_white);
 }
 
 void bClassUnit::draw_sprite() //Draw the unit's sprite.

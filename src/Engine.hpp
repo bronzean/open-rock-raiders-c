@@ -25,4 +25,4 @@
 #include "engine/EDeclarations.hpp"
 #include "engine/parser.hpp"
 
-#define VERSION "0.0.2.7"
+#define VERSION "0.0.3"

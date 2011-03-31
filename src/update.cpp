@@ -315,6 +315,7 @@ int update()
 		load_text = "Loading tile types";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";
@@ -333,6 +334,7 @@ int update()
 		load_text = "Loading tool types";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";
@@ -351,6 +353,7 @@ int update()
 		load_text = "Loading ore types";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";
@@ -369,6 +372,7 @@ int update()
 		load_text = "Loading energy crystal types";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";
@@ -387,6 +391,7 @@ int update()
 		load_text = "Loading unit types";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";
@@ -405,6 +410,7 @@ int update()
 		load_text = "Loading level";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";
@@ -445,6 +451,7 @@ int update()
 		load_text = "Loading everything else";
 		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+		SDL_FreeSurface(load_text_sprite);
 		if(SDL_Flip(screen) == -1)
 		{
 			std::cerr << "\nError Updating Screen\n";

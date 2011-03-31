@@ -127,6 +127,24 @@ public:
 	//bClassUnit(const bClassUnit &source); //Copy constructor.
 	~bClassUnit() //Deconstructor.
 	{
+		/*if(sprite != NULL)
+		{
+			SDL_FreeSurface(sprite);
+		}
+		if(sprite_select != NULL)
+		{
+			SDL_FreeSurface(sprite_select);
+		}*/
+		sprite = NULL;
+		sprite_select = NULL;
+		carrying_message_sprite = NULL;
+		mining_message_spr = NULL;
+		select_object_to_pick_up_spr = NULL;
+		chopping_message_spr = NULL;
+		select_tree_to_chop_spr = NULL;
+		select_rubble_to_shovel_spr = NULL;
+		shovelling_message_spr = NULL;
+		select_wall_to_mine_spr = NULL;
 	}
 
 	void init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface *SPRITE_SELECT, bool SELECTABLE, int MOVE_SPEED, int MAX_HEALTH); //Initialize a new unit type.

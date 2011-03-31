@@ -23,6 +23,7 @@ public:
 	ore(); //Constructor. Initializes an empty ore.
 	~ore() //Deconstructor.
 	{
+		sprite = NULL;
 	}
 };
 
