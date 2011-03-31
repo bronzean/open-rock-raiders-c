@@ -3,14 +3,14 @@ Compiling
 Dependencies:
 SDL 1.2,
 SDL_image,
-SDL_TTF (If I'm forgetting anything, please let me know)
+SDL_TTF
+SDL_mixer
+pthreads (Also known as posix?)
+I'f I'm forgetting anything, please let me know.
 
 
 Windows users:
-Build in VS 2010.
-Install the above dependencies, or place them with the executable. 
-Copy "data" and "maps" into "win".
-Enjoy!
+Use cygwin. This is what I'm using to compile the windows versions.
 
 Linux users:
 CD to directory in a terminal and type 'make'.
@@ -18,7 +18,7 @@ CD to directory in a terminal and type 'make'.
 Note: If you just updated your source code, (like did a "svn update" or something), then make sure to do a full compile. In linux, type:
 make
 make clean
-In windows...Well...I don't know...Click on full recompile in msvc?
+In windows...If you're using cygwin...same thing.
 
 
 Installation
@@ -27,17 +27,13 @@ Linux users:
 CD to directory in a terminal and type 'sudo make install'.
 If you want to mod ORR, then just head on to /usr/local/share/games/orr-c/
 
+If you want ORR to play midi files:
 Download http://www.libsdl.org/projects/mixer/timidity/timidity.tar.gz
 Extract the contents of midi_stuff.zip into /usr/local/lib under UNIX/LINUX, and C:\ under Win32.
 
 How to play
 ---------------------
-Not gonna bother with this until we get to a stable point in development.
-
-- Basics -
-Left click to select/deselect stuff.
-Right click to issue a move command.
-
+Read the manual. (File with same name in this directory.)
 
 Modding
 ---------------------

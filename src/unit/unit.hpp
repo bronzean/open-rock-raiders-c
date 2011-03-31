@@ -114,7 +114,7 @@ public:
 	bool chop_mode; //Is the game waiting for the player to select a tree to kill?
 	std::string select_tree_to_chop_str; //Displayed when the player is selecting a tree to kill.
 	SDL_Surface *select_tree_to_chop_spr; //Displayed when the player is selecting a tree to kill.
-	bool shovel_on_reach_goal; //Will the unit be shovelling stuff when it reaches its goal?
+	bool shovel_on_reach_goal; //Will the unit be shovelling stuff when it reaches its goal?svn add --depth=infinity * --force
 	bool shovelling; //Is the unit currently shovelling something?
 	bool shovel_mode; //Is the game waiting for the player to select some rubble to shovel?
 	std::string select_rubble_to_shovel_str; //Displayed when the player is selecting rubble to shovel.
@@ -124,13 +124,13 @@ public:
 	bool animation_playing; //Is the unit currently playing an animation?
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
-	//bClassUnit(const bClassUnit &source); //Copy constructor.
+	//bClassUnit(const bClassUnit &source); //Copy constructor.svn add --depth=infinity * --force
 	~bClassUnit() //Deconstructor.
 	{
 		/*if(sprite != NULL)
 		{
 			SDL_FreeSurface(sprite);
-		}
+		}svn add --depth=infinity * --force
 		if(sprite_select != NULL)
 		{
 			SDL_FreeSurface(sprite_select);

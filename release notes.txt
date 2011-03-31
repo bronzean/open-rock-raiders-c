@@ -1,0 +1,13 @@
+9:09 PM Pacific Time, March 30th, 2011:
+3.0.0 (Alpha three series Initial Release)
+- Sound is in. You should hear music. There is no sound other than one song that loops forever.
+- Multithreading is in.
+- Rubble and shovelling it.
+- Bug fixes!
+- Optimisations!
+- Other stuff.
+- The screen may flicker. If it is a problem, try to reduce the GFPS (edit data/game.cfg) or the FPS cap.
+- Feel free to mod the game. Maps are in maps/ and the data files are in data/
+- There are several unexplained bugs and random crashes. Please send us your entire gamelog.txt if you experience random crashes, or if you think you have found a bug.
+- The mouse can be unresponsive at times. Especially in the windows version.
+- Moving the camera around is not recommended if you are playing with a very high FPS cap. Works fine for me until around 300+ FPS.
