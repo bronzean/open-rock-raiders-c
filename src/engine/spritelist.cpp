@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 #include "spritelist.hpp"
 //TODO: Make this work
 

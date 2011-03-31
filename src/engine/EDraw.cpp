@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //Contians all of the drawing code
 #include "../Engine.hpp"
 

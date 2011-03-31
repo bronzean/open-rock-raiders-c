@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //Has all the declatations of classes, variables, etc...
 #include "SDL/SDL.h"
 #include "SDL/SDL_keyboard.h"

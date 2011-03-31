@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //Has all the FPS and TIMER code
 #include "../Engine.hpp"
 

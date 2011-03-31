@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 #include "construction.hpp"
 
 construction::construction() //Constructor. Initializes an empty construction.

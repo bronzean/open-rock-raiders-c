@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 
 /* --------------------------------------------------------------
  * Everything related to tiles is defined here

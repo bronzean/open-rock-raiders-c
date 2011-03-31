@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 #include "main.hpp"
 
 //This is called when the program is to exit and close

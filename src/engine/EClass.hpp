@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //This file contains *almost* all the classes that the engine uses
 
 #pragma once

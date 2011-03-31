@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //This is the main engine file.
 //TODO: Continue organizing the engine's structure
 //Remember, all the engine source files Start with an 'E'

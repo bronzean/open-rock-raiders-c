@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 #include "unit.hpp" //Blablabla, include the game object class stuff header file.
 using namespace std;
 

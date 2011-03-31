@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //This file contains all the base classes for all the objects that exist in the game
 #pragma once
 #include "../Engine.hpp"

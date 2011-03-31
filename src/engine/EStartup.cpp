@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //Contains all of the startup code
 #include "../Engine.hpp"
 #include "Interface.hpp"

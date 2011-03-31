@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //This file includes all of the prototypes.
 #pragma once
 #include "../Engine.hpp"

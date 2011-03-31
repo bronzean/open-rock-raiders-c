@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 //Has all the declatations of classes, variables, etc...
 #pragma once
 #include "../Engine.hpp"

@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 #include "main.hpp"
 #include "engine/EObject.hpp"
 #include "engine/Interface.hpp"

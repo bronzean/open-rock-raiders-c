@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 
 /* ------------------------------------------------------------
  * Everything related to the button base class is defined here.

@@ -1,4 +1,4 @@
-/* Copright the ORR-C Dev Team */
+/* Copyright the ORR-C Dev Team */
 #pragma once
 #include "../Engine.hpp"
 using namespace std;
