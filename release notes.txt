@@ -1,5 +1,5 @@
 11:20 PM Pacific Time, March 30th, 2011:
-0.0.3.1 (Alpha three series Initial Release)
+0.0.3.1
 - Fixed a crash when the raider tries to pick up the second ore on a tile.
 
 9:09 PM Pacific Time, March 30th, 2011:
