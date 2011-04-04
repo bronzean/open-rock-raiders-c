@@ -484,6 +484,10 @@ int update()
 			}
 			//Here all the constructions are initlialized and resources loaded.
 			c_wall.init("wall", true, false, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
+			if(c_wall.sprite == NULL)
+			{
+				throw;
+			}
 			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 			fflush(GameLog);
 			out_string.str(""); //Reset out_string

@@ -24,4 +24,4 @@ public:
 	}
 };
 
-static construction c_wall; //Wall construction.
+extern construction c_wall; //Wall construction.

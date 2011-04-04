@@ -161,6 +161,8 @@ run_keycheck_thread()
 
 108. Use auto_ptr...
 
+109. Check to make sure that the tile doesn't have an existing construction on it.
+
 
 
 --Done--

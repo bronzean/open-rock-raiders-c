@@ -210,8 +210,17 @@ bool bClassUnit::calculate_path()
 		n.calculateCostToTile(Map[destination]); // Destination is stored in 'destination'
 		n.calculateCosts();
 
-		examineSet.push(n); // Add starting node to nodes to be checked
-		allNodes.push_back(n); // Add this tile to the list of all tiles
+		try
+		{
+			examineSet.push(n); // Add starting node to nodes to be checked
+			allNodes.push_back(n); // Add this tile to the list of all tiles
+		}
+		catch(...)
+		{
+			cerr << "Blargh pathfinding failed.\n";
+			out_string << "Blargh pathfinding failed.\n";
+			return false;
+		}
 
 		while (!examineSet.empty()) // While we have objects to check
 		{

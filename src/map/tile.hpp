@@ -59,7 +59,7 @@ public:
 	int active_animation_entry; //The entry of the active animation in the animations vector.
 	int total_shovels; //The total number of shovels and drills.
 
-	static construction local_construction; //The construction that's on this tile
+	construction *local_construction; //The construction that's on this tile
 	bool has_construction; //Does this tile have a construction present on it?
 
 	bool obstruction; //Is this tile an obstruction? Wall tiles, for example, are obstructions.
@@ -85,7 +85,7 @@ public:
 	void chop_to_ground(int i); //Changes a tree to a ground tile.
 	void rubble_to_ground(int i); //Changes a rubble tile to a ground tile.
 
-	void construct_wall(construction c_type); //Creates a wall construction here.
+	void construct_construction(construction c_type); //Creates a construction here.
 };
 
 class tile_manager //Manages all the base types of tiles.

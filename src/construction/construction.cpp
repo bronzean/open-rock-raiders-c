@@ -18,3 +18,5 @@ void construction::init(std::string NAME, bool WALL, bool FLOOR, int TYPE_ID, st
 	type_id = TYPE_ID;
 	sprite = img_load3(SPRITE);
 }
+
+construction c_wall;

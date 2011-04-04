@@ -297,7 +297,10 @@ std::string bClassUnit::update()
 						cout << "Done constructing!\n";
 						out_string << "Done constructing!\n";
 
-						//my_job->tasked_tile->construct_wall(); //Transform specified tile into a wall.
+						if(my_job->construction_type == "wall")
+						{
+							my_job->tasked_tile->construct_construction(c_wall); //Transform specified tile into a wall.
+						}
 
 						Job_Que.jobs.erase(Job_Que.jobs.begin() + i2); //Remove this job from the job que.
 						done = true;
