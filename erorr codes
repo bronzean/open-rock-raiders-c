@@ -1,1 +1,0 @@
-Error Code 1: This means that when the game was trying to remove the ore that the unit just picked up, it couldn't find said ore in the ore_on_map list.

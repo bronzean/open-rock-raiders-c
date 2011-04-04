@@ -153,6 +153,14 @@ run_keycheck_thread()
 
 104. Program stockpiles.
 
+105. Change the bool mining and all similar stuff in units to use the job_state variable.
+
+106. The reason the game kept crashing when there was the "SDL_FreeSurface" thing in the unit's deconstructor was that it was freeing the actual image from the unit type. So, make sure to free all the surfaces at the end of the program and only in the unit type. For each individual unit, simply set the surface pointer to NULL.
+
+107. Exception handling.
+
+108. Use auto_ptr...
+
 
 
 --Done--
