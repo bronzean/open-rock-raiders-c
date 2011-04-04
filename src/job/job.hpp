@@ -1,4 +1,5 @@
 /* Copyright the ORR-C Dev Team */
+#pragma once
 #include "../Engine.hpp"
 #include "../engine/EObject.hpp"
 using std::string;
@@ -13,6 +14,8 @@ public:
 	string type; //The type of job.
 	string construction_type; //If it is a construction job, what type of construction is being made?
 	tile *tasked_tile; //Pointer to the tile that involves this task.
+	bool taken; //Is the job being done by another unit?
+	int construction_health; //Ya, same old health system. Once this reaches 0, the construction is done and BOB the builder can go home. TODO: Unhardcode, of course.
 
 	job(); //Constructor.
 	~job() { } //Deconstructor.

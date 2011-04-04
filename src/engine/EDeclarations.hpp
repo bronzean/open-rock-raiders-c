@@ -137,6 +137,8 @@ extern SDL_Surface *title_screen_text2_spr; //Nifty little saying on the title s
 
 static bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot can units be selected/deselected.
 
+static bool construction_wall_location_select = false; //Is the game waiting for the user to select where to place the construction?
+
 //-----------MUSIC STUFF--------------
 static int audio_open = 0;
 static Mix_Music *music = NULL;

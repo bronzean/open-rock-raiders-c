@@ -67,6 +67,11 @@ int update()
 	rightclick_tile_id = -1; //Reset rightclick_tile_id
 	leftclick_tile_id = -1; //Reset leftclick_tile_id
 
+	if(construction_wall_location_select)
+	{
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
+	}
+
 	while(SDL_PollEvent(&event_struct))
 	{
 		//when the user presses close window...
@@ -107,38 +112,89 @@ int update()
 							}
 						}
 					}
-					else if(Interface.construct_wall_button.clicked())
+					else if(Interface.construct_wall_button.clicked() && !construction_wall_location_select)
 					{
 						std::cout << "\nConstruct wall button clicked.\n";
-						out_string << "\nConstruct wall button clicked.\n";
+
+						Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
+						allow_unit_selection = false; //Since the cosntruct wall button was clicked, disable selection of units and whatnot.
+						construction_wall_location_select = true; //Let the game know the user is going to select the location for a construction.
 					}
 					else
 					{
-						bool run = true; //Controls the loop below.
-
-						//Check if a tile was clicked
-						for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
+						if(construction_wall_location_select == false)
 						{
-							if(run)
+							bool run = true; //Controls the loop below.
+
+							//Check if a tile was clicked
+							for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
 							{
-
-								//Check if the tile is 'in bounds'.
-								if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+								if(run)
 								{
-									if(Map[i].unitlist.size() == 0) //If there are no units on this tile...
+									//Check if the tile is 'in bounds'.
+									if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
 									{
-										cout << "Does not have units on it, saving tile id!\n";
-										leftclick_tile_id = i; //Save the ID of this tile only if no units are on this tile.
+										if(Map[i].unitlist.size() == 0) //If there are no units on this tile...
+										{
+											cout << "Does not have units on it, saving tile id!\n";
+											leftclick_tile_id = i; //Save the ID of this tile only if no units are on this tile.
 
-										std::cout << "\nFound the tile that the left click took place over...\n";
-										out_string << "\nFound the tile that the left click took place over...\n";
-										std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
-										out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+											std::cout << "\nFound the tile that the left click took place over...\n";
+											out_string << "\nFound the tile that the left click took place over...\n";
+											std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+											out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+										}
+
+	
+										run = false;
 									}
-
-
-									run = false;
 								}
+							}
+						}
+						else if(construction_wall_location_select)
+						{
+							cout << "Here!\n";
+							//Find the tile that was selected...
+							bool run = true; //Controls the loop below.
+							int tile_id = -1; //The ID of the tile that was selected.
+
+							//Check if a tile was clicked
+							for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
+							{
+								if(run)
+								{
+									//Check if the tile is 'in bounds'.
+									if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+									{
+										tile_id = i; //Save the ID of this tile only if no units are on this tile.
+
+										cout << "Found the tile!\n";
+	
+										run = false;
+									}
+								}
+							}
+
+							if(tile_id <= -1)
+							{
+								cout << "Invalid tile!\n";
+							}
+							else
+							{
+								//TODO: add a construct wall command to the job que.
+								job new_job;
+
+								new_job.type = "construct";
+								new_job.construction_type = "wall";
+								new_job.tasked_tile = &Map[tile_id];
+
+								Job_Que.add_job(new_job);
+								Job_Que.jobs[Job_Que.jobs.size()].tasked_tile = &Map[tile_id];
+
+								cout << "Added job!\n";
+
+								allow_unit_selection = true;
+								construction_wall_location_select = false;
 							}
 						}
 					}
@@ -312,169 +368,180 @@ int update()
 
 	else if(GameState == Loading && gameover != true)
 	{
-		string load_text = "";
-		SDL_Surface *load_text_sprite = NULL;
+		try
+		{
+			string load_text = "";
+			SDL_Surface *load_text_sprite = NULL;
 
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know the tile types are being loaded...
-		load_text = "Loading tile types";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
-			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-			fflush(GameLog);
-			return 1;
-		}
-		Tile_Type_Manager.load_types_from_file("data/terrain.cfg"); //load tile types
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
-
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know the tool types are being loaded...
-		load_text = "Loading tool types";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
-			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-			fflush(GameLog);
-			return 1;
-		}
-		Tool_Type_Manager.load_types_from_file("data/tools.cfg"); //load tool types
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
-
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know the ore types are being loaded...
-		load_text = "Loading ore types";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
-			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-			fflush(GameLog);
-			return 1;
-		}
-		Ore_Type_Manager.load_types_from_file("data/ore.cfg"); //load ore types
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
-
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know the energy crystal types are being loaded...
-		load_text = "Loading energy crystal types";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
-			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-			fflush(GameLog);
-			return 1;
-		}
-		Energy_Crystal_Type_Manager.load_types_from_file("data/energy_crystal.cfg"); //load energy_crystal types
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
-
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know the unit types are being loaded...
-		load_text = "Loading unit types";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
-			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-			fflush(GameLog);
-			return 1;
-		}
-		Unit_Type_Manager.load_types_from_file("data/unit.cfg"); //Load the unit types.
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
-
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know the level is being loaded...
-		load_text = "Loading level";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
-			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-			fflush(GameLog);
-			return 1;
-		}
-		//load the level...
-		std::string map_path = map_folder_path;
-		map_path += "cfg";
-		if(!Parser.parse_map_cfg2(map_path.c_str()))
-		{
-			gameover = true; //It failed, so quit.
-		}
-		if(!Parser.parse_map_layer(map_folder_path.c_str())) //Parse the map's actual files.
-		{
-			gameover = true; //It failed, so quit.
-		}
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
-		//Now add all the tiles that are initially in the camera's view.
-		int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
-		int current_tile = layer_offset; //The current tile it's working on.
-		while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
-		{
-			if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the tile types are being loaded...
+			load_text = "Loading tile types";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
 			{
-				Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-				cout << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
-				out_string << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			Tile_Type_Manager.load_types_from_file("data/terrain.cfg"); //load tile types
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the tool types are being loaded...
+			load_text = "Loading tool types";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			Tool_Type_Manager.load_types_from_file("data/tools.cfg"); //load tool types
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the ore types are being loaded...
+			load_text = "Loading ore types";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			Ore_Type_Manager.load_types_from_file("data/ore.cfg"); //load ore types
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the energy crystal types are being loaded...
+			load_text = "Loading energy crystal types";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			Energy_Crystal_Type_Manager.load_types_from_file("data/energy_crystal.cfg"); //load energy_crystal types
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the unit types are being loaded...
+			load_text = "Loading unit types";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			Unit_Type_Manager.load_types_from_file("data/unit.cfg"); //Load the unit types.
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the level is being loaded...
+			load_text = "Loading level";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			//load the level...
+			std::string map_path = map_folder_path;
+			map_path += "cfg";
+			if(!Parser.parse_map_cfg2(map_path.c_str()))
+			{
+				gameover = true; //It failed, so quit.
+			}
+			if(!Parser.parse_map_layer(map_folder_path.c_str())) //Parse the map's actual files.
+			{
+			gameover = true; //It failed, so quit.
+			}
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+			//Now add all the tiles that are initially in the camera's view.
+			int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
+			int current_tile = layer_offset; //The current tile it's working on.
+			while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+			{
+				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
+				{
+					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
+					cout << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
+					out_string << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
+				}
+
+				current_tile++; //Increment current tile.
 			}
 
-			current_tile++; //Increment current tile.
-		}
-
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		//Let the user know that whatever else needs to be loaded is being loaded.
-		load_text = "Loading everything else";
-		load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
-		draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
-		SDL_FreeSurface(load_text_sprite);
-		if(SDL_Flip(screen) == -1)
-		{
-			std::cerr << "\nError Updating Screen\n";
-			out_string << "\nError Updating Screen\n";
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know that whatever else needs to be loaded is being loaded.
+			load_text = "Loading everything else";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			//TODO: load whatever else needs to be loaded...
+			//Interface.g_teleport_button.init(teleport_button_spr->w, teleport_button_spr->h, teleport_button_spr, no_teleport_button_spr); //Initialize the teleport button.
 			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 			fflush(GameLog);
-			return 1;
-		}
-		//TODO: load whatever else needs to be loaded...
-		//Interface.g_teleport_button.init(teleport_button_spr->w, teleport_button_spr->h, teleport_button_spr, no_teleport_button_spr); //Initialize the teleport button.
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
-		fflush(GameLog);
-		out_string.str(""); //Reset out_string
+			out_string.str(""); //Reset out_string
 
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-		GameState = Level; //Done loading everything. Enter the level now.
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			GameState = Level; //Done loading everything. Enter the level now.
+		}
+		catch(...)
+		{		
+			std::cerr << "Failed to load everything.\n";
+			out_string << "Failed to laod everything.\n";
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog); //Write out_string to the log.
+			fflush(GameLog); //Force it to write.
+			fclose(GameLog); //Close the log file.
+		}
 	}
 
 	else if(GameState == Level && gameover != true)
@@ -751,9 +818,16 @@ int update()
 	Interface.update();
 
 
-	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog); //Write the contents of out_string to the gamelog file.
-	fflush(GameLog); //Force the file changes to be written.
-	out_string.str(""); //Reset out_string
+	try
+	{
+		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog); //Write the contents of out_string to the gamelog file.
+		fflush(GameLog); //Force the file changes to be written.
+		out_string.str(""); //Reset out_string
+	}
+	catch(...)
+	{
+		cerr << "Failed to write to gamelog!\n";
+	}
 
 	if(screen_needs_updating == false)
 	{

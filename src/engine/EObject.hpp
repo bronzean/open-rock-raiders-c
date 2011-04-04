@@ -8,6 +8,7 @@
 #include "../ore/ore.hpp"
 #include "../energy_crystal/energy_crystal.hpp"
 #include "../construction/construction.hpp"
+#include "../job/job_que.hpp"
 #include <vector>
 
 class tool;
@@ -30,6 +31,8 @@ class tile_manager;
 class draw_message_handler;
 
 class construction;
+
+class job_que;
 
 class draw_message_handler //Handles all the messages to be drawn.
 {
@@ -56,6 +59,8 @@ public:
 
 	void init(); //Initialize everything.
 
+
+static job_que Job_Que; //The job que!
 	bool load_settings(std::string cfg_path); //Load all the animation's properties/settings.
 
 	void proceed_animation(); //Proceeds the animation by one frame.
@@ -91,3 +96,5 @@ extern energy_crystal_manager Energy_Crystal_Type_Manager; //Manages all the Ene
 extern draw_message_handler Draw_Message_Handler; //Handles all the messages to be drawn.
 
 static std::vector<ore*> ore_on_map; //Points to all the ore that is currently laying around the place.
+
+extern job_que Job_Que; //The job que!

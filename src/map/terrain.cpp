@@ -138,6 +138,10 @@ void tile::update()
 					unitlist[i].move_destination = 0; //Reset the unit's move destination.
 					unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 				}
+				else
+				{
+					unitlist[i].job_state = "moving"; //Since a move command has been issued, the unit is going to be in a "moving" job state.
+				}
 			}
 		}
 
@@ -351,6 +355,11 @@ void tile::update()
 			unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 			cout << "Reached destination.\n\n";
 			out_string << "Reached destination.\n\n";
+
+			if(unitlist[i].job_state == "moving") //If the unit's command is simply "move", then...
+			{
+				unitlist[i].job_state = "idle"; //Since it reached its destination, set its current state to idle.
+			}
 		}
 		//If the unit is going somewhere...
 		else if(unitlist[i].move == true && unitlist[i].move_frame != fps_counter && paused != true && unitlist[i].allow_move == true)
@@ -398,6 +407,7 @@ void tile::move_unit(int i)
 
 	if(unitlist[i].move_path.size() == 0)
 	{
+
 		unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 		if(newUnit.mine_on_reach_goal == true)
 		{
@@ -502,6 +512,11 @@ void tile::move_unit(int i)
 		Active_Map.push_back(Map[new_tile_id].ID); //Add the index of the tile the unit just moved to to Active_Map.
 		cout << "Entry: " << Active_Map.size() - 1 << "\n";
 		Map[new_tile_id].Active_Map_Entry = Active_Map.size() - 1; //Let the tile know where it's entry in Active_Map is.*/
+
+		/*if(unitlist[i].state == "constructing")
+		{
+			turn_to_construction(i); //Construct whatever the unit's constructing.
+		}*/
 	}
 
 	Map[unitlist[i].move_path[0]].unitlist.push_back(newUnit);
@@ -694,6 +709,8 @@ void tile::mine_to_ground(int i)
 			}
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type << "\n\n";
+
+			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
 		}
 		else if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] <= 0) //This checks if the current drill is done.
 		{
@@ -815,6 +832,8 @@ void tile::chop_to_ground(int i)
 				ore_on_map.push_back(&Map[unitlist[i].mine_tile_id].orelist[Map[unitlist[i].mine_tile_id].orelist.size()]); //Add the current ore into the orelist.
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[unitlist[i].mine_tile_id]; //I guess this has to be reset for some weird reason.
 			}
+
+			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
 		}
 		else
 		{
@@ -891,6 +910,8 @@ void tile::rubble_to_ground(int i)
 			}
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type << "\n\n";
+
+			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
 		}
 		else if(health[num_shovels - 1] <= 0) //This checks if the current shovel is done.
 		{

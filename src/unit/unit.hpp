@@ -11,6 +11,7 @@ class tool;
 class ore;
 class energy_crystal;
 class animation;
+class job;
 
 //This is the blase class of all the units that the game will be using
 class bClassUnit
@@ -122,6 +123,27 @@ public:
 	std::string shovelling_message_str; //A message that is displayed while the unit is shovelling.
 	SDL_Surface *shovelling_message_spr; //A message that is displayed while the unit is shovelling.
 	bool animation_playing; //Is the unit currently playing an animation?
+
+	job *my_job; //The current job this guy is doing.
+	std::string job_state; //What is the unit currently doing?
+	/* Acceptable values:
+	 * idling
+	 * - Means the unit is doing nothing.
+	 * mining
+	 * - Means the unit is doing mining stuff.
+	 * moving
+	 * - Means the unit is moving.
+	 * shoveling
+	 * - Means the unit is shoveling rubble!
+	 * picking_up
+	 * - Means the unit is picking up something. Probably ore.
+	 * constructing
+	 * - Means the unit is constructing something.
+	 * chopping
+	 * - Means the unit is choppin' trees.
+	 */
+
+	int construct_rate; //The rate at which it constructs buildings. TODO: Unhardcode.
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.svn add --depth=infinity * --force
@@ -175,6 +197,8 @@ public:
 	bool check_mine_command(); //Checks if a mine command was issued.
 	bool check_pick_up_command(); //Checks if a pick up object command was issued.
 	bool check_shovel_command(); //Checks if a shovel command was issued.
+
+	void check_job(); //Give the unit something to do out of the job que.
 };
 
 class unit_type_manager //Manages all the base types of units.

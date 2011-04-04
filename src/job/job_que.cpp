@@ -1,16 +1,18 @@
 /* Copyright the ORR-C Dev Team */
-#include "job.hpp"
+#include "job_que.hpp"
 using namespace std;
 
 /* --------------------------------------------------------------
- * Everything related to jobs is defined here
+ * Everything related to the job_que is defined here
  * ----------------------------------------------------------- */
 
-job::job() //Constructor.
+job_que::job_que() //Constructor.
 {
-	type = "";
-	construction_type = "";
-	tasked_tile = NULL;
-	taken = false;
-	construction_health = 100;
 }
+
+void job_que::add_job(job JOB)
+{
+	jobs.push_back(JOB);
+}
+
+job_que Job_Que;

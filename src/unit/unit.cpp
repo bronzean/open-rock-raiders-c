@@ -75,6 +75,8 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	shovelling_message_str = "I'mma shovel some rubble!";
 	shovelling_message_spr = NULL;
 	animation_playing = false;
+	job_state = "idle";
+	construct_rate = 1;
 }
 
 //Initialize a new unit type.
@@ -112,6 +114,7 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 			else //If it is selected...
 			{
 				draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_select, screen); //Draw the selected sprite...
+				cout << "Unit job state: " << job_state << "\n";
 			}
 		}
 		if(selected || player) //If the unit is selected...Or it is th player's unit...
@@ -164,6 +167,7 @@ std::string bClassUnit::update()
 			{				
 				mining_mode = true; //Let the game know that the player is going to mine a wall.
 				allow_deselect = false; //Don't allow the player to deselect this unit.
+				job_state = "mining";
 			}
 			else //Didn't find a drill
 			{
@@ -179,6 +183,7 @@ std::string bClassUnit::update()
 			allow_deselect = false; //Make sure the unit is not allowed to be deselected...
 
 			pick_up_mode = true; //Let the game know the unit is waiting for the player to specify what it will pick up.
+			job_state = "picking_up";
 		}
 	}
 	else //Ok, so pick up mode equals true.
@@ -208,6 +213,7 @@ std::string bClassUnit::update()
 				{				
 					chop_mode = true; //Let the game know that the player is going to chop a tree.
 					allow_deselect = false; //Make sure the unit can't be unselected...
+					job_state = "chopping";
 				}
 				else //Didn't find an axe.
 				{
@@ -239,6 +245,7 @@ std::string bClassUnit::update()
 			{				
 				shovel_mode = true; //Let the game know that the player is going to shovel a wall.
 				allow_deselect = false; //Make sure the unit will not be deselected...
+				job_state = "shoveling";
 			}
 			else //Didn't find a shovel.
 			{
@@ -250,6 +257,60 @@ std::string bClassUnit::update()
 	{
 		draw(0, 0, select_rubble_to_shovel_spr, screen); //Draw the "select rubble to shovel" message.
 		check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
+	}
+
+	if(job_state == "idle")
+	{
+		check_job(); //Since the unit is idling, might as well give it something to do.
+	}
+	else if(job_state == "constructing")
+	{
+		if(!move) //If the unit has reached the construction site...
+		{
+			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
+
+
+			my_job->construction_health -= construct_rate;
+
+			if(my_job->construction_health <= 0)
+			{
+				cout << "Done building!\n";
+
+				//TODO: Remove this job from the Job_Que;
+
+				int i2 = 0;
+				vector<job>::iterator iterator2;
+
+				bool done = false;
+
+				while(!done)
+				{
+					if(&Job_Que.jobs[i2] == my_job)
+					{
+						Job_Que.jobs.erase(iterator2); //Remove this job from the job que.
+						done = true;
+					}
+
+					i2++;
+					iterator2++;
+				}
+
+				my_job = NULL;
+
+				job_state = "idle";
+			}
+		}
+		else //The unit hasn't yet reached the destination.
+		{
+			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green), 0); //Draw the "I'm bob the builder!" message.
+			//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
+			/*
+			if(can't_move_off_this_tile)
+			{
+				draw_message("I'm sorry sir, I can't let you mmmmmmmmmm do that.");
+			}
+			*/
+		}
 	}
 
 	if(allow_deselect) //If the unit is allowed to be deselected...TODO: If shift or some other key is pressed, make it so that allow_deselect will equal false.
@@ -352,7 +413,7 @@ int bClassUnit::get_height() //Returns the height of the unit.
 
 void bClassUnit::select() //Checks if the player selected/deselected the unit.
 {
-	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && mining_mode == false && selectable == true && allow_deselect == true) //If the left mouse button was pressed and this unit can be selected...
+	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && mining_mode == false && selectable == true && allow_deselect == true && allow_unit_selection) //If the left mouse button was pressed and this unit can be selected...
 	{
 		if(event_struct.button.x + PCamera->wx >= wx && event_struct.button.x + PCamera->wx <= wx + width && event_struct.button.y + PCamera->wy >= wy && event_struct.button.y + PCamera->wy <= wy + height && mining_mode != true && shovel_mode != true /*&& leftclick_tile_id != -1*/) //Checks if the mouse clicked on this unit.
 		{

@@ -18,6 +18,7 @@
 #include <sstream>
 #include <vector>
 #include <pthread.h>
+#include <memory>
 //#include <SDL/SDL_rotozoom.h>
 //#include <GL/glut.h>
 #include "engine/EClass.hpp"
