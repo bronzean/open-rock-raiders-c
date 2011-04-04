@@ -10,6 +10,11 @@ construction::construction() //Constructor. Initializes an empty construction.
 	floor = false;
 }
 
-void construction::init() //Initalize a new construction type.
+void construction::init(std::string NAME, bool WALL, bool FLOOR, int TYPE_ID, string SPRITE) //Initalize a new construction type.
 {
+	name = NAME;
+	wall = WALL;
+	floor = FLOOR;
+	type_id = TYPE_ID;
+	sprite = img_load3(SPRITE);
 }

@@ -285,9 +285,21 @@ std::string bClassUnit::update()
 
 				while(!done)
 				{
+					if(i2 >= Job_Que.jobs.size())
+					{
+						cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
+						out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
+						throw;
+					}
+
 					if(&Job_Que.jobs[i2] == my_job)
 					{
-						Job_Que.jobs.erase(iterator2); //Remove this job from the job que.
+						cout << "Done constructing!\n";
+						out_string << "Done constructing!\n";
+
+						//my_job->tasked_tile->construct_wall(); //Transform specified tile into a wall.
+
+						Job_Que.jobs.erase(Job_Que.jobs.begin() + i2); //Remove this job from the job que.
 						done = true;
 					}
 

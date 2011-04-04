@@ -84,6 +84,8 @@ public:
 	void mine_to_ground(int i); //Change the tile to a ground tile.
 	void chop_to_ground(int i); //Changes a tree to a ground tile.
 	void rubble_to_ground(int i); //Changes a rubble tile to a ground tile.
+
+	void construct_wall(construction c_type); //Creates a wall construction here.
 };
 
 class tile_manager //Manages all the base types of tiles.

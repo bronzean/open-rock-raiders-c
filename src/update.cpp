@@ -470,6 +470,26 @@ int update()
 
 			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 			//Let the user know the level is being loaded...
+			load_text = "Initializing constructions.";
+			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+			SDL_FreeSurface(load_text_sprite);
+			if(SDL_Flip(screen) == -1)
+			{
+				std::cerr << "\nError Updating Screen\n";
+				out_string << "\nError Updating Screen\n";
+				fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+				fflush(GameLog);
+				return 1;
+			}
+			//Here all the constructions are initlialized and resources loaded.
+			c_wall.init("wall", true, false, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
+			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+			fflush(GameLog);
+			out_string.str(""); //Reset out_string
+
+			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+			//Let the user know the level is being loaded...
 			load_text = "Loading level";
 			load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 			draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
