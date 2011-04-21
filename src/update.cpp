@@ -573,9 +573,17 @@ int update()
 		vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
 		int counter = 0; //Used in the for loop below...
 
-		for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
+		try
 		{
-			Map[Active_Map[counter]].update(); //Update all the tiles it holds.
+			for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
+			{
+				Map[Active_Map[counter]].update(); //Update all the tiles it holds.
+			}
+		}
+		catch(...)
+		{
+			cerr << "Caught exception when updating Active_Map.\n";
+			out_string << "Caught exception when updating Active_Map.\n";
 		}
 		counter = 0;
 		if(screen_needs_updating == false)
