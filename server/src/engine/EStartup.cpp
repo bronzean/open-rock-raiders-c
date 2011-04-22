@@ -85,6 +85,7 @@ bool load_settings()
 	const char filepath[200] = "data/game.cfg";
 	const char interface_filepath[200] = "";
 	const char* interface_filepath2 = "";
+	string interface_filepath3 = "";
 	std::string temp2;
 	std::string f1_temp1 = ""; //This is a temp variable for font1 loading stuff
 	int f1_temp2 = 0; //This is a temp variable for font1 loading stuff.
@@ -407,13 +408,10 @@ bool load_settings()
 					{
 						start = false;
 						quit = true;
-						//interface_filepath = num_command.c_str();
 						temp2 = num_command; //I don't assign num_Command directly to interface_filepath2 becuase if I did, when num_command was cleared or changed, interface filepath would equal the new value of num_command.
 						interface_filepath2 = const_cast<char *>(temp2.c_str());
-						//strncpy(num_command.c_str(), interface_filepath);
-						//for(int i=0; num_command.c_str[i]; i++) interface_filepath[i] = num_command[i];		//TODO: Get it to assign interface_filepath the value of num_command
 						std::cout << "\nInterface cfg filepath = " << interface_filepath2 << "\n";
-						//std::cout << "\nInterface cfg filepath = " << num_command << "\n";
+						interface_filepath3 = num_command;
 
 						num_command = "";
 					}
@@ -449,6 +447,7 @@ bool load_settings()
 						quit = true;
 						temp2 = num_command;
 						map_folder_path = const_cast<char *>(temp2.c_str());
+						cout << "Map path is: " << map_folder_path << "\n";
 
 						num_command = "";
 					}
@@ -475,10 +474,10 @@ bool load_settings()
 	fclose(file);
 	c = 0;
 
-	file = fopen(interface_filepath2, "r");
+	file = fopen(interface_filepath3.c_str(), "r");
 	if(file == NULL)
 	{
-		cout << "The file \"" << interface_filepath2 << "\" does not exist!\n";
+		cout << "The file \"" << interface_filepath3 << "\" does not exist!\n";
 		return false;
 	}
 
@@ -498,8 +497,6 @@ bool load_settings()
 		if(!comment)
 		{
 			command += temp;
-			//std::cout << "\nAppending to command string. Current contents:\n" << command << "\n";
-			//cout <<temp;
 			
 			cout.flush();
 		}
@@ -673,7 +670,6 @@ bool load_settings()
 						start = false; //Stop reading from file.
 						quit = true; //Exit this loop.
 						std::cout << "\nLocation of the title screen's image = " << num_command << "\n"; //Debugging output
-						//title_screen = img_load(num_command); //Load the title screen image.
 						title_screen_path = num_command; //Let the game know where the title screen's image is located.
 						num_command = ""; //Reset num_command
 					}
@@ -692,6 +688,78 @@ bool load_settings()
 				}
 			}
 
+			else if(command == "PORT")
+			{
+				std::cout << "\nEncountered the variable that specifies the port the server will be running on.\n";
+
+				bool quit = false;
+
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						port_number = atoi(num_command.c_str());
+						cout << "\nPort number = " << port_number << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
+			else if(command == "CLIENT_UPDATE_INTERVAL")
+			{
+				std::cout << "\nEncountered the variable that specifies the rate at which the client will be asking the server for updates.\n";
+
+				bool quit = false;
+
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						client_update_interval = atoi(num_command.c_str());
+						cout << "\nClient update interval (in MS) = " << client_update_interval << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
 			check_command = false;
 			command = "";
 		}
@@ -699,22 +767,15 @@ bool load_settings()
 		cout.flush();
 	}
 
+	cout << "Test.\n";
 	font1 = TTF_OpenFont(f1_temp1.c_str(), f1_temp2);
+	cout << "Test2.\n";
 	font2 = TTF_OpenFont(f2_temp1.c_str(), f2_temp2);
+	cout << "Test3.\n";
 
 	fclose(file);
 
 	c = 0;
-
-	//std::string temp3 = "/data/units.cfg";
-	//char* filepath2 = const_cast<char *>(temp3.c_str());
-
-	//file = fopen(filepath2, "r");
-	//if(file == NULL)
-	//{
-	//	cout << "The file \"" << filepath2 << "\" does not exist!\n";
-	//	return false;
-	//}
 
 	return true;
 }

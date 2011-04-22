@@ -527,14 +527,4 @@ Filepath is: maps/test1/l3
 397
 398
 399
-Left click
-Left click
-Left click
-Left click
-Left click
-Left click
-Left click
-Left click
-Left click
-Left click
 Escape pressed, quiting.
