@@ -50,12 +50,6 @@ extern gameState GameState;
 //This is the screen's surface
 extern SDL_Surface *screen;
 
-//This is the sprite for the teleport button used throughout the game.
-extern SDL_Surface *teleport_button_spr;
-extern SDL_Surface *no_teleport_button_spr;
-extern std::string teleport_button_path;
-extern std::string no_teleport_button_path;
-
 //is the game over or not
 extern bool gameover;
 
@@ -72,7 +66,6 @@ extern Uint8 *keystates;
 extern camera Camera;
 extern camera *PCamera;
 extern int camera_move_speed;
-//camera *PCamera = &Camera();
 
 
 //These 2 have to do with teleporting objects.
@@ -83,15 +76,6 @@ extern int def_teleporter; //This tells the game what building in the building l
 extern int num_tiles; //This tells the game how many tiles there are.
 
 extern int num_layers; //This tells the game how many layers the map has.
-
-
-
-//TODO: Make the following unhardcoded
-extern SDL_Surface *tile_1;
-extern SDL_Surface *tile_2;
-
-//extern std::string* unit_type_list;
-//extern int unit_type_list_num;
 
 extern int num_col_objects;
 extern int num_row_objects;
@@ -138,23 +122,3 @@ extern SDL_Surface *title_screen_text1_spr; //Let the player know they have to p
 extern SDL_Surface *title_screen_text2_spr; //Nifty little saying on the title screen.
 
 static bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot can units be selected/deselected.
-
-static bool construction_wall_location_select = false; //Is the game waiting for the user to select where to place the construction?
-
-//-----------MUSIC STUFF--------------
-static int audio_open = 0;
-static Mix_Music *music = NULL;
-static int next_track = 0;
-
-
-static SDL_RWops *rwfp;
-static int audio_rate = 22050;
-static Uint16 audio_format = AUDIO_S16;
-static int audio_channels = 2;
-static int audio_buffers = 4096;
-static int audio_volume = MIX_MAX_VOLUME;
-static int looping = -1;
-static int rwops = 0;
-
-static std::string music_filepath = "music.ogg";
-//------------------------------------

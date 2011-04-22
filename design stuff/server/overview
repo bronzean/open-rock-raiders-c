@@ -1,0 +1,13 @@
+When the server is started up, the "Lobby" is entered.
+From here, clients are managed, the game options are set up, etc.
+Once everything is ready, whoever's behind the server hits the "start game" button.
+
+Now, when you look at the server's window, you see a "god" view of the level.
+The user even has access to "god" commands to make the game interesting or whatever if they want.
+
+How is data transferred?
+First, the level is transferred to the clients.
+Second, the clients ask the server for updates on what's going on at the interval the server specifies.
+This part right here could be done with a thread that delays for specified ms and then sends request to server after the delay.
+
+Remember, server does all the calculations. All client does is act as an interface to the game for the player.

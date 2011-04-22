@@ -1,4 +1,4 @@
-APP      = ORR
+APP      = orr-server
 CXX := g++
 
 SRCEXT   = cpp

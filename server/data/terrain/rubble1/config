@@ -1,0 +1,11 @@
+[NAME](rubble 1)
+[ID](5) Must be unique...
+[RUBBLE](TRUE)
+[MOVE_PERCENTAGE](50) 100 = normal speed.
+
+Leave out all the ore related stuff if you want rubble that doesn't produce ore.
+[TYPES_OF_ORE_GENERATED](0) The types of ore it can generate.
+[ORE_PER_SHOVEL](1) How much ore is produced per shovel.
+[HEALTH](50)(100)(20) The tile's health per shovel.
+[TO_GROUND_TYPE](1) The ID of the tile it turns into once it has been shovelled.
+[MIN_SHOVELLING_POWER](1)
