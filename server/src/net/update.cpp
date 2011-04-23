@@ -63,10 +63,10 @@ void *NetworkUpdate(void *param) //TODO: Write this function.
 				cout << "Client connected\n";
 
 				int len,result;
-				char *msg="Hello, new client!";
+				string msg = "Hello, new client!";
 
-				len=strlen(msg)+1; // add one for the terminating NULL
-				result=SDLNet_TCP_Send(csd,msg,len);
+				len=msg.size() + 1; // add one for the terminating NULL
+				result=SDLNet_TCP_Send(csd,msg.c_str(),len);
 				if(result<len)
 				{
     					printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
