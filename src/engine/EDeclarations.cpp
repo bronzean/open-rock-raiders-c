@@ -123,3 +123,5 @@ bool screen_needs_updating = true; //Is it time for stuff to be drawn?
 SDL_Surface *title_screen_text1_spr;// = TTF_RenderText_Solid(font1, "Press enter to enter the test level", c_white); //Let the player know they have to press enter to enter the game.
 
 SDL_Surface *title_screen_text2_spr;// = TTF_RenderText_Solid(font1, "Tales of Mining and Great Riches", c_white); //Nifty little saying on the title screen.
+
+bool threed_gfx = false; //Will the game be using 3D graphics?

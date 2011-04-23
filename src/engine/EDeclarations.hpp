@@ -158,3 +158,5 @@ static int rwops = 0;
 
 static std::string music_filepath = "music.ogg";
 //------------------------------------
+
+extern bool threed_gfx; //Will the game be using 3D graphics?

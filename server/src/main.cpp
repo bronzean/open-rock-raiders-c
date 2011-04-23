@@ -9,6 +9,7 @@
  * ----------------------------------------------------------- */
 
 void *DrawScreen(void *param); //Since the graphics update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
+void *NetworkUpdate(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 
 //The entry point for our program.
 int main( int argc, char* argv[] )
@@ -81,6 +82,7 @@ int main( int argc, char* argv[] )
 		if(num_worker_threads > 0) //If threads are enabled...
 		{
 			pthread_create(&threads[0], NULL, DrawScreen, NULL); //Then tell thread 0 to get drawing.
+			pthread_create(&threads[1], NULL, NetworkUpdate, NULL); //Tell thread 1 to get to work with that networking stuff.
 		}
 	}
 	catch(...)
@@ -192,9 +194,13 @@ int main( int argc, char* argv[] )
 	if(num_worker_threads > 0)
 	{
 		pthread_join(threads[0], NULL); //Ya, get rid of the worker threads. Alternatively, call kill...
+		pthread_join(threads[1], NULL);
 	}
 
 	fclose(GameLog); //Close the gamelog.
+
+	SDLNet_TCP_Close(sd); //Unbind.
+	SDLNet_Quit(); //Quit SDL_net.
 
 	SDL_Quit(); //Exit SDL.
 

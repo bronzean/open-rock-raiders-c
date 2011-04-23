@@ -24,6 +24,13 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		return false;    
 	}
 
+	//Initialize SDL_net
+	if(SDLNet_Init() < 0)
+	{
+		fprintf(stderr, "SDLNet_Init: %s\n", SDLNet_GetError());
+		return false;
+	}
+
 	if(load_settings() == false)
 	{
 		//TODO: Make the error loading more specific and print out the problems to the console window
@@ -455,6 +462,78 @@ bool load_settings()
 					{
 						start = true;
 					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
+			else if(command == "PORT")
+			{
+				std::cout << "\nEncountered the variable that specifies the port the server will be running on.\n";
+
+				bool quit = false;
+
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						port_number = atoi(num_command.c_str());
+						cout << "\nPort number = " << port_number << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
+			else if(command == "CLIENT_UPDATE_INTERVAL")
+			{
+				std::cout << "\nEncountered the variable that specifies the rate at which the client will be asking the server for updates.\n";
+
+				bool quit = false;
+
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						client_update_interval = atoi(num_command.c_str());
+						cout << "\nClient update interval (in MS) = " << client_update_interval << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
 					else if(start)
 					{
 						num_command += temp;

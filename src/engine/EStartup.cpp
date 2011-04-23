@@ -89,117 +89,6 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	return true;
 }
 
-/*bool load_settings()
-{
-	//A temporary veriable
-	std::string temp = "";
-	std::string temp3;
-	//Same as above
-	int temp2 = NULL;
-	//Now load the configuration file
-	settings.load("data/game.cfg");
-
-	std::cout << "\nSetting screen width...";
-	//Ok, fetch the screen width, and height
-	temp = settings.get("SCREEN_WIDTH");
-	//Convert the value to an int so that we can assign the screen width correctly
-	temp2 = atoi(temp.c_str());
-	//Now set it
-	SCREEN_WIDTH = temp2;
-	//error checking
-	if(!SCREEN_WIDTH)
-		return false;
-	std::cout << "Screen width set succesfully!\n";
-	//reset the temps as to not cuase conflicts
-	temp = "";
-	temp2 = NULL;
-	//Repeat for screen height
-	std::cout << "Setting screen height...";
-	temp = settings.get("SCREEN_HEIGHT");
-	temp2 = atoi(temp.c_str());
-	SCREEN_HEIGHT = temp2;
-	if(!SCREEN_HEIGHT)
-		return false;
-	std::cout << "Screen height set succesfully!\n";
-	temp = "";
-	temp2 = NULL;
-
-	//Run in fullscreen?
-	std::cout << "\nChecking to see if I should run fullscreen...";
-	temp = settings.get("FULLSCREEN");
-	if(temp == "TRUE")
-	{
-		FULLSCREEN = true;
-		std::cout << "Running fullscreen.\n";
-	}
-	else
-	{
-		FULLSCREEN = false;
-		std::cout << "Running windowed.\n";
-	}
-	temp = "";
-
-	//Set the fps to cap off the game at
-	std::cout << "\nSetting frame rate...";
-	temp = settings.get("FPS");
-	temp2 = atoi(temp.c_str());
-	FPS = temp2;
-	if(!FPS)
-		return false;
-	std::cout << "Frame rate set succesfully to " << FPS <<"!\n";
-	temp = "";
-	temp2 = NULL;
-
-	temp = settings.get("CAM_MOVE_SPEED");
-	temp2 = atoi(temp.c_str());
-	camera_move_speed = temp2;
-	if(camera_move_speed == 0)
-	{
-		std::cout << "Cannot find CAM_MOVE_SPEED or cannot set it to 0\n";
-		return false;
-	}
-	std::cout << "Set camera move speed to: " << camera_move_speed << std::endl;
-	temp = "";
-	temp2 = NULL;
-
-	temp = settings.get("INTERFACE_CFG");
-	//Interface stuff.
-	settings.load(temp);
-	temp = "";
-
-	//First we'll get the paths of the teleport button sprites.
-	std::cout << "\nLoading teleport button sprite.\n";
-	temp = settings.get("TELEPORT_BUTTON_PATH");
-	teleport_button_path = temp;
-	std::cout << temp << std::endl;
-	temp = "";
-
-	std::cout << "\nLoading disabled teleport button sprite.\n";
-	temp = settings.get("DISABLED_TELEPORT_BUTTON_PATH");
-	no_teleport_button_path = temp;
-	std::cout << temp << std::endl;
-	temp = "";
-
-	std::cout << "\nX and Y of teleport button:";
-	temp = settings.get("TELEPORT_BUTTON_X");
-	g_teleport_button.x1 = atoi(temp.c_str());
-	std::cout << " (" << g_teleport_button.x1 << "," << std::endl;
-	temp = "";
-	temp = settings.get("TELEPORT_BUTTON_Y");
-	g_teleport_button.y1 = atoi(temp.c_str());
-	std::cout << g_teleport_button.y1 <<  ")\n" << std::endl;
-	temp = "";
-
-	temp = settings.get("FONT_1");
-	temp3 = settings.get("FONT_1_SIZE");
-	font1 = TTF_OpenFont(temp.c_str(), atoi(temp3.c_str()));
-	temp = "";
-	temp2 = NULL;
-	temp3 = "";
-
-	return true;
-}*/
-
 bool load_settings()
 {
 	//This is all the junk needed by the parser
@@ -558,6 +447,15 @@ bool load_settings()
 
 					cout.flush();
 				}
+			}
+
+			else if(command == "3D")
+			{
+				std::cout << "\nRunning 3D\n";
+
+				bool quit = false;
+
+				threed_gfx = true; //Let the game know it will be running in 3D.
 			}
 
 			check_command = false;

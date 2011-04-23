@@ -123,6 +123,10 @@ extern SDL_Surface *title_screen_text2_spr; //Nifty little saying on the title s
 
 static bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot can units be selected/deselected.
 
-static int port_number = 72091; //The port the server's gonna run on.
+static int port_number = 2097; //The port the server's gonna run on.
 
 static int client_update_interval = 1000; //The rate at which the client should ask the server for updates, in milliseconds.
+
+static TCPsocket sd, csd; //Socket descriptor, Client socket descriptor
+//static TCPsocket sd; //Socket descriptor
+static IPaddress ip, *remoteIP;
