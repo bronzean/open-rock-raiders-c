@@ -163,6 +163,12 @@ run_keycheck_thread()
 
 109. Check to make sure that the tile doesn't have an existing construction on it.
 
+110. Combine client and server. How? Same thing as with 3D and 2D mode. bool server
+
+111. Allow for switching of 3d and 2d gfx ingame.
+
+112. Allow walls, objects, everything, to be dynamically changed graphically. For example, as the raider drills, the wall gets actual cracks in 3D mode. Not just lines in the texture. When a wall collapses, account for all the pieces.
+
 
 
 --Done--
@@ -200,7 +206,7 @@ run_keycheck_thread()
 29. Program mining a wall. - DONE
 
 33. Get sound in the game. - DONE
-
+svn commit -m "" --password rH9FK2xY2zd5
 35. Print (In game, not console) what layer the camera currently is on. - DONE
 
 36. Finish movement between layers. - DONE

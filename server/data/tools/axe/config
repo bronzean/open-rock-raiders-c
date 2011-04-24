@@ -1,6 +1,0 @@
-[NAME](axe)
-[ID](1) Must be a unique number...No other tool can have it...
-[IS_TOOL](TRUE)
-[CAN_CHOP_TREE](TRUE)
-[CHOP_POWER](2)
-[CHOP_RATE](1)

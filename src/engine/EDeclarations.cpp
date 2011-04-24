@@ -125,3 +125,5 @@ SDL_Surface *title_screen_text1_spr;// = TTF_RenderText_Solid(font1, "Press ente
 SDL_Surface *title_screen_text2_spr;// = TTF_RenderText_Solid(font1, "Tales of Mining and Great Riches", c_white); //Nifty little saying on the title screen.
 
 bool threed_gfx = false; //Will the game be using 3D graphics?
+
+bool server = false; //Is the game running in server or client mode?

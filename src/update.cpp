@@ -588,9 +588,12 @@ int update()
 		counter = 0;
 		if(screen_needs_updating == false)
 		{
-			for(iterator2 = Draw_Map.begin(); iterator2 < Draw_Map.end(); iterator2++, counter++) //Loop through unit_type_list
+			if(!threed_gfx)
 			{
-				Map[Draw_Map[counter]].draw_sprite(); //Draw all the tiles that need drawing.
+				for(iterator2 = Draw_Map.begin(); iterator2 < Draw_Map.end(); iterator2++, counter++) //Loop through unit_type_list
+				{
+					Map[Draw_Map[counter]].draw_sprite(); //Draw all the tiles that need drawing.
+				}
 			}
 		}
 

@@ -50,8 +50,6 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 			}
 			std::cout << "\nRunning windowed\n";
 		}
-
-		resizeGlWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 	else
 	{
@@ -79,6 +77,8 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		glDepthFunc(GL_LEQUAL); //The Type Of Depth Test To Do
 
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); //Sets the perspective calculations.
+
+		resizeGlWindow(SCREEN_WIDTH, SCREEN_HEIGHT); //Sets up the window for 3D mode.
 	}
 
 	//Error checking
@@ -487,9 +487,122 @@ bool load_settings()
 			{
 				std::cout << "\nRunning 3D\n";
 
+				threed_gfx = true; //Let the game know it will be running in 3D.
+			}
+
+			else if(command == "PORT")
+			{
+				std::cout << "\nEncountered the variable that specifies the port the server will be running on.\n";
+
 				bool quit = false;
 
-				threed_gfx = true; //Let the game know it will be running in 3D.
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						port_number = atoi(num_command.c_str());
+						cout << "\nPort number = " << port_number << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
+			else if(command == "CLIENT_UPDATE_INTERVAL")
+			{
+				std::cout << "\nEncountered the variable that specifies the rate at which the client will be asking the server for updates.\n";
+
+				bool quit = false;
+
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						client_update_interval = atoi(num_command.c_str());
+						cout << "\nClient update interval (in MS) = " << client_update_interval << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
+			else if(command == "MAP")
+			{
+				std::cout << "\nEncountered the variable that specifies the map filepath.\n";
+
+				bool quit = false;
+
+				//Now we read it's values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						temp2 = num_command;
+						map_folder_path = const_cast<char *>(temp2.c_str());
+						cout << "Map path is: " << map_folder_path << "\n";
+
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
+			}
+
+			else if(command == "SERVER")
+			{
+				std::cout << "\nRunning in server mode.\n";
+
+				server = true; //Let the game know it will be running in 3D.
 			}
 
 			check_command = false;

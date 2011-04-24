@@ -1,5 +1,0 @@
-[NUM_ROW](20) How many rows the map is composed of
-[NUM_COL](20) How many columns the map is composed of
-[LAYERS](4) How many layers the map is composed of
-[CAMERA](0)(0)(1) X, Y and layer of camera, respectively.
-[DESCRIPTION_FILE](description) Points to the file containing a description of the map.

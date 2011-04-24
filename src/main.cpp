@@ -9,12 +9,13 @@
  * ----------------------------------------------------------- */
 
 void *DrawScreen(void *param); //Since the graphics update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
+void *ServerNetworking(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 
 //The entry point for our program.
 int main( int argc, char* argv[] )
 {
-	std::cout << "Enter path to map. INCLUDE THE TRAILING '/'!\n"; //Prompt the player to specify the location to the map.
-	std::cin >> map_folder_path; //Kay, save that value.
+	//std::cout << "Enter path to map. INCLUDE THE TRAILING '/'!\n"; //Prompt the player to specify the location to the map.
+	//std::cin >> map_folder_path; //Kay, save that value.
 
 	Timer fps2; //Used to keep track of how many frames pass each second.
 
@@ -91,9 +92,19 @@ int main( int argc, char* argv[] )
 
 	try
 	{
+		if(!threed_gfx) //If the game is not running in 3D mode...
+		{
+			if(num_worker_threads > 0) //If threads are enabled...
+			{
+				pthread_create(&threads[0], NULL, DrawScreen, NULL); //Then tell thread 0 to get drawing.
+			}
+		}
 		if(num_worker_threads > 0) //If threads are enabled...
 		{
-			pthread_create(&threads[0], NULL, DrawScreen, NULL); //Then tell thread 0 to get drawing.
+			if(server) //If the game is in server mode...
+			{
+				pthread_create(&threads[1], NULL, ServerNetworking, NULL); //Tell thread 1 to get to work with the networking.
+			}
 		}
 	}
 	catch(...)

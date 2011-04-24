@@ -160,3 +160,13 @@ static std::string music_filepath = "music.ogg";
 //------------------------------------
 
 extern bool threed_gfx; //Will the game be using 3D graphics?
+
+static int port_number = 2097; //The port the server's gonna run on.
+
+static int client_update_interval = 1000; //The rate at which the client should ask the server for updates, in milliseconds.
+
+static TCPsocket sd, csd; //Socket descriptor, Client socket descriptor
+//static TCPsocket sd; //Socket descriptor
+static IPaddress ip, *remoteIP;
+
+extern bool server; //Is the game running in server or client mode?
