@@ -55,11 +55,6 @@ void *NetworkUpdate(void *param) //TODO: Write this function.
 		{
 			if((csd = SDLNet_TCP_Accept(sd[i]))) //This calculates as true if there's a pending connection.
 			{
-				//Now a new member is added to the connected_clients vector.
-
-				client new_client; //This is the new client.
-				new_client.csd = csd; //Copy over the client socket descriptor.
-				connected_clients.push_back(new_client); //Here is where the new member is added into connected_clients.
 				cout << "Client connected\n";
 
 				int len,result;
@@ -70,22 +65,41 @@ void *NetworkUpdate(void *param) //TODO: Write this function.
 				if(result<len)
 				{
     					printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
-   					// It may be good to disconnect sock because it is likely invalid now.
+   					SDLNet_TCP_Close(csd); //Close the socket, since something done borked.
+					cout << "Disconnected client, seeing that something done borked.\n";
 				}
-
-				csd = NULL;
+				else
+				{
+					//Now a new member is added to the connected_clients vector.
+					client new_client; //This is the new client.
+					new_client.csd = csd; //Copy over the client socket descriptor.
+					connected_clients.push_back(new_client); //Here is where the new member is added into connected_clients.
+					//csd = NULL;
+				}
 			}
 		}
 
-		for(int i = 0; i < connected_clients.size(); i++)
+		bool redo_loop = false;
+		do
 		{
-			connected_clients[i].update(); //Update the client.
-
-			if(connected_clients[i].client_disconnect == true) //If the client wants to disconnect...
+			redo_loop = false;
+			for(int i = 0; i < connected_clients.size(); i++)
 			{
-				connected_clients.erase(connected_clients.begin() + i); //Disconnect the client.
+				if(!redo_loop)
+				{
+					connected_clients[i].update(); //Update the client.
+
+					if(connected_clients[i].client_disconnect == true) //If the client wants to disconnect...
+					{
+						cout << "Removing from connected clients list...\n";
+						connected_clients.erase(connected_clients.begin() + i); //Disconnect the client.
+						i = connected_clients.size();
+						redo_loop = true;
+					}
+				}
 			}
 		}
+		while(redo_loop);
 	}
  
 	//Close the client socket

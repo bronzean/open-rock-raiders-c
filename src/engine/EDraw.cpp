@@ -59,3 +59,36 @@ void draw2( int x, int y, SDL_Surface* source, SDL_Surface* destination )
 //	}
 //	
 //}
+
+//Resizes the window. (ONLY IN 3D MODE!)
+int resizeGlWindow(int width, int height)
+{
+	//Height / width ration
+	GLfloat ratio;
+ 
+	//Protect against a divide by zero
+	if ( height == 0 )
+	{
+		height = 1;
+	}
+
+	ratio = (GLfloat)width/(GLfloat)height;
+
+	//Setup our viewport.
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+
+	//Change to the projection matrix and set our viewing volume.
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	//Set the perspective
+	gluPerspective(45.0f, ratio, 0.1f, 100.0f);
+
+	//Make sure we're chaning the model view and not the projection
+	glMatrixMode(GL_MODELVIEW);
+
+	//Reset The View
+	glLoadIdentity();
+
+	return 1;
+}

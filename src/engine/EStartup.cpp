@@ -31,20 +31,54 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		std::cerr << "\nError loading settings from cfg\n";
 	}
 
-	//If the game is set to run fullscreen, do it.
-	if(FULLSCREEN == true)
+	if(!threed_gfx) //Checks whether or not 3D graphics are being used.
 	{
-		screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_FULLSCREEN);//Set video mode as fullscreen
-		std::cout << "\nRunning fullscreen\n";
-		//SDL_SWSURFACE|SDL_ANYFORMAT
+		//Ok, not using 3D graphics...
+
+		//If the game is set to run fullscreen, do it.
+		if(FULLSCREEN == true)
+		{
+			screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_FULLSCREEN);//Set video mode as fullscreen
+			std::cout << "\nRunning fullscreen\n";
+			//SDL_SWSURFACE|SDL_ANYFORMAT
+		}
+		else
+		{
+			if(true) //TODO: Change this to if(system_memory) { ... }
+			{
+    				screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_HWSURFACE|SDL_ANYFORMAT|SDL_DOUBLEBUF); // Set video mode... A crucial part
+			}
+			std::cout << "\nRunning windowed\n";
+		}
+
+		resizeGlWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 	else
 	{
-		if(true) //TODO: Change this to if(system_memory) { ... }
+		//Oh look, using 3D graphics.
+
+		if(FULLSCREEN == true)
 		{
-    			screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_HWSURFACE|SDL_ANYFORMAT|SDL_DOUBLEBUF); // Set video mode... A crucial part
+			screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_FULLSCREEN|SDL_OPENGL|SDL_GL_DOUBLEBUFFER|SDL_HWPALETTE);
+			std::cout << "\nRunning 3D fullscreen\n";
 		}
-		std::cout << "\nRunning windowed\n";
+		else
+		{
+			screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, screen_bpp, SDL_OPENGL|SDL_GL_DOUBLEBUFFER|SDL_HWPALETTE);
+			std::cout << "\nRunning 3D windowed\n";
+		}
+
+		glShadeModel(GL_SMOOTH); // Enable smooth shading
+
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); //Set the background black
+
+		glClearDepth(1.0f); //Depth buffer setup
+
+		glEnable(GL_DEPTH_TEST); //Enables Depth Testing
+
+		glDepthFunc(GL_LEQUAL); //The Type Of Depth Test To Do
+
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); //Sets the perspective calculations.
 	}
 
 	//Error checking

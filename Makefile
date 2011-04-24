@@ -13,7 +13,7 @@ OBJS    := $(patsubst %.$(SRCEXT),$(OBJDIR)/%.o,$(SRCS))
 DEBUG    = -g
 INCLUDES = -Wall -Wextra -pedantic
 CFLAGS   = -Wall -pedantic -ansi -c $(DEBUG) $(INCLUDES)
-LDFLAGS  = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_mixer -lpthread -lSDL_net
+LDFLAGS  = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_mixer -lpthread -lSDL_net -lGL -lGLU
 
 ifeq ($(SRCEXT), cpp)
 CC       = $(CXX)

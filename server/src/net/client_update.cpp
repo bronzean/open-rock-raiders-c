@@ -6,7 +6,7 @@ void client::update()
 {
 	buffer = ""; //Clear the buffer.
 
-	if (SDLNet_TCP_Recv(csd, buffer, 512) > 0)
+	if(SDLNet_TCP_Recv(csd, buffer, 512) > 0)
 	{
 		printf("Client say: %s\n", buffer);
  

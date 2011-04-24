@@ -32,3 +32,5 @@ bool load_settings();
 extern size_t strlen(/*const*/ char *string);
 extern char *strrev(char *);
 extern char *itoa(int, char *, int);
+
+int resizeGlWindow(int width, int height); //Resizes the window. (ONLY IN 3D MODE!)
