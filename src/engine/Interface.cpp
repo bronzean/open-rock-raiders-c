@@ -3,20 +3,23 @@
 
 void interface::update()
 {
-	if(GameState == Level)
+	if(!server)
 	{
-		if(def_teleporter < 0) //Check if no default teleporter is set.
+		if(GameState == Level)
 		{
-			g_teleport_button.state = 0;
-			g_teleport_button.update();
-		}
-		else if(def_teleporter >= 0) //If there is a default teleporter, then do this.
-		{
-			g_teleport_button.state = 1;
-			g_teleport_button.update();
-		}
+			if(def_teleporter < 0) //Check if no default teleporter is set.
+			{
+				g_teleport_button.state = 0;
+				g_teleport_button.update();
+			}
+			else if(def_teleporter >= 0) //If there is a default teleporter, then do this.
+			{
+				g_teleport_button.state = 1;
+				g_teleport_button.update();
+			}
 
-		construct_wall_button.update();
+			construct_wall_button.update();
+		}
 	}
 
 	if(screen_needs_updating == false)

@@ -67,7 +67,7 @@ int update()
 	rightclick_tile_id = -1; //Reset rightclick_tile_id
 	leftclick_tile_id = -1; //Reset leftclick_tile_id
 
-	if(construction_wall_location_select)
+	if(construction_wall_location_select && !server)
 	{
 		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
 	}
@@ -88,113 +88,116 @@ int update()
 				//I wonder if I should move code into the interface update function...
 				if(event_struct.button.button == SDL_BUTTON_LEFT)
 				{
-					std::cout << "Left click\n"; //Debugging output.
-					out_string << "Left click\n";
-					if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
+					if(!server) //If not in server mode...
 					{
-						//Teleport code here
-						std::cout << "\nGlobal teleport button clicked.\n";
-						out_string << "\nGlobal teleport button clicked.\n";
-						bool found = false;
-						bool continue_ = true;
-						for(int i = 0; i < 9; i++)
+						std::cout << "Left click\n"; //Debugging output.
+						out_string << "Left click\n";
+						if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
 						{
-							if(!found)
+							//Teleport code here
+							std::cout << "\nGlobal teleport button clicked.\n";
+							out_string << "\nGlobal teleport button clicked.\n";
+							bool found = false;
+							bool continue_ = true;
+							for(int i = 0; i < 9; i++)
 							{
-								if(g_teleport_que_name[i] == "")
-									found = true;
-							}
-							if(found && continue_)
-							{
-								g_teleport_que_name[i] = "raider";
-								g_teleport_que ++;
-								continue_ = false;
+								if(!found)
+								{
+									if(g_teleport_que_name[i] == "")
+										found = true;
+								}
+								if(found && continue_)
+								{
+									g_teleport_que_name[i] = "raider";
+									g_teleport_que ++;
+									continue_ = false;
+								}
 							}
 						}
-					}
-					else if(Interface.construct_wall_button.clicked() && !construction_wall_location_select)
-					{
-						std::cout << "\nConstruct wall button clicked.\n";
-
-						Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
-						allow_unit_selection = false; //Since the cosntruct wall button was clicked, disable selection of units and whatnot.
-						construction_wall_location_select = true; //Let the game know the user is going to select the location for a construction.
-					}
-					else
-					{
-						if(construction_wall_location_select == false)
+						else if(Interface.construct_wall_button.clicked() && !construction_wall_location_select)
 						{
-							bool run = true; //Controls the loop below.
+							std::cout << "\nConstruct wall button clicked.\n";
 
-							//Check if a tile was clicked
-							for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
+							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
+							allow_unit_selection = false; //Since the cosntruct wall button was clicked, disable selection of units and whatnot.
+							construction_wall_location_select = true; //Let the game know the user is going to select the location for a construction.
+						}
+						else
+						{
+							if(construction_wall_location_select == false)
 							{
-								if(run)
+								bool run = true; //Controls the loop below.
+
+								//Check if a tile was clicked
+								for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
 								{
-									//Check if the tile is 'in bounds'.
-									if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+									if(run)
 									{
-										if(Map[i].unitlist.size() == 0) //If there are no units on this tile...
+										//Check if the tile is 'in bounds'.
+										if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
 										{
-											cout << "Does not have units on it, saving tile id!\n";
-											leftclick_tile_id = i; //Save the ID of this tile only if no units are on this tile.
+											if(Map[i].unitlist.size() == 0) //If there are no units on this tile...
+											{
+												cout << "Does not have units on it, saving tile id!\n";
+												leftclick_tile_id = i; //Save the ID of this tile only if no units are on this tile.
 
-											std::cout << "\nFound the tile that the left click took place over...\n";
-											out_string << "\nFound the tile that the left click took place over...\n";
-											std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
-											out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+												std::cout << "\nFound the tile that the left click took place over...\n";
+												out_string << "\nFound the tile that the left click took place over...\n";
+												std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+												out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n";
+											}
+
+	
+											run = false;
 										}
-
-	
-										run = false;
 									}
 								}
 							}
-						}
-						else if(construction_wall_location_select)
-						{
-							cout << "Here!\n";
-							//Find the tile that was selected...
-							bool run = true; //Controls the loop below.
-							int tile_id = -1; //The ID of the tile that was selected.
-
-							//Check if a tile was clicked
-							for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
+							else if(construction_wall_location_select)
 							{
-								if(run)
+								cout << "Here!\n";
+								//Find the tile that was selected...
+								bool run = true; //Controls the loop below.
+								int tile_id = -1; //The ID of the tile that was selected.
+
+								//Check if a tile was clicked
+								for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++) //TODO: Make it look through draw map only.
 								{
-									//Check if the tile is 'in bounds'.
-									if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+									if(run)
 									{
-										tile_id = i; //Save the ID of this tile only if no units are on this tile.
+										//Check if the tile is 'in bounds'.
+										if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+										{
+											tile_id = i; //Save the ID of this tile only if no units are on this tile.
 
-										cout << "Found the tile!\n";
+											cout << "Found the tile!\n";
 	
-										run = false;
+											run = false;
+										}
 									}
 								}
-							}
 
-							if(tile_id <= -1)
-							{
-								cout << "Invalid tile!\n";
-							}
-							else
-							{
-								//TODO: add a construct wall command to the job que.
-								job new_job;
+								if(tile_id <= -1)
+								{
+									cout << "Invalid tile!\n";
+								}
+								else
+								{
+									//TODO: add a construct wall command to the job que.
+									job new_job;
 
-								new_job.type = "construct";
-								new_job.construction_type = "wall";
-								new_job.tasked_tile = &Map[tile_id];
+									new_job.type = "construct";
+									new_job.construction_type = "wall";
+									new_job.tasked_tile = &Map[tile_id];
 
-								Job_Que.add_job(new_job);
-								Job_Que.jobs[Job_Que.jobs.size()].tasked_tile = &Map[tile_id];
+									Job_Que.add_job(new_job);
+									Job_Que.jobs[Job_Que.jobs.size()].tasked_tile = &Map[tile_id];
 
-								cout << "Added job!\n";
+									cout << "Added job!\n";
 
-								allow_unit_selection = true;
-								construction_wall_location_select = false;
+									allow_unit_selection = true;
+									construction_wall_location_select = false;
+								}
 							}
 						}
 					}
@@ -204,25 +207,28 @@ int update()
 					std::cout << "Right click\n"; //Debugging output.
 					out_string << "Right click\n";
 
-					bool run = true; //Controls the loop below.
-
-					//Check if a tile was clicked
-					for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++)
+					if(!server)
 					{
-						if(run)
+						bool run = true; //Controls the loop below.
+
+						//Check if a tile was clicked
+						for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++)
 						{
-
-							//Check if the tile is 'in bounds'.
-							if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+							if(run)
 							{
-								rightclick_tile_id = i; //Assign the tile id...
 
-								run = false;
+								//Check if the tile is 'in bounds'.
+								if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+								{
+									rightclick_tile_id = i; //Assign the tile id...
 
-								std::cout << "\nFound the tile that the right click took place over...\n";
-								out_string << "\nFound the tile that the right click took place over...\n";
-								std::cout << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
-								out_string << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
+									run = false;
+
+									std::cout << "\nFound the tile that the right click took place over...\n";
+									out_string << "\nFound the tile that the right click took place over...\n";
+									std::cout << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
+									out_string << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
+								}
 							}
 						}
 					}

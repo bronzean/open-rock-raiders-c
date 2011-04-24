@@ -143,120 +143,123 @@ std::string bClassUnit::update()
 		frames_since_last_move++; //Increment the frames that have passed since the last move.
 	}
 
-	if(mining_mode) //If the unit is awaiting the user to tell it which wall to mine.
+	if(!server)
 	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1); //Draw the "Whee, mining!" message.
-		check_mine_command(); //Check if the player is ordering this unit to mine walls.
-	}
-
-	if(!mining_mode) //So, it isn't mining mode...
-	{
-		if(keystates[SDLK_4] && selected == true) //If '4' was pressed
+		if(mining_mode) //If the unit is awaiting the user to tell it which wall to mine.
 		{
-			bool found = false; //Did the game find a drill in the player's inventory?
-
-			for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a drill.
-			{
-				if(tool_list[i].can_drill_wall == true) //If the the tool at index i in this tile's tool_list is able to drill walls...
-				{
-					found = true; //Let's the game know it found a drill in the unit's inventory.
-				}
-			}
-
-			if(found == true) //If it found a drill.
-			{				
-				mining_mode = true; //Let the game know that the player is going to mine a wall.
-				allow_deselect = false; //Don't allow the player to deselect this unit.
-				job_state = "mining";
-			}
-			else //Didn't find a drill
-			{
-				cout << "You need a drill to mine walls!\n"; //Debugging output.
-			}
+			Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1); //Draw the "Whee, mining!" message.
+			check_mine_command(); //Check if the player is ordering this unit to mine walls.
 		}
-	}
 
-	if(!pick_up_mode) //Here the game checks if the player is ordering this unit to get out its axe.
-	{
-		if(keystates[SDLK_g] && selected == true) //If the key 'g' was pressed.
+		if(!mining_mode) //So, it isn't mining mode...
 		{
-			allow_deselect = false; //Make sure the unit is not allowed to be deselected...
-
-			pick_up_mode = true; //Let the game know the unit is waiting for the player to specify what it will pick up.
-			job_state = "picking_up";
-		}
-	}
-	else //Ok, so pick up mode equals true.
-	{
-		draw(0, 0, select_object_to_pick_up_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
-		check_pick_up_command(); //Check if the player is ordering the unit to pick up an object.
-	}
-
-	if(!chop_mode) //So, is chop mode equal to false?
-	{
-		if(keystates[SDLK_c]) //Check if the 'c' key was pressed.
-		{
-			if(selected == true || player == true) //If the unit is selected or it is the player...
+			if(keystates[SDLK_4] && selected == true) //If '4' was pressed
 			{
+				bool found = false; //Did the game find a drill in the player's inventory?
 
-				bool found = false; //Did the game find an axe or something in the player's inventory?
-
-				for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a tool that can chop trees.
+				for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a drill.
 				{
-					if(tool_list[i].can_chop_tree == true) //If the tool at index i of this tile's tool list is able to chop trees...
+					if(tool_list[i].can_drill_wall == true) //If the the tool at index i in this tile's tool_list is able to drill walls...
 					{
-						found = true; //Let's the game know it found a tool that can chop trees in the unit's inventory.
+						found = true; //Let's the game know it found a drill in the unit's inventory.
 					}
 				}
 
-				if(found == true) //If it found a tool that can chop trees...
+				if(found == true) //If it found a drill.
 				{				
-					chop_mode = true; //Let the game know that the player is going to chop a tree.
-					allow_deselect = false; //Make sure the unit can't be unselected...
-					job_state = "chopping";
+					mining_mode = true; //Let the game know that the player is going to mine a wall.
+					allow_deselect = false; //Don't allow the player to deselect this unit.
+					job_state = "mining";
 				}
-				else //Didn't find an axe.
+				else //Didn't find a drill
 				{
-					cout << "You need a tool that can chop trees!\n"; //Debugging output.
+					cout << "You need a drill to mine walls!\n"; //Debugging output.
 				}
 			}
 		}
-	}
-	else //Ok, this means that the game is waiting for the user to tell the unit which tree to chop.
-	{
-		draw(0, 0, select_tree_to_chop_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
-	}
 
-	if(!shovel_mode) //If the user hasn't allready given the unit a shovel order...
-	{
-		if(keystates[SDLK_r] && selected == true) //Check if the 'r' key was pressed.
+		if(!pick_up_mode) //Here the game checks if the player is ordering this unit to get out its axe.
 		{
-			bool found = false; //Did the game find a shovel in the player's inventory?
-
-			for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a shovel.
+			if(keystates[SDLK_g] && selected == true) //If the key 'g' was pressed.
 			{
-				if(tool_list[i].can_clear_rubble == true) //If the tool at index i of this unit's tool list is able to clear rubble...
-				{
-					found = true; //Let's the game know it found a shovel in the unit's inventory.
-				}
-			}
+				allow_deselect = false; //Make sure the unit is not allowed to be deselected...
 
-			if(found == true) //If it found a shovel.
-			{				
-				shovel_mode = true; //Let the game know that the player is going to shovel a wall.
-				allow_deselect = false; //Make sure the unit will not be deselected...
-				job_state = "shoveling";
-			}
-			else //Didn't find a shovel.
-			{
-				cout << "You need a shovel to clear rubble!\n"; //Let the user know the unit needs a shovel to shovel rubble.
+				pick_up_mode = true; //Let the game know the unit is waiting for the player to specify what it will pick up.
+				job_state = "picking_up";
 			}
 		}
-	}
-	else //So, a shovel command has allready been issued.
-	{
-		draw(0, 0, select_rubble_to_shovel_spr, screen); //Draw the "select rubble to shovel" message.
-		check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
+		else //Ok, so pick up mode equals true.
+		{
+			draw(0, 0, select_object_to_pick_up_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
+			check_pick_up_command(); //Check if the player is ordering the unit to pick up an object.
+		}
+
+		if(!chop_mode) //So, is chop mode equal to false?
+		{
+			if(keystates[SDLK_c]) //Check if the 'c' key was pressed.
+			{
+				if(selected == true || player == true) //If the unit is selected or it is the player...
+				{
+
+					bool found = false; //Did the game find an axe or something in the player's inventory?
+
+					for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a tool that can chop trees.
+					{
+						if(tool_list[i].can_chop_tree == true) //If the tool at index i of this tile's tool list is able to chop trees...
+						{
+							found = true; //Let's the game know it found a tool that can chop trees in the unit's inventory.
+						}
+					}
+
+					if(found == true) //If it found a tool that can chop trees...
+					{				
+						chop_mode = true; //Let the game know that the player is going to chop a tree.
+						allow_deselect = false; //Make sure the unit can't be unselected...
+						job_state = "chopping";
+					}
+					else //Didn't find an axe.
+					{
+						cout << "You need a tool that can chop trees!\n"; //Debugging output.
+					}
+				}
+			}
+		}
+		else //Ok, this means that the game is waiting for the user to tell the unit which tree to chop.
+		{
+			draw(0, 0, select_tree_to_chop_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
+		}
+
+		if(!shovel_mode) //If the user hasn't allready given the unit a shovel order...
+		{
+			if(keystates[SDLK_r] && selected == true) //Check if the 'r' key was pressed.
+			{
+				bool found = false; //Did the game find a shovel in the player's inventory?
+
+				for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a shovel.
+				{
+					if(tool_list[i].can_clear_rubble == true) //If the tool at index i of this unit's tool list is able to clear rubble...
+					{
+						found = true; //Let's the game know it found a shovel in the unit's inventory.
+					}
+				}
+
+				if(found == true) //If it found a shovel.
+				{				
+					shovel_mode = true; //Let the game know that the player is going to shovel a wall.
+					allow_deselect = false; //Make sure the unit will not be deselected...
+					job_state = "shoveling";
+				}
+				else //Didn't find a shovel.
+				{
+					cout << "You need a shovel to clear rubble!\n"; //Let the user know the unit needs a shovel to shovel rubble.
+				}
+			}
+		}
+		else //So, a shovel command has allready been issued.
+		{
+			draw(0, 0, select_rubble_to_shovel_spr, screen); //Draw the "select rubble to shovel" message.
+			check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
+		}
 	}
 
 	if(job_state == "idle")
@@ -328,12 +331,13 @@ std::string bClassUnit::update()
 		}
 	}
 
+
 	if(allow_deselect) //If the unit is allowed to be deselected...TODO: If shift or some other key is pressed, make it so that allow_deselect will equal false.
 	{
 		select(); //Check if the unit has selected/deselected it.
 	}
 
-	if(!paused) //If the game is not paused.
+	if(!paused && !server) //If the game is not paused.
 	{
 		if(keystates[SDLK_RIGHT]) //If the user has pressed the right arrow key.
 		{
