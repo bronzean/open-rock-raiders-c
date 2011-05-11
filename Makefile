@@ -1,5 +1,6 @@
 APP      = ORR
 CXX := g++
+C := gcc
 
 SRCEXT   = cpp
 SRCDIR   = src
@@ -13,7 +14,7 @@ OBJS    := $(patsubst %.$(SRCEXT),$(OBJDIR)/%.o,$(SRCS))
 DEBUG    = -g
 INCLUDES = -Wall -Wextra -pedantic
 CFLAGS   = -Wall -pedantic -ansi -c $(DEBUG) $(INCLUDES)
-LDFLAGS  = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_mixer -lpthread -lSDL_net -lGL -lGLU
+LDFLAGS  = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_mixer -lpthread -lSDL_net -lGL -lGLU -lstdc++ -lc
 
 ifeq ($(SRCEXT), cpp)
 CC       = $(CXX)

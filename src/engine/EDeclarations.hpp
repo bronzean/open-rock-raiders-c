@@ -130,6 +130,7 @@ extern std::vector<pthread_t> threads; //The worker threads themselves.
 extern int game_mode; //0 = classic. 1 = arcade.
 
 static pthread_mutex_t screen_lock;
+static pthread_mutex_t udp_send_lock;
 
 extern bool screen_needs_updating; //Is it time for stuff to be drawn?
 
@@ -165,8 +166,15 @@ static int port_number = 2097; //The port the server's gonna run on.
 
 static int client_update_interval = 1000; //The rate at which the client should ask the server for updates, in milliseconds.
 
-static TCPsocket sd, csd; //Socket descriptor, Client socket descriptor
+//static TCPsocket sd, csd; //Socket descriptor, Client socket descriptor
 //static TCPsocket sd; //Socket descriptor
-static IPaddress ip, *remoteIP;
+//static IPaddress ip, *remoteIP;
 
 extern bool server; //Is the game running in server or client mode?
+
+static int max_clients = 255; //The maximum ammount of clients that can connect to the server.
+
+static TCPsocket serverSocket;
+static IPaddress serverIP;
+
+extern int receivedByteCount; //Variable keeping track of the size of incoming data.

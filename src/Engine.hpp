@@ -19,9 +19,21 @@
 #include <map>
 #include <fstream>
 #include <sstream>
+//#include <cstdarg>
 #include <vector>
 #include <pthread.h>
 #include <memory>
+
+#ifdef WIN32
+#include <winsock2.h>
+#else
+#include <netdb.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#endif
+
 //#include <SDL/SDL_rotozoom.h>
 //#include <GL/glut.h>
 #include "engine/EClass.hpp"

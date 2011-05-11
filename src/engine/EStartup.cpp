@@ -24,6 +24,13 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		return false;    
 	}
 
+	//Initialise SDL_net
+	if (SDLNet_Init() == -1)
+	{
+		std::cerr << "Failed to intialise SDL_net: " << SDLNet_GetError() << "\n";
+		return false;
+	}
+
 	if(load_settings() == false)
 	{
 		//TODO: Make the error loading more specific and print out the problems to the console window
@@ -603,6 +610,42 @@ bool load_settings()
 				std::cout << "\nRunning in server mode.\n";
 
 				server = true; //Let the game know it will be running in 3D.
+			}
+
+			else if(command == "MAX_CLIENTS")
+			{
+				std::cout << "\nEncountered the variable that specifies the maximum amount of clients that can connect to the server.\n";
+
+				bool quit = false;
+
+				//Now we read its values
+				while(c != EOF && quit == false)
+				{
+					bool start;
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						max_clients = atoi(num_command.c_str());
+						cout << "\nPort number = " << port_number << "\n";
+						num_command = "";
+					}
+					else if(temp == '(')
+					{
+
+						start = true;
+					}
+
+					else if(start)
+					{
+						num_command += temp;
+					}
+
+					cout.flush();
+				}
 			}
 
 			check_command = false;

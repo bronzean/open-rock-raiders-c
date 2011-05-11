@@ -10,6 +10,7 @@
 
 void *DrawScreen(void *param); //Since the graphics update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 void *ServerNetworking(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
+void *ServerNetworkingUdp(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here. This is the UDP version.
 
 //The entry point for our program.
 int main( int argc, char* argv[] )
@@ -103,7 +104,8 @@ int main( int argc, char* argv[] )
 		{
 			if(server) //If the game is in server mode...
 			{
-				pthread_create(&threads[1], NULL, ServerNetworking, NULL); //Tell thread 1 to get to work with the networking.
+				//pthread_create(&threads[1], NULL, ServerNetworking, NULL); //Tell thread 1 to get to work with the networking.
+				pthread_create(&threads[1], NULL, ServerNetworkingUdp, NULL); //Tell thread 1 to get to work with the networking.
 			}
 		}
 	}
@@ -115,6 +117,7 @@ int main( int argc, char* argv[] )
 	try
 	{
 		pthread_mutex_init(&screen_lock, NULL); //Initialize the drawing related stuff mutex.
+		pthread_mutex_init(&udp_send_lock, NULL); //Magical line that makes UDP_Send work.
 	}
 	catch(...)
 	{

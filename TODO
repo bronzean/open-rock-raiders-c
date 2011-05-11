@@ -169,6 +169,16 @@ run_keycheck_thread()
 
 112. Allow walls, objects, everything, to be dynamically changed graphically. For example, as the raider drills, the wall gets actual cracks in 3D mode. Not just lines in the texture. When a wall collapses, account for all the pieces.
 
+113. The network update thread in the server pauses whenever a client connects. Fix this.
+
+114. The server needs a better interface
+
+115. Write a wrapper for the client socket. It contains the client socket itself, and data on it, like the team the client belongs to and whatnot.
+
+116. Get clients connecting and send them the info they need.
+
+117. Create a "lobby" screen (to replace the current game menu) to set options.
+
 
 
 --Done--
