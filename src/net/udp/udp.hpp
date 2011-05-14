@@ -8,3 +8,4 @@
 #include "../../Engine.hpp"
 
 int udp_send(UDPsocket sock, int channel, UDPpacket *out, UDPpacket *in, Uint32 delay, Uint8 expect, int timeout); //Send a packet.
+int udprecv(UDPsocket sock, UDPpacket *in, Uint32 delay, Uint8 expect, int timeout);

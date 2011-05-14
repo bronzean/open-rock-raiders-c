@@ -11,6 +11,7 @@
 void *DrawScreen(void *param); //Since the graphics update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 void *ServerNetworking(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 void *ServerNetworkingUdp(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here. This is the UDP version.
+void *ClientNetworkingUdp(void *param); //Since the client networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 
 //The entry point for our program.
 int main( int argc, char* argv[] )
@@ -20,7 +21,7 @@ int main( int argc, char* argv[] )
 
 	Timer fps2; //Used to keep track of how many frames pass each second.
 
-	GameLog = fopen("gamelog.txt", "w+");; //Open/create the log file.
+	GameLog = fopen("gamelog.txt", "w+"); //Open/create the log file.
 
 	cout << "ORR Version Number: " << VERSION << "\n"; //Output the version number to the console.
 	out_string << "ORR Version Number: " << VERSION << "\n"; //Output it to the log file too.
@@ -106,6 +107,10 @@ int main( int argc, char* argv[] )
 			{
 				//pthread_create(&threads[1], NULL, ServerNetworking, NULL); //Tell thread 1 to get to work with the networking.
 				pthread_create(&threads[1], NULL, ServerNetworkingUdp, NULL); //Tell thread 1 to get to work with the networking.
+			}
+			else //TODO: Move this to the part where the user decides to enter multiplayer.
+			{
+				pthread_create(&threads[1], NULL, ClientNetworkingUdp, NULL); //Tell thread 1 to get its butt over here and start the client networking code stuff.
 			}
 		}
 	}
