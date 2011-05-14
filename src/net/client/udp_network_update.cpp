@@ -60,7 +60,7 @@ void *ClientNetworkingUdp(void *param)
 	char message = '\x01';
 	packet_out->data[0] = '\x01'; //Tells the server, "Hi!\n";
 
-	if(udp_send(sock, 0, packet_out, packet_in, 200, '\x01', 2000) < 1)
+	if(udp_send(sock, 0, packet_out, packet_in, 200, '\x01', 5000) < 1)
 	{
 		cout << "Failed to send packet. :|\nTrying again...\n";
 		if(udp_send(sock, 0, packet_out, packet_in, 200, '\x01', 1000) < 1)
