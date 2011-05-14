@@ -58,13 +58,14 @@ void *ServerNetworkingUdp(void *param)
 		}
 		else
 		{
-			cout << "Received packet. Do stuff here.\n";
+			cout << "\nReceived packet. Do stuff here.\n";
 			cout << "packet_in contains: " << packet_in->data << "\n";
 
 			memcpy(&ip,&packet_in->address, sizeof(IPaddress));
-			host=SDLNet_ResolveIP(&ip);
-			ipnum=SDL_SwapBE32(ip.host);
-			port=SDL_SwapBE16(ip.port);
+			host = SDLNet_ResolveIP(&ip);
+			//ipnum=SDL_SwapBE32(ip.host);
+			ipnum = SDLNet_Read32(&ip.host);
+			port = SDL_SwapBE16(ip.port);
 
 			//TODO: 1. Check if the IP and Port match any already connected clients.
 			// 2. If yes, then read what the client has to say.
@@ -72,7 +73,8 @@ void *ServerNetworkingUdp(void *param)
 
 			if(host)
 			{
-				printf("Request from host=%s Port=%hd\n",host,port);
+				//printf("Request from Host=%s Port=%hd\n",host,port);
+				cout << "Request from Host = " << host << " Port = " << port << "\n";
 			}
 			else
 			{
@@ -86,44 +88,58 @@ void *ServerNetworkingUdp(void *param)
 				pthread_exit(NULL);
 			}
 
-			string to_send = "Hello, new client!";
-
-			packet_out->data[0] = '\x02'; //Lets the client know this is a string. '\x02' signifies it's a string.
-
-			for(int i = 0; i < to_send.size(); i++)
+			packet_out->data[0] = '\x01';
+			pthread_mutex_t udp_send_lock2;
+			pthread_mutex_init(&udp_send_lock2, NULL); //Magical line that makes UDP_Send work.
+			pthread_mutex_lock(&udp_send_lock2); //Makes it all work.
+			cout << "Attempting to send...\n";
+			if(!SDLNet_UDP_Send(udp_server_socket, 0, packet_out))
 			{
-				packet_out->data[i+1] = (int)to_send[i]; //Convert message to int and store in packet_out.
-				//Doesn't start at 0 becuase the first byte lets the client know this is a string.
+				printf("SDLNet_UDP_Send: %s\n", SDLNet_GetError());
+				pthread_mutex_unlock(&udp_send_lock2);
 			}
-
-			//cout << "To send: " << packet_out->data << "\n";
-			cout << "To send: ";
-
-			/*for(int i = 1; i < sizeof(packet_out->data); i++)
+			else
 			{
-				cout << packet_out->data[i];
-			}*/
+				pthread_mutex_unlock(&udp_send_lock2);
+				string to_send = "Hello, new client!";
 
-			for(int i = 0; i < to_send.size(); i++)
-			{
-				cout << packet_out->data[i+1];
+				packet_out->data[0] = '\x02'; //Lets the client know this is a string. '\x02' signifies it's a string.
+
+				for(int i = 0; i < to_send.size(); i++)
+				{
+					packet_out->data[i+1] = (int)to_send[i]; //Convert message to int and store in packet_out.
+					//Doesn't start at 0 becuase the first byte lets the client know this is a string.
+				}
+
+				//cout << "To send: " << packet_out->data << "\n";
+				cout << "To send: ";
+
+				/*for(int i = 1; i < sizeof(packet_out->data); i++)
+				{
+					cout << packet_out->data[i];
+				}*/
+
+				for(int i = 0; i < to_send.size(); i++)
+				{
+					cout << packet_out->data[i+1];
+				}
+				cout << "\n";
+
+				//SDLNet_Write32(1, packet_out->data[1]); //So now write some data in here. Simply says "Hey, you connected."
+				//if(!SDLNet_UDP_Send(udp_server_socket, 0, packet_out))
+				//{
+				//	printf("SDLNet_UDP_Send: %s\n",SDLNet_GetError());
+				//	gameover = true;
+				//	pthread_exit(NULL);
+				//}
+				if(!udp_send(udp_server_socket, 0, packet_out, packet_in, 0, '\x01', 5000)) //TODO: Make a seperate thread do this. //For the expect thing, '\x01' simply means "Got your message!"
+				{
+					cout << "Sent welcome message!\n";
+				}
+
+				//packet_out->data = NULL;
+				//packet_in->data = NULL;
 			}
-			cout << "\n";
-
-			//SDLNet_Write32(1, packet_out->data[1]); //So now write some data in here. Simply says "Hey, you connected."
-			//if(!SDLNet_UDP_Send(udp_server_socket, 0, packet_out))
-			//{
-			//	printf("SDLNet_UDP_Send: %s\n",SDLNet_GetError());
-			//	gameover = true;
-			//	pthread_exit(NULL);
-			//}
-			if(!udp_send(udp_server_socket, 0, packet_out, packet_in, 0, '\x01', 1000)) //TODO: Make a seperate thread do this. //For the expect thing, '\x01' simply means "Got your message!"
-			{
-				cout << "Sent welcome message!\n";
-			}
-
-			//packet_out->data = NULL;
-			//packet_in->data = NULL;
 		}
 
 		//So, how does this figure out which client just sent a packet to it?

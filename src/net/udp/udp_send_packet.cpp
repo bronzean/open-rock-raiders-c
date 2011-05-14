@@ -25,14 +25,16 @@ int udp_send(UDPsocket sock, int channel, UDPpacket *out, UDPpacket *in, Uint32 
 			return 1;
 		}
 
-		pthread_mutex_lock(&udp_send_lock); //Makes it all work.
+		pthread_mutex_t udp_send_lock2;
+		pthread_mutex_init(&udp_send_lock2, NULL); //Magical line that makes UDP_Send work.
+		pthread_mutex_lock(&udp_send_lock2); //Makes it all work.
 		if(!SDLNet_UDP_Send(sock, channel, out))
 		{
 			printf("SDLNet_UDP_Send: %s\n", SDLNet_GetError());
-			pthread_mutex_unlock(&udp_send_lock);
+			pthread_mutex_unlock(&udp_send_lock2);
 			return 1;
 		}
-		pthread_mutex_unlock(&udp_send_lock);
+		pthread_mutex_unlock(&udp_send_lock2);
 
 		/*err = SDLNet_UDP_Recv(sock, in);
 		if(!err)
@@ -40,9 +42,9 @@ int udp_send(UDPsocket sock, int channel, UDPpacket *out, UDPpacket *in, Uint32 
 			SDL_Delay(delay);
 		}*/
 
-		pthread_mutex_lock(&udp_send_lock); //Makes it all work.
+		pthread_mutex_lock(&udp_send_lock2); //Makes it all work.
 		err = SDLNet_UDP_Recv(sock, in);
-		pthread_mutex_unlock(&udp_send_lock);
+		pthread_mutex_unlock(&udp_send_lock2);
 
 		if(!err)
 		{
