@@ -89,10 +89,11 @@ void *ServerNetworkingUdp(void *param)
 			}
 
 			packet_out->data[0] = '\x01';
+			cout << "Attempting to send...\n";
+
 			pthread_mutex_t udp_send_lock2;
 			pthread_mutex_init(&udp_send_lock2, NULL); //Magical line that makes UDP_Send work.
 			pthread_mutex_lock(&udp_send_lock2); //Makes it all work.
-			cout << "Attempting to send...\n";
 			if(!SDLNet_UDP_Send(udp_server_socket, 0, packet_out))
 			{
 				printf("SDLNet_UDP_Send: %s\n", SDLNet_GetError());
@@ -140,6 +141,8 @@ void *ServerNetworkingUdp(void *param)
 				//packet_out->data = NULL;
 				//packet_in->data = NULL;
 			}
+
+			pthread_mutex_destroy(&udp_send
 		}
 
 		//So, how does this figure out which client just sent a packet to it?
