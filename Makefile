@@ -1,5 +1,5 @@
 APP      = ORR
-CXX := g++
+CXX := clang++
 C := gcc
 
 SRCEXT   = cpp
