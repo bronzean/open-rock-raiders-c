@@ -251,7 +251,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 		try
 		{
-			examineSet.push(n); //Add starting node to nodes to be checked. That's what the original comment says. //TODO: This line keeps crashing. Find out why.
+			cout << "New node n: " << n.thisTile->ID << "\n"; //This line proves it ain't an invalid node...
+			//examineSet.push(n); //Add starting node to nodes to be checked. That's what the original comment says. //TODO: This line keeps crashing. Find out why.
+			examineSet.push(n);
 			allNodes.push_back(n); //Add this tile to the list of all tiles. That's what the original comment says.
 		}
 		catch(...)
