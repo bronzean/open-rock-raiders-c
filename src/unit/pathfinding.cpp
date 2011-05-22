@@ -233,14 +233,23 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		destination = bestRamp; // We need to get to the 'bestRamp first'. That's what the original comment says. And I agree with it. Hehehe.
 
 		//Try to find a path clear of obstacles to the destination. That's what the original comment says.
-		priority_queue<node, vector<node>, nodeCompare> examineSet; //Nodes to check. That's what the original comment says.
+		//priority_queue<node, vector<node>, nodeCompare> examineSet; //Nodes to check. That's what the original comment says.
+		//priority_queue<node*> examineSet;
+		vector<node> examineSet;
 		vector<node> doneSet; //Nodes that are complete. That's what the original comment says.
+		//vector<node*> doneSet;
+		//vector<node*> *doneSet;
 
 		node n;// Create a node from the starting tile 'current'. That's what the original comment says.
 		//n.init(); //Now obsolete.
 		n.thisTile = &Map[current];
 		n.calculateCostToTile(Map[destination]); //Destination is stored in 'destination'. That's what the original comment says.
 		n.calculateCosts();
+
+		//node* n;
+		//n->thisTile = &Map[current];
+		//n->calculateCostToTile(Map[destination]);
+		//n->calculateCosts();
 
 		if(current < 0 || current >= Map.size()) //Checks if it failed to assign the tile, or if the tile is out of bounds.
 		{
@@ -253,7 +262,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		{
 			cout << "New node n: " << n.thisTile->ID << "\n"; //This line proves it ain't an invalid node...
 			//examineSet.push(n); //Add starting node to nodes to be checked. That's what the original comment says. //TODO: This line keeps crashing. Find out why.
-			examineSet.push(n);
+			examineSet.push_back(n);
 			allNodes.push_back(n); //Add this tile to the list of all tiles. That's what the original comment says.
 		}
 		catch(...)
@@ -265,11 +274,14 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 		while(!examineSet.empty()) //While we have objects to check. That's what the original comment says.
 		{
-			n = examineSet.top(); //Get the best next node. That's what the original comment says.
-			doneSet.push_back(n); //Add it to the list of good nodes. That's what the original comment says.
-			examineSet.pop(); //Remove from list to be checked. That's what the original comment says.
+			//n = examineSet.top(); //Get the best next node. That's what the original comment says.
+			n = examineSet.front();
+			doneSet.push_back(n); //Add it to the list of good nodes. That's what the original comment says. //TODO: Now this line crashes.
+			//examineSet.pop(); //Remove from list to be checked. That's what the original comment says.
+			examineSet.erase(examineSet.begin());
 
 			if(doneSet.at(doneSet.size()-1).thisTile->ID == Map[destination].ID) //Goal? That's what the original comment says.
+			//if(doneSet->at(doneSet->size()-1)->thisTile->ID == Map[destination].ID)
 			{
 				goal = true;
 				break;
@@ -277,11 +289,15 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 			node near[4]; //List of neighbors, only 4 directions possible. That's what the original comment says.
 			int numOfNear = n.getNeighbours(near); //Find those neighbors. That's what the original comment says.
+			//int numOfNear = n->getNeighbours(near); //Find those neighbors. That's what the original comment says.
 	
 			int thisOrd = 0; //The index of the current tile in the allNodes list. That's what the original comment says.
-			for(int z = 0;z < allNodes.size();z++) //Need to get a permanent reference to the node, in the allNodes list. That's what the original comment says.
+			for(int z = 0; z < allNodes.size(); z++) //Need to get a permanent reference to the node, in the allNodes list. That's what the original comment says.
 			{
-				if(allNodes.at(z).thisTile->ID == n.thisTile->ID)
+				cout << n.thisTile->ID << "is what n.thisTile->ID is equal to.\n";
+				if(allNodes.at(z).thisTile->ID == n.thisTile->ID) //Original.
+				//if(allNodes.at(z).thisTile->ID == n->thisTile->ID) //This crashes.
+				//if(allNodes.at(z).thisTile->ID == n->thisTile->ID)
 				{
 					thisOrd = z; //This is the index of the parent node. That's what the original comment says.
 				}
@@ -293,7 +309,8 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 	
 				for(int z = 0; z < doneSet.size()-1; z++) //Make sure we havent already checked this one. That's what the original comment says.
 				{
-					if (near[i].thisTile->ID == doneSet.at(z).thisTile->ID)
+					if(near[i].thisTile->ID == doneSet.at(z).thisTile->ID)
+					//if(near[i].thisTile->ID == doneSet->at(z)->thisTile->ID)
 					{
 						d = 1; //If we have set d to 1, or duplicate. That's what the original comment says.
 						break;
@@ -312,7 +329,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 				near[i].calculateGCost(allNodes); // Pass it the allNodes list, so it can get its parent node. That's what the original comment says.
 				near[i].calculateCosts(); //Add parent g Cost and cost to goal. That's what the original comment says.
 
-				examineSet.push(near[i]); //Add to list for checking. That's what the original comment says.
+				examineSet.push_back(near[i]); //Add to list for checking. That's what the original comment says.
 			}
 		}
 
@@ -325,7 +342,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 			do 
 			{
 				thisMove.insert(thisMove.begin() + moveOffset, n.thisTile->ID); //Following the tree of parents, add them to the move_path. That's what the original comment says.
+				//thisMove.insert(thisMove.begin() + moveOffset, n->thisTile->ID);
 				if(n.parent < 0 || n.parent > allNodes.size())
+				//if(n->parent < 0 || n->parent > allNodes.size())
 				{
 					cout << "Parent issue at line 766\n";
 					cout << "I bet You're on a ramp, or clicked one.\n";
@@ -333,8 +352,10 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 				}
 				else
 					n = allNodes.at(n.parent);
+					//n = allNodes.at(n->parent);
 			}
 			while (n.thisTile->ID != current);
+			//while (n->thisTile->ID != current);
 			//Done getting list of moves to get to 'destination'. That's what the original comment says.
 
 			if(thisMove[thisMove.size() - 1] != move_destination)
