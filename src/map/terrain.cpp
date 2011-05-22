@@ -103,7 +103,15 @@ void tile::update()
 	{
 		new_tile = 0; //Reset new_tile.
 		//temp = ""; //Reset temp.
-		temp = unitlist[i].update(); //Call the unit's update function and store the return value.
+		try
+		{
+			temp = unitlist[i].update(); //Call the unit's update function and store the return value.
+		}
+		catch(...)
+		{
+			gameover = true;
+			return; //Error!
+		}
 
 		//If the unit is selected and the tile the right click tookl place != -1 (-1 means that it took place outside of the map)...
 		if(unitlist[i].selected == true && rightclick_tile_id != -1 && unitlist[i].move_frame != fps_counter)

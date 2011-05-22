@@ -142,7 +142,7 @@ void *ServerNetworkingUdp(void *param)
 				//packet_in->data = NULL;
 			}
 
-			pthread_mutex_destroy(&udp_send
+			//pthread_mutex_destroy(&udp_send
 		}
 
 		//So, how does this figure out which client just sent a packet to it?

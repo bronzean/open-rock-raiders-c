@@ -270,52 +270,63 @@ std::string bClassUnit::update()
 	{
 		if(!move) //If the unit has reached the construction site...
 		{
-			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
-
-
-			my_job->construction_health -= construct_rate;
-
-			if(my_job->construction_health <= 0)
+			try
 			{
-				cout << "Done building!\n";
+				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
 
-				//TODO: Remove this job from the Job_Que;
 
-				int i2 = 0;
-				vector<job>::iterator iterator2;
+				my_job->construction_health -= construct_rate;
 
-				bool done = false;
-
-				while(!done)
+				if(my_job->construction_health <= 0)
 				{
-					if(i2 >= Job_Que.jobs.size())
-					{
-						cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
-						out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
-						throw;
-					}
+					cout << "Done building!\n";
 
-					if(&Job_Que.jobs[i2] == my_job)
-					{
-						cout << "Done constructing!\n";
-						out_string << "Done constructing!\n";
+					//TODO: Remove this job from the Job_Que;
 
-						if(my_job->construction_type == "wall")
+					int i2 = 0;
+					vector<job>::iterator iterator2;
+
+					bool done = false;
+
+					while(!done)
+					{
+						if(i2 >= Job_Que.jobs.size())
 						{
-							my_job->tasked_tile->construct_construction(c_wall); //Transform specified tile into a wall.
+							cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
+							out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
+							throw; //TODO: Make this throw a specific error.
 						}
 
-						Job_Que.jobs.erase(Job_Que.jobs.begin() + i2); //Remove this job from the job que.
-						done = true;
+						if(&Job_Que.jobs[i2] == &*my_job)
+						{
+							cout << "Done constructing!\n";
+							out_string << "Done constructing!\n";
+
+							if(my_job->construction_type == "wall")
+							{
+								my_job->tasked_tile->construct_construction(c_wall); //Transform specified tile into a wall.
+							}
+
+							Job_Que.jobs.erase(Job_Que.jobs.begin() + i2); //Remove this job from the job que.
+							done = true;
+						}
+
+						i2++;
+						iterator2++;
 					}
 
-					i2++;
-					iterator2++;
+					my_job = NULL;
+
+					job_state = "idle";
 				}
-
-				my_job = NULL;
-
-				job_state = "idle";
+			}
+			catch(char* error)
+			{
+			}
+			catch(...) //Oops, something borked. General error. Abort!
+			{
+				gameover = true; //Tells the game to stop running.
+				throw; //Quit this function.
 			}
 		}
 		else //The unit hasn't yet reached the destination.
