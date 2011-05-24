@@ -534,8 +534,8 @@ int update()
 				if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
 				{
 					Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-					cout << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
-					out_string << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
+					//cout << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
+					//out_string << Map[Draw_Map[Draw_Map.size() - 1]].ID << "\n";
 				}
 
 				current_tile++; //Increment current tile.
