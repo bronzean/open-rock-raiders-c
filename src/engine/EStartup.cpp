@@ -10,22 +10,19 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 {
 	std::cout << "\nInitializing\n";
 
-	//Initialize everything
-	if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
+	if(SDL_Init( SDL_INIT_EVERYTHING ) == -1) //Initialize everything
 	{
 		std::cerr << "\nError initializing SDL\n";
 		return false;
 	}
 
-	//Initialize SDL_ttf
-	if( TTF_Init() == -1 )
+	if(TTF_Init() == -1) //Initialize SDL_ttf
 	{
 		std::cerr << "\nError initializing SDL_ttf\n";
 		return false;    
 	}
 
-	//Initialise SDL_net
-	if (SDLNet_Init() == -1)
+	if (SDLNet_Init() == -1) //Initialise SDL_net
 	{
 		std::cerr << "Failed to intialise SDL_net: " << SDLNet_GetError() << "\n";
 		return false;
@@ -88,8 +85,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		resizeGlWindow(SCREEN_WIDTH, SCREEN_HEIGHT); //Sets up the window for 3D mode.
 	}
 
-	//Error checking
-	if(screen == NULL)
+	if(screen == NULL) //Error checking
 	{
 		std::cerr << "\nError setting video mode\n";
 		return false;
@@ -104,15 +100,36 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	title_screen_text2_spr = TTF_RenderText_Solid(font1, "Tales of Mining and Great Riches", c_white); //Nifty little saying on the title screen.
 
 	cout << "Setting global teleport button's variables.\n";
-	Interface.g_teleport_button.sprite = img_load3(teleport_button_path); //Load the sprite.
-	Interface.g_teleport_button.d_sprite = img_load3(no_teleport_button_path); //Load the disabled button's sprites.
+	//Interface.g_teleport_button.sprite = img_load3(teleport_button_path); //Load the sprite.
+	//img_load_safe(teleport_button_path, *Interface.g_teleport_button.sprite); //Load the sprite.
+	img_load_safe(teleport_button_path, &Interface.g_teleport_button.sprite); //Load the sprite.
+	if(!Interface.g_teleport_button.sprite)
+	{
+		cout << "Failed loading teleport button sprite.\n";
+		return false;
+	}
+	//Interface.g_teleport_button.d_sprite = img_load3(no_teleport_button_path); //Load the disabled button's sprites.
+	//img_load_safe(no_teleport_button_path, *Interface.g_teleport_button.d_sprite); //Load the disabled button's sprites.
+	img_load_safe(no_teleport_button_path, &Interface.g_teleport_button.d_sprite); //Load the disabled button's sprites.
+	if(!Interface.g_teleport_button.d_sprite)
+	{
+		cout << "Failed loading teleport button disabled sprite.\n";
+		return false;
+	}
 	Interface.g_teleport_button.x2 = Interface.g_teleport_button.x1 + Interface.g_teleport_button.sprite->w; //Set the x of the botomn right corner of the teleport button.
 	cout << "2\n";
 	Interface.g_teleport_button.y2 = Interface.g_teleport_button.y1 + Interface.g_teleport_button.sprite->h; //Set the y of the botomn right corner of the teleport button.
 	cout << "3\n";
 
 	cout << "Loading title screen's sprite.\n";
-	title_screen = img_load3(title_screen_path);
+	//title_screen = img_load3(title_screen_path); //Load the title screen.
+	//img_load_safe(title_screen_path, *title_screen);
+	img_load_safe(title_screen_path, &title_screen);
+	if(!title_screen)
+	{
+		cout << "Failed loading title screen sprite.\n";
+		return false;
+	}
 
 	std::cout << "\nSucesfully Initialized\n";
 
@@ -133,19 +150,19 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 bool load_settings()
 {
 	//This is all the junk needed by the parser
-	FILE* file;
+	FILE* file = NULL;
 	int c = 0;
-	char temp;
+	char temp = ' ';
 	bool comment = true;
-	string command;
-	string num_command;
-	bool check_command;
+	string command = "";
+	string num_command = "";
+	bool check_command = false;
 
 	//Here lay all the variables the parser needs for setting variables and such for the game.
 	const char filepath[200] = "data/game.cfg";
 	const char interface_filepath[200] = "";
 	const char* interface_filepath2 = "";
-	std::string temp2;
+	std::string temp2 = "";
 	std::string f1_temp1 = ""; //This is a temp variable for font1 loading stuff
 	int f1_temp2 = 0; //This is a temp variable for font1 loading stuff.
 	std::string f2_temp1 = ""; //This is a temp variable for font2 loading stuff

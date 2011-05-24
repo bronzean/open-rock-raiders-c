@@ -17,12 +17,11 @@ void draw2(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 //Clean up the resources, must be defined in the game's code
 void clean_up();
 
-//Load a regular bmp. Only displays transparency if it is in the file.
-SDL_Surface *img_load(std::string filename);
-//Load an image and coler key it to add transparency. Don't load prealpha'd images
-SDL_Surface *img_load2(std::string filename);
-//Load a wide assortment of images
-SDL_Surface *img_load3(std::string filename);
+SDL_Surface *img_load(std::string filename); //Load a regular bmp. Only displays transparency if it is in the file.
+SDL_Surface *img_load2(std::string filename); //Load an image and coler key it to add transparency. Don't load prealpha'd images
+SDL_Surface *img_load3(std::string filename); //Load a wide assortment of images
+bool img_load_safe(std::string filename, SDL_Surface **Original); //Doesn't memleak. Copy of img_load3.
+
 
 //startup the program
 bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::string screen_capt, bool load_from_cfg);

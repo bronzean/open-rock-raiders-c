@@ -215,7 +215,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 			stage[i] = "";
 		}
 
-		cout << "\nParsing layers...\n";
+		//cout << "\nParsing layers...\n";
 
 		stringstream out;
 		out << cur_layer_int;
@@ -223,7 +223,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 
 		string filepath;
 		filepath = folderpath;
-		cout << "\nFolder path is: " << folderpath << "\n";
+		//cout << "\nFolder path is: " << folderpath << "\n";
 		filepath += "l";
 		filepath += cur_layer;
 
@@ -231,10 +231,11 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 		if(file == NULL)
 		{
 			cout << "The file \"" << filepath << "\" does not exist!\n";
+			out_string << "The file \"" << filepath << "\" does not exist!\n";
 			return false;
 		}
-		cout << "Filepath is: " << filepath << "\n";
-		out_string << "Filepath is: " << filepath << "\n";
+		//cout << "Filepath is: " << filepath << "\n";
+		//out_string << "Filepath is: " << filepath << "\n";
 		c = 0;
 
 		int w = 0;
@@ -335,7 +336,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 
 		fclose(file);
 
-		cout << "\nParsing object layers...\n";
+		//cout << "\nParsing object layers...\n";
 
 		stringstream out2;
 		out2 << cur_layer_int;
@@ -343,7 +344,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 
 		string filepath2;
 		filepath2 = folderpath;
-		cout << "\nFolder path is: " << folderpath << "\n";
+		//cout << "\nFolder path is: " << folderpath << "\n";
 		filepath2 += "ol";
 		filepath2 += cur_layer;
 
@@ -353,10 +354,11 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 		if(file == NULL)
 		{
 			cout << "The file \"" << filepath2 << "\" does not exist!\n";
+			out_string << "The file \"" << filepath2 << "\" does not exist!\n";
 			//return false;
 			load_objects = false;
 		}
-		cout << "Filepath is: " << filepath2 << "\n";
+		//cout << "Filepath is: " << filepath2 << "\n";
 		c = 0;
 
 		if(load_objects == true)
@@ -416,7 +418,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 					newUnit.wy = Map[atoi(stage_object[1].c_str())].wy; //Assign the new unit's world y.
 					newUnit.layer = Map[atoi(stage_object[1].c_str())].layer; //Assign the new unit's layer.
 					newUnit.c_health = 100; //Assign the new unit's current health.					
-					std::cout << "Created new unit.\n";
+					//std::cout << "Created new unit.\n";
 
 					if(stage_object[2] != "0")
 					{

@@ -7,15 +7,22 @@ using namespace std;
 void *ClientNetworkingUdp(void *param)
 {
 	cout << "In network update\n";
-	Uint16 port;
-	char *host;
-	Sint32 flen, pos, p2;
-	int len, blocks, i, err=0;
-	Uint32 ack;
+	Uint16 port = 0;
+	char *host = "";
+	Sint32 flen = 0;
+	Sint32 pos = 0;
+	Sint32 p2 = 0;
+	int len = 0;
+	int blocks = 0;
+	int i = 0;
+	int err = 0;
+	Uint32 ack = 0;
 	IPaddress ip;
-	UDPsocket sock;
-	UDPpacket *packet_in, *packet_out;
+	UDPsocket sock = NULL;
+	UDPpacket *packet_in = NULL;
+	UDPpacket *packet_out = NULL;
 	double PACKET_SIZE = 65535;
+	sock = NULL;
 
 	host = (char *)"localhost"; //"host" is the IP of the server.
 	port = 2097; //"port" is the port of the server

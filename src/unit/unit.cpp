@@ -333,7 +333,9 @@ std::string bClassUnit::update()
 		}
 		else //The unit hasn't yet reached the destination.
 		{
-			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green), 0); //Draw the "I'm bob the builder!" message.
+			SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
+			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, temp_surf, 0); //Draw the "I'm bob the builder!" message.
+			SDL_FreeSurface(temp_surf);
 			//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
 			/*
 			if(can't_move_off_this_tile)
