@@ -1,6 +1,7 @@
 /* Copyright the ORR-C Dev Team */
 #include "unit.hpp" //Blablabla, include unit.hpp
 #include <queue> //Include this for pathfinding?
+#include "../engine/copied_ptr.h"
 
 /* --------------------------------------------------------------
  * Everything related to the unit's pathfinding is defined here.
@@ -12,7 +13,7 @@ public:
 	float fCost; //Unknown. Might mean "Final cost", as void node::calculateCosts() seems to indicate...
 	float gCost; //Unknown.
 	float hCost; //Unknown.
-	tile* thisTile; //I assume it's a pointer to this tile.
+	copied_ptr<tile> thisTile; //I assume it's a pointer to this tile.
 	int thisTile_id; //Pretty much like thisTile, but not a pointer.
 	int parent; //Yet to figure out what this is supposed to be.
 
@@ -73,7 +74,7 @@ public:
 			node n;
 			//n.init(); //Obsolete.
 			//n.parent = this; //Commented out in the original code for some reason.
-			n.thisTile = t;
+			n.thisTile = (copied_ptr<tile>)t;
 			nbors[i] = n;
 			i++;
 		}
@@ -85,7 +86,7 @@ public:
 			node n;
 			//n.init(); //Obsolete.
 			//n.parent = this; //Commented out in the original code for some reason.
-			n.thisTile = t;
+			n.thisTile = (copied_ptr<tile>)t;
 			nbors[i] = n;
 			i++;
 		}
@@ -97,7 +98,7 @@ public:
 			node n;
 			//n.init(); //Obsolete.
 			//n.parent = this; //Commented out in the original code for some reason.
-			n.thisTile = t;
+			n.thisTile = (copied_ptr<tile>)t;
 			nbors[i] = n;
 			i++;
 		}
@@ -109,7 +110,7 @@ public:
 			node n;
 			//n.init(); //Obsolete.
 			//n.parent = this; //Commented out in the original code for some reason.
-			n.thisTile = t;
+			n.thisTile = (copied_ptr<tile>)t;
 			nbors[i] = n;
 			i++;
 		}
@@ -243,7 +244,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 		node n;// Create a node from the starting tile 'current'. That's what the original comment says.
 		//n.init(); //Now obsolete.
-		n.thisTile = &Map[current];
+		n.thisTile = (copied_ptr<tile>)&Map[current];
 		//n.thisTile = *Map[current];
 		n.calculateCostToTile(Map[destination]); //Destination is stored in 'destination'. That's what the original comment says.
 		n.calculateCosts();
