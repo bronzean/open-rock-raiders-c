@@ -4,5 +4,5 @@ using namespace std;
 
 void client_udp::update()
 {
-	buffer = "";
+	buffer = NULL;
 }

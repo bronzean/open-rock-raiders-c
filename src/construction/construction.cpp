@@ -20,3 +20,4 @@ void construction::init(std::string NAME, bool WALL, bool FLOOR, int TYPE_ID, st
 }
 
 construction c_wall;
+construction c_floor;

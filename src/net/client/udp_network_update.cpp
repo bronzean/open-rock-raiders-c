@@ -17,7 +17,7 @@ void *ClientNetworkingUdp(void *param)
 	UDPpacket *packet_in, *packet_out;
 	double PACKET_SIZE = 65535;
 
-	host = "localhost"; //"host" is the IP of the server.
+	host = (char *)"localhost"; //"host" is the IP of the server.
 	port = 2097; //"port" is the port of the server
  
 	if(SDLNet_ResolveHost(&ip, host, port) == -1) //Connect to server. With error checking.

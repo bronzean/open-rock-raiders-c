@@ -19,4 +19,5 @@ public:
 
 	job(); //Constructor.
 	~job() { } //Deconstructor.
+	bool compare(job *JOB); //Returns true if the two jobs are one and same.
 };

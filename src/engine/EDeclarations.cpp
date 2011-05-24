@@ -128,4 +128,4 @@ bool threed_gfx = false; //Will the game be using 3D graphics?
 
 bool server = false; //Is the game running in server or client mode?
 
-extern int receivedByteCount = 0; //Variable keeping track of the size of incoming data.
+int receivedByteCount = 0; //Variable keeping track of the size of incoming data.

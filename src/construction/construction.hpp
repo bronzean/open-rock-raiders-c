@@ -25,3 +25,5 @@ public:
 };
 
 extern construction c_wall; //Wall construction.
+extern construction c_floor; //Floor construction.
+extern construction door; //Door construction.

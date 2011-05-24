@@ -1,6 +1,6 @@
 APP      = ORR
 CXX := clang++
-C := gcc
+C := clang
 
 SRCEXT   = cpp
 SRCDIR   = src

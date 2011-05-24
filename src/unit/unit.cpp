@@ -290,14 +290,16 @@ std::string bClassUnit::update()
 
 					while(!done)
 					{
-						if(i2 >= Job_Que.jobs.size())
+						if((unsigned)i2 >= Job_Que.jobs.size())
 						{
 							cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
 							out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
 							throw; //TODO: Make this throw a specific error.
 						}
 
-						if(&Job_Que.jobs[i2] == &*my_job)
+						//if(&Job_Que.jobs[i2] == my_job)
+						//if(my_job->compare(Job_Que.jobs[i2]))
+						if(Job_Que.jobs[i2].compare(*&my_job))
 						{
 							cout << "Done constructing!\n";
 							out_string << "Done constructing!\n";

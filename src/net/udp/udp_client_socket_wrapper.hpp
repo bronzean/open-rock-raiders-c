@@ -20,7 +20,7 @@ public:
 	client_udp()
 	{
 		client_disconnect = false;
-		buffer = "";
+		buffer = NULL;
 		activity = false;
 		socketSet = SDLNet_AllocSocketSet(1);
 		client_socket = NULL;

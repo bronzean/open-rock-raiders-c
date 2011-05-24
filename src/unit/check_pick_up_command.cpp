@@ -8,7 +8,7 @@
 bool bClassUnit::check_pick_up_command() //Checks if a pick up object command was issued.
 {
 	cout << "in check pick up function!\n";
-	int layer_offset = (num_row_objects * num_col_objects * layer); //Assign the layer offset.
+	//int layer_offset = (num_row_objects * num_col_objects * layer); //Assign the layer offset.
 	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && pick_up_stage == 0) //If the left mouse button was clicked and the pick up stage is 0 (Awaiting tile to be selected)
 	{
 		cout << "chose it!\n";

@@ -126,6 +126,7 @@ public:
 		hCost = cNode.hCost;
 		parent = cNode.parent;
 		thisTile = cNode.thisTile;
+		thisTile_id = 0;
 	}
 };
 
@@ -192,7 +193,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		//Find the ramp that is closest to 'current'. That's what the original comment says.
 		for(int i = (num_col_objects * num_row_objects) * (Map[current].layer); i < (num_col_objects * num_row_objects) * (abs(layerChange) + Map[current].layer); i++)
 		{
-			if(i < 0 || i > Map.size()) //
+			if((unsigned int)i < 0 || (unsigned int)i > Map.size()) //
 			{
 				//cout << "Problem at line 657\n"; //I commented this out becuase it's sort of obsolete... Replaced with the below.
 				cout << "Pathfinding failed at the if i < 0 || i > Map.size() check in the calculate best ramp function.\n";
@@ -243,6 +244,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		node n;// Create a node from the starting tile 'current'. That's what the original comment says.
 		//n.init(); //Now obsolete.
 		n.thisTile = &Map[current];
+		//n.thisTile = *Map[current];
 		n.calculateCostToTile(Map[destination]); //Destination is stored in 'destination'. That's what the original comment says.
 		n.calculateCosts();
 
@@ -251,7 +253,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		//n->calculateCostToTile(Map[destination]);
 		//n->calculateCosts();
 
-		if(current < 0 || current >= Map.size()) //Checks if it failed to assign the tile, or if the tile is out of bounds.
+		if((unsigned int)current < 0 || (unsigned int)current >= Map.size()) //Checks if it failed to assign the tile, or if the tile is out of bounds.
 		{
 			cerr << "Blargh pathfinding failed. Out of bounds or NULL.\n";
 			out_string << "Blargh pathfinding failed. Out of bounds or NULL.\n";
@@ -263,7 +265,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 			cout << "New node n: " << n.thisTile->ID << "\n"; //This line proves it ain't an invalid node...
 			//examineSet.push(n); //Add starting node to nodes to be checked. That's what the original comment says. //TODO: This line keeps crashing. Find out why.
 			examineSet.push_back(n);
+			examineSet[examineSet.size()-1].thisTile = n.thisTile;
 			allNodes.push_back(n); //Add this tile to the list of all tiles. That's what the original comment says.
+			allNodes[allNodes.size()-1].thisTile = n.thisTile;
 		}
 		catch(...)
 		{
@@ -276,7 +280,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		{
 			//n = examineSet.top(); //Get the best next node. That's what the original comment says.
 			n = examineSet.front();
-			doneSet.push_back(n); //Add it to the list of good nodes. That's what the original comment says. //TODO: Now this line crashes.
+			doneSet.push_back((const node)n); //Add it to the list of good nodes. That's what the original comment says. //TODO: Now this line crashes.
 			//examineSet.pop(); //Remove from list to be checked. That's what the original comment says.
 			examineSet.erase(examineSet.begin());
 
@@ -292,9 +296,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 			//int numOfNear = n->getNeighbours(near); //Find those neighbors. That's what the original comment says.
 	
 			int thisOrd = 0; //The index of the current tile in the allNodes list. That's what the original comment says.
-			for(int z = 0; z < allNodes.size(); z++) //Need to get a permanent reference to the node, in the allNodes list. That's what the original comment says.
+			for(int z = 0; (unsigned int)z < allNodes.size(); z++) //Need to get a permanent reference to the node, in the allNodes list. That's what the original comment says.
 			{
-				cout << n.thisTile->ID << "is what n.thisTile->ID is equal to.\n";
+				cout << n.thisTile->ID << " is what n.thisTile->ID is equal to.\n";
 				if(allNodes.at(z).thisTile->ID == n.thisTile->ID) //Original.
 				//if(allNodes.at(z).thisTile->ID == n->thisTile->ID) //This crashes.
 				//if(allNodes.at(z).thisTile->ID == n->thisTile->ID)
@@ -307,7 +311,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 			{
 				near[i].parent = thisOrd; //Set parent node relative to the allNodes list. That's what the original comment says.
 	
-				for(int z = 0; z < doneSet.size()-1; z++) //Make sure we havent already checked this one. That's what the original comment says.
+				for(int z = 0; (unsigned int)z < doneSet.size() - 1; z++) //Make sure we havent already checked this one. That's what the original comment says.
 				{
 					if(near[i].thisTile->ID == doneSet.at(z).thisTile->ID)
 					//if(near[i].thisTile->ID == doneSet->at(z)->thisTile->ID)
@@ -322,8 +326,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 					d = 0;
 					continue;
 				}
-	
-				allNodes.push_back(near[i]); //Add this node to the allNodes list, incase it is a parent. That's what the original comment says.
+
+				cout << near[i].thisTile->ID << " is what near[i].thisTile->ID is equal to.\n";
+				allNodes.push_back(near[i]); //Add this node to the allNodes list, incase it is a parent. That's what the original comment says. //TODO: Somethis this is null. When that happens, it crashes.
 				
 				near[i].calculateCostToTile(Map[destination]); //Calculate cost to get to 'destination from here. That's what the original comment says.
 				near[i].calculateGCost(allNodes); // Pass it the allNodes list, so it can get its parent node. That's what the original comment says.
@@ -343,7 +348,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 			{
 				thisMove.insert(thisMove.begin() + moveOffset, n.thisTile->ID); //Following the tree of parents, add them to the move_path. That's what the original comment says.
 				//thisMove.insert(thisMove.begin() + moveOffset, n->thisTile->ID);
-				if(n.parent < 0 || n.parent > allNodes.size())
+				if((unsigned int)n.parent < 0 || (unsigned int)n.parent > allNodes.size())
 				//if(n->parent < 0 || n->parent > allNodes.size())
 				{
 					cout << "Parent issue at line 766\n";

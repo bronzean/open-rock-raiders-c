@@ -106,7 +106,7 @@ void *ServerNetworkingUdp(void *param)
 
 				packet_out->data[0] = '\x02'; //Lets the client know this is a string. '\x02' signifies it's a string.
 
-				for(int i = 0; i < to_send.size(); i++)
+				for(int i = 0; (unsigned int)i < to_send.size(); i++)
 				{
 					packet_out->data[i+1] = (int)to_send[i]; //Convert message to int and store in packet_out.
 					//Doesn't start at 0 becuase the first byte lets the client know this is a string.
@@ -120,7 +120,7 @@ void *ServerNetworkingUdp(void *param)
 					cout << packet_out->data[i];
 				}*/
 
-				for(int i = 0; i < to_send.size(); i++)
+				for(int i = 0; (unsigned int)i < to_send.size(); i++)
 				{
 					cout << packet_out->data[i+1];
 				}
