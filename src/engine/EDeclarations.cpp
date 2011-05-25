@@ -129,3 +129,6 @@ bool threed_gfx = false; //Will the game be using 3D graphics?
 bool server = false; //Is the game running in server or client mode?
 
 int receivedByteCount = 0; //Variable keeping track of the size of incoming data.
+
+std::string choose_wall_location_str = "Choose the location of the wall tile, kind sir.";
+SDL_Surface* choose_wall_location_spr = NULL;

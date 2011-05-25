@@ -61,15 +61,15 @@ int main( int argc, char* argv[] )
 		return 1; //Since startup failed, exit the program.
 	}
 
-	if(load_sprites() == 1) //Loads some sprites.
-	{
-		std::cerr << "Failed to load sprites.\n"; //Let the user know that some sprites failed to load...
-		out_string << "Failed to load sprites.\n"; //Let the user know that some sprites failed to load...
-		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog); //Write out_string to the log.
-		fflush(GameLog); //Force it to write.
-		fclose(GameLog); //Close the log file.
-		return 1; //Since startup failed, exit the program.
-	}
+	//if(load_sprites() == 1) //Loads some sprites.
+	//{
+		//std::cerr << "Failed to load sprites.\n"; //Let the user know that some sprites failed to load...
+		//out_string << "Failed to load sprites.\n"; //Let the user know that some sprites failed to load...
+		//fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog); //Write out_string to the log.
+		//fflush(GameLog); //Force it to write.
+		//fclose(GameLog); //Close the log file.
+		//return 1; //Since startup failed, exit the program.
+	//}
 
 	GameState = Title; //Sets the gamestate to title.
 
@@ -322,6 +322,8 @@ int main( int argc, char* argv[] )
 	}
 
 	fclose(GameLog); //Close the gamelog.
+
+	SDL_FreeSurface(screen);
 
 	SDL_Quit(); //Exit SDL.
 

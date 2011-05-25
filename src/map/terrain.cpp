@@ -764,14 +764,14 @@ void tile::mine_to_ground(int i)
 					Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's shovel rate from this tile's health.
 					found = true;
 					cout << "Wall's new health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1]<< "\n";
-					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1); //Draw the "Whee, mining!" message.
+					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!" message.
 				}
 			}
 		}
 	}
 	else
 	{
-		Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1); //Draw the "Whee, mining!"
+		Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!"
 	}
 }
 
@@ -859,7 +859,7 @@ void tile::chop_to_ground(int i)
 					Map[unitlist[i].mine_tile_id].health[0] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's drill rate from this tile's health. //TODO: Remember when going through and changing mining that this needs to be changed too.
 					found = true;
 					cout << "Tree's new health: " << Map[unitlist[i].mine_tile_id].health[0] << "\n"; //TODO: Remember when going through and changing chopping that this needs to be changed too.
-					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].chopping_message_spr, 1); //Draw the "Whee, mining!" message.
+					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].chopping_message_spr, 1, false); //Draw the "Whee, mining!" message.
 				}
 			}
 		}
@@ -869,7 +869,7 @@ void tile::chop_to_ground(int i)
 void tile::rubble_to_ground(int i)
 {
 
-	Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].shovelling_message_spr, 1); //Draw the "I'm shovelling" message.
+	Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].shovelling_message_spr, 1, false); //Draw the "I'm shovelling" message.
 
 	if(!paused)
 	{

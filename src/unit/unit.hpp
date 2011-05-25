@@ -123,6 +123,10 @@ public:
 	std::string shovelling_message_str; //A message that is displayed while the unit is shovelling.
 	SDL_Surface *shovelling_message_spr; //A message that is displayed while the unit is shovelling.
 	bool animation_playing; //Is the unit currently playing an animation?
+	std::string constructing_message_str; //A messaged that is displayed while the unit is constructing something.
+	SDL_Surface *constructing_message_spr; //A messaged that is displayed while the unit is constructing something.
+	std::string construct_walking_message_str;
+	SDL_Surface *construct_walking_message_spr;
 
 	job *my_job; //The current job this guy is doing.
 	std::string job_state; //What is the unit currently doing?

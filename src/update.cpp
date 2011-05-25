@@ -69,7 +69,13 @@ int update()
 
 	if(construction_wall_location_select && !server)
 	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
+		//SDL_Surface *temp_spr = NULL;
+		//temp_spr = TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white);
+		//Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, temp_spr , 0); //Adds a message to be drawn.
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 0, false);
+		//draw(PCamera->wx, PCamera->wy, temp_spr, screen);
+		//Draw_Message_Handler.draw_what_sprite_list[Draw_Message_Handler.draw_what_sprite_list.size() - 1] = temp_spr;
+		//SDL_FreeSurface(temp_spr);
 	}
 
 	while(SDL_PollEvent(&event_struct))
@@ -118,7 +124,7 @@ int update()
 						{
 							std::cout << "\nConstruct wall button clicked.\n";
 
-							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white), 0); //Adds a message to be drawn.
+							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 0, false); //Adds a message to be drawn.
 							allow_unit_selection = false; //Since the cosntruct wall button was clicked, disable selection of units and whatnot.
 							construction_wall_location_select = true; //Let the game know the user is going to select the location for a construction.
 						}
@@ -521,7 +527,7 @@ int update()
 			}
 			if(!Parser.parse_map_layer(map_folder_path.c_str())) //Parse the map's actual files.
 			{
-			gameover = true; //It failed, so quit.
+				gameover = true; //It failed, so quit.
 			}
 			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 			fflush(GameLog);

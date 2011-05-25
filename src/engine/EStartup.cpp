@@ -102,16 +102,14 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	cout << "Setting global teleport button's variables.\n";
 	//Interface.g_teleport_button.sprite = img_load3(teleport_button_path); //Load the sprite.
 	//img_load_safe(teleport_button_path, *Interface.g_teleport_button.sprite); //Load the sprite.
-	img_load_safe(teleport_button_path, &Interface.g_teleport_button.sprite); //Load the sprite.
-	if(!Interface.g_teleport_button.sprite)
+	if(!img_load_safe(teleport_button_path, &Interface.g_teleport_button.sprite)) //Load the sprite.
 	{
 		cout << "Failed loading teleport button sprite.\n";
 		return false;
 	}
 	//Interface.g_teleport_button.d_sprite = img_load3(no_teleport_button_path); //Load the disabled button's sprites.
 	//img_load_safe(no_teleport_button_path, *Interface.g_teleport_button.d_sprite); //Load the disabled button's sprites.
-	img_load_safe(no_teleport_button_path, &Interface.g_teleport_button.d_sprite); //Load the disabled button's sprites.
-	if(!Interface.g_teleport_button.d_sprite)
+	if(!img_load_safe(no_teleport_button_path, &Interface.g_teleport_button.d_sprite)) //Load the disabled button's sprites.
 	{
 		cout << "Failed loading teleport button disabled sprite.\n";
 		return false;
@@ -124,8 +122,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	cout << "Loading title screen's sprite.\n";
 	//title_screen = img_load3(title_screen_path); //Load the title screen.
 	//img_load_safe(title_screen_path, *title_screen);
-	img_load_safe(title_screen_path, &title_screen);
-	if(!title_screen)
+	if(!img_load_safe(title_screen_path, &title_screen))
 	{
 		cout << "Failed loading title screen sprite.\n";
 		return false;
@@ -135,13 +132,20 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 
 	cout << "Setting the \"Construct Wall\" button's variables.\n";
 	SDL_Surface* temp_spr = NULL; //Temporary sprite holding the construct wall button's sprite.
-	temp_spr = img_load3("data/resource/interface/button/construction/build_wall.png");
+	//temp_spr = img_load3("data/resource/interface/button/construction/build_wall.png");
+	if(!img_load_safe("data/resource/interface/button/construction/build_wall.png", &temp_spr))
+	{
+		cout << "Failed loading wall construction sprite.\n";
+		return false;
+	}
 	Interface.construct_wall_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct wall button.
 	Interface.construct_wall_button.state = 1; //Make it start out enabled!
 	Interface.construct_wall_button.x1 = 550; //TODO: Make this be loaded from the interface cfg.
 	Interface.construct_wall_button.y1 = 100; //TODO: Make this be loaded from the interface cfg.
 	Interface.construct_wall_button.x2 = Interface.construct_wall_button.x1 + Interface.construct_wall_button.sprite->w; //Set the construct wall button's bottom right corner's x.
 	Interface.construct_wall_button.y2 = Interface.construct_wall_button.y1 + Interface.construct_wall_button.sprite->h; //Set the construct wall button's bottom right corner's y.
+
+	choose_wall_location_spr = TTF_RenderText_Solid(font1, choose_wall_location_str.c_str(), c_white);
 
 	//Everything initialized fine.
 	return true;

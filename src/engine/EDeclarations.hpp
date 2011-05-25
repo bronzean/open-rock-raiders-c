@@ -178,3 +178,6 @@ static TCPsocket serverSocket;
 static IPaddress serverIP;
 
 extern int receivedByteCount; //Variable keeping track of the size of incoming data.
+
+extern std::string choose_wall_location_str;
+extern SDL_Surface* choose_wall_location_spr;

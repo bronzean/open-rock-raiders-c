@@ -34,18 +34,35 @@ class construction;
 
 class job_que;
 
+class message;
 class draw_message_handler //Handles all the messages to be drawn.
 {
 public:
-	std::vector<int> world_x_list; //Contains a list of all the messages' world x.
-	std::vector<int> world_y_list; //Contains a list of all the messages' world y.
-	std::vector<int> layer_list; //Contains a list of all the messages' layer.
-	std::vector<SDL_Surface*> draw_what_sprite_list; //Contains a list of all the messages themselves.
-	std::vector<int> message_duration_frames_list; //Contains a list specifying how many frames each message lasts.
-	std::vector<int>::iterator list_iterator; //Used for looping through all the messages to be drawn.
+	//std::vector<int> world_x_list; //Contains a list of all the messages' world x.
+	//std::vector<int> world_y_list; //Contains a list of all the messages' world y.
+	//std::vector<int> layer_list; //Contains a list of all the messages' layer.
+	//std::vector<SDL_Surface*> draw_what_sprite_list; //Contains a list of all the messages themselves.
+	//std::vector<int> message_duration_frames_list; //Contains a list specifying how many frames each message lasts.
+	//std::vector<int>::iterator list_iterator; //Used for looping through all the messages to be drawn.
+	std::vector<message> messages; //Contains all the messages.
+	std::vector<message>::iterator _iterator; //Used for looping through all the messages to be drawn.
 
-	void add_message(int wx, int wy, int layer, SDL_Surface *to_draw_spr, int message_duration); //Adds a message to be drawn.
+	void add_message(int wx, int wy, int layer, SDL_Surface *to_draw_spr, int message_duration, bool global); //Adds a message to be drawn.
+	void add_message2(int wx, int wy, int layer, SDL_Surface **to_draw_spr, int message_duration, bool global); //Adds a message to be drawn.
+	void add_message3(int wx, int wy, int layer, SDL_Surface to_draw_spr, int message_duration, bool global); //Adds a message to be drawn.
 	void draw_all(); //Draw everything it's supposed to draw. This is called at the end of the update function, so that the message is drawn on top of everything else.
+};
+
+class message //A message used by the draw_message_handler.
+{
+public:
+	int world_x, world_y, layer; //The x, y, and layer of the message.
+	SDL_Surface* sprite; //The sprite of the message.
+	int message_duration; //The duration of the message.
+	bool global; //Is the message always displayed?
+
+	message() { world_x = 0; world_y = 0; layer = 0; message_duration = 0; sprite = NULL; global = false;} //Constructor.
+	~message() { }
 };
 
 

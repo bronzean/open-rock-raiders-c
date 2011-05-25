@@ -77,6 +77,10 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	animation_playing = false;
 	job_state = "idle";
 	construct_rate = 1;
+	constructing_message_str = "Bob the builder!";
+	constructing_message_spr = NULL;
+	construct_walking_message_str = "Here I come my aunt cinnamon!";
+	construct_walking_message_spr = NULL;
 }
 
 //Initialize a new unit type.
@@ -99,6 +103,8 @@ void bClassUnit::init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface
 	select_tree_to_chop_spr = TTF_RenderText_Solid(font1, select_tree_to_chop_str.c_str(), c_white);
 	shovelling_message_spr = TTF_RenderText_Solid(font2, shovelling_message_str.c_str(), c_green);
 	select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, select_rubble_to_shovel_str.c_str(), c_white);
+	constructing_message_spr = TTF_RenderText_Solid(font1, constructing_message_str.c_str(), c_green);
+	construct_walking_message_spr = TTF_RenderText_Solid(font1, construct_walking_message_str.c_str(), c_green);
 }
 
 void bClassUnit::draw_sprite() //Draw the unit's sprite.
@@ -147,7 +153,8 @@ std::string bClassUnit::update()
 	{
 		if(mining_mode) //If the unit is awaiting the user to tell it which wall to mine.
 		{
-			Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1); //Draw the "Whee, mining!" message.
+			//Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1); //Draw the "Whee, mining!" message.
+			Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 0, false);
 			check_mine_command(); //Check if the player is ordering this unit to mine walls.
 		}
 
@@ -272,7 +279,8 @@ std::string bClassUnit::update()
 		{
 			try
 			{
-				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
+				//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
+				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 0, false); //Draw the "I'm bob the builder!" message. //TODO: Make this stl_ttf thing pre-rendered.
 
 
 				my_job->construction_health -= construct_rate;
@@ -333,9 +341,9 @@ std::string bClassUnit::update()
 		}
 		else //The unit hasn't yet reached the destination.
 		{
-			SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
-			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, temp_surf, 0); //Draw the "I'm bob the builder!" message.
-			SDL_FreeSurface(temp_surf);
+			//SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
+			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
+			//SDL_FreeSurface(temp_surf);
 			//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
 			/*
 			if(can't_move_off_this_tile)

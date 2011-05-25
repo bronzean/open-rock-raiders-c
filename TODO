@@ -179,6 +179,10 @@ run_keycheck_thread()
 
 117. Create a "lobby" screen (to replace the current game menu) to set options.
 
+118. Write my own sdl_ttf sort of thing.
+
+119. Create a global cfg parsing function that reads all the values into a vector of value classes then returns that to the caller for the caller to use it for whatever. Make sure to add a "verbose" option.
+
 
 
 --Done--

@@ -44,36 +44,55 @@ void interface::draw_ui()
 	}
 }
 
-void draw_message_handler::add_message(int wx, int wy, int layer, SDL_Surface *to_draw_spr, int message_duration) //Adds a message to be drawn.
+void draw_message_handler::add_message(int wx, int wy, int layer, SDL_Surface *to_draw_spr, int message_duration, bool global) //Adds a message to be drawn.
 {
-	world_x_list.push_back(wx); //Store the message's world x.
-	world_y_list.push_back(wy); //Store the message's world y.
-	draw_what_sprite_list.push_back(to_draw_spr); //Store the message's sprite.
-	message_duration_frames_list.push_back(message_duration); //Store the message's duration.
-	layer_list.push_back(layer);
-	//SDL_FreeSurface(to_draw_spr); //TODO: Make this work. If it is needed.
+	message new_message; //The new message.
+	new_message.world_x = wx; //Store the message's world x.
+	new_message.world_y = wy; //Store the message's world y.
+	new_message.layer = layer; //Store the message's layer.
+	new_message.global = global; //Stores whether or not the message is global.
+	new_message.sprite = to_draw_spr; //Store the message's sprite.
+	new_message.message_duration = message_duration; //Store the message's duration.
+	messages.push_back(new_message); //Finally add the new message to the message vector.
+}
+
+void draw_message_handler::add_message2(int wx, int wy, int layer, SDL_Surface **to_draw_spr, int message_duration, bool global) //Adds a message to be drawn.
+{
+	message new_message; //The new message.
+	new_message.world_x = wx; //Store the message's world x.
+	new_message.world_y = wy; //Store the message's world y.
+	new_message.layer = layer; //Store the message's layer.
+	new_message.global = global; //Stores whether or not the message is global.
+	new_message.sprite = *to_draw_spr; //Store the message's sprite.
+	new_message.message_duration = message_duration; //Store the message's duration.
+	messages.push_back(new_message); //Finally add the new message to the message vector.
+}
+
+void add_message3(int wx, int wy, int layer, SDL_Surface to_draw_spr, int message_duration, bool global) //Adds a message to be drawn.
+{
 }
 
 void draw_message_handler::draw_all() //Draw everything it's supposed to draw. This is called at the end of the update function, so that the message is drawn on top of everything else.
 {
-
 	int counter = 0; //Used in the below loop.
-	for(list_iterator = world_x_list.begin(); list_iterator < world_x_list.end(); list_iterator++, counter++)
+	for(_iterator = messages.begin(); _iterator < messages.end(); _iterator++, counter++)
 	{
-		
-		if(layer_list[counter] == PCamera->layer && world_x_list[counter] + draw_what_sprite_list[counter]->w >= PCamera->wx && world_x_list[counter] <= (PCamera->wx + SCREEN_WIDTH) && world_y_list[counter] + draw_what_sprite_list[counter]->h >= PCamera->wy && world_y_list[counter] <= (PCamera->wy + SCREEN_HEIGHT)) //Check if the message is onscreen.
+		if(!messages[counter].global)
 		{
-			draw(world_x_list[counter] - (PCamera->wx), world_y_list[counter] - (PCamera->wy), draw_what_sprite_list[counter], screen); //Draw the message.
+			if(messages[counter].layer == PCamera->layer && messages[counter].world_x + messages[counter].sprite->w >= PCamera->wx && messages[counter].world_x <= (PCamera->wx + SCREEN_WIDTH) && messages[counter].world_y + messages[counter].sprite->h >= PCamera->wy && messages[counter].world_y <= (PCamera->wy + SCREEN_HEIGHT)) //Check if the message is onscreen.
+			{
+				draw(messages[counter].world_x - (PCamera->wx), messages[counter].world_y - (PCamera->wy), messages[counter].sprite, screen); //Draw the message.
+			}
+		}
+		else
+		{
+			draw(messages[counter].world_x, messages[counter].world_y, messages[counter].sprite, screen); //Draw the message.
 		}
 
-		message_duration_frames_list[counter]--; //"Tick the timer".
-		if(message_duration_frames_list[counter] <= 0) //If the message's duration has expired...Remove it from the list.
+		messages[counter].message_duration--; //"Tick the timer".
+		if(messages[counter].message_duration <= 0) //If the message's duration has expired...Remove it from the list.
 		{
-			world_x_list.erase(world_x_list.begin() + counter);
-			world_y_list.erase(world_y_list.begin() + counter);
-			layer_list.erase(layer_list.begin() + counter);
-			draw_what_sprite_list.erase(draw_what_sprite_list.begin() + counter);
-			message_duration_frames_list.erase(message_duration_frames_list.begin() + counter);
+			messages.erase(messages.begin() + counter);
 		}
 	}
 }
