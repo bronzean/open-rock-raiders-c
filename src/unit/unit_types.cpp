@@ -297,9 +297,19 @@ bool unit_type_manager::load_unit(string folderpath)
 
 	//Time to load the unit's sprite.
 	filepath = folderpath + "/sprite.png";//The path to the sprite...
-	unit_sprite = img_load3(filepath); //Load the sprite.
+	//unit_sprite = img_load3(filepath); //Load the sprite.
+	if(!img_load_safe(filepath, &unit_sprite))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+	}
 	filepath = folderpath + "/sprite_select.png"; //The path to the selected sprite.
-	unit_sprite_select = img_load(filepath); //Load the selected sprite.
+	//unit_sprite_select = img_load(filepath); //Load the selected sprite.
+	if(!img_load_safe(filepath, &unit_sprite_select))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+	}
 
 	new_unit.init(unit_type, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
 	unit_list.push_back(new_unit);

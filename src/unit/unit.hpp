@@ -214,4 +214,26 @@ public:
 	bool load_types_from_file(std::string filepath); //Loads all the unit types from the files...
 	bool load_unit(std::string folderpath); //Adds a new type with the data it got out of the specified folder.
 	bClassUnit get_by_id(int ID); //Returns a copy of the unit type that has the specified ID.
+
+	unit_type_manager() { } //Constructor.
+	~unit_type_manager()
+	{
+		for(int i = 0; i < unit_list.size(); i++) //Free all the sprites.
+		{
+			std::cout << "Freeing unit types' sprites.\n";
+			SDL_FreeSurface(unit_list[i].sprite);
+			SDL_FreeSurface(unit_list[i].sprite_select);
+			SDL_FreeSurface(unit_list[i].carrying_message_sprite);
+			SDL_FreeSurface(unit_list[i].select_wall_to_mine_spr);
+			SDL_FreeSurface(unit_list[i].mining_message_spr);
+			SDL_FreeSurface(unit_list[i].select_object_to_pick_up_spr);
+			SDL_FreeSurface(unit_list[i].chopping_message_spr);
+			SDL_FreeSurface(unit_list[i].select_tree_to_chop_spr);
+			SDL_FreeSurface(unit_list[i].select_rubble_to_shovel_spr);
+			SDL_FreeSurface(unit_list[i].shovelling_message_spr);
+			SDL_FreeSurface(unit_list[i].constructing_message_spr);
+			SDL_FreeSurface(unit_list[i].construct_walking_message_spr);
+		}
+	}
+	
 };
