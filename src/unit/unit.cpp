@@ -155,7 +155,7 @@ std::string bClassUnit::update()
 		if(mining_mode) //If the unit is awaiting the user to tell it which wall to mine.
 		{
 			//Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1); //Draw the "Whee, mining!" message.
-			Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 0, false);
+			Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1, false);
 			check_mine_command(); //Check if the player is ordering this unit to mine walls.
 		}
 
@@ -281,7 +281,7 @@ std::string bClassUnit::update()
 			try
 			{
 				//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
-				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 0, false); //Draw the "I'm bob the builder!" message. //TODO: Make this stl_ttf thing pre-rendered.
+				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm bob the builder!" message. //TODO: Make this stl_ttf thing pre-rendered.
 
 
 				my_job->construction_health -= construct_rate;
@@ -299,11 +299,12 @@ std::string bClassUnit::update()
 
 					while(!done)
 					{
-						if((unsigned)i2 >= Job_Que.jobs.size())
+						//if((unsigned)i2 >= Job_Que.jobs.size())
+						if(i2 >= Job_Que.jobs.size())
 						{
 							cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
 							out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
-							throw; //TODO: Make this throw a specific error.
+							throw "FATAL: ERROR CODE 2"; //TODO: Make this throw a specific error.
 						}
 
 						//if(&Job_Que.jobs[i2] == my_job)
@@ -320,19 +321,26 @@ std::string bClassUnit::update()
 
 							Job_Que.jobs.erase(Job_Que.jobs.begin() + i2); //Remove this job from the job que.
 							done = true;
+
+							my_job = NULL;
+
+							job_state = "idle";
 						}
 
 						i2++;
 						iterator2++;
 					}
-
-					my_job = NULL;
-
-					job_state = "idle";
 				}
 			}
-			catch(char* error)
+			catch(string error)
 			{
+				cout << "Blarg it failed.\n";
+				return "";
+			}
+			catch(char const *error)
+			{
+				cout << "Blarg it failed.\n";
+				return "";
 			}
 			catch(...) //Oops, something borked. General error. Abort!
 			{
@@ -344,7 +352,7 @@ std::string bClassUnit::update()
 		{
 			//SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
 			//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
-			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
+			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
 			//SDL_FreeSurface(temp_surf);
 			//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
 			/*

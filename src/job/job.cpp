@@ -37,16 +37,18 @@ bool job::compare(job *JOB)
 
 	cout << "In compare.\n";
 	cout << "this->type = " << type << " and JOB->type = " << (string)_job->type << "\n";
-	cout << "this->construction_type = " << construction_type << "and JOB->construction_type = " << (string)_job->construction_type << "\n";
+	cout << "this->construction_type = " << construction_type << " and JOB->construction_type = " << (string)_job->construction_type << "\n";
 	cout << "this->tasked_tile->ID = " << tasked_tile->ID << " and JOB->tasked_tile->ID = " << _job->tasked_tile->ID << "\n";
 	cout << "this->taken = " << taken << " and JOB->taken = " << _job->taken << "\n";
 	cout << "this->construction_health = " << construction_health << " and JOB->construction_health = " << _job->construction_health << "\n";
 
-	if(!this->type.compare(JOB->type)) good = false;
-	else if(!this->construction_type.compare(JOB->construction_type)) good = false;
-	else if(this->tasked_tile != JOB->tasked_tile) good = false;
-	else if(this->taken != JOB->taken) good = false;
-	else if(this->construction_health != JOB->construction_health) good = false;
+	//if(!type.compare((string)_job->type)) return false;
+	//if(!construction_type.compare((string)_job->construction_type)) return false;
+	if(type != (string)_job->type) { cout << "Types not matching.\n"; return false; }
+	if(construction_type != (string)_job->construction_type) { cout << "Construction types not matching.\n"; return false; }
+	if(tasked_tile != _job->tasked_tile) { cout << "Tasked tiles not matching.\n"; return false; }
+	if(taken != _job->taken) { cout << "Takens not matching.\n"; return false; }
+	if(construction_health != _job->construction_health) { cout << "Construction healths not matching.\n"; return false; }
 
-	return good;
+	return true;
 }

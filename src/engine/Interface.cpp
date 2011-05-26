@@ -77,22 +77,25 @@ void draw_message_handler::draw_all() //Draw everything it's supposed to draw. T
 	int counter = 0; //Used in the below loop.
 	for(_iterator = messages.begin(); _iterator < messages.end(); _iterator++, counter++)
 	{
-		if(!messages[counter].global)
-		{
-			if(messages[counter].layer == PCamera->layer && messages[counter].world_x + messages[counter].sprite->w >= PCamera->wx && messages[counter].world_x <= (PCamera->wx + SCREEN_WIDTH) && messages[counter].world_y + messages[counter].sprite->h >= PCamera->wy && messages[counter].world_y <= (PCamera->wy + SCREEN_HEIGHT)) //Check if the message is onscreen.
-			{
-				draw(messages[counter].world_x - (PCamera->wx), messages[counter].world_y - (PCamera->wy), messages[counter].sprite, screen); //Draw the message.
-			}
-		}
-		else
-		{
-			draw(messages[counter].world_x, messages[counter].world_y, messages[counter].sprite, screen); //Draw the message.
-		}
-
-		messages[counter].message_duration--; //"Tick the timer".
 		if(messages[counter].message_duration <= 0) //If the message's duration has expired...Remove it from the list.
 		{
 			messages.erase(messages.begin() + counter);
+		}
+		else
+		{
+			if(!messages[counter].global)
+			{
+				if(messages[counter].layer == PCamera->layer && messages[counter].world_x + messages[counter].sprite->w >= PCamera->wx && messages[counter].world_x <= (PCamera->wx + SCREEN_WIDTH) && messages[counter].world_y + messages[counter].sprite->h >= PCamera->wy && messages[counter].world_y <= (PCamera->wy + SCREEN_HEIGHT)) //Check if the message is onscreen.
+				{
+					draw(messages[counter].world_x - (PCamera->wx), messages[counter].world_y - (PCamera->wy), messages[counter].sprite, screen); //Draw the message.
+				}
+			}
+			else
+			{
+				draw(messages[counter].world_x, messages[counter].world_y, messages[counter].sprite, screen); //Draw the message.
+			}
+
+			messages[counter].message_duration--; //"Tick the timer".
 		}
 	}
 }
