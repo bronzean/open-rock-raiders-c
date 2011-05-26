@@ -1,7 +1,6 @@
 NOTE: As you will see, some of the variable names don't make sense. That's becuase changing them to something that makes sense requires more code. I'm too lazy to do that.
 
 [NAME](Tree)
-[ID](2) Must be unique...
 [TREE](TRUE)
 [GENERATE_ORE_ON_MINE](TRUE) Wood is actually a type of ore!
 [ORE_TYPE](1)

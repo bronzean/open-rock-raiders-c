@@ -48,7 +48,7 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	allow_move = true;
 	frames_since_last_move = 0;
 	move_speed = 0;
-	type = 0;
+	type_id = 0;
 	need_path = false;
 	allow_deselect = true;
 	pick_up_on_reach_goal = false;
@@ -94,7 +94,7 @@ void bClassUnit::init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface
 	height = SPRITE->h;
 	selectable = SELECTABLE;
 	move_speed = MOVE_SPEED;
-	type = ID;
+	type_id = ID;
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
 	mining_message_spr = TTF_RenderText_Solid(font2, mining_message_str.c_str(), c_green);
@@ -342,6 +342,7 @@ std::string bClassUnit::update()
 		else //The unit hasn't yet reached the destination.
 		{
 			//SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
+			//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
 			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
 			//SDL_FreeSurface(temp_surf);
 			//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
@@ -398,26 +399,6 @@ std::string bClassUnit::update()
 	return update_return; //Return. update_return stores various information for the calling function to process.
 }
 
-void bClassUnit::set_sprite(std::string sprite_name) //Obsolete?
-{
-	if(color_key)
-	{
-		sprite = img_load2("data/unit/" + name + "/resource/" + name + spr_extend);
-		sprite_select = img_load2("data/unit/" + name + "/resource/select_" + name + spr_extend);
-	}
-	else
-	{
-		sprite = img_load3("data/unit/" + name + "/resource/" + name + spr_extend);
-		sprite_select = img_load3("data/unit/" + name + "/resource/select_" + name + spr_extend);
-	}
-	if(&sprite == NULL)
-	{
-		std::cout << "\n" << name << "_object.sprite == NULL\n";
-	}
-	width = sprite->w;
-	height = sprite->h;
-}
-
 
 
 void bClassUnit::set_pos(int WORLD_X, int WORLD_Y, int WORLD_Z) //Set's the unit's position.
@@ -455,6 +436,7 @@ int bClassUnit::get_height() //Returns the height of the unit.
 
 void bClassUnit::select() //Checks if the player selected/deselected the unit.
 {
+
 	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && mining_mode == false && selectable == true && allow_deselect == true && allow_unit_selection) //If the left mouse button was pressed and this unit can be selected...
 	{
 		if(event_struct.button.x + PCamera->wx >= wx && event_struct.button.x + PCamera->wx <= wx + width && event_struct.button.y + PCamera->wy >= wy && event_struct.button.y + PCamera->wy <= wy + height && mining_mode != true && shovel_mode != true /*&& leftclick_tile_id != -1*/) //Checks if the mouse clicked on this unit.

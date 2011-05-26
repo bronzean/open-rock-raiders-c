@@ -3,7 +3,7 @@
 
 tile::tile() //Constructor. Initialize an empty tile.
 {
-	type = 0;
+	type_id = 0;
 	sprite = NULL;
 	name = "";
 	wx = 0;
@@ -40,7 +40,7 @@ tile::tile() //Constructor. Initialize an empty tile.
 
 void tile::init(int ID, SDL_Surface *SPRITE, std::string NAME, bool WALL, bool RAMP, bool UP_RAMP, bool DOWN_RAMP, bool SELF_SUPPORTING, int ORE_TYPE, bool CAN_MINE, int MINIMUMN_MINING_POWER, bool AIR, bool TURN_TO_GROUND, int GROUND_TYPE, bool GENERATE_ORE_ON_MINE, int NUM_ORE_TO_GENERATE, bool TREE, bool RUBBLE)
 {
-	type = ID;
+	type_id = ID;
 	sprite = SPRITE;
 	name = NAME;
 	width = SPRITE->w;
@@ -716,7 +716,7 @@ void tile::mine_to_ground(int i)
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[unitlist[i].mine_tile_id]; //I guess this has to be reset for some weird reason.
 			}
 
-			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type << "\n\n";
+			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
 			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
 		}
@@ -809,7 +809,7 @@ void tile::chop_to_ground(int i)
 			new_tile.energy_crystal_list = Map[unitlist[i].mine_tile_id].energy_crystal_list; //Copy over this tile's energy crystal list.
 			Map[unitlist[i].mine_tile_id] = new_tile;
 
-			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type << "\n\n";
+			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
 
 			cout << "Done chopping!\n";	
@@ -913,11 +913,11 @@ void tile::rubble_to_ground(int i)
 			//TODO: Add the new ore into the ore_on_map thing.
 			for(i2 = 0; iterator2 < new_tile.orelist.end(); iterator++, i2++)
 			{
-				ore_on_map.push_back(&Map[ID].orelist[Map[ID].orelist.size()]); //Add the current ore into the orelist.
+				ore_on_map.push_back(&Map[ID].orelist[Map[ID].orelist.size() - 1]); //Add the current ore into the orelist. //TODO: Sometimes this randomally fills the
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[ID]; //I guess this has to be reset for some weird reason.
 			}
 
-			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type << "\n\n";
+			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
 			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
 		}
@@ -946,7 +946,7 @@ void tile::rubble_to_ground(int i)
 				new_ore.containing_tile = this; //Let the newly created ore know which tile it's sitting on.
 				new_ore.containing_tile->ID = ID;
 				orelist.push_back(new_ore); //Add the new ore to the orelist.
-				ore_on_map.push_back(&orelist[orelist.size()]); //Add the ore that was just created into the ore one map list.
+				ore_on_map.push_back(&orelist[orelist.size()]); //Add the ore that was just created into the ore one map list. RAM...
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
 
 				cout << "Generating ore with type: " << ore_gen_ids[0] << "\n"; //Debugging output.

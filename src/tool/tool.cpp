@@ -128,6 +128,8 @@ bool tool_manager::load_types_from_file(std::string filepath) //Loads all the to
 						num_command += temp;
 					}
 				}
+				tool_list[tool_list.size() - 1].type_id = atoi(command.c_str()); //Assign the tool type's ID.
+				cout << "ID of new tool: " << command << ". Confirmation: " << tool_list[tool_list.size() - 1].type_id << "\n";
 			}
 			check_command = false;
 			command = "";
@@ -231,32 +233,32 @@ bool tool_manager::load_tools(string folderpath)
 					}
 				}
 			}
-			else if(command == "ID") //Found the entry that specifies the tool's ID.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						tool_id = atoi(num_command.c_str()); //Assign the tool's ID.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
+//			else if(command == "ID") //Found the entry that specifies the tool's ID.
+//			{
+//				bool quit = false; //Controlls the loop below.
+//				bool start = false; //Start recording the parameter?
+//
+//				while(c != EOF && quit == false)
+//				{
+//					c = getc(file);
+//					temp = (char) c;
+//
+//					if(temp == '\n' || temp == ')')
+//					{
+//						start = false;
+//						quit = true;
+//						tool_id = atoi(num_command.c_str()); //Assign the tool's ID.
+//					}
+//					else if(temp == '(')
+//					{
+//						start = true;
+//					}
+//					else if(start)
+//					{
+//						num_command += temp;
+//					}
+//				}
+//			}
 			else if(command == "IS_TOOL") //Found the entry that specifies whether or not the tool is a tool.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -762,7 +764,13 @@ bool tool_manager::load_tools(string folderpath)
 
 	//Time to load the tool's sprite.
 	filepath = folderpath + "/icon.png";//The path to the icon...
-	tool_icon_sprite = img_load3(filepath); //Load the icon.
+	//tool_icon_sprite = img_load3(filepath); //Load the icon.
+	if(!img_load_safe(filepath, &tool_icon_sprite)) //Load the sprite.
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		return false;
+	}
 
 	new_tool.init(tool_id, tool_is_tool, tool_is_weapon, tool_can_drill_wall, tool_can_drill_ground, tool_can_clear_rubble, tool_default_damage, tool_jetpack, tool_jetpack_duration, tool_icon_sprite, tool_drill_rate, tool_drill_power, tool_can_chop_tree, tool_default_rubble_damage, tool_shovel_rate, tool_shovel_power); //Initialize the new tool.
 	tool_list.push_back(new_tool);

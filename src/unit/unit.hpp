@@ -96,7 +96,7 @@ public:
 	int frames_since_last_move; //The number of frames that have passed since the last move.
 	std::string mining_message_str; //A message that is displayed while the unit is mining.
 	SDL_Surface *mining_message_spr; //A message that is displayed while the unit is mining.
-	int type; //The unit's type.
+	int type_id; //The unit's type.
 	bool allow_deselect; //Allow the unit to be deselected?
 	bool pick_up_on_reach_goal; //Is the unit moving somewhere to pick up something?
 	bool pick_up_mode; //Is the unit waiting for the player to specify what it's going to be picking up?
@@ -176,7 +176,7 @@ public:
 	void init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface *SPRITE_SELECT, bool SELECTABLE, int MOVE_SPEED, int MAX_HEALTH); //Initialize a new unit type.
 	bool load_settings(); //Load the settings from the unit's cfg
 	std::string update(); //Update the object. It returns a string to let the calling tile know stuff.
-	void set_sprite(std::string sprite_name); //Set the object's sprite.
+	//void set_sprite(std::string sprite_name); //Set the object's sprite. //Obsolete.
 	void draw_sprite(); //Draw the sprite.
 	void draw_inventory(); //Lets the player know what tools this guy is carrying.
 
@@ -218,9 +218,9 @@ public:
 	unit_type_manager() { } //Constructor.
 	~unit_type_manager()
 	{
+		std::cout << "Freeing unit types' sprites.\n";
 		for(int i = 0; i < unit_list.size(); i++) //Free all the sprites.
 		{
-			std::cout << "Freeing unit types' sprites.\n";
 			SDL_FreeSurface(unit_list[i].sprite);
 			SDL_FreeSurface(unit_list[i].sprite_select);
 			SDL_FreeSurface(unit_list[i].carrying_message_sprite);

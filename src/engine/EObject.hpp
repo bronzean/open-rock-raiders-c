@@ -77,7 +77,7 @@ public:
 	void init(); //Initialize everything.
 
 
-static job_que Job_Que; //The job que!
+	//static job_que Job_Que; //The job que!
 	bool load_settings(std::string cfg_path); //Load all the animation's properties/settings.
 
 	void proceed_animation(); //Proceeds the animation by one frame.

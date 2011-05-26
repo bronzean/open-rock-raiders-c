@@ -135,7 +135,8 @@ bool animation::load_settings(std::string cfg_path) //Load all the animation's p
 		SDL_Surface *new_image = NULL; //The image that's being loaded is first stored here.
 		frames_spr.push_back(new_image); //Add this new image that was just loaded to the animation's sprite list.
 
-		frames_spr[frames_spr.size() - 1] = img_load3(image_path); //Load the new image.
+		//frames_spr[frames_spr.size() - 1] = img_load3(image_path); //Load the new image.
+		img_load_safe(image_path, &frames_spr[frames_spr.size() - 1]); //Load the new image.
 		if(frames_spr[frames_spr.size() - 1] == NULL) //Check if it failed to load the image...
 		{
 			//It failed to load the image. Let the game and player know that.

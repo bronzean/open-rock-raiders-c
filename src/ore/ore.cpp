@@ -103,6 +103,8 @@ bool ore_manager::load_types_from_file(std::string filepath) //Loads all the ore
 						num_command += temp;
 					}
 				}
+				ore_list[ore_list.size() - 1].type_id = atoi(command.c_str()); //Assign the ore type's ID.
+				cout << "ID of new ore: " << command << ". Confirmation: " << ore_list[ore_list.size() - 1].type_id << "\n";
 			}
 			check_command = false;
 			command = "";
@@ -191,32 +193,32 @@ bool ore_manager::load_ore(string folderpath)
 					}
 				}
 			}
-			else if(command == "ID") //Found the entry that specifies the ore's ID.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						ore_id = atoi(num_command.c_str()); //Assign the ore's ID.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
+//			else if(command == "ID") //Found the entry that specifies the ore's ID.
+//			{
+//				bool quit = false; //Controlls the loop below.
+//				bool start = false; //Start recording the parameter?
+//
+//				while(c != EOF && quit == false)
+//				{
+//					c = getc(file);
+//					temp = (char) c;
+//
+//					if(temp == '\n' || temp == ')')
+//					{
+//						start = false;
+//						quit = true;
+//						ore_id = atoi(num_command.c_str()); //Assign the ore's ID.
+//					}
+//					else if(temp == '(')
+//					{
+//						start = true;
+//					}
+//					else if(start)
+//					{
+//						num_command += temp;
+//					}
+//				}
+//			}
 			else if(command == "MATTER_VALUE") //Found the entry that specifies the ore's matter value.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -253,7 +255,13 @@ bool ore_manager::load_ore(string folderpath)
 
 	//Time to load the ore's sprite.
 	filepath = folderpath + "/sprite.png";//The path to the sprite...
-	ore_sprite = img_load3(filepath); //Load the sprite.
+	//ore_sprite = img_load3(filepath); //Load the sprite.
+	if(!img_load_safe(filepath, &ore_sprite)) //Load the sprite
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		return false;
+	}
 
 	new_ore.init(ore_id, ore_matter_value, ore_sprite, ore_name); //Initialize the new ore.
 	ore_list.push_back(new_ore);

@@ -185,6 +185,10 @@ run_keycheck_thread()
 
 120. Rewrite new to allocate virtual memory on the hard drive once RAM is full. If enabled in the cfg.
 
+121. Messages stay onscreen one frame too long. Fix this
+
+122. Create a drawing manager that allows for depth drawing. THis way, interface will always be on top.
+
 
 
 --Done--

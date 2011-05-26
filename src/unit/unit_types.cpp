@@ -83,6 +83,8 @@ bool unit_type_manager::load_types_from_file(std::string filepath) //Loads all t
 						num_command += temp;
 					}
 				}
+				unit_list[unit_list.size() - 1].type_id = atoi(command.c_str()); //Assign the unit type's ID.
+				cout << "ID of new unit: " << command << ". Confirmation: " << unit_list[unit_list.size() - 1].type_id << "\n";
 			}
 			check_command = false;
 			command = "";
@@ -174,34 +176,34 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
-			else if(command == "ID") //Found the entry that specifies the unit's ID.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						unit_type = atoi(num_command.c_str()); //Assign the unit's type/ID.
-						std::cout << "Unit type's ID: " << unit_type << "\n";
-						out_string << "Unit type's ID: " << num_command << "\n";
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
+//			else if(command == "ID") //Found the entry that specifies the unit's ID.
+//			{
+//				bool quit = false; //Controlls the loop below.
+//				bool start = false; //Start recording the parameter?
+//
+//				while(c != EOF && quit == false)
+//				{
+//					c = getc(file);
+//					temp = (char) c;
+//
+//					if(temp == '\n' || temp == ')')
+//					{
+//						start = false;
+///						quit = true;
+//						unit_type = atoi(num_command.c_str()); //Assign the unit's type/ID.
+//						std::cout << "Unit type's ID: " << unit_type << "\n";
+//						out_string << "Unit type's ID: " << num_command << "\n";
+//					}
+//					else if(temp == '(')
+//					{
+//						start = true;
+//					}
+//					else if(start)
+//					{
+//						num_command += temp;
+//					}
+//				}
+//			}
 			else if(command == "SELECTABLE") //Found the entry that specifies whether or not the unit is selectable.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -302,6 +304,7 @@ bool unit_type_manager::load_unit(string folderpath)
 	{
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		return false;
 	}
 	filepath = folderpath + "/sprite_select.png"; //The path to the selected sprite.
 	//unit_sprite_select = img_load(filepath); //Load the selected sprite.
@@ -309,9 +312,11 @@ bool unit_type_manager::load_unit(string folderpath)
 	{
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		return false;
 	}
 
-	new_unit.init(unit_type, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
+	//new_unit.init(unit_type, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
+	new_unit.init(0, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
 	unit_list.push_back(new_unit);
 
 	return true;
@@ -324,7 +329,7 @@ bClassUnit unit_type_manager::get_by_id(int ID) //Returns a copy of the unit typ
 
 	for(iterator = unit_list.begin(); iterator < unit_list.end(); iterator++, counter++) //Loop through the unit list
 	{
-		if(unit_list[counter].type == ID) //If it found the unit it's looking for...
+		if(unit_list[counter].type_id == ID) //If it found the unit it's looking for...
 		{
 			cout << "Found the requested unit type!\n"; //Debugging output
 			out_string << "Found the requested unit type!\n";

@@ -21,7 +21,7 @@ public:
 	SDL_Surface *sprite;
 	//The width and the height of the object. It is obtained from the width and and the height of the image.
 	int width, height;
-	int type;
+	int type_id;
 	std::vector<bClassUnit> unitlist;
 	int ID; //The location of this tile in the map array.
 	std::string temp;
@@ -97,4 +97,7 @@ public:
 	bool load_types_from_file(std::string filepath); //Loads all the tile types from the files...
 	bool load_tile(std::string folderpath); //Adds a new type with the data it got out of the specified folder.
 	tile get_by_id(int ID); //Returns a copy of the tile type that has the specified ID.
+
+	tile_manager() { }
+	~tile_manager();
 };

@@ -100,6 +100,8 @@ bool energy_crystal_manager::load_types_from_file(std::string filepath) //Loads 
 						num_command += temp;
 					}
 				}
+				energy_crystal_list[energy_crystal_list.size() - 1].type_id = atoi(command.c_str()); //Assign the energy crystal type's ID.
+				cout << "ID of new energy crystal: " << command << ". Confirmation: " << energy_crystal_list[energy_crystal_list.size() - 1].type_id << "\n";
 			}
 			check_command = false;
 			command = "";
@@ -188,32 +190,32 @@ bool energy_crystal_manager::load_energy_crystal(string folderpath)
 					}
 				}
 			}
-			else if(command == "ID") //Found the entry that specifies the energy crystal's ID.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						energy_crystal_id = atoi(num_command.c_str()); //Assign the energy crystal's ID.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
+//			else if(command == "ID") //Found the entry that specifies the energy crystal's ID.
+//			{
+//				bool quit = false; //Controlls the loop below.
+//				bool start = false; //Start recording the parameter?
+//
+//				while(c != EOF && quit == false)
+//				{
+//					c = getc(file);
+//					temp = (char) c;
+//
+//					if(temp == '\n' || temp == ')')
+//					{
+//						start = false;
+//						quit = true;
+//						energy_crystal_id = atoi(num_command.c_str()); //Assign the energy crystal's ID.
+//					}
+//					else if(temp == '(')
+//					{
+//						start = true;
+//					}
+//					else if(start)
+//					{
+//						num_command += temp;
+//					}
+//				}
+//			}
 			else if(command == "ENERGY_PRODUCTION_RATE") //Found the entry that specifies the energy crystal's matter value.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -250,7 +252,13 @@ bool energy_crystal_manager::load_energy_crystal(string folderpath)
 
 	//Time to load the energy crystal's sprite.
 	filepath = folderpath + "/sprite.png";//The path to the sprite...
-	energy_crystal_sprite = img_load3(filepath); //Load the sprite.
+	//energy_crystal_sprite = img_load3(filepath); //Load the sprite.
+	if(!img_load_safe(filepath, &energy_crystal_sprite)) //Load the sprite.
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		return false;
+	}
 
 	new_energy_crystal.init(energy_crystal_id, energy_crystal_energy_production_rate, energy_crystal_sprite, energy_crystal_name); //Initialize the new energy crystal.
 	energy_crystal_list.push_back(new_energy_crystal);

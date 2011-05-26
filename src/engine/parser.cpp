@@ -280,14 +280,14 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 			{
 				tile new_tile; //The tile we are are going to add to the map.
 
-				new_tile.type = atoi(stage[0].c_str()); //This gives the tile its type.
+				new_tile.type_id = atoi(stage[0].c_str()); //This gives the tile its type.
 
-				tile new_tile_temp = Tile_Type_Manager.get_by_id(new_tile.type); //Grab the tile's properties.
+				tile new_tile_temp = Tile_Type_Manager.get_by_id(new_tile.type_id); //Grab the tile's properties.
 
 				if(new_tile_temp.name == " ") //If it failed to grab the ID...
 				{
-					cout << "Unkown tile type: " << new_tile.type << "\n"; //Debugging output
-					out_string << "Unkown tile type: " << new_tile.type << "\n";
+					cout << "Unkown tile type: " << new_tile.type_id << "\n"; //Debugging output
+					out_string << "Unkown tile type: " << new_tile.type_id << "\n";
 					return false; //Let the caller now it failed.
 				}
 				else

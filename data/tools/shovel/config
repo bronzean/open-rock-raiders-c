@@ -1,5 +1,4 @@
 [NAME](handheld shovel)
-[ID](2) Must be a unique number...No other tool can have it...
 [IS_TOOL](TRUE)
 [CAN_CLEAR_RUBBLE](TRUE)
 [DEFAULT_RUBBLE_DAMAGE](1)

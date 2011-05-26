@@ -233,7 +233,7 @@ int main( int argc, char* argv[] )
 					{
 
 						stringstream new_screen_capt; //Ya, this variable is gonna be the new window caption.
-						new_screen_capt << screen_caption.c_str() << " FPS: " << fps_counter; //Update the "FPS: #" portion of the window caption.
+						new_screen_capt << screen_caption.c_str() << " FPS: " << fps_counter; //Update the "FPS: #" portion of the window caption. //TODO: Randomally crashes.
 
 						SDL_WM_SetCaption(new_screen_capt.str().c_str(), NULL); //Set the window caption.
 						fps_counter = 0; // Reset the FPS counter so that it counts the number of frames per second, not the number of frames the program has done total.

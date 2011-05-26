@@ -51,4 +51,15 @@ public:
 	bool load_types_from_file(std::string filepath); //Loads all the ore types from the files...
 	bool load_tools(std::string folderpath); //Adds a new type with the data it got out of the specified folder.
 	tool get_by_id(int ID); //Returns a copy of the ore type that has the specified ID.
+
+	tool_manager() { }
+	~tool_manager()
+	{
+		std::cout << "Freeing the tool types' sprites\n";
+		for(int i = 0; i < tool_list.size(); i++) //Free all the sprites.
+		{
+			SDL_FreeSurface(tool_list[i].sprite);
+			SDL_FreeSurface(tool_list[i].icon_sprite);
+		}
+	}
 };

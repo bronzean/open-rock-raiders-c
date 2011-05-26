@@ -32,4 +32,14 @@ public:
 	bool load_types_from_file(std::string filepath); //Loads all the energy crystal types from the files...
 	bool load_energy_crystal(std::string folderpath); //Adds a new type with the data it got out of the specified folder.
 	energy_crystal get_by_id(int ID); //Returns a copy of the energy crystal type that has the specified ID.
+
+	energy_crystal_manager() { } //The constructor.
+	~energy_crystal_manager() //The deconstructor.
+	{
+		std::cout << "Freeing the energy crystal types' sprites\n";
+		for(int i = 0; i < energy_crystal_list.size(); i++) //Free all the sprites.
+		{
+			SDL_FreeSurface(energy_crystal_list[i].sprite);
+		}
+	}
 };

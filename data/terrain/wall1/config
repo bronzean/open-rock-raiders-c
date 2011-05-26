@@ -1,5 +1,4 @@
 [NAME](Wall 1)
-[ID](0) Must be unique...
 [WALL](TRUE)
 [SELF_SUPPORTING](TRUE) Must be true for now
 GENERATE_ORE_ON_MINE(TRUE)

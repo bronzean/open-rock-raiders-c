@@ -83,6 +83,8 @@ bool tile_manager::load_types_from_file(std::string filepath) //Loads all the ti
 						num_command += temp;
 					}
 				}
+				tile_list[tile_list.size() - 1].type_id = atoi(command.c_str()); //Assign the tile type's ID.
+				cout << "ID of new tile: " << command << ". Confirmation: " << tile_list[tile_list.size() - 1].type_id << "\n";
 			}
 			check_command = false;
 			command = "";
@@ -193,34 +195,34 @@ bool tile_manager::load_tile(string folderpath)
 					}
 				}
 			}
-			else if(command == "ID") //Found the entry that specifies the tile's ID.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						tile_type = atoi(num_command.c_str()); //Assign the tile's type/ID.
-						std::cout << "Tile type's ID: " << tile_type << "\n";
-						out_string << "Tile type's ID: " << num_command << "\n";
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
+//			else if(command == "ID") //Found the entry that specifies the tile's ID.
+//			{
+//				bool quit = false; //Controlls the loop below.
+//				bool start = false; //Start recording the parameter?
+//
+//				while(c != EOF && quit == false)
+//				{
+//					c = getc(file);
+//					temp = (char) c;
+//
+//					if(temp == '\n' || temp == ')')
+//					{
+//						start = false;
+//						quit = true;
+//						tile_type = atoi(num_command.c_str()); //Assign the tile's type/ID.
+//						std::cout << "Tile type's ID: " << tile_type << "\n";
+//						out_string << "Tile type's ID: " << num_command << "\n";
+//					}
+//					else if(temp == '(')
+//					{
+//						start = true;
+//					}
+//					else if(start)
+//					{
+//						num_command += temp;
+//					}
+//				}
+//			}
 			else if(command == "WALL") //Found the entry that specifies whether or not the tile is a wall.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -844,7 +846,7 @@ bool tile_manager::load_tile(string folderpath)
 						quit = true;
 
 						animation new_animation; //The new animation that's going to be added to the animations vector.
-						new_animation.init(); //Initialize an empty animation.
+						//new_animation.init(); //Initialize an empty animation. //Redundant.
 
 						new_animation.folder_path = folderpath + "/"; //TODO: Assign the object's folder path.
 
@@ -878,7 +880,13 @@ bool tile_manager::load_tile(string folderpath)
 
 	//Time to load the tile's sprite.
 	filepath = folderpath + "/sprite.png";//The path to the sprite...
-	tile_sprite = img_load3(filepath); //Load the sprite.
+	//tile_sprite = img_load3(filepath); //Load the sprite.
+	if(!img_load_safe(filepath, &tile_sprite)) //Load the sprite.
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		return false;
+	}
 
 	new_tile.init(tile_type, tile_sprite, tile_name, tile_wall, tile_ramp, tile_up_ramp, tile_down_ramp, tile_self_supporting, tile_ore_type, tile_can_mine, tile_minimumn_mining_power, tile_air, tile_turn_to_ground, tile_ground_type, tile_generate_ore_on_mine, tile_num_ore_to_gen/*, tile_health*/, tile_tree, tile_rubble/*, tile_health_per_shovel*/); //Initialize the new tile.
 	tile_list.push_back(new_tile);
@@ -893,7 +901,7 @@ tile tile_manager::get_by_id(int ID) //Returns a copy of the tile type that has 
 
 	for(iterator = tile_list.begin(); iterator < tile_list.end(); iterator++, counter++) //Loop through the tile list
 	{
-		if(tile_list[counter].type == ID) //If it found the tile it's looking for...
+		if(tile_list[counter].type_id == ID) //If it found the tile it's looking for...
 		{
 			//cout << "Found the requested tile type!\n"; //Debugging output
 			//out_string << "Found the requested tile type!\n";
@@ -907,6 +915,23 @@ tile tile_manager::get_by_id(int ID) //Returns a copy of the tile type that has 
 	cout << "Didn't find the requested tile type.\n"; //Debugging output
 	out_string << "Didn't find the requested tile type.\n";
 	return temp; //And return that...
+}
+
+
+tile_manager::~tile_manager()
+{
+	cout << "Freeing the tile types' sprites\n";
+	for(int i = 0; i < tile_list.size(); i++) //Free all the sprites.
+	{
+		SDL_FreeSurface(tile_list[i].sprite);
+		for(int j = 0; j < tile_list[i].animations.size(); j++) //Free the animations' sprites.
+		{
+			for(int h = 0; h < tile_list[i].animations[j].frames_spr.size(); h++)
+			{
+				SDL_FreeSurface(tile_list[i].animations[j].frames_spr[h]);
+			}
+		}
+	}
 }
 
 tile_manager Tile_Type_Manager; //Manages all the tile types.

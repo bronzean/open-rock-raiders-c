@@ -36,4 +36,14 @@ public:
 	bool load_types_from_file(std::string filepath); //Loads all the ore types from the files...
 	bool load_ore(std::string folderpath); //Adds a new type with the data it got out of the specified folder.
 	ore get_by_id(int ID); //Returns a copy of the ore type that has the specified ID.
+
+	ore_manager() { }
+	~ore_manager()
+	{
+		std::cout << "Freeing the ore types' sprites\n";
+		for(int i = 0; i < ore_list.size(); i++) //Free all the sprites.
+		{
+			SDL_FreeSurface(ore_list[i].sprite);
+		}
+	}
 };
