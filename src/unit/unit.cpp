@@ -274,7 +274,7 @@ std::string bClassUnit::update()
 	{
 		check_job(); //Since the unit is idling, might as well give it something to do.
 	}
-	else if(job_state == "constructing") //TODO: Sometimes my_job is corrupt; it points to random data.When is it specifically? When there are multiple jobs. Maybe a min of 3 is required for the bug to occur, not sure yet.
+	else if(job_state == "constructing") //TODO: Sometimes my_job is corrupt; it points to random data.When is it specifically? When there are multiple jobs. Maybe a min of 3 is required for the bug to occur, not sure yet. Even more info: Apparently the bug occurs whenever there's one or more jobs in the que after it.
 	{
 		if(!move) //If the unit has reached the construction site...
 		{

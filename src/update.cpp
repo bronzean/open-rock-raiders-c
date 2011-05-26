@@ -183,7 +183,7 @@ int update()
 									}
 								}
 
-								if(tile_id <= -1)
+								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].has_construction == true)
 								{
 									cout << "Invalid tile!\n";
 								}

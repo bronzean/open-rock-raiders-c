@@ -189,6 +189,8 @@ run_keycheck_thread()
 
 122. Create a drawing manager that allows for depth drawing. THis way, interface will always be on top.
 
+123. Raider drilling animations.
+
 
 
 --Done--
@@ -290,6 +292,13 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 
 
 ---------Releases-------------
+Alpha 0.0.3.x or 0.0.4:
+ALL bugs, crashes, glitches, memleaks, and the like fixed.
+Constructions done.
+Making bases done.
+Teleportation is a goal.
+Animate stuff that need animating.
+
 End of 2010 alpha:
 Finish pathfinding. Reimplement buildings. Implement mining. Reimplement teleporting. Implement simple level goals. Implement 'load map'. Implement a better UI.
 And whatever else we can do before christmas/new years.

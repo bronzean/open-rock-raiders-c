@@ -18,6 +18,8 @@ public:
 
 	void init(std::string NAME, bool WALL, bool FLOOR, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
+	void copy_from(construction Construction); //Give this tile the properties of the one being copied.
+
 	construction(); //Constructor. Initializes an empty construction.
 	~construction() //Deconstructor.
 	{
