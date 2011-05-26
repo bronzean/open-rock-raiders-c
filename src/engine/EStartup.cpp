@@ -10,7 +10,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 {
 	std::cout << "\nInitializing\n";
 
-	if(SDL_Init( SDL_INIT_EVERYTHING ) == -1) //Initialize everything
+	if(SDL_Init(SDL_INIT_EVERYTHING) == -1) //Initialize everything
 	{
 		std::cerr << "\nError initializing SDL\n";
 		return false;
@@ -22,7 +22,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		return false;    
 	}
 
-	if (SDLNet_Init() == -1) //Initialise SDL_net
+	if(SDLNet_Init() == -1) //Initialise SDL_net
 	{
 		std::cerr << "Failed to intialise SDL_net: " << SDLNet_GetError() << "\n";
 		return false;
@@ -607,8 +607,9 @@ bool load_settings()
 					{
 						start = false;
 						quit = true;
-						temp2 = num_command;
-						map_folder_path = const_cast<char *>(temp2.c_str());
+						//temp2 = num_command;
+						//map_folder_path = const_cast<char *>(temp2.c_str());
+						map_folder_path = (num_command.c_str());
 						cout << "Map path is: " << map_folder_path << "\n";
 
 						num_command = "";
@@ -679,10 +680,19 @@ bool load_settings()
 	fclose(file);
 	c = 0;
 
-	file = fopen(interface_filepath2, "r");
-	if(file == NULL)
+	//file = fopen(interface_filepath2, "r");
+	FILE *file2 = NULL;
+	file2 = fopen(interface_filepath2, "r");
+	//if(file == NULL)
+	//{
+		//cout << "The file \"" << interface_filepath2 << "\" does not exist!\n";
+		//out_string << "The file \"" << interface_filepath2 << "\" does not exist!\n";
+		//return false;
+	//}
+	if(file2 == NULL)
 	{
 		cout << "The file \"" << interface_filepath2 << "\" does not exist!\n";
+		out_string << "The file \"" << interface_filepath2 << "\" does not exist!\n";
 		return false;
 	}
 
@@ -690,7 +700,8 @@ bool load_settings()
 	while (c != EOF)
 	{
 		//cout << "\nTest\n";
-        	c = getc(file);
+        	//c = getc(file);
+		c= getc(file2);
 		temp = (char) c;
 
 		if(temp == ']' || temp == '\n')
@@ -727,7 +738,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -762,7 +774,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -796,7 +809,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -830,7 +844,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -865,7 +880,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -899,7 +915,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -935,7 +952,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -969,7 +987,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start;
-					c = getc(file);
+					//c = getc(file);
+					c = getc(file2);
 					temp = (char) c;
 
 					if(temp == '\n' || temp == ')')
@@ -1006,7 +1025,8 @@ bool load_settings()
 				while(c != EOF && quit == false)
 				{
 					bool start; //The parser can begin to record the values in the parantheses.
-					c = getc(file); //Read the character.
+					//c = getc(file); //Read the character.
+					c = getc(file2);
 					temp = (char) c; //Convert c into a char.
 
 					//If it found the end of the line or the closing parantheses...
@@ -1044,7 +1064,8 @@ bool load_settings()
 	font1 = TTF_OpenFont(f1_temp1.c_str(), f1_temp2);
 	font2 = TTF_OpenFont(f2_temp1.c_str(), f2_temp2);
 
-	fclose(file);
+	//fclose(file);
+	fclose(file2);
 
 	c = 0;
 

@@ -171,7 +171,7 @@ int main( int argc, char* argv[] )
 		}
 		else
 		{
-			music = Mix_LoadMUS(music_filepath.c_str());
+			//music = Mix_LoadMUS(music_filepath.c_str());
 			music = Mix_LoadMUS(music_filepath.c_str());
 		}
 		if(music == NULL)
@@ -235,7 +235,7 @@ int main( int argc, char* argv[] )
 						stringstream new_screen_capt; //Ya, this variable is gonna be the new window caption.
 						new_screen_capt << screen_caption.c_str() << " FPS: " << fps_counter; //Update the "FPS: #" portion of the window caption. //TODO: Randomally crashes.
 
-						SDL_WM_SetCaption(new_screen_capt.str().c_str(), NULL); //Set the window caption.
+						SDL_WM_SetCaption(new_screen_capt.str().c_str(), NULL); //Set the window caption. //TODO: This randomally crashes.
 						fps_counter = 0; // Reset the FPS counter so that it counts the number of frames per second, not the number of frames the program has done total.
 
 						fps2.start(); //Tick the FPS timer.
@@ -323,7 +323,9 @@ int main( int argc, char* argv[] )
 
 	fclose(GameLog); //Close the gamelog.
 
-	SDL_FreeSurface(screen);
+	SDL_FreeSurface(screen); //Free the screen's surface.
+	TTF_CloseFont(font1); //Free font1.
+	TTF_CloseFont(font2); //Free font2.
 
 	SDL_Quit(); //Exit SDL.
 

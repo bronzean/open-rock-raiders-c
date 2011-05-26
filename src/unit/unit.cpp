@@ -13,6 +13,7 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	c_health = 100;
 	wx = 0;
 	wy = 0;
+	wz = 0;
 	layer = 0;
 	sprite = NULL;
 	sprite_select = NULL;

@@ -404,7 +404,7 @@ void tile::move_unit(int i)
 	{
 		unitlist[i].move_path.erase(unitlist[i].move_path.begin()); //Remove the tile the unit just moved to from its move route.
 	}
-	newUnit = unitlist[i]; //Copy this unit over to the new one.
+	newUnit = unitlist[i]; //Copy this unit over to the new one. //TODO: This randomally fails. More info: Seems to crash after shovelling ore.
 	newUnit.wx = Map[unitlist[i].move_path[0]].wx; //Assign the new unit's world x.
 	newUnit.wy = Map[unitlist[i].move_path[0]].wy; //Assign the new unit's world y.
 	newUnit.layer = Map[unitlist[i].move_path[0]].layer; //Assign the new unit's layer.
@@ -529,7 +529,7 @@ void tile::move_unit(int i)
 
 	Map[unitlist[i].move_path[0]].unitlist.push_back(newUnit);
 
-	unitlist.erase(unitlist.begin() + i); //Remove this unit from this tile. Otherwise it would be the self replicating raiders glitch all over again.
+	unitlist.erase(unitlist.begin() + i); //Remove this unit from this tile. Otherwise it would be the self replicating raiders glitch all over again. //TODO: This randomally crashes.
 
 	
 
@@ -906,15 +906,16 @@ void tile::rubble_to_ground(int i)
 					cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 					out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 
-					ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+					//ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+					ore_on_map.erase(ore_on_map.begin() + i2); //Remove the ore from the ore_on_map list.
 				}
 			}
 
 			//TODO: Add the new ore into the ore_on_map thing.
 			for(i2 = 0; iterator2 < new_tile.orelist.end(); iterator++, i2++)
 			{
-				ore_on_map.push_back(&Map[ID].orelist[Map[ID].orelist.size() - 1]); //Add the current ore into the orelist. //TODO: Sometimes this randomally fills the
-				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[ID]; //I guess this has to be reset for some weird reason.
+				ore_on_map.push_back(&Map[ID].orelist[Map[ID].orelist.size() - 1]); //Add the current ore into the orelist. //TODO: Sometimes this randomally fills the RAM.
+				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[this->ID]; //I guess this has to be reset for some weird reason. //TODO: Sometimes this randomally filles the RAM.
 			}
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
@@ -947,7 +948,8 @@ void tile::rubble_to_ground(int i)
 				new_ore.containing_tile->ID = ID;
 				orelist.push_back(new_ore); //Add the new ore to the orelist.
 				ore_on_map.push_back(&orelist[orelist.size()]); //Add the ore that was just created into the ore one map list. RAM...
-				ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
+				//ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
+				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[ID]; //I guess this has to be reset for some weird reason.
 
 				cout << "Generating ore with type: " << ore_gen_ids[0] << "\n"; //Debugging output.
 			}

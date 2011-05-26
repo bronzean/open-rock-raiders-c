@@ -64,6 +64,13 @@ void *ClientNetworkingUdp(void *param)
 		pthread_exit(NULL); //KILL THIS THREAD.
 	}
 
+	for(int i = 0; i < PACKET_SIZE; i++) //Initialize the packets.
+	{
+		packet_out->data[i] = NULL;
+		packet_in->data[i] = NULL;
+	}
+	
+
 	char message = '\x01';
 	packet_out->data[0] = '\x01'; //Tells the server, "Hi!\n";
 
