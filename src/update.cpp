@@ -197,7 +197,7 @@ int update()
 									new_job.tasked_tile = &Map[tile_id];
 
 									Job_Que.add_job(new_job);
-									Job_Que.jobs[Job_Que.jobs.size()].tasked_tile = &Map[tile_id];
+									//Job_Que.jobs[Job_Que.jobs.size() - 1].tasked_tile = &Map[tile_id];
 
 									cout << "Added job!\n";
 

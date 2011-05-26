@@ -309,7 +309,8 @@ std::string bClassUnit::update()
 
 						//if(&Job_Que.jobs[i2] == my_job)
 						//if(my_job->compare(Job_Que.jobs[i2]))
-						if(Job_Que.jobs[i2].compare(*&my_job))
+						//if(Job_Que.jobs[i2].compare(*&my_job))
+						if(Job_Que.jobs[i2].compare(my_job))
 						{
 							cout << "Done constructing!\n";
 							out_string << "Done constructing!\n";

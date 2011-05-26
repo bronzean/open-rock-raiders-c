@@ -329,7 +329,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 				}
 
 				cout << near[i].thisTile->ID << " is what near[i].thisTile->ID is equal to.\n";
-				allNodes.push_back(near[i]); //Add this node to the allNodes list, incase it is a parent. That's what the original comment says. //TODO: Somethis this is null. When that happens, it crashes.
+				allNodes.push_back(near[i]); //Add this node to the allNodes list, incase it is a parent. That's what the original comment says. //TODO: Somethis this is null. When that happens, it crashes. //Oooh, more info: *** glibc detected *** /home/ciprian/orr-c/ORR: corrupted double-linked list: 0xf6776080 ***
 				
 				near[i].calculateCostToTile(Map[destination]); //Calculate cost to get to 'destination from here. That's what the original comment says.
 				near[i].calculateGCost(allNodes); // Pass it the allNodes list, so it can get its parent node. That's what the original comment says.

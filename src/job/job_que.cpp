@@ -12,7 +12,8 @@ job_que::job_que() //Constructor.
 
 void job_que::add_job(job JOB)
 {
-	jobs.push_back(*&JOB);
+	//jobs.push_back(*&JOB);
+	jobs.push_back(JOB);
 }
 
 job_que Job_Que;
