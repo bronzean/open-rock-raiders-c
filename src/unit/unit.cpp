@@ -274,14 +274,14 @@ std::string bClassUnit::update()
 	{
 		check_job(); //Since the unit is idling, might as well give it something to do.
 	}
-	else if(job_state == "constructing")
+	else if(job_state == "constructing") //TODO: Sometimes my_job is corrupt; it points to random data.When is it specifically? When there are multiple jobs. Maybe a min of 3 is required for the bug to occur, not sure yet.
 	{
 		if(!move) //If the unit has reached the construction site...
 		{
 			try
 			{
 				//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
-				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm bob the builder!" message. //TODO: Make this stl_ttf thing pre-rendered.
+				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm bob the builder!" message.
 
 
 				my_job->construction_health -= construct_rate;
@@ -304,8 +304,20 @@ std::string bClassUnit::update()
 						{
 							cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
 							out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
-							throw "FATAL: ERROR CODE 2"; //TODO: Make this throw a specific error.
+							throw "FATAL: ERROR CODE 2";
 						}
+
+						//cout << "this->type = " << my_job->type << " and JOB->type = " << Job_Que.jobs[i2].type << "\n";
+						//cout << "this->construction_type = " << my_job->construction_type << " and JOB->construction_type = " << Job_Que.jobs[i2].construction_type << "\n";
+						//cout << "this->tasked_tile->ID = " << my_job->tasked_tile->ID << " and JOB->tasked_tile->ID = " << Job_Que.jobs[i2].tasked_tile->ID << "\n";
+						//cout << "this->taken = " << my_job->taken << " and JOB->taken = " << Job_Que.jobs[i2].taken << "\n";
+						//cout << "this->construction_health = " << my_job->construction_health << " and JOB->construction_health = " << Job_Que.jobs[i2].construction_health << "\n";
+
+						cout << "this->type = " << my_job->type << "\n";
+						cout << "this->construction_type = " << my_job->construction_type << "\n";
+						cout << "this->tasked_tile->ID = " << my_job->tasked_tile->ID << "\n";
+						cout << "this->taken = " << my_job->taken << " and JOB->taken = " << "\n";
+						cout << "this->construction_health = " << my_job->construction_health << "\n";
 
 						//if(&Job_Que.jobs[i2] == my_job)
 						//if(my_job->compare(Job_Que.jobs[i2]))

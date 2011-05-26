@@ -41,11 +41,13 @@ bool job::compare(job *JOB)
 	//cout << "this->tasked_tile->ID = " << tasked_tile->ID << " and JOB->tasked_tile->ID = " << _job->tasked_tile->ID << "\n";
 	//cout << "this->taken = " << taken << " and JOB->taken = " << _job->taken << "\n";
 	//cout << "this->construction_health = " << construction_health << " and JOB->construction_health = " << _job->construction_health << "\n";
-	//cout << "this->type = " << type << " and JOB->type = " << (string)_job->type << "\n";
-	//cout << "this->construction_type = " << construction_type << " and JOB->construction_type = " << (string)_job->construction_type << "\n";
-	//cout << "this->tasked_tile->ID = " << tasked_tile->ID << " and JOB->tasked_tile->ID = " << _job->tasked_tile->ID << "\n";
-	//cout << "this->taken = " << taken << " and JOB->taken = " << _job->taken << "\n";
-	//cout << "this->construction_health = " << construction_health << " and JOB->construction_health = " << _job->construction_health << "\n";
+
+
+	cout << "this->type = " << type << " and JOB->type = " << (string)JOB->type << "\n";
+	cout << "this->construction_type = " << construction_type << " and JOB->construction_type = " << (string)JOB->construction_type << "\n";
+	cout << "this->tasked_tile->ID = " << tasked_tile->ID << " and JOB->tasked_tile->ID = " << JOB->tasked_tile->ID << "\n";
+	cout << "this->taken = " << taken << " and JOB->taken = " << _job->taken << "\n";
+	cout << "this->construction_health = " << construction_health << " and JOB->construction_health = " << JOB->construction_health << "\n";
 
 	//if(!type.compare((string)_job->type)) return false;
 	//if(!construction_type.compare((string)_job->construction_type)) return false;
