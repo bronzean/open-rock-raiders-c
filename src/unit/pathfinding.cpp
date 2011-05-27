@@ -263,7 +263,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 		try
 		{
-			cout << "New node n: " << n.thisTile->ID << "\n"; //This line proves it ain't an invalid node...
+			//cout << "New node n: " << n.thisTile->ID << "\n"; //This line proves it ain't an invalid node...
 			//examineSet.push(n); //Add starting node to nodes to be checked. That's what the original comment says. //TODO: This line keeps crashing. Find out why.
 			examineSet.push_back(n);
 			examineSet[examineSet.size()-1].thisTile = n.thisTile;
@@ -299,7 +299,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 			int thisOrd = 0; //The index of the current tile in the allNodes list. That's what the original comment says.
 			for(int z = 0; (unsigned int)z < allNodes.size(); z++) //Need to get a permanent reference to the node, in the allNodes list. That's what the original comment says.
 			{
-				cout << n.thisTile->ID << " is what n.thisTile->ID is equal to.\n";
+				//cout << n.thisTile->ID << " is what n.thisTile->ID is equal to.\n";
 				if(allNodes.at(z).thisTile->ID == n.thisTile->ID) //Original.
 				//if(allNodes.at(z).thisTile->ID == n->thisTile->ID) //This crashes.
 				//if(allNodes.at(z).thisTile->ID == n->thisTile->ID)
@@ -328,7 +328,7 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 					continue;
 				}
 
-				cout << near[i].thisTile->ID << " is what near[i].thisTile->ID is equal to.\n";
+				//cout << near[i].thisTile->ID << " is what near[i].thisTile->ID is equal to.\n";
 				allNodes.push_back(near[i]); //Add this node to the allNodes list, incase it is a parent. That's what the original comment says. //TODO: Somethis this is null. When that happens, it crashes. //Oooh, more info: *** glibc detected *** /home/ciprian/orr-c/ORR: corrupted double-linked list: 0xf6776080 ***
 				
 				near[i].calculateCostToTile(Map[destination]); //Calculate cost to get to 'destination from here. That's what the original comment says.
