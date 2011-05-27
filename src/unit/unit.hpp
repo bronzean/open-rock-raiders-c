@@ -12,6 +12,7 @@ class ore;
 class energy_crystal;
 class animation;
 class job;
+class tile;
 
 //This is the blase class of all the units that the game will be using
 class bClassUnit
@@ -128,7 +129,7 @@ public:
 	std::string construct_walking_message_str;
 	SDL_Surface *construct_walking_message_spr;
 
-	job my_job; //The current job this guy is doing.
+	job *my_job; //The current job this guy is doing.
 	std::string job_state; //What is the unit currently doing?
 	/* Acceptable values:
 	 * idling

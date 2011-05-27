@@ -284,11 +284,11 @@ std::string bClassUnit::update()
 				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm bob the builder!" message.
 
 
-				//my_job->construction_health -= construct_rate;
-				my_job.construction_health -= construct_rate;
+				my_job->construction_health -= construct_rate;
+				//my_job.construction_health -= construct_rate;
 
-				//if(my_job->construction_health <= 0)
-				if(my_job.construction_health <= 0)
+				if(my_job->construction_health <= 0)
+				//if(my_job.construction_health <= 0)
 				{
 					cout << "Done building!\n";
 
@@ -350,10 +350,11 @@ std::string bClassUnit::update()
 					cout << "Done constructing!\n";
 					out_string << "Done constructing!\n";
 
-					my_job.tasked_tile->construct_construction(c_wall); //Transform specified tile into a wall.
+					my_job->tasked_tile->construct_construction(c_wall); //Transform specified tile into a wall.
 
-					//my_job = NULL;
-					my_job.nullify(); //Similar to "my_job = NULL;"
+					delete my_job;
+					my_job = NULL;
+					//my_job.nullify(); //Similar to "my_job = NULL;"
 
 					job_state = "idle";
 				}

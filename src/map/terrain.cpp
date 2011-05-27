@@ -670,7 +670,8 @@ void tile::mine_to_ground(int i)
 {
 	if(!paused)
 	{
-		if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] <= 0 && Map[unitlist[i].mine_tile_id].num_shovels <= 0) //This checks if the mining is completely done.
+		//bClassUnit *temp_unit = &unitlist[i];
+		if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels /*- 1*/] <= 0 && Map[unitlist[i].mine_tile_id].num_shovels <= 0) //This checks if the mining is completely done.
 		{
 			cout << "Mining wall!\n"; //Debugging output.
 
@@ -691,6 +692,16 @@ void tile::mine_to_ground(int i)
 			new_tile.orelist = Map[unitlist[i].mine_tile_id].orelist; //Copy over this tile's orelist.
 			new_tile.energy_crystal_list = Map[unitlist[i].mine_tile_id].energy_crystal_list; //Copy over this tile's energy crystal list.
 			Map[unitlist[i].mine_tile_id] = new_tile;
+
+			//tile old_tile = Map[unitlist[i].mine_tile_id]; //Store the old stuff...
+			//Map[unitlist[i].mine_tile_id] = Tile_Type_Manager.get_by_id(old_tile.ground_type); //Grab the properties of the specified tile it turns into.
+			//Map[unitlist[i].mine_tile_id].wx = old_tile.wx; //Give the new tile this tile's world x.
+			//Map[unitlist[i].mine_tile_id].wy = old_tile.wy; //Give the new tile this tile's world y.
+			//Map[unitlist[i].mine_tile_id].layer = old_tile.layer; //Give the new tile this tile's layer.
+			//Map[unitlist[i].mine_tile_id].ID = old_tile.ID; //Give the new tile this tile's ID.
+			//Map[unitlist[i].mine_tile_id].unitlist = old_tile.unitlist; //Copy over this tile's unitlist.
+			//Map[unitlist[i].mine_tile_id].orelist = old_tile.orelist; //Copy over this tile's orelist.
+			//Map[unitlist[i].mine_tile_id].energy_crystal_list = old_tile.energy_crystal_list; //Copy over this tile's energy crystal list.
 
 			int i2 = 0;
 			vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore on map list.
@@ -873,7 +884,7 @@ void tile::rubble_to_ground(int i)
 
 	if(!paused)
 	{
-		if(health[num_shovels - 1] <= 0 && num_shovels <= 0) //This checks if the shovelling is completely done.
+		if(health[num_shovels /*- 1*/] <= 0 && num_shovels <= 0) //This checks if the shovelling is completely done.
 		{
 			cout << "Done shovelling rubble! You can go home now!\n"; //Debugging output.
 

@@ -87,10 +87,10 @@ public:
 	animation(); //Constructor. Initializes an empty animation.
 	~animation() //Deconstructor.
 	{
-		for(int i = 0;  i < num_frames; i++)
-			if(frames_spr[i] != NULL)
-				//SDL_FreeSurface(frames_spr[i]);
-				frames_spr[i] = NULL;
+		//for(int i = 0;  i < num_frames; i++)
+			//if(frames_spr[i] != NULL)
+				////SDL_FreeSurface(frames_spr[i]);
+				//frames_spr[i] = NULL;
 	}
 };
 

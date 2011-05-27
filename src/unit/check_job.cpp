@@ -54,8 +54,9 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 					Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
 					job_state = "constructing"; //The unit is constructing something.
 					//my_job = &Job_Que.jobs[i]; //Let the unit know which job it's doing.
-					my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
-					Job_Que.jobs.erase[Job_Que.jobs.begin() + i]; //Remove the job from the job que.
+					my_job = new job;
+					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
+					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
 				}
 			}
 			iterator2++;

@@ -59,3 +59,12 @@ bool job::compare(job *JOB)
 
 	return true;
 }
+
+void job::nullify()
+{
+	type = "";
+	construction_type = "";
+	tasked_tile = NULL;
+	taken = false;
+	construction_health = 0;
+}
