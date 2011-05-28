@@ -41,4 +41,4 @@
 #include "engine/EDeclarations.hpp"
 #include "engine/parser.hpp"
 
-#define VERSION "0.0.3.1"
+#define VERSION "0.0.3.2"

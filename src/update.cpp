@@ -573,13 +573,18 @@ int update()
 			fflush(GameLog);
 			out_string.str(""); //Reset out_string
 
+			if(map_folder_path == "maps/default/")
+			{
+				Map[74].construct_construction(c_door);
+			}
+
 			SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 			GameState = Level; //Done loading everything. Enter the level now.
 		}
 		catch(...)
 		{		
 			std::cerr << "Failed to load everything.\n";
-			out_string << "Failed to laod everything.\n";
+			out_string << "Failed to load everything.\n";
 			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog); //Write out_string to the log.
 			fflush(GameLog); //Force it to write.
 			fclose(GameLog); //Close the log file.
