@@ -495,10 +495,16 @@ int update()
 				return 1;
 			}
 			//Here all the constructions are initlialized and resources loaded.
-			c_wall.init("wall", true, false, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
+			c_wall.init("wall", true, false, false, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
 			if(c_wall.sprite == NULL)
 			{
-				throw;
+				throw 0;
+			}
+			//c_floor.init(); //TODO: Ya, this needs to be done...
+			c_door.init("door", false, false, true, 2, "data/construction/door/sprite.png");
+			if(c_door.sprite == NULL)
+			{
+				throw 0;
 			}
 			fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 			fflush(GameLog);
