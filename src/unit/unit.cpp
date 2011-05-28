@@ -379,7 +379,13 @@ std::string bClassUnit::update()
 		{
 			//SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
 			//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
-			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+			if(/*frames_since_last_move != 1 &&*/ !allow_move)
+			{
+				if(screen_needs_updating == false)
+				{
+					Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+				}
+			}
 			//SDL_FreeSurface(temp_surf);
 			//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
 			/*

@@ -302,21 +302,25 @@ int main( int argc, char* argv[] )
 
 
 	//Close all the music related stuff.
-	if(Mix_PlayingMusic())
-	{
-		Mix_FadeOutMusic(1500);
-		SDL_Delay(1500);
-	}
+	//if(Mix_PlayingMusic())
+	//{
+		//Mix_FadeOutMusic(1500);
+		//SDL_Delay(1500);
+	//}
 	if(music)
 	{
+		cout << "Freeing music.\n";
 		Mix_FreeMusic(music);
 		music = NULL;
 		if(rwops)
 		{
+			cout << "Freeing rwfp.\n";
 			SDL_FreeRW(rwfp);
 		}
 	}
-	if(audio_open ) {
+	if(audio_open)
+	{
+		cout << "Closing audio.\n";
 		Mix_CloseAudio();
 		audio_open = 0;
 	}

@@ -72,7 +72,7 @@ int update()
 		//SDL_Surface *temp_spr = NULL;
 		//temp_spr = TTF_RenderText_Solid(font1, "Choose the location of the wall tile, kind sir.", c_white);
 		//Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, temp_spr , 0); //Adds a message to be drawn.
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 0, false);
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 1, false);
 		//draw(PCamera->wx, PCamera->wy, temp_spr, screen);
 		//Draw_Message_Handler.draw_what_sprite_list[Draw_Message_Handler.draw_what_sprite_list.size() - 1] = temp_spr;
 		//SDL_FreeSurface(temp_spr);

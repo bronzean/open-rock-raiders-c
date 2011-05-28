@@ -58,6 +58,8 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
 					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
 				}
+
+				done = true;
 			}
 			iterator2++;
 			i++;
