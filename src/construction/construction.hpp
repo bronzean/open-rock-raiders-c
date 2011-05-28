@@ -13,11 +13,23 @@ public:
 	std::string name; //The name of this construction.
 	bool wall; //Is it a wall?
 	bool floor; //Is it a floor?
-	bool door; //Is it a door?
 	int type_id; //Let's the game know what type it is.
 	SDL_Surface *sprite; //The construction's sprite.
 
-	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
+	bool door; //Is it a door?
+	bool door_locked; //Is the door locked?
+	bool door_open; //Is the door currently open?
+	int door_strength; //What is the strength of the door? Used to calculate how easy it is for a monsters to force it open.
+	bool door_open_animation; //Does the door have an animation that plays when it's opened?
+	bool door_close_animation; //Does the door have an animation that plays when it's closed?
+	int door_open_animation_entry; //Stores the index of the door opening animation's entry in the animations vector.
+	int door_close_animation_entry; //Stores the index of the door closing animation's entry in the animations vector.
+
+	std::vector<animation> animations; //Stores all of the tile's animations.
+	bool active_animation; //Is an animation currently going on?
+	int active_animation_entry; //The entry of the active animation in the animations vector.
+
+	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
 	void copy_from(construction Construction); //Give this tile the properties of the one being copied.
 
