@@ -24,6 +24,7 @@ public:
 	bool door_close_animation; //Does the door have an animation that plays when it's closed?
 	int door_open_animation_entry; //Stores the index of the door opening animation's entry in the animations vector.
 	int door_close_animation_entry; //Stores the index of the door closing animation's entry in the animations vector.
+	int door_open_time; //How many frames it takes for the door to open. If using animations, then 
 
 	std::vector<animation> animations; //Stores all of the tile's animations.
 	bool active_animation; //Is an animation currently going on?
