@@ -703,7 +703,7 @@ void tile::mine_to_ground(int i)
 			//Map[unitlist[i].mine_tile_id].orelist = old_tile.orelist; //Copy over this tile's orelist.
 			//Map[unitlist[i].mine_tile_id].energy_crystal_list = old_tile.energy_crystal_list; //Copy over this tile's energy crystal list.
 
-			int i2 = 0;
+			/*int i2 = 0;
 			vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore on map list.
 			vector<ore>::iterator iterator2 = Map[unitlist[i].mine_tile_id].orelist.begin(); //Used to loop through the new tile's ore list.
 
@@ -720,12 +720,12 @@ void tile::mine_to_ground(int i)
 				}
 			}
 
-			//TODO: Add the new ore into the ore_on_map thing.
-			for(i2 = 0; iterator2 < new_tile.orelist.end(); iterator++, i2++)
+			//Add the new ore into the ore_on_map thing.
+			for(i2 = 0; iterator2 < new_tile.orelist.end(); iterator2++, i2++)
 			{
 				ore_on_map.push_back(&Map[unitlist[i].mine_tile_id].orelist[Map[unitlist[i].mine_tile_id].orelist.size()]); //Add the current ore into the orelist.
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[unitlist[i].mine_tile_id]; //I guess this has to be reset for some weird reason.
-			}
+			}*/
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
@@ -758,9 +758,9 @@ void tile::mine_to_ground(int i)
 		}
 		else if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] > 0) //So, all the other checks returned false. Here the wall's health is lowered by the unit's drill.
 		{
-			cout << "YARR! DRILLING!!\n"; //Debugging output.
+			//cout << "YARR! DRILLING!!\n"; //Debugging output.
 
-			cout << "Health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] << ", num_shovels: " << Map[unitlist[i].mine_tile_id].num_shovels - 1 << "\n"; //Debugging output.
+			//cout << "Health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] << ", num_shovels: " << Map[unitlist[i].mine_tile_id].num_shovels - 1 << "\n"; //Debugging output.
 
 
 
@@ -774,7 +774,7 @@ void tile::mine_to_ground(int i)
 				{
 					Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's shovel rate from this tile's health.
 					found = true;
-					cout << "Wall's new health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1]<< "\n";
+					//cout << "Wall's new health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1]<< "\n";
 					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!" message.
 				}
 			}
@@ -884,7 +884,7 @@ void tile::rubble_to_ground(int i)
 
 	if(!paused)
 	{
-		if(health[num_shovels /*- 1*/] <= 0 && num_shovels <= 0) //This checks if the shovelling is completely done.
+		if(health[num_shovels - 1 /*- 1*/] <= 0 && num_shovels <= 0) //This checks if the shovelling is completely done.
 		{
 			cout << "Done shovelling rubble! You can go home now!\n"; //Debugging output.
 
@@ -906,27 +906,30 @@ void tile::rubble_to_ground(int i)
 
 			int i2 = 0;
 			vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore on map list.
-			vector<ore>::iterator iterator2 = Map[ID].orelist.begin(); //Used to loop through the new tile's ore list.
 
-			for(; iterator < ore_on_map.end(); iterator++, i2++) //Remove all the ore from this tile...
+			//for(; iterator < ore_on_map.end(); iterator++, i2++) //Remove all the ore from this tile...
+			for(i2 = 0; i2 < ore_on_map.size(); iterator++, i2++) //Remove all the ore from this tile...
 			{
 				cout << "Size: " << ore_on_map.size() << "\n"; //Debugging output...
 				cout << "ID: " << ore_on_map[i2]->containing_tile->ID << "\n"; //Debugging output...
-				if(ore_on_map[i2]->containing_tile->ID == new_tile.ID) //See if it found the right ore...
+				if(ore_on_map[i2]->containing_tile->ID == ID) //See if it found the right ore...
 				{
 					cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 					out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 
 					//ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
 					ore_on_map.erase(ore_on_map.begin() + i2); //Remove the ore from the ore_on_map list.
+					i2--; //So that it doesn't skip any ore.
 				}
 			}
 
-			//TODO: Add the new ore into the ore_on_map thing.
-			for(i2 = 0; iterator2 < new_tile.orelist.end(); iterator++, i2++)
+			vector<ore>::iterator iterator2 = orelist.begin(); //Used to loop through the new tile's ore list.
+
+			//Add the new ore into the ore_on_map thing.
+			for(i2 = 0; iterator2 < new_tile.orelist.end(); iterator2++, i2++)
 			{
 				ore_on_map.push_back(&Map[ID].orelist[Map[ID].orelist.size() - 1]); //Add the current ore into the orelist. //TODO: Sometimes this randomally fills the RAM.
-				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[this->ID]; //I guess this has to be reset for some weird reason. //TODO: Sometimes this randomally filles the RAM.
+				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[ID]; //I guess this has to be reset for some weird reason. //TODO: Sometimes this randomally filles the RAM.
 			}
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";

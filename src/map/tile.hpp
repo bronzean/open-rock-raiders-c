@@ -52,12 +52,14 @@ public:
 	/*int health_per_shovel; //How much health has to be reduced to be considered "one shovel". OBSOLETE */
 	int num_shovels; //How many shovels are left before the rubble is cleared and it turns into a ground tile. This number is determined by the ammount of calues passed to health in the config files...This also doubles over for mining.
 	int Active_Map_Entry; //This tile's location in Active_Map. A value of -1 means it has no entry in Active_Map.
+	int total_shovels; //The total number of shovels and drills.
+
+
 	std::vector<animation> animations; //Stores all of the tile's animations.
 	bool drilling_animation; //Does the tile have an animation that plays while it is getting drilled?
 	int drilling_animation_entry; //Stores the index of the drilling animation's entry in the animations vector.
 	bool active_animation; //Is an animation currently going on?
 	int active_animation_entry; //The entry of the active animation in the animations vector.
-	int total_shovels; //The total number of shovels and drills.
 
 	construction *local_construction; //The construction that's on this tile
 	bool has_construction; //Does this tile have a construction present on it?

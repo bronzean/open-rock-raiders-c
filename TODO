@@ -34,8 +34,6 @@ Not necessarily in this order.
 
 40. Make a 'load level' button on the title screen.
 
-41. Create a job que...
-
 42. Currently, the number of tools a unit can start out carrying is hard coded to 1. Change the limit to the unit's carrying capacity.
 
 43. Add a carrying capacity to units.
@@ -56,7 +54,7 @@ Not necessarily in this order.
 
 52. Implement temperature.
 
-54. Display a message saying, "Whee, moving." while a unit is moving.
+54. Display a message saying, "Whee, moving." while a unit is moving. If wanted.
 
 57. Seems to me something in the install scripts or run scripts messed up. Fix whatever's wrong.
 NOTE: After further testing, running sudo orr-c works. Remove the need for sudo so that you don't need to be root to play ORR.
@@ -81,8 +79,6 @@ draw(0, SCREEN_HEIGHT - inventory_spr->h, inventory_spr, screen);
 65. Um...Use zlib for memory compression or something?
 
 67. Certain places could do better with the for being changed to a while.
-
-68. In the terrain.cfg files and the rest, make the [] part be used as the ID of the object.
 
 69. Make which worker/helper threads are reserved for what controlled by the config file.
 
@@ -137,8 +133,6 @@ run_keycheck_thread()
 
 96. Raider activity animations.
 
-97. Basic constructions.
-
 98. Advanced constructions.
 
 99. Buildings.
@@ -147,23 +141,15 @@ run_keycheck_thread()
 
 101. Make a constructions menu.
 
-102. Implement that job que.
-
 103. Implement that "ore on map" thing.
 
 104. Program stockpiles.
 
 105. Change the bool mining and all similar stuff in units to use the job_state variable.
 
-106. The reason the game kept crashing when there was the "SDL_FreeSurface" thing in the unit's deconstructor was that it was freeing the actual image from the unit type. So, make sure to free all the surfaces at the end of the program and only in the unit type. For each individual unit, simply set the surface pointer to NULL.
-
 107. Exception handling.
 
-108. Use auto_ptr...
-
-109. Check to make sure that the tile doesn't have an existing construction on it.
-
-110. Combine client and server. How? Same thing as with 3D and 2D mode. bool server
+108. Use auto_ptr...If needed.
 
 111. Allow for switching of 3d and 2d gfx ingame.
 
@@ -185,11 +171,11 @@ run_keycheck_thread()
 
 120. Rewrite new to allocate virtual memory on the hard drive once RAM is full. If enabled in the cfg.
 
-121. Messages stay onscreen one frame too long. Fix this
-
 122. Create a drawing manager that allows for depth drawing. THis way, interface will always be on top.
 
 123. Raider drilling animations.
+
+124. Make walls not be buildable on rubble. And, probably, quite a few other constructions.
 
 
 
@@ -235,6 +221,8 @@ svn commit -m "" --password rH9FK2xY2zd5
 
 39. Change map to vector. Change unitlist to vector. - DONE
 
+41. Create a job que... - DONE
+
 49. Air tiles. - DONE
 
 53. Make the unit carry over it's inventory when it moves between tiles... - DONE
@@ -254,6 +242,8 @@ SDL_Surface *rendered_message;
 62. Add support for 2D animations. - DONE.
 
 66. Increase game performance. Maybe add tiles that are offscreen and have nothing on them to an 'ignore' or 'inactive' list or flag them as inactive/igorned? - DONE
+
+68. In the terrain.cfg files and the like, make the [] part be used as the ID of the object. - DONE
 
 70. The graphics functions are absolutely horrid. They mercilessly eat the cpu. FIX THIS!!!! - DONE.
 
@@ -278,6 +268,18 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 89. Fix the animation crash... - DONE.
 
 90. Making a tool deconstructor might work in fixing the free(): invalid next size error. Try it. - DONE. This was part of the problem I think...
+
+97. Basic constructions. - DONE
+
+102. Implement that job que. - DONE. Yes, it is a repeat.
+
+106. The reason the game kept crashing when there was the "SDL_FreeSurface" thing in the unit's deconstructor was that it was freeing the actual image from the unit type. So, make sure to free all the surfaces at the end of the program and only in the unit type. For each individual unit, simply set the surface pointer to NULL. - DONE
+
+109. Check to make sure that the tile doesn't have an existing construction on it. - DONE
+
+110. Combine client and server. How? Same thing as with 3D and 2D mode. bool server - DONE
+
+121. Messages stay onscreen one frame too long. Fix this - DONE
 
 
 

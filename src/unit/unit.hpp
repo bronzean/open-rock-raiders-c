@@ -123,7 +123,6 @@ public:
 	SDL_Surface *select_rubble_to_shovel_spr; //Displayed when the player is selecting rubble to shovel.
 	std::string shovelling_message_str; //A message that is displayed while the unit is shovelling.
 	SDL_Surface *shovelling_message_spr; //A message that is displayed while the unit is shovelling.
-	bool animation_playing; //Is the unit currently playing an animation?
 	std::string constructing_message_str; //A messaged that is displayed while the unit is constructing something.
 	SDL_Surface *constructing_message_spr; //A messaged that is displayed while the unit is constructing something.
 	std::string construct_walking_message_str;
@@ -149,6 +148,11 @@ public:
 	 */
 
 	int construct_rate; //The rate at which it constructs buildings. TODO: Unhardcode.
+
+	bool animation_playing; //Is the unit currently playing an animation?
+	std::vector<animation> animations; //Stores all of the tile's animations.
+	bool drilling_animation; //Does the tile have an animation that plays while it is getting drilled?
+	int drilling_animation_entry; //Stores the index of the drilling animation's entry in the animations vector.
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.svn add --depth=infinity * --force

@@ -848,7 +848,7 @@ bool tile_manager::load_tile(string folderpath)
 						animation new_animation; //The new animation that's going to be added to the animations vector.
 						//new_animation.init(); //Initialize an empty animation. //Redundant.
 
-						new_animation.folder_path = folderpath + "/"; //TODO: Assign the object's folder path.
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
 
 						out_string << "Kay, I found the stuff that has to do with the drilling animation.\n";
 						out_string << "Folderpath: " << new_animation.folder_path << "\n";
@@ -857,7 +857,7 @@ bool tile_manager::load_tile(string folderpath)
 						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
 
 						new_tile.animations.push_back(new_animation); //Add the drill animation to the tile's animation vector.
-						new_tile.drilling_animation_entry = new_tile.animations.size() - 1; //Let the game know what the drill animation's location in the animatiosn vector is.
+						new_tile.drilling_animation_entry = new_tile.animations.size() - 1; //Let the game know what the drill animation's location in the animations vector is.
 						new_tile.drilling_animation = true; //Let's the game know that the tile has a drilling animation.
 					}
 					else if(temp == '(')

@@ -82,6 +82,8 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	constructing_message_spr = NULL;
 	construct_walking_message_str = "Here I come my aunt cinnamon!";
 	construct_walking_message_spr = NULL;
+	drilling_animation_entry = 0;
+	drilling_animation = false;
 }
 
 //Initialize a new unit type.
