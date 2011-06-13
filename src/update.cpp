@@ -17,7 +17,7 @@ void *DrawScreen(void *param)
 	{
 		if(screen_needs_updating == true)
 		{
-			Draw_Message_Handler.draw_all();
+			//Draw_Message_Handler.draw_all();
 			//std::cout << "\nNeeds updating!\n";
 			//if(GameState != Loading)
 			//{
@@ -50,6 +50,12 @@ void *DrawScreen(void *param)
 
 int update()
 {
+	if(screen_needs_updating == false)
+	{
+		//cout << "Setting screen to be updated\n";
+		//screen_needs_updating = true;
+		allow_draw = true;
+	}
 
         /*if(num_worker_threads == 0) //If not running with threads...
 	{
@@ -92,9 +98,6 @@ int update()
 			//Quit the program
 			gameover = 1;
 		}
-
-                if(allow_draw)
-                {
                     if(GameState == Level)
                     {
                             if(event_struct.type == SDL_MOUSEBUTTONDOWN)
@@ -403,7 +406,6 @@ int update()
                                     }
                             }
                     }
-                }
 	}
 
 	//If the escape key was pressed...
@@ -437,18 +439,15 @@ int update()
 
 	if(GameState == Title && gameover != true)
 	{
-                if(allow_draw)
-                {
-                        if(keystates[SDLK_RETURN]) //If enter was pressed...
-                        {
-                             GameState = Loading; //Load everything.
-                        }
+		if(keystates[SDLK_RETURN]) //If enter was pressed...
+		{
+		GameState = Loading; //Load everything.
+		}
 
-                        if(screen_needs_updating == false)
-                        {
-                                draw(0, 0, title_screen, screen); //Draw the title screen's background.
-                        }
-                }
+		if(screen_needs_updating == false)
+		{
+			draw(0, 0, title_screen, screen); //Draw the title screen's background.
+		}
 	}
 
 	else if(GameState == Loading && gameover != true)
@@ -666,8 +665,6 @@ int update()
 
 	else if(GameState == Level && gameover != true)
 	{
-                if(allow_draw)
-                {
                         vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
                         int counter = 0; //Used in the for loop below...
 
@@ -946,13 +943,9 @@ int update()
                                         }
                                 }
                         }
-                }
 	}
 
-        if(allow_draw)
-        {
-            Interface.update();
-        }
+	Interface.update();
 
 
 	try
@@ -966,10 +959,11 @@ int update()
 		cerr << "Failed to write to gamelog!\n";
 	}
 
-	if(screen_needs_updating == false)
+	if(allow_draw)
 	{
 		//cout << "Setting screen to be updated\n";
 		screen_needs_updating = true;
+		allow_draw = false;
 	}
 
 	return 0;

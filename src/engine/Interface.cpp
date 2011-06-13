@@ -23,15 +23,15 @@ void interface::update()
 		}
 	}
 
-	if(screen_needs_updating == false)
-	{
+	//if(screen_needs_updating == false)
+	//{
 		draw_ui();
-	}
+	//}
 }
 
 void interface::draw_ui()
 {
-	//Draw_Message_Handler.draw_all(); //Draw all messages;
+	Draw_Message_Handler.draw_all(); //Draw all messages;
 
 	if(GameState == Level)
 	{
@@ -88,12 +88,18 @@ void draw_message_handler::draw_all() //Draw everything it's supposed to draw. T
 			{
 				if(messages[counter].layer == PCamera->layer && messages[counter].world_x + messages[counter].sprite->w >= PCamera->wx && messages[counter].world_x <= (PCamera->wx + SCREEN_WIDTH) && messages[counter].world_y + messages[counter].sprite->h >= PCamera->wy && messages[counter].world_y <= (PCamera->wy + SCREEN_HEIGHT)) //Check if the message is onscreen.
 				{
-					draw(messages[counter].world_x - (PCamera->wx), messages[counter].world_y - (PCamera->wy), messages[counter].sprite, screen); //Draw the message.
+					if(allow_draw)
+					{
+						draw(messages[counter].world_x - (PCamera->wx), messages[counter].world_y - (PCamera->wy), messages[counter].sprite, screen); //Draw the message.
+					}
 				}
 			}
 			else
 			{
-				draw(messages[counter].world_x, messages[counter].world_y, messages[counter].sprite, screen); //Draw the message.
+				if(allow_draw)
+				{
+					draw(messages[counter].world_x, messages[counter].world_y, messages[counter].sprite, screen); //Draw the message.
+				}
 			}
 
 			messages[counter].message_duration--; //"Tick the timer".

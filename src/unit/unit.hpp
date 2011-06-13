@@ -209,6 +209,8 @@ public:
 	bool check_shovel_command(); //Checks if a shovel command was issued.
 
 	void check_job(); //Give the unit something to do out of the job que.
+
+	void construct_construction(); //Does the stuff related to constructions.
 };
 
 class unit_type_manager //Manages all the base types of units.
