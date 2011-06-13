@@ -129,6 +129,7 @@ public:
 	SDL_Surface *construct_walking_message_spr;
 
 	job *my_job; //The current job this guy is doing.
+	int construction_repositioning; //A unit has to move off the construction it is building when it nears completion. This variable is used in that. 0 = false. 1 = true. 2 = Already done.
 	std::string job_state; //What is the unit currently doing?
 	/* Acceptable values:
 	 * idling
@@ -151,11 +152,11 @@ public:
 
 	bool animation_playing; //Is the unit currently playing an animation?
 	std::vector<animation> animations; //Stores all of the tile's animations.
-	bool drilling_animation; //Does the tile have an animation that plays while it is getting drilled?
-	int drilling_animation_entry; //Stores the index of the drilling animation's entry in the animations vector.
+	bool drilling_animation_left; //Does the unit have an animation that plays while it is drilling a wall to the left?
+	int drilling_animation_left_entry; //Stores the index of the drilling animation left's entry in the animations vector.
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
-	//bClassUnit(const bClassUnit &source); //Copy constructor.svn add --depth=infinity * --force
+	//bClassUnit(const bClassUnit &source); //Copy constructor.
 	~bClassUnit() //Deconstructor.
 	{
 		/*if(sprite != NULL)

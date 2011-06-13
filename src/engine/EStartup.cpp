@@ -131,11 +131,11 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	std::cout << "\nSucesfully Initialized\n";
 
 	cout << "Setting the \"Construct Wall\" button's variables.\n";
-	SDL_Surface* temp_spr = NULL; //Temporary sprite holding the construct wall button's sprite.
+        SDL_Surface* temp_spr = NULL; //Temporary sprite used for loading the .
 	//temp_spr = img_load3("data/resource/interface/button/construction/build_wall.png");
 	if(!img_load_safe("data/resource/interface/button/construction/build_wall.png", &temp_spr))
 	{
-		cout << "Failed loading wall construction sprite.\n";
+                cout << "Failed loading wall construction button sprite.\n";
 		return false;
 	}
 	Interface.construct_wall_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct wall button.
@@ -146,6 +146,23 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	Interface.construct_wall_button.y2 = Interface.construct_wall_button.y1 + Interface.construct_wall_button.sprite->h; //Set the construct wall button's bottom right corner's y.
 
 	choose_wall_location_spr = TTF_RenderText_Solid(font1, choose_wall_location_str.c_str(), c_white);
+
+        //SDL_FreeSurface(temp_spr); //Prepare this for use with the next button. NOTE: NEVER DO THIS. Let the button itself free it.
+        temp_spr = NULL; //Reset this for use with next button.
+
+        if(!img_load_safe("data/resource/interface/button/construction/build_door.png", &temp_spr))
+        {
+                cout << "Failed loading door construction button sprite.\n";
+                return false;
+        }
+        Interface.construct_door_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct wall button.
+        Interface.construct_door_button.state = 1; //Make it start out enabled!
+        Interface.construct_door_button.x1 = Interface.construct_wall_button.x1; //TODO: Make this be loaded from the interface cfg.
+        Interface.construct_door_button.y1 = Interface.construct_wall_button.y2 + 1; //TODO: Make this be loaded from the interface cfg.
+        Interface.construct_door_button.x2 = Interface.construct_door_button.x1 + Interface.construct_door_button.sprite->w; //Set the construct door button's bottom right corner's x.
+        Interface.construct_door_button.y2 = Interface.construct_door_button.y1 + Interface.construct_door_button.sprite->h; //Set the construct door button's bottom right corner's y.
+
+        choose_door_location_spr = TTF_RenderText_Solid(font1, choose_door_location_str.c_str(), c_white);
 
 	//Everything initialized fine.
 	return true;

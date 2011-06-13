@@ -177,6 +177,8 @@ run_keycheck_thread()
 
 124. Make walls not be buildable on rubble. And, probably, quite a few other constructions.
 
+125. Make the location of the "Press enter to enter the test level" text configurable via the interface CFG.
+
 
 
 --Done--

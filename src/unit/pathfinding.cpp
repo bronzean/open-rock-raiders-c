@@ -161,6 +161,8 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 	{
 		cout << "Error: Can't move onto the unmovable!\n";
 		out_string << "Error: Can't move onto the unmovable!\n";
+
+		cout << "Map[move_destination].wall = " << Map[move_destination].wall << ", Map[move_destination].air = " << Map[move_destination].air << ", Map[move_destination].obstruction = " << Map[move_destination].obstruction << "\nID of said tile: " << Map[move_destination].ID << "\nmove_destination = " << move_destination << ".\n";
 		return false; //Return to the calling function. False lets it know that no path is found. The above things log why it failed.
 	}
 

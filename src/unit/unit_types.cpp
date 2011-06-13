@@ -289,7 +289,7 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
-			else if(command == "DRILLING_ANIMATION") //Found the entry that specifies where the unit's drilling animation's cfg is located.
+			else if(command == "DRILLING_ANIMATION_LEFT") //Found the entry that specifies where the unit's drilling animation's cfg is located.
 			{
 				bool quit = false; //Controlls the loop below.
 				bool start = false; //Start recording the parameter?
@@ -316,8 +316,8 @@ bool unit_type_manager::load_unit(string folderpath)
 						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
 
 						new_unit.animations.push_back(new_animation); //Add the drill animation to the unit's animation vector.
-						new_unit.drilling_animation_entry = new_unit.animations.size() - 1; //Let the game know what the drill animation's location in the animations vector is.
-						new_unit.drilling_animation = true; //Let's the game know that the tile has a drilling animation.
+						new_unit.drilling_animation_left_entry = new_unit.animations.size() - 1; //Let the game know what the drill animation's location in the animations vector is.
+						new_unit.drilling_animation_left = true; //Let's the game know that the tile has a drilling animation.
 					}
 					else if(temp == '(')
 					{

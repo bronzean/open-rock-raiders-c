@@ -331,6 +331,9 @@ int main( int argc, char* argv[] )
 	TTF_CloseFont(font1); //Free font1.
 	TTF_CloseFont(font2); //Free font2.
 
+        SDL_FreeSurface(Interface.construct_wall_button.sprite);
+        SDL_FreeSurface(Interface.construct_door_button.sprite);
+
 	SDL_Quit(); //Exit SDL.
 
 	pthread_exit(NULL); //End of program. Ya, pthreads stops execution here.

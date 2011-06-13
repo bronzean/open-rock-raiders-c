@@ -19,6 +19,7 @@ void interface::update()
 			}
 
 			construct_wall_button.update();
+                        construct_door_button.update();
 		}
 	}
 
@@ -30,7 +31,7 @@ void interface::update()
 
 void interface::draw_ui()
 {
-	Draw_Message_Handler.draw_all(); //Draw all messages;
+	//Draw_Message_Handler.draw_all(); //Draw all messages;
 
 	if(GameState == Level)
 	{

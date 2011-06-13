@@ -1,5 +1,6 @@
 APP      = ORR
-CXX := clang++
+CXX := g++
+#CXX := ~/clang/build/Debug+Asserts/bin/clang++
 C := clang
 
 SRCEXT   = cpp
@@ -12,8 +13,8 @@ SRCDIRS := $(shell find . -name '*.$(SRCEXT)' -exec dirname {} \; | uniq)
 OBJS    := $(patsubst %.$(SRCEXT),$(OBJDIR)/%.o,$(SRCS))
 
 DEBUG    = -g
-INCLUDES = -Wall -Wextra -pedantic
-CFLAGS   = -Wall -pedantic -ansi -c $(DEBUG) $(INCLUDES)
+INCLUDES = #-Wall -Wextra -pedantic
+CFLAGS   = -pedantic -ansi -c $(DEBUG) $(INCLUDES)
 LDFLAGS  = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_mixer -lpthread -lSDL_net -lGL -lGLU -lstdc++ -lc
 
 ifeq ($(SRCEXT), cpp)
