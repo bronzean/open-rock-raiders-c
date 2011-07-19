@@ -1,2 +1,3 @@
 Error Code 1: This means that when the game was trying to remove the ore that the unit just picked up, it couldn't find said ore in the ore_on_map list.
-Error Code 2: This means that the game failed to remove the job from the job que after a unit finished constructing a construction.
+Error Code 2: This means that the game failed to remove the job from the job que after a unit finished constructing a construction. - *UNUSED*
+Error Code 3: This means that the unit has failed to construct the construction somehow.

@@ -19,8 +19,8 @@ void *DrawScreen(void *param)
 		{
 			//Draw_Message_Handler.draw_all();
 			//std::cout << "\nNeeds updating!\n";
-			//if(GameState != Loading)
-			//{
+			if(GameState != Loading)
+			{
 				//cout << "Gamestate != loading!\n";
 				if(SDL_Flip(screen) == -1)
 				{
@@ -35,7 +35,7 @@ void *DrawScreen(void *param)
 				//SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
 				SDL_FillRect(screen, NULL, 0x00000000);
 				//cout << "Cleared screen!\n";
-			//}
+			}
 
 			screen_needs_updating = false;
 			//cout << "Screen set to not needing updating!\n";

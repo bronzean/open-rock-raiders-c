@@ -158,16 +158,20 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 		}
 		catch(string error)
 		{
-			cout << "Blarg it failed.\n";
+			cout << "ERROR CODE 3: Construction has failed. Error message: " << error << "\n"; //Debugging output.
+			out_string << "ERROR CODE 3: Construction has failed. Error message: " << error << "\n"; //Log the error.
 			return;
 		}
 		catch(char const *error)
 		{
-			cout << "Blarg it failed.\n";
+			cout << "ERROR CODE 3: Construction has failed. Error message: " << error << "\n"; //Debugging output.
+			out_string << "ERROR CODE 3: Construction has failed. Error message: " << error << "\n"; //Log the error.
 			return;
 		}
 		catch(...) //Oops, something borked. General error. Abort!
 		{
+			cout << "ERROR CODE 3: Construction has failed. NO ERROR MESSAGE AVAILABLE. " << "\n"; //Debugging output.
+			out_string << "ERROR CODE 3: Construction has failed. NO ERROR MESSAGE AVAILABLE. " << "\n"; //Log the error.
 			gameover = true; //Tells the game to stop running.
 			throw; //Quit this function.
 		}
