@@ -69,9 +69,9 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 
 				if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile is "in bounds".
 				{
-					if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
+					if(calculate_path() == false || (Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true)) //Calculate the path and check to make sure there's no door construction there.
 					{
-						if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+						if(Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
 
 						calculate_next_tile = true; //Calculate the next tile to see if it works.
 					}
@@ -88,9 +88,9 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 
 					if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
 					{
-						if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
+						if(calculate_path() == false || (Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true)) //Calculate the path and check to make sure there's no door construction there.
 						{
-							if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+							if(Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
 
 							calculate_next_tile = true; //Eh, calculate next tile to see if that works.
 						}
@@ -108,9 +108,9 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 
 					if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
 					{
-						if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
+						if(calculate_path() == false || (Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true)) //Calculate the path and check to make sure there's no door construction there.
 						{
-							if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+							if(Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
 
 							calculate_next_tile = true; //Oh boy, last check to follow.
 						}
@@ -128,9 +128,9 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 
 					if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
 					{
-						if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
+						if(calculate_path() == false || (Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true)) //Calculate the path and check to make sure there's no door construction there.
 						{
-							if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+							if(Map[move_destination].local_construction->door == true && Map[move_destination].has_construction == true) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
 
 							//OH COME ON. WHAT IS WRONG WITH THIS PLAYER. THEY CLICKED ON AN INACCESSIBLE TILE!
 							move = false; //Tell the unit it's staying put
