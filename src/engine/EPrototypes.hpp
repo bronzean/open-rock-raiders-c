@@ -33,3 +33,7 @@ extern char *strrev(char *);
 extern char *itoa(int, char *, int);
 
 int resizeGlWindow(int width, int height); //Resizes the window. (ONLY IN 3D MODE!)
+
+bool load_game(); //Load the game.
+
+void poll_events(); //Checks for keyboard events, mouse events, all the good stuff. Also cleans up update.cpp quite a bit!
