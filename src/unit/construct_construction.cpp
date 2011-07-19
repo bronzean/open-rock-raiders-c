@@ -1,5 +1,7 @@
 /* Copyright the ORR-C Dev Team */
 #include "unit.hpp" //Blablabla, include unit.hpp
+#include <iostream>
+using namespace std;
 
 /* --------------------------------------------------------------
  * Everything related to the unit constructing stuff is defined here.
@@ -7,253 +9,161 @@
 
 void bClassUnit::construct_construction() //Does the stuff related to constructions.
 {
-	if(!move) //If the unit has reached the construction site...
+	if(!move) //Just make sure the raider ain't trying to go anywhere.
 	{
 		try
 		{
-			//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, TTF_RenderText_Solid(font1, "Bob the builder!", c_green), 0); //Draw the "I'm bob the builder!" message.
-			Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm bob the builder!" message.
+			//-------------------------------------
+			//Here the construction is constructed.
+			//-------------------------------------
 
+			Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm Bob the builder!" message.
 
-			my_job->construction_health -= construct_rate;
-			//my_job.construction_health -= construct_rate;
+			my_job->construction_health -= construct_rate; //Progress the construction.
 
-			if(my_job->construction_health <= 0 && construction_repositioning == 2)
-			//if(my_job.construction_health <= 0)
+			if(my_job->construction_health <= 0 && construction_repositioning == 2) //Check if it's done constructing, and if the unit has already moved off the building's tile.
 			{
-				cout << "Done building!\n";
+				//-------------------------------------
+				//Here the construction is finished.
+				//-------------------------------------
 
-				int i2 = 0;
-				vector<job>::iterator iterator2;
+				cout << "Done constructing!\n"; //Debugging output.
+				out_string << "Done constructing!\n"; //Debugging output.
 
-				bool done = false;
-
-				/*while(!done)
-				{
-					//if((unsigned)i2 >= Job_Que.jobs.size())
-					if(i2 >= Job_Que.jobs.size())
-					{
-						cout << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
-						out_string << "FATAL: ERROR CODE 2: Failed to remove job from job que.\n";
-						throw "FATAL: ERROR CODE 2";
-					}
-
-					//cout << "this->type = " << my_job->type << " and JOB->type = " << Job_Que.jobs[i2].type << "\n";
-					//cout << "this->construction_type = " << my_job->construction_type << " and JOB->construction_type = " << Job_Que.jobs[i2].construction_type << "\n";
-					//cout << "this->tasked_tile->ID = " << my_job->tasked_tile->ID << " and JOB->tasked_tile->ID = " << Job_Que.jobs[i2].tasked_tile->ID << "\n";
-					//cout << "this->taken = " << my_job->taken << " and JOB->taken = " << Job_Que.jobs[i2].taken << "\n";
-					//cout << "this->construction_health = " << my_job->construction_health << " and JOB->construction_health = " << Job_Que.jobs[i2].construction_health << "\n";
-
-					cout << "this->type = " << my_job->type << "\n";
-					cout << "this->construction_type = " << my_job->construction_type << "\n";
-					cout << "this->tasked_tile->ID = " << my_job->tasked_tile->ID << "\n";
-					cout << "this->taken = " << my_job->taken << " and JOB->taken = " << "\n";
-					cout << "this->construction_health = " << my_job->construction_health << "\n";
-
-					//if(&Job_Que.jobs[i2] == my_job)
-					//if(my_job->compare(Job_Que.jobs[i2]))
-					//if(Job_Que.jobs[i2].compare(*&my_job))
-					if(Job_Que.jobs[i2].compare(my_job))
-					{
-						cout << "Done constructing!\n";
-						out_string << "Done constructing!\n";
-
-						if(my_job->construction_type == "wall")
-						{
-							my_job->tasked_tile->construct_construction(c_wall); //Transform specified tile into a wall.
-						}
-
-						Job_Que.jobs.erase(Job_Que.jobs.begin() + i2); //Remove this job from the job que.
-						done = true;
-
-						my_job = NULL;
-
-						job_state = "idle";
-					}
-
-					i2++;
-					iterator2++;
-				}*/
-
-				
-				cout << "Done constructing!\n";
-				out_string << "Done constructing!\n";
-
-				if(my_job->construction_type == "wall")
+				if(my_job->construction_type == "wall") //Check if the unit is building a wall.
 				{
 					my_job->tasked_tile->construct_construction(c_wall); //Add the wall construction to the specified tile.
 				}
-				else if(my_job->construction_type == "door")
+				else if(my_job->construction_type == "door") //Check if the unit is building a door.
 				{
 					my_job->tasked_tile->construct_construction(c_door); //Add the door construction to the specified tile.
 				}
 
-				delete my_job;
-				my_job = NULL;
+				delete my_job; //Free that memory!!!
+				my_job = NULL; //Reset this.
 
 				construction_repositioning = 0; //Reset this so the raider moves off the tile next time too.
-				//my_job.nullify(); //Similar to "my_job = NULL;"
 
-				job_state = "idle";
+				job_state = "idle"; //Unit's done building. Now it's time for it to idle again.
 			}
-			else if(my_job->construction_health <= 0 && construction_repositioning == 0)
+			else if(my_job->construction_health <= 0 && construction_repositioning == 0) //Check if it's time to move off the tile.
 			{
-				//heck if the raider can move off this tile once the construction is built.
+				//-------------------------------------
+				//Check if the raider can move off this tile once the construction is built.
+				//-------------------------------------
+
 				int layer_offset = (num_row_objects * num_col_objects * Map[my_job->tasked_tile->ID].layer); //Assign the layer offset.
-				move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / 32)) ) ) - 1) + layer_offset; //grab tile to the left.
-				move = true;
-				construction_repositioning = 1;
 
-				cout << "WX = " << Map[my_job->tasked_tile->ID].wx << ", WY = " << Map[my_job->tasked_tile->ID].wy << ", layer_offset = " << layer_offset << ", move_destination = " << move_destination << ".\n";
+				move = true; //I LIKE TO MOVE IT MOVE IT.
 
-				/*if(calculate_path() == false)
+				construction_repositioning = 1; //Let the game know this unit is relocating itself.
+
+				bool calculate_next_tile = false; //Set to true if the current tile failed the check.
+
+				cout << "WX = " << Map[my_job->tasked_tile->ID].wx << ", WY = " << Map[my_job->tasked_tile->ID].wy << ", layer_offset = " << layer_offset << "\n"; //Debugging output.
+
+				move_destination = (((((Map[my_job->tasked_tile->ID].wx) / tile_width) + ((Map[my_job->tasked_tile->ID].wy) / tile_height)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / tile_height)) ) ) - 1) + layer_offset; //Grab tile to the left, to start things off.
+
+ 				cout << "Move_destination = " << move_destination << ".\n"; //Debugging output.
+
+
+				if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile is "in bounds".
 				{
-					if(move_destination > 0 && move_destination < num_tiles)
+					if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
 					{
-						if(calculate_path() == false)
+						if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+
+						calculate_next_tile = true; //Calculate the next tile to see if it works.
+					}
+				}
+
+				if(calculate_next_tile) //Previous tile failed? Try this one.
+				{
+					calculate_next_tile = false; //First off, reset this.
+
+					move_destination = (((((Map[my_job->tasked_tile->ID].wx) / tile_width) + ((Map[my_job->tasked_tile->ID].wy) / tile_height)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / tile_height)) ) ) + 1) + layer_offset; //Last tile check failed. Grab the tile to the right this time.
+
+
+ 					cout << "Move_destination = " << move_destination << ".\n"; //Debugging output.
+
+					if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
+					{
+						if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
 						{
-							move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / 32)) ) ) + 1) + layer_offset; //It failed again. Grab the tile to the right.
-							if(move_destination > 0 && move_destination < num_tiles)
-							{
-								if(calculate_path() == false)
-								{
-									move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / 32) - 1) ) ) - 1) + layer_offset; //Oh dear, it failed yet again. Grab the tile to the north.
-									if(move_destination > 0 && move_destination < num_tiles)
-									{
-										if(calculate_path() == false)
-										{
-											move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_col_objects - 1)* ((wy / 32) + 1) ) ) + 1) + layer_offset; //You know the drill. Tile to the south now.
-											if(move_destination > 0 && move_destination < num_tiles)
-											{
-												if(calculate_path() == false)
-												{
-													//OH COME ON. WHAT IS WRONG WITH THIS PLAYER. THEY CLICKED ON AN INACCESSIBLE TILE!
-													move = false; //Tell the unit it's staying put
-													move_destination = 0; //Reset the unit's move destination.
-													construction_repositioning = 0;
+							if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
 
-													cout << "No place to move from here, fool.\n";
-												}
-											}
-											else
-											{
-												move = false; //Tell the unit it's staying put
-												move_destination = 0; //Reset the unit's move destination.
-
-												construction_repositioning = 0;
-
-												cout << "Can't move to a nonexistant tile1!\n";
-											}
-										}
-									}
-									else
-									{
-										move = false; //Tell the unit it's staying put
-										move_destination = 0; //Reset the unit's move destination.
-
-										construction_repositioning = 0;
-
-										cout << "Can't move to a nonexistant tile2!\n";
-									}
-								}
-							}
-							else
-							{
-								move = false; //Tell the unit it's staying put
-
-								construction_repositioning = 0;
-								cout << "Can't move to a nonexistant tile3!\n";
-							}
+							calculate_next_tile = true; //Eh, calculate next tile to see if that works.
 						}
 					}
-				}*/
+				}
 
-				if((move_destination > 0 && move_destination < num_tiles))
+				if(calculate_next_tile) //Previous tile failed? Try this one.
 				{
-					if(calculate_path() == false || Map[move_destination].local_construction->door == true)
-					{
-						move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / 32)) ) ) + 1) + layer_offset; //It failed again. Grab the tile to the right.
-						if(move_destination > 0 && move_destination < num_tiles)
-						{
-							if(calculate_path() == false || Map[move_destination].local_construction->door == true)
-							{
-								move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / 32) - 1) ) ) - 1) + layer_offset; //Oh dear, it failed yet again. Grab the tile to the north.
-								if((move_destination > 0 && move_destination < num_tiles))
-								{
-									if(calculate_path() == false || Map[move_destination].local_construction->door == true)
-									{
-										move_destination = (((((Map[my_job->tasked_tile->ID].wx) / 32) + ((Map[my_job->tasked_tile->ID].wy) / 32)) + ((num_col_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / 32) + 1) ) ) + 1) + layer_offset; //You know the drill. Tile to the south now.
-										if((move_destination > 0 && move_destination < num_tiles))
-										{
-											if(calculate_path() == false || Map[move_destination].local_construction->door == true)
-											{
-												//OH COME ON. WHAT IS WRONG WITH THIS PLAYER. THEY CLICKED ON AN INACCESSIBLE TILE!
-												move = false; //Tell the unit it's staying put
-												move_destination = 0; //Reset the unit's move destination.
-												construction_repositioning = 0;
+					calculate_next_tile = false; //Reset this!
 
-												cout << "What? Failed all the checks...\n";
-											}
-										}
-										else
-										{
-											move = false; //Tell the unit it's staying put
-											move_destination = 0; //Reset the unit's move destination.
-											construction_repositioning = 0;
-											cout << "Can't move to a nonexistant tile!\n";
-										}
-									}
-								}
-								else
-								{
-									move = false; //Tell the unit it's staying put
-									move_destination = 0; //Reset the unit's move destination.
-									construction_repositioning = 0;
-									cout << "Can't move to a nonexistant tile!\n";
-								}
-							}
-						}
-						else
+					move_destination = (((((Map[my_job->tasked_tile->ID].wx) / tile_width) + ((Map[my_job->tasked_tile->ID].wy) / tile_height)) + ((num_row_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / tile_height) - 1) ) ) - 1) + layer_offset; //Oh dear, it failed yet again. Grab the tile to the north.
+
+
+ 					cout << "Move_destination = " << move_destination << ".\n"; //Debugging output.
+
+					if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
+					{
+						if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
 						{
+							if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+
+							calculate_next_tile = true; //Oh boy, last check to follow.
+						}
+					}
+				}
+
+				if(calculate_next_tile) //Previous tile failed? Try this one.
+				{
+					calculate_next_tile = false;
+
+					move_destination = (((((Map[my_job->tasked_tile->ID].wx) / tile_width) + ((Map[my_job->tasked_tile->ID].wy) / tile_height)) + ((num_col_objects - 1)* ((Map[my_job->tasked_tile->ID].wy / tile_height) + 1) ) ) + 1) + layer_offset; //You know the drill. Tile to the south now.
+
+
+ 					cout << "Move_destination = " << move_destination << ".\n"; //Debugging output.
+
+					if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
+					{
+						if(calculate_path() == false || Map[move_destination].local_construction->door == true) //Calculate the path and check to make sure there's no door construction there.
+						{
+							if(Map[move_destination].local_construction->door) cout << "Door! Can't move there foo.\n"; //Debugging output/yelling at ye foolish player.
+
+							//OH COME ON. WHAT IS WRONG WITH THIS PLAYER. THEY CLICKED ON AN INACCESSIBLE TILE!
 							move = false; //Tell the unit it's staying put
-							construction_repositioning = 0;
-							cout << "Can't move to a nonexistant tile!\n";
+							move_destination = 0; //Reset the unit's move destination.
+							construction_repositioning = 0; //Signifies failure.
+
+							cout << "What's this? Failed all the checks...\n"; //Debugging output.
 						}
 					}
 				}
-				else
-				{
-					move = false; //Tell the unit it's staying put
-					move_destination = 0;
 
-					construction_repositioning = 0;
-					cout << "Can't move to a nonexistant tile!\n";
-				}
-
-				if(construction_repositioning == 0)
+				if(construction_repositioning == 0) //If true, it means it failed to find a free tile.
 				{
 					//Add job back to job que.
 					Job_Que.jobs.push_back(*my_job);
-					delete my_job;
-					job_state = "idling";
-					cout << "What? Something failed.\n";
+					delete my_job; //Free memory.
+					job_state = "idling"; //Unit is now idling.
+					cout << "What? Something failed.\n"; //Debugging ouput.
 				}
 			}
-			else if(construction_repositioning == 1 && move == false)
+			else if(construction_repositioning == 1 && move == false) //Checks if the unit has relocated and is now pending construction finalisation.
 			{
-				construction_repositioning = 2;
+				construction_repositioning = 2; //YARR. Means the construction will finalise.
 			}
 		}
 		catch(string error)
 		{
 			cout << "Blarg it failed.\n";
-			//return "";
 			return;
 		}
 		catch(char const *error)
 		{
 			cout << "Blarg it failed.\n";
-			//return "";
 			return;
 		}
 		catch(...) //Oops, something borked. General error. Abort!
@@ -264,22 +174,41 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 	}
 	else //The unit hasn't yet reached the destination.
 	{
-		//SDL_Surface* temp_surf = TTF_RenderText_Solid(font1, "Here I come my aunt cinnamon!", c_green);
-		//Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 0, false); //Draw the "I'm coming to construct stuff!" message.
-		if(/*frames_since_last_move != 1 &&*/ !allow_move)
+		if(!allow_move)
 		{
-			//if(allow_draw)
-			//{
-				Draw_Message_Handler.add_message(wx + 32, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
-			//}
+			if(allow_draw)
+			{
+				Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+			}
 		}
-		//SDL_FreeSurface(temp_surf);
-		//TODO: Check if the unit has anywhere to move from here. If it doesn't, remove this job from the job que.
-		/*
-		if(can't_move_off_this_tile)
-		{
-			draw_message("I'm sorry sir, I can't let you mmmmmmmmmm do that.");
-		}
-		*/
 	}
 }
+
+
+
+/* Here's the debugging output that got generated:
+
+WX = 160, WY = 160, layer_offset = 0
+Move_destination = 74.
+Path to ramp found!
+Door! Can't move there foo.
+Move_destination = 76.
+Error: Can't move onto the unmovable!
+Map[move_destination].wall = 1, Map[move_destination].air = 0, Map[move_destination].obstruction = 1
+ID of said tile: 76
+move_destination = 76.
+Door! Can't move there foo.
+Move_destination = 61.
+Path to ramp found!
+Door! Can't move there foo.
+Move_destination = 89.
+Error: Can't move onto the unmovable!
+Map[move_destination].wall = 1, Map[move_destination].air = 0, Map[move_destination].obstruction = 1
+ID of said tile: 89
+move_destination = 89.
+Door! Can't move there foo.
+What's this? Failed all the checks...
+What? Something failed.
+
+Only 74 had a door.
+See the problem?*/

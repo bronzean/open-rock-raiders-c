@@ -13,6 +13,8 @@ void *ServerNetworking(void *param); //Since the networking update thread is sta
 void *ServerNetworkingUdp(void *param); //Since the networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here. This is the UDP version.
 void *ClientNetworkingUdp(void *param); //Since the client networking update thread is started in this file, and it will run this function, the game needs to know this function exists! So, it is declared here.
 
+bool audio = true;
+
 //The entry point for our program.
 int main( int argc, char* argv[] )
 {
@@ -152,6 +154,7 @@ int main( int argc, char* argv[] )
 		/* Open the audio device */
 		if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) < 0) {
 			fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+			audio = false;
 		
 		} else {
 			Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
@@ -164,12 +167,12 @@ int main( int argc, char* argv[] )
 		audio_open = 1;
 
 		/* Load the requested music file */
-		if(rwops)
+		if(rwops && audio)
 		{
 			rwfp = SDL_RWFromFile(music_filepath.c_str(), "rb");
 			music = Mix_LoadMUS_RW(rwfp);
 		}
-		else
+		else if(audio)
 		{
 			//music = Mix_LoadMUS(music_filepath.c_str());
 			music = Mix_LoadMUS(music_filepath.c_str());
@@ -180,7 +183,7 @@ int main( int argc, char* argv[] )
 			throw (string) "Failed to load music file.";
 		
 		}
-		else
+		else if(audio)
 		{
 			/* Play the music */
 			printf("Playing %s\n", music_filepath.c_str());
@@ -318,7 +321,7 @@ int main( int argc, char* argv[] )
 			SDL_FreeRW(rwfp);
 		}
 	}
-	if(audio_open)
+	if(audio)
 	{
 		cout << "Closing audio.\n";
 		Mix_CloseAudio();

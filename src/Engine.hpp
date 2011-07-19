@@ -42,3 +42,8 @@
 #include "engine/parser.hpp"
 
 #define VERSION "0.0.3.2"
+
+//The following two are a quick solution to unhardcoding tile size.
+//TODO: REPLACE ALL HARDCODED TILE SIZES IN CODE WITH THESE TWO VARIABLE NAMES
+#define tile_width 32
+#define tile_height 32

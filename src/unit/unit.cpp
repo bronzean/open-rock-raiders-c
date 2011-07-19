@@ -85,6 +85,18 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	drilling_animation_left_entry = 0;
 	drilling_animation_left = false;
 	construction_repositioning = 0;
+
+	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
+	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
+	mining_message_spr = TTF_RenderText_Solid(font2, mining_message_str.c_str(), c_green);
+	select_object_to_pick_up_spr = TTF_RenderText_Solid(font1, select_object_to_pick_up_str.c_str(), c_white);
+	chopping_message_spr = TTF_RenderText_Solid(font2, chopping_message_str.c_str(), c_green);
+	select_tree_to_chop_spr = TTF_RenderText_Solid(font1, select_tree_to_chop_str.c_str(), c_white);
+	shovelling_message_spr = TTF_RenderText_Solid(font2, shovelling_message_str.c_str(), c_green);
+	select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, select_rubble_to_shovel_str.c_str(), c_white);
+	constructing_message_spr = TTF_RenderText_Solid(font1, constructing_message_str.c_str(), c_green);
+	construct_walking_message_spr = TTF_RenderText_Solid(font1, construct_walking_message_str.c_str(), c_green);
 }
 
 //Initialize a new unit type.
@@ -109,11 +121,13 @@ void bClassUnit::init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface
 	select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, select_rubble_to_shovel_str.c_str(), c_white);
 	constructing_message_spr = TTF_RenderText_Solid(font1, constructing_message_str.c_str(), c_green);
 	construct_walking_message_spr = TTF_RenderText_Solid(font1, construct_walking_message_str.c_str(), c_green);
+
+	cout << "Initialising new unit.\n"; //Debugging output.
 }
 
 void bClassUnit::draw_sprite() //Draw the unit's sprite.
 {
-	if(screen_needs_updating == false)
+	if(allow_draw)
 	{
 		if(wx + width >= PCamera->wx && wx <= (PCamera->wx + SCREEN_WIDTH) && wy + height >= PCamera->wy && wy <= (PCamera->wy + SCREEN_HEIGHT) && layer == PCamera->layer) //If the sprite is onscreen...
 		{

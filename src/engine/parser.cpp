@@ -428,6 +428,8 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);
 
+					//Map[atoi(stage_object[1].c_str())].unitlist[Map[atoi(stage_object[1].c_str())].unitlist.size()].init(); //Initialise the unit.
+
 					Active_Map.push_back(Map[atoi(stage_object[1].c_str())].ID); //Add this tile's index to Active_Map to know that this tile requires updating.
 					Map[atoi(stage_object[1].c_str())].Active_Map_Entry = Active_Map.size() - 1; //Let the tile know where its entry in Actve_Map is.
 					
