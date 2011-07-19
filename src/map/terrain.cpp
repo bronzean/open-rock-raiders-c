@@ -83,13 +83,13 @@ void tile::draw_sprite()
 		{
 			draw(wx - (PCamera->wx), wy - (PCamera->wy), orelist[orelist.size() - 1].sprite, screen); //Draw the ore's sprite.
 		}
-		if(unitlist.size() != 0)
-		{
-			unitlist[unitlist.size() - 1].draw_sprite(); //Draw the topmost unit's sprite.
-		}
 		if(has_construction)
 		{
 			draw(get_wx() - (PCamera->wx), get_wy() - (PCamera->wy), local_construction->sprite, screen);
+		}
+		if(unitlist.size() != 0)
+		{
+			unitlist[unitlist.size() - 1].draw_sprite(); //Draw the topmost unit's sprite.
 		}
 	}
 }
