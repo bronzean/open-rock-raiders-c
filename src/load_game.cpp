@@ -7,7 +7,7 @@
  * Loads the level and whatnot. Also cleans up the update.cpp file a bit!
  * ----------------------------------------------------------- */
 
-bool load_game()
+bool load_game() //Load the game.
 {
 	string load_text = "";
 	SDL_Surface *load_text_sprite = NULL;
