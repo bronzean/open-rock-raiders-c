@@ -11,6 +11,9 @@ I'f I'm forgetting anything, please let me know.
 
 
 Windows users:
+Become a linux user.
+
+...What? Fine.
 Use cygwin. This is what I'm using to compile the windows versions.
 
 Linux users:
@@ -25,7 +28,7 @@ In windows...If you're using cygwin...same thing.
 Installation
 ---------------------
 Linux users:
-CD to directory in a terminal and type 'sudo make install'.
+ ** CD to directory in a terminal and type 'sudo make install'. ** <- Ignore that, doesn't work properly. I'll be adding a package in the future.
 If you want to mod ORR, then just head on to /usr/local/share/games/orr-c/
 
 If you want ORR to play midi files:
@@ -65,6 +68,4 @@ Install all the libraries listed in the "dependencies file".
 
 Server instructions:
 ----------------------
-Simply cd to that folder and type "make".
-Cygwin users, do the same.
-Finally, run orr-server.
+Change the appropiate variable in the cfg.
