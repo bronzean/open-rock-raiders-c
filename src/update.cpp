@@ -123,7 +123,7 @@ int update()
 		GameState = Loading; //Load everything.
 		}
 
-		if(screen_needs_updating == false)
+		if(screen_needs_updating == false) //Make sure it's ok to draw this.
 		{
 			draw(0, 0, title_screen, screen); //Draw the title screen's background.
 		}
