@@ -26,6 +26,14 @@ Right click			Issue a move command if a unit is selected.
 g				Issue a pick up command if a unit is selected.
 r				Issue a shovel command if a unit is selected.
 
+Constructing stuff:
+- Walls
+1. Click on the "Construct wall" button. NOTE: IT IS NOT REQUIRED FOR A UNIT TO BE SELECTED FOR THIS TO WORK. ADDITIONALLY, SELECTING A UNIT WILL HAVE NO EFFECT ON THIS COMMAND.
+2. Click on an empty tile. Your units will do the rest.
+- Doors
+1. Click on the "Construct Door" button. NOTE: IT IS NOT REQUIRED FOR A UNIT TO BE SELECTED FOR THIS TO WORK. ADDITIONALLY, SELECTING A UNIT WILL HAVE NO EFFECT ON THIS COMMAND.
+2. Click on an empty tile. Your units will do the rest. 
+
 Other:
 n				Increase FPS Cap.
 m				Decrease FPS Cap.
@@ -33,8 +41,8 @@ p				Pause the game.
 
 Hitting escape will quit the game at any time.
 
-If you double click on the binary file to start ORR, it'll load the map maps/default/
-If you run ORR via terminal (linux) or command prompt (windows), you have ot specify the map location. For example, map/awesome-map/
-MAKE SURE TO INCLUDE THE TRALING /
+The map that's loaded is specified in game.cfg.
 
 Edit data/game.cfg if you want to change any general settings, like resolution, whether or not to run fullscreen, etc.
+
+Note: Teleporting is currently not implemented. That's why click on the teleport button has no effect yet.
