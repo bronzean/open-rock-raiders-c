@@ -1,0 +1,6 @@
+How does this work?
+
+If the door is unlocked, the unit simply walks up to it, tells it to open, and waits for it to open. Then, lastly, it'll probably walk through.
+ * Idea: Select door. Button appears: "Open door". Click that. Unit walks up to it. Opens it for you. IT'S BRILLIANT I SAY.
+
+If the door is locked, it'll have to get unlocked somehow. Then the unit can open it, and walk through or whatever.
