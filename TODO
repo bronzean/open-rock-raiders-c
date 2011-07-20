@@ -296,14 +296,36 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 
 
 ---------Releases-------------
+Alpha 0.0.4.x or 0.0.5:
+Get everything construction and base making related done.
+Animations.
+Better UI.
+
 Alpha 0.0.3.x or 0.0.4:
 ALL bugs, crashes, glitches, memleaks, and the like fixed.
 Constructions done.
 Making bases done.
 Teleportation is a goal.
 Animate stuff that need animating.
+Results:
+All known bugs, crashes, glitches, memleaks, and the like, fixed.
+Door and Wall constructions done.
+Bases not made.
+No teleportation.
+No new animations.
 
 End of 2010 alpha:
-Finish pathfinding. Reimplement buildings. Implement mining. Reimplement teleporting. Implement simple level goals. Implement 'load map'. Implement a better UI.
+Finish pathfinding.
+Reimplement buildings.
+Implement mining.
+Reimplement teleporting.
+Implement simple level goals.
+Implement 'load map'.
+Implement a better UI.
 And whatever else we can do before christmas/new years.
-Results: Buildings not re-implemented. Mining implemented. Teleporting not reimplemented. Simple level goals not implemened. 'load map' not implemented. A better UI did, sort of, get implemented.
+Results: Buildings not re-implemented.
+Mining implemented.
+Teleporting not reimplemented.
+Simple level goals not implemened.
+'load map' not implemented.
+A better UI did, sort of, get implemented.

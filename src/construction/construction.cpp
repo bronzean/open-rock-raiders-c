@@ -11,10 +11,20 @@ construction::construction() //Constructor. Initializes an empty construction.
 	door = false;
 	door_strength = 0;
 	door_locked = false;
-	door_open_animation = false;
+	door_open_time = 0;
+
+	/*door_open_animation = false;
 	door_close_animation = false;
 	door_open_animation_entry = 0;
-	door_close_animation_entry = 0;
+	door_close_animation_entry = 0;*/
+
+	active_animation = false;
+	active_animation_entry = 0;
+
+	open_animation = false;
+	open_animation_entry = 0;
+	close_animation = false;
+	close_animation_entry = 0;
 }
 
 void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.
@@ -32,7 +42,7 @@ void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int 
 	door_strength = DOOR_STRENGTH;
 }
 
-void construction::copy_from(construction Construction)
+void construction::copy_from(construction Construction) //Give this tile the properties of the one being copied.
 {
 	name = Construction.name;
 	wall = Construction.wall;
@@ -42,6 +52,18 @@ void construction::copy_from(construction Construction)
 	door = Construction.door;
 	door_locked = Construction.door_locked;
 	door_strength = Construction.door_strength;
+}
+
+void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.
+{
+	if(active_animation == true) //If an animation is going on...
+	{
+		animations[active_animation_entry].draw_sprite(wx, wy, layer); //Draw the animation.
+	}
+	else
+	{
+		draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
+	}
 }
 
 /*void bClassUnit::select() //Checks if the player selected/deselected the unit.

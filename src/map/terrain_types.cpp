@@ -620,6 +620,8 @@ bool tile_manager::load_tile(string folderpath)
 						}
 						start = false;
 						quit = true;
+						out_string << "Num_shovels: " << new_tile.num_shovels << "\n";
+						out_string << "Total shovels: "<< new_tile.total_shovels << "\n";
 					}
 					else if(temp == ')')
 					{
@@ -636,6 +638,7 @@ bool tile_manager::load_tile(string folderpath)
 						for(int i2 = 0; i2 < new_tile.num_shovels; i2++)
 						{
 							cout << new_tile.health[i2] << "\n";
+							out_string << "Health: " << new_tile.health[i2] << "\n";
 						}
 						cout << "\n";
 					}
