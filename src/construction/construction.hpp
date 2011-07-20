@@ -44,9 +44,9 @@ extern construction c_wall; //Wall construction.
 extern construction c_floor; //Floor construction.
 extern construction c_door; //Door construction.
 
-static bool construction_location_select;
-static bool construction_wall_location_select = false; //Is the game waiting for the user to select where to place wall the construction?
-static bool construction_door_location_select = false; //Is the game waiting for the user to select where to place door the construction?
+extern bool construction_location_select;
+extern bool construction_wall_location_select; //Is the game waiting for the user to select where to place wall the construction?
+extern bool construction_door_location_select; //Is the game waiting for the user to select where to place door the construction?
 
 extern std::string choose_wall_location_str;
 extern SDL_Surface* choose_wall_location_spr;

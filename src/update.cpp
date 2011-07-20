@@ -75,14 +75,15 @@ int update()
 	rightclick_tile_id = -1; //Reset rightclick_tile_id
 	leftclick_tile_id = -1; //Reset leftclick_tile_id
 
-	if(construction_wall_location_select && !server) //Is the user selecting the location of a wall construction?
+	if(construction_wall_location_select == true && server == false) //Is the user selecting the location of a wall construction?
 	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 1, false); //Displays the "Choose location of wall construction" message.
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 1, true); //Displays the "Choose location of wall construction" message.
+		cout << "Drawing choose location message.\n";
 	}
 
 	if(construction_door_location_select && !server) //Is the user selecting the location of a door construction?
 	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_door_location_spr, 1, false); //Displays the "Choose location of door construction" message.
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_door_location_spr, 1, true); //Displays the "Choose location of door construction" message.
 	}
 
 	poll_events(); //Event handling.

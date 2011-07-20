@@ -59,7 +59,7 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 						//--------------------------------------------------------------------
 						//END OF OBSOLETE CODE.
 						//--------------------------------------------------------------------
-						else if(Interface.construct_wall_button.clicked() && !construction_location_select /*construction_wall_location_select*/) //Check if the "Construct wall" button was clicked.
+						else if(Interface.construct_wall_button.clicked() && !construction_location_select) //Check if the "Construct wall" button was clicked.
 						{
 							std::cout << "\nConstruct wall button clicked.\n"; //Debugging output.
 

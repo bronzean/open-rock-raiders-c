@@ -44,6 +44,33 @@ void construction::copy_from(construction Construction)
 	door_strength = Construction.door_strength;
 }
 
+/*void bClassUnit::select() //Checks if the player selected/deselected the unit.
+{
+
+	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && mining_mode == false && selectable == true && allow_deselect == true && allow_unit_selection) //If the left mouse button was pressed and this unit can be selected...
+	{
+		if(event_struct.button.x + PCamera->wx >= wx && event_struct.button.x + PCamera->wx <= wx + width && event_struct.button.y + PCamera->wy >= wy && event_struct.button.y + PCamera->wy <= wy + height && mining_mode != true && shovel_mode != true ) //Checks if the mouse clicked on this unit.
+		{
+			if(selected == false) //If the unit is not selected allready.
+			{
+				std::cout << "\nSelected " << name << "\n"; //Let the user know this unit was selected.
+			}
+			selected = true; //Let's the game know this unit has been selected.
+		}
+		else //Ok, the user did not click on this unit.
+		{
+			if(selected == true) //If the unit is selected.
+			{
+				std::cout << "\nDeselected " << name << "\n"; //Let the user know the unit has been deselected.
+				mining_mode = false; //No use to keep mining mode on anymore since it's not even selected anymore.
+				shovel_mode = false; //No use to keep shovelling mode on anymore since it's not even selected anymore.
+			}
+
+			selected = false; //Let's the game know this unit is not selected.
+		}
+	}
+}*/
+
 construction c_wall;
 construction c_floor;
 construction c_door;
