@@ -492,11 +492,11 @@ void tile::move_unit(int i)
 						iterator++;
 					}*/
 
-					for(i2 = 0; iterator < ore_on_map.end(); iterator++, i2++)
+					for(i2 = 0; iterator < ore_on_map.end(); iterator++, i2++) //Remove the ore that was just picked up from the ore on map list.
 					{
 						cout << "Size: " << ore_on_map.size() << "\n";
-						cout << "ID: " << ore_on_map[i2]->containing_tile->ID << "\n";
-						if((int)ore_on_map[i2]->containing_tile->ID == ID && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+						//cout << "ID: " << ore_on_map[i2]->containing_tile->ID << "\n";
+						if(ore_on_map[i2]->containing_tile == this && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
 						{
 							cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 							out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
@@ -922,15 +922,11 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 				new_tile.has_construction = true; //So the new tile has a construction.
 				new_tile.local_construction = local_construction; //Copy over this tile's construction.
 			}
-			Map[ID] = new_tile;
-			for(int i2 = 0; i < Map[ID].orelist.size(); i++)
-			{
-				Map[ID].orelist[i].containing_tile = &Map[ID];
-			}
 
 			//---------------------------
 			//Now what's gonna happen here is the game's gonna remove all the ore on this tile from the ore on map list, and then add the ore from the tile we just created. Otherwise the ore on map list would be full of pointers to nonexistant ore. We can't have none of that!
 			//---------------------------
+
 
 			int i2 = 0; //Used to iterate through the ore on map list.
 			vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore on map list.
@@ -942,7 +938,7 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 				cout << "Size: " << ore_on_map.size() << "\n"; //Debugging output...
 				//cout << "ID: " << (int)ore_on_map[i2]->containing_tile->ID << "\n"; //Debugging output...
 
-				if(ore_on_map[i2]->containing_tile->ID == Map[ID].ID) //See if it found the right ore...
+				if(ore_on_map[i2]->containing_tile == this) //See if it found the right ore...
 				{
 					cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 					out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
@@ -953,17 +949,29 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 				}
 			}
 
+			//---------------------------
+			//End of removing the old ore from the ore on map list code.
+			//---------------------------
+
+			Map[ID] = new_tile; //Assign the tile.
+
+			/*for(int i2 = 0; i < Map[ID].orelist.size(); i++)
+			{
+				Map[ID].orelist[i].containing_tile = &Map[ID];
+				cout << "Map[ID].orelist[i].containing_tile->ID = " << Map[ID].orelist[i].containing_tile->ID << "\n";
+			}*/
+
 			vector<ore>::iterator iterator2 = orelist.begin(); //Used to loop through the new tile's ore list.
 
 			//Add the new ore into the ore_on_map thing.
-			for(int i2 = 0; iterator2 < new_tile.orelist.end(); iterator2++, i2++) //Loop through all of this tile's ore.
+			for(int i2 = 0; iterator2 < Map[ID].orelist.end(); iterator2++, i2++) //Loop through all of this tile's ore.
 			{
-				ore_on_map.push_back(&Map[ID].orelist[Map[ID].orelist.size() - 1]); //Add the current ore into the ore on map list.
+				ore_on_map.push_back(&Map[ID].orelist[i2]); //Add the current ore into the ore on map list.
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[ID]; //I guess this has to be reset for some weird reason.
 			}
 
 			//---------------------------
-			//End of the transfering new ore onto the ore on map list code.
+			//End of the transfering the new ore onto the ore on map list code.
 			//---------------------------
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n"; //Debugging output.
@@ -995,12 +1003,12 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 			for(int i2 = 0; i2 < num_to_gen; i2++) //Keep adding ore until all the requested ore have been generated.
 			{
 				ore new_ore = Ore_Type_Manager.get_by_id(ore_gen_ids[0]); //Grab the properties of the new ore. TODO: Make this randomally choose an ID from ore_gen_ids.
-				new_ore.containing_tile = &Map[ID]; //Let the newly created ore know which tile it's sitting on.
+				new_ore.containing_tile = this; //Let the newly created ore know which tile it's sitting on.
 				orelist.push_back(new_ore); //Add the new ore to the orelist.
-				//orelist[orelist.size() - 1].containing_tile = &Map[ID];
+				orelist[orelist.size() - 1].containing_tile = this;  //I guess this has to be reset for some weird reason.
 				ore_on_map.push_back(&orelist[orelist.size() - 1]); //Add the ore that was just created into the ore one map list.
-				//ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
-				//ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[ID]; //I guess this has to be reset for some weird reason.
+				ore_on_map[ore_on_map.size() - 1] = &orelist[orelist.size() - 1];
+				ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
 
 				cout << "ore.containing_tile->ID = " << ore_on_map[ore_on_map.size() - 1]->containing_tile->ID << "\n"; //TODO: Valgrind says:
 				/*
@@ -1038,7 +1046,7 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 
 
 			//Subtract the raider's shovel's damage from the health of the tile.
-			int counter = 0;
+			int counter = 0; //Used in the for loop below.
 			bool found = false; //Did it find the tool that meets its requirements?
 
 			for(unitlist[i].iterator = unitlist[i].tool_list.begin(); unitlist[i].iterator < unitlist[i].tool_list.end(); unitlist[i].iterator++, counter++) //Loop through the tool list
@@ -1046,7 +1054,7 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 				if(found == false && unitlist[i].tool_list[counter].can_clear_rubble == true && minimumn_mining_power <= unitlist[i].tool_list[counter].shovel_power) //If the tool meets all the requirements to shovel this rubble...
 				{
 					health[num_shovels - 1] -= unitlist[i].tool_list[counter].default_rubble_damage; //Subtract the tool's shovel rate from this tile's health.
-					found = true;
+					found = true; //Found the appropiate tool.
 					//cout << "Rubble's new health: " << health[num_shovels - 1]<< "\n";
 				}
 			}
@@ -1057,3 +1065,4 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 vector<tile> Map; //This is the vector that stores the entire map...
 vector<int> Active_Map; //This is the vector that stores all of the indexes of the active tiles...
 vector<int> Draw_Map; //This is the vector that stores all of the indexes of the tiles that are in the camera's view.
+std::vector<ore*> ore_on_map; //Points to all the ore that is currently laying around the place.

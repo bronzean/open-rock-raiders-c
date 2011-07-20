@@ -1,5 +1,5 @@
 APP      = ORR
-CXX := g++
+CXX := clang++
 #CXX := ~/clang/build/Debug+Asserts/bin/clang++
 C := clang
 

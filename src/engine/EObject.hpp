@@ -112,6 +112,6 @@ extern energy_crystal_manager Energy_Crystal_Type_Manager; //Manages all the Ene
 
 extern draw_message_handler Draw_Message_Handler; //Handles all the messages to be drawn.
 
-static std::vector<ore*> ore_on_map; //Points to all the ore that is currently laying around the place.
+extern std::vector<ore*> ore_on_map; //Points to all the ore that is currently laying around the place.
 
 extern job_que Job_Que; //The job que!
