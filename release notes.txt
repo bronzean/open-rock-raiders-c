@@ -1,3 +1,9 @@
+3:30 PM Pacific Time, July 20th, 2011:
+0.0.4.1
+- Fixed the bug where the "Coose construction location" text would only flash briefly.
+- Fixed the random crash on shovelling bug.
+- Fixed the random crash on picking up ore bug.
+
 10:15 PM Pacific Time, July 19th, 2011:
 0.0.4
 - Construction of walls is in.
