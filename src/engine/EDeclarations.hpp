@@ -176,3 +176,5 @@ static TCPsocket serverSocket;
 static IPaddress serverIP;
 
 extern int receivedByteCount; //Variable keeping track of the size of incoming data.
+
+extern bool active_popup_menu; //Is a popup menu active?

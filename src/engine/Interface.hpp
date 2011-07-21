@@ -8,7 +8,10 @@ class interface //The interface class.
 public:
 	button g_teleport_button; //The global teleport button.
 	button construct_wall_button; //The construct wall button.
-        button construct_door_button; //The construct door button.
+	button construct_door_button; //The construct door button.
+
+	interface(); //Constructor.
+	~interface(); //Deconstructor.
 
 	void update(); //Update whatever needs to be updated.
 	void draw_ui(); //Draw everything that needs to be drawn.

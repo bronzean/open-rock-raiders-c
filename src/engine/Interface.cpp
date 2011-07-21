@@ -1,6 +1,14 @@
 /* Copyright the ORR-C Dev Team */
 #include "Interface.hpp"
 
+interface::interface() //Constructor.
+{
+}
+
+interface::~interface() //Deconstructor.
+{
+}
+
 void interface::update()
 {
 	if(!server)

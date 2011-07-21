@@ -84,13 +84,13 @@ void construction::draw_sprite(int wx, int wy, int layer) //Draw the constructio
 	}
 	else
 	{
-		if(construction_open == true)
+		if(construction_open == true) //Check if the construction is open. (Like, an open door or something)
 		{
 			draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite_open, screen); //Now draw the sprite to the screen.
 
 			//cout << "Sprite open.\n";
 		}
-		else
+		else //Not open? Ok then, draw the normal sprite (Which doubles as the closed sprite for constructions which also have a sprite_open).
 		{
 			draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
 		}
@@ -114,10 +114,10 @@ void construction::open_thyself(bool automatic)
 			{
 				opening = false; //Not opening anymore, it is open!
 				construction_open = true; //Let the game know the door is now open.
-				active_animation = false;
-				active_animation_entry = 0;
+				active_animation = false; //Let the game know the animation is over.
+				active_animation_entry = 0; //Let the game know the active animation's entry.
 
-				cout << "Door opened.\n";
+				cout << "Door opened.\n"; //Debugging output.
 			}
 
 			if((float)open_ammount / (float)open_time >= (float)animations[open_animation_entry].current_frame + 1) //Check if it's time to progress the opening animation.
