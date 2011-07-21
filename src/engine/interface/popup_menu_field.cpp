@@ -25,6 +25,11 @@ bool popup_menu_field::render_field_sprite(std::string render_text) //Don't want
 	return true;
 }
 
+void popup_menu_field::draw_sprite(int x, int y) //Draw the sprite of this field.
+{
+	draw(x, y, sprite, screen); //Draw the sprite.
+}
+
 popup_menu_field field_drill_wall; //This field is used whenever a "Drill this wall" field is needed in a popup menu.
 popup_menu_field field_shovel_rubble; //This field is used whenever a "Shovel this rubble" field is needed in a popup menu.
 popup_menu_field field_moveto; //This field is used whenever a "Move to this tile" field is needed in a popup menu.

@@ -179,6 +179,10 @@ run_keycheck_thread()
 
 125. Make the location of the "Press enter to enter the test level" text configurable via the interface CFG.
 
+126. When you select a unit, highlight the like you gave them a command to do blablabla on. Maybe simply draw an icon above it. (I like the idea of that...)
+
+127. When a shovel command is issued on rubble, or a drill command on a wall, or a construction command on a tile. Signify this. Maybe highlight the tile or something.
+
 
 
 --Done--

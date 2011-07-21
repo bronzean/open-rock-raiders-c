@@ -13,6 +13,8 @@ public:
 
 	bool load_sprite(std::string filepath); //Load the field's sprite.
 	bool render_field_sprite(std::string render_text); //Don't want to load a sprite? Then simply render the field's text!
+
+	void draw_sprite(int x, int y); //Draw the sprite of this field.
 };
 
 extern popup_menu_field field_drill_wall; //This field is used whenever a "Drill this wall" field is needed in a popup menu.
