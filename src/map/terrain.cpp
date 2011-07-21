@@ -393,11 +393,11 @@ void tile::update()
 void tile::move_unit(int i)
 {
 	bool can_continue = true;
-	if(unitlist[i].move_path.size() >= 2)
+	if(unitlist[i].move_path.size() >= 1)
 	{
-		if(Map[unitlist[i].move_path[1]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+		if(Map[unitlist[i].move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 		{
-			if(Map[unitlist[i].move_path[1]].local_construction->door && !Map[unitlist[i].move_path[1]].local_construction->construction_open)
+			if(Map[unitlist[i].move_path[0]].local_construction->door && !Map[unitlist[i].move_path[0]].local_construction->construction_open)
 			{
 				/*//Has door, and it ain't open. OPEN THE DOOR.
 				if(local_construction->opening)
@@ -406,7 +406,7 @@ void tile::move_unit(int i)
 				}
 				else
 				{*/
-					Map[unitlist[i].move_path[1]].local_construction->open_thyself(false); //OPEN THE DOOR.
+					Map[unitlist[i].move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
 				/*}*/
 				can_continue = false;
 			}
@@ -423,10 +423,10 @@ void tile::move_unit(int i)
 
 		//Initialize a new unit.
 		bClassUnit newUnit;
-		if(unitlist[i].move_frame != 0)
+		/*if(unitlist[i].move_frame != 0)
 		{
 			unitlist[i].move_path.erase(unitlist[i].move_path.begin()); //Remove the tile the unit just moved to from its move route.
-		}
+		}*/
 		newUnit = unitlist[i]; //Copy this unit over to the new one. //TODO: This randomally fails. More info: Seems to crash after shovelling ore.
 		newUnit.wx = Map[unitlist[i].move_path[0]].wx; //Assign the new unit's world x.
 		newUnit.wy = Map[unitlist[i].move_path[0]].wy; //Assign the new unit's world y.
@@ -441,7 +441,8 @@ void tile::move_unit(int i)
 			if(unitlist[i].move_path.size() == 0)
 			{
 
-				unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
+				//unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
+				newUnit.move_frame = 0;
 				if(newUnit.mine_on_reach_goal == true)
 				{
 					newUnit.mine_on_reach_goal = false; //Reset this. Otherwise it'd be the random walls popping up glitch all over again.
@@ -553,6 +554,11 @@ void tile::move_unit(int i)
 			}
 
 			Map[unitlist[i].move_path[0]].unitlist.push_back(newUnit);
+
+			if(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_frame != 0)
+			{
+				Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_path.erase(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_path.begin()); //Remove the tile the unit just moved to from its move route.
+			}
 
 			unitlist.erase(unitlist.begin() + i); //Remove this unit from this tile. Otherwise it would be the self replicating raiders glitch all over again. //TODO: This randomally crashes.
 
