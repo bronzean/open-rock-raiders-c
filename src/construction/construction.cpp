@@ -8,10 +8,12 @@ construction::construction() //Constructor. Initializes an empty construction.
 	type_id = 0;
 	sprite = NULL;
 	floor = false;
+
 	door = false;
 	door_strength = 0;
 	door_locked = false;
 	door_open_time = 0;
+	open = false;
 
 	/*door_open_animation = false;
 	door_close_animation = false;

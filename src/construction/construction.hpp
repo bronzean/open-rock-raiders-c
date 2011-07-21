@@ -18,7 +18,7 @@ public:
 
 	bool door; //Is it a door?
 	bool door_locked; //Is the door locked?
-	bool door_open; //Is the door currently open?
+	bool open; //Is the door currently open?
 	int door_strength; //What is the strength of the door? Used to calculate how easy it is for a monsters to force it open.
 
 	/*bool door_open_animation; //Does the door have an animation that plays when it's opened?
@@ -42,6 +42,8 @@ public:
 	void copy_from(construction Construction); //Give this tile the properties of the one being copied.
 
 	void draw_sprite(int wx, int wy, int layer); //Draw the construction's sprite.
+
+	bool load_config(std::string folderpath); //Load the properties of the construction. (Used only for animations at the moment.)
 
 	construction(); //Constructor. Initializes an empty construction.
 	~construction() //Deconstructor.

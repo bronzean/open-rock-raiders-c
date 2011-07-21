@@ -15,8 +15,9 @@ void tile_manager::add_tile_type(int ID, SDL_Surface *SPRITE, std::string NAME, 
 
 bool tile_manager::load_types_from_file(std::string filepath) //Loads all the tile types from the files...
 {
-	cout << "Loading tile types!\n";
-	out_string << "Loading tile types!\n";
+	cout << "Loading tile types!\n"; //Debugging output.
+	out_string << "Loading tile types!\n"; //Debugging output.
+
 	string command = ""; //When it isn't a comment, it appends everything to this. Then this is checked to see if it matches any commands.
 	string num_command = ""; //If the command takes parameters, here they are stored.
 	bool comment = true; //Did a comment start?
@@ -32,7 +33,8 @@ bool tile_manager::load_types_from_file(std::string filepath) //Loads all the ti
 	}
 	cout << "Filepath is: " << filepath << "\n"; //Debugging output.
 	out_string << "Filepath is: " << filepath << "\n"; //Debugging output.
-	int c = 0; //It's location in the file
+
+	int c = 0; //Its location in the file
 
 	while (c != EOF) //While the end of the file hasn't been reached.
 	{
