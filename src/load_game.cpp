@@ -133,6 +133,17 @@ bool load_game() //Load the game.
 	{
 		throw 0;
 	}
+	img_load_safe("data/construction/door/sprite_open.png", &c_door.sprite_open);
+	if(c_door.sprite_open == NULL)
+	{
+		throw 0;
+	}
+	if(!c_door.load_config("data/construction/door/"))
+	{
+		cout << "Failed to load door construction configuration.\n"; //Debugging output.
+		out_string << "Failed to load door construction configuration.\n"; //Debugging output.
+		throw 0; //ABORT.
+	}
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string

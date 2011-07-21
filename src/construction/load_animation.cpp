@@ -90,6 +90,33 @@ bool construction::load_config(std::string folderpath)
 					}
 				}
 			}
+			else if(command == "OPEN_TIME") //Found the entry that specifies the open time.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						open_time = atoi(num_command.c_str()); //Save the value, of course.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
 			check_command = false;
 			command = "";
 			num_command = "";
