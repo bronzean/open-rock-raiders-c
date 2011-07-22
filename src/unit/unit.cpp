@@ -408,13 +408,13 @@ std::string bClassUnit::update()
 						}
 					}
 
-					if(found_path)
+					/*if(found_path)
 					{
 						mine_tile_id = event_tile->ID; //Let the game know what tile the unit is mining.
 						mine_on_reach_goal = true; //Let the game know the unit is going somewhere specifically to mine a wall.
 
 						cout << "Ensuring unit will mine.\n";
-					}
+					}*/
 
 					//----------------------------
 					//End of telling the unit where to go.

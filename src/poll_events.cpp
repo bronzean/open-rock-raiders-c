@@ -240,7 +240,6 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 						{
 							if(run)
 							{
-
 								//Check if the tile is 'in bounds'.
 								if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
 								{
@@ -264,20 +263,19 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 							active_popup_menu = false; //No active popup menu...
 							allow_unit_selection = true; //Allow units to be selected/deselected.
 
-							popup_menu *_popup_menu = selected_unit->wall_popup_menu; //Assign a pointer to the selected unit's popup menu.
-
-							//if(selected_unit->wall_popup_menu->fields.size() <= 0) //Check if the wall_popup_menu of the unit is not empty. NOTE: This snippet crashes.
-							if(_popup_menu == NULL) //Check if the wall_popup_menu of the unit actually exists.
+							if(Map[rightclick_tile_id].wall)
 							{
-								//Do NOTHING.
+								popup_menu *_popup_menu = selected_unit->wall_popup_menu; //Assign a pointer to the selected unit's popup menu.
 
-								cout << "DO NOTHING.\n";
+								if(_popup_menu == NULL) //Check if the wall_popup_menu of the unit actually exists.
+								{
+									//Do NOTHING.
 
-								//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
-							}
-							else //Unit's wall_popup_menu is not empty. That means stuff happens when you click on a wall.
-							{
-								if(Map[rightclick_tile_id].wall)
+									cout << "Do NOTHING.\n";
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else //Unit's wall_popup_menu is not empty. That means stuff happens when you click on a wall.
 								{
 									Interface.active_popup_menus.push_back(selected_unit->wall_popup_menu); //Store the location of the active popup menu.
 
@@ -291,7 +289,13 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 
 									cout << "Storing popup menu of the unit.\n";
 								}
+
+								rightclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
 							}
+							else
+							{
+							}
+
 						}
 					}
 				}

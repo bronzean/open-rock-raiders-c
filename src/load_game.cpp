@@ -28,21 +28,33 @@ bool load_game() //Load the game.
 
 		return false;
 	}
+
 	cout << "Loading and initializing popup_menu_fields.\n"; //Debugging output.
 	//TODO: Load popup_menu_field types.
 	if(!field_drill_wall.load_sprite("data/resource/interface/menu/fields/drill_wall.png")) //Load the drill wall popup menu field's sprite. With error checking.
 	{
 		cout << "Failed to load drill_wall popup_menu_field sprite.\n"; //Debugging output.
-		out_string << "Failed to load drill_wall popup_menu_field sprite.\n";
+		out_string << "Failed to load drill_wall popup_menu_field sprite.\n"; //Debugging output.
 
 		return false;
 	}
 	field_drill_wall.field_data = "drill wall"; //Let the game know this is a drill wall field.
+
+	if(!field_shovel_rubble.load_sprite("data/resource/interface/menu/fields/shovel_rubble.png")) //Load the shovel rubble popup menu field's sprite. With error checking.
+	{
+		cout << "Failed to load shovel_rubble popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load shovel_rubble popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_shovel_rubble.field_data = "shovel rubble"; //Let the game know this is a shovel rubble field.
+
 	cout << "\n\n";
 	out_string << "\n\n";
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string
+
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 	//Let the user know the tile types are being loaded...
@@ -243,10 +255,10 @@ bool load_game() //Load the game.
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string
 
-	/*if(map_folder_path == "maps/default/")
+	if(map_folder_path == "maps/default/")
 	{
 		Map[74].construct_construction(c_door);
-	}*/
+	}
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 	GameState = Level; //Done loading everything. Enter the level now.
