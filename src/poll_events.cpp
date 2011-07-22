@@ -30,19 +30,28 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 						//--------------------------------------------------------------------
 						//KEEP IN MIND THE FOLLOWING CODE IS OUT OF DATE AND MUST BE REWRITTEN.
 						//--------------------------------------------------------------------
-						std::cout << "Left click\n"; //Debugging output.
-						out_string << "Left click\n"; //Debugging output.
+						std::cout << "\nLeft click\n"; //Debugging output.
+						out_string << "\nLeft click\n"; //Debugging output.
 
 						if(active_popup_menu)
 						{
+							bool found = false;
+
 							for(int i = 0; i < Interface.active_popup_menus.size(); i++)
 							{
 								if(Interface.active_popup_menus[0]->fields[i].clicked())
 								{
-									//TODO: Let whatever is using these popup menus know that it has been clicked.
-
 									cout << "A popup menu's field has been clicked.\n";
+									found = true;
 								}
+							}
+							if(!found)
+							{
+								allow_unit_selection = true;
+								active_popup_menu = false;
+								Interface.active_popup_menus.clear();
+
+								cout << "None found.\n";
 							}
 						}
 						else if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
@@ -150,9 +159,9 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].has_construction == true)
+								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true)
 								{
-									cout << "Invalid tile!\n";
+									cout << "Invalid tile!\n\n";
 								}
 								else
 								{
@@ -196,9 +205,9 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].has_construction == true)
+								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true)
 								{
-									cout << "Invalid tile!\n";
+									cout << "Invalid tile!\n\n";
 								}
 								else
 								{
@@ -257,13 +266,11 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 
 						if(unit_selected)
 						{
-							//TODO: Display the popup menu.
-
 							Interface.active_popup_menus.clear(); //Empty this.
 							active_popup_menu = false; //No active popup menu...
 							allow_unit_selection = true; //Allow units to be selected/deselected.
 
-							if(Map[rightclick_tile_id].wall)
+							if(Map[rightclick_tile_id].wall) //Check if the right clicked tile is a wall.
 							{
 								popup_menu *_popup_menu = selected_unit->wall_popup_menu; //Assign a pointer to the selected unit's popup menu.
 
@@ -275,25 +282,71 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 
 									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
 								}
+								else if(_popup_menu->fields.empty())
+								{
+									//Do NOTHING.
+
+									cout << "Do NOTHING.\n";
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
 								else //Unit's wall_popup_menu is not empty. That means stuff happens when you click on a wall.
 								{
 									Interface.active_popup_menus.push_back(selected_unit->wall_popup_menu); //Store the location of the active popup menu.
 
-									active_popup_menu = true; //Let there game know there's currently an active popup menu.
+									active_popup_menu = true; //Let there game know that there's currently an active popup menu.
 
 									allow_unit_selection = false; //Dissallow the deselection of the unit.
 
+									//Tell the popup menu where to draw.
 									_popup_menu->x = event_struct.button.x;
 									_popup_menu->y = event_struct.button.y;
+
 									_popup_menu->event_tile = &Map[rightclick_tile_id]; //Let the popup menu know which tile is involved in this.
 
-									cout << "Storing popup menu of the unit.\n";
+									cout << "Storing popup menu of the unit.\n"; //Debugging output.
 								}
 
 								rightclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
 							}
-							else
+							else if(Map[rightclick_tile_id].rubble) //Check if the right clicked tile is rubble.
 							{
+								popup_menu *_popup_menu = selected_unit->rubble_popup_menu; //Assign a pointer to the selected unit's popup menu.
+
+								if(_popup_menu == NULL) //Check if the rubble_popup_menu of the unit actually exists.
+								{
+									//Do NOTHING.
+
+									cout << "Do NOTHING.\n"; //Debugging output.
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else if(_popup_menu->fields.empty())
+								{
+									//Do NOTHING.
+
+									cout << "Do NOTHING.\n";
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else //Unit's rubble_popup_menu is not empty. That means stuff happens when you click on rubble.
+								{
+									Interface.active_popup_menus.push_back(selected_unit->rubble_popup_menu); //Store the location of the active popup menu.
+
+									active_popup_menu = true; //Let the game know that there's currently an active popup menu.
+
+									allow_unit_selection = false; //Dissallow the deselection of the unit.
+
+									//Tell the popup menu where to draw.
+									_popup_menu->x = event_struct.button.x;
+									_popup_menu->y = event_struct.button.y;
+
+									_popup_menu->event_tile = &Map[rightclick_tile_id]; //Let the popup menu know which tile is involved in this.
+
+									cout << "Storing popup menu of the unit.\n"; //Debugging output.
+								}
+
+								rightclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
 							}
 
 						}

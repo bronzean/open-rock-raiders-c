@@ -11,18 +11,23 @@ class tool //It's a tool. What else is there to say?
 {
 public:
 	std::string name; //Name of the tool.
+	int type_id; //Let's the game know what type of tool it is...
+
 	bool is_tool; //Is it a tool? Can be a tool AND a weapon.
 	bool is_weapon; //Is it a weapon? Can be a tool AND a weapon.
-	bool can_drill_wall; //Can it drill walls?
+
 	bool can_drill_ground; //Can it drill through ground?
+
 	int default_damage; //The default damage it causes. 0 = doesn't do any damage...
+
 	bool jetpack; //Is it a jetpack?
 	int jetpack_duration; //How many moves does it allow the unit to hover?
-	int type_id; //Let's the game know what type of tool it is...
+
+	bool can_drill_wall; //Can it drill walls?
 	int drill_rate; //How long it takes to drill a tile.
 	int drill_ground_time; //How long it takes to drill ground. TODO: Implement this.
-	int rubble_clear_time; //How long it takes to clear rubble. TODO: Implement this.
 	int drill_power; //If this is greater than or equal to a wall's minimumn required mining power, then this tool can drill that wall!
+
 	bool can_chop_tree; //Can it chop trees?
 
 	//Rubble stuff.
@@ -30,6 +35,7 @@ public:
 	int default_rubble_damage; //The default damage it causes to rubble. 0 = doesn't do any damage...
 	int shovel_rate; //Affects how long it takes to shovel rubble.
 	int shovel_power; //If this is greater than or equal to a rubble's minimumn required shovelling power, then this tool can shovel that rubble!
+	int rubble_clear_time; //How long it takes to clear rubble. TODO: Implement this.
 
 	SDL_Surface *sprite; //The object's sprite. Used when it is laying around in the level.
 	SDL_Surface *icon_sprite; //The object's icon's sprite. Used in the UI.

@@ -152,6 +152,7 @@ public:
 
 	//static popup_menu unit_popup_menu; //The unit's popup menu. NOTE: Unused
 	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
+	popup_menu *rubble_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.
@@ -210,6 +211,9 @@ public:
 	void check_job(); //Give the unit something to do out of the job que.
 
 	void construct_construction(); //Does the stuff related to constructions.
+
+	void wall_popup_menu_update(); //Update the wall_popup_menu.
+	void rubble_popup_menu_update(); //Update the rubble_popup_menu.
 };
 
 class unit_type_manager //Manages all the base types of units.

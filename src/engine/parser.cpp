@@ -431,6 +431,15 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 							newUnit.wall_popup_menu->fields.push_back(field_drill_wall); //Add this to the unit's popup menu.
 							newUnit.wall_popup_menu->fields[newUnit.wall_popup_menu->fields.size() - 1].set_parent_menu(newUnit.wall_popup_menu); //Let the new field know what popup_menu contains it.
 						}
+
+						newUnit.rubble_popup_menu = new popup_menu;
+						//newUnit.rubble_popup_menu->fields.push_back(field_moveto); //Add this to the unit's popup menu.
+
+						if(newUnit.tool_list[newUnit.tool_list.size() - 1].can_clear_rubble == true) //Check if the raider is carying a shovel.
+						{
+							newUnit.rubble_popup_menu->fields.push_back(field_shovel_rubble); //Add this to the unit's popup menu.
+							newUnit.rubble_popup_menu->fields[newUnit.rubble_popup_menu->fields.size() - 1].set_parent_menu(newUnit.rubble_popup_menu); //Let the new field know what popup_menu contains it.
+						}
 					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);
