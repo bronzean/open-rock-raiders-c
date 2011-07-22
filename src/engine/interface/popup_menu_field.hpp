@@ -3,10 +3,15 @@
 #include "../../main.hpp"
 #include "../../Engine.hpp"
 
+class popup_menu;
+
 class popup_menu_field //The popup menu class.
 {
 public:
 	SDL_Surface *sprite; //The sprite of the popup menu.
+	int x, y;
+	popup_menu* parent_menu; //A pointer to the popup_menu containing this field.
+	std::string field_data; //Used to determine what type of field this even is.
 
 	popup_menu_field(); //Constructor.
 	~popup_menu_field(); //Deconstructor.
@@ -14,7 +19,11 @@ public:
 	bool load_sprite(std::string filepath); //Load the field's sprite.
 	bool render_field_sprite(std::string render_text); //Don't want to load a sprite? Then simply render the field's text!
 
-	void draw_sprite(int x, int y); //Draw the sprite of this field.
+	void draw_sprite(); //Draw the sprite of this field.
+
+	bool clicked(); //Was the field clicked?
+
+	void set_parent_menu(popup_menu *POPUP_MENU); //Sets the pointer parent_menu to the specified popup_menu.
 };
 
 extern popup_menu_field field_drill_wall; //This field is used whenever a "Drill this wall" field is needed in a popup menu.

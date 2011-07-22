@@ -2,6 +2,7 @@
 #pragma once
 #include "../main.hpp"
 #include "../Engine.hpp"
+#include "interface/popup_menu.hpp"
 
 class interface //The interface class.
 {

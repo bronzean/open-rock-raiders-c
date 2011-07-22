@@ -183,6 +183,8 @@ run_keycheck_thread()
 
 127. When a shovel command is issued on rubble, or a drill command on a wall, or a construction command on a tile. Signify this. Maybe highlight the tile or something.
 
+128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times.
+
 
 
 --Done--

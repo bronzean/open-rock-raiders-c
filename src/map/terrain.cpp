@@ -360,7 +360,6 @@ void tile::update()
 		{
 			unitlist[i].move = false; //Tell the unit it doesn't have anywhere to go.
 			unitlist[i].move_destination = 0; //Reset the unit's move destination.
-			unitlist[i].move_path.erase( unitlist[i].move_path.begin(), unitlist[i].move_path.end() ); //Empty move path.
 			unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 			cout << "Reached destination.\n\n";
 			out_string << "Reached destination.\n\n";
@@ -369,6 +368,100 @@ void tile::update()
 			{
 				unitlist[i].job_state = "idle"; //Since it reached its destination, set its current state to idle.
 			}
+
+			if(unitlist[i].mine_on_reach_goal)
+			{
+				unitlist[i].mine_on_reach_goal = false; //Reset this. Otherwise it'd be the random walls popping up glitch all over again.
+				unitlist[i].mining = true; //Let the game know the unit is now mining the tile.
+			}
+			else if(unitlist[i].chop_on_reach_goal == true)
+			{
+				unitlist[i].chop_on_reach_goal = false; //Reset this. Otherwise bad stuff can happen.
+				unitlist[i].chopping = true; //Let the game know the unit is now chopping the tree.
+			}
+			else if(unitlist[i].shovel_on_reach_goal == true)
+			{
+				unitlist[i].shovel_on_reach_goal = false; //Reset this. Otherwise bad stuff will happen.
+				unitlist[i].shovelling = true; //Let the game know the unit is now shovelling the rubble.
+			}
+
+			//TODO: Check if the unit is picking up any ore.
+			//Then check if it can pick up ore.
+			//Then pick up the ore.
+
+			if(unitlist[i].pick_up_on_reach_goal == true) //If the unit is supposed to pick something up...
+			{
+				//TODO: Change this later to check if the unit can pick up the specified object.
+				unitlist[i].pick_up_on_reach_goal = false; //Reset this. Otherwise bad things will happen.
+
+				//TODO: Check to see if the tile still has the item the unit was sent to pick up.
+				//if(tile_has_whatever_unit_was_picking_up)
+				//{
+					//TODO: add whatever that was to the inventory
+				//}
+
+				if(orelist.size() < 1) //Check if there even is any ore here. TODO: Refine this to check if the item the player requested still is on the tile.
+				{
+					cout << "Hey, there's nothing to pick up here!\n"; //TODO: Make a message pop up informing the player that there's nothing to pick up there.
+				}
+				else
+				{
+					//Add the item into the player's inventory.
+
+					unitlist[i].ore_list.push_back(orelist[0]); //Add the ore to the tile's orelist.
+
+					//Map[unitlist[i].move_path[0]].orelist.erase(Map[unitlist[i].move_path[0]].orelist.begin()); //Remove the ore from the tile's orelist.
+
+					bool done = false; //Used to control the loop below.
+					int i2 = 0;
+					vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore list.
+
+					/*while(done == false) //So, here the game loops until it's either gone through the entire ore on map list or it's found the ore it's looking for.
+					{
+						cout << "Loop: " << i2 << "\n";
+						if(iterator >= ore_on_map.end())
+						{
+							done = true; //Uh oh, it reached the end of the ore on map list. Something done borked.
+							cout << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+							out_string << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+						}
+						else
+						{
+							if(ore_on_map[i2]->containing_tile->ID == ID) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+							{
+								cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+
+								ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+
+								done = true; //The ore has been found. No use lingering around in this loop.
+							}
+						}
+
+						i2++; //Obviously, increment this.
+						iterator++;
+					}*/
+
+					for(i2 = 0; iterator < ore_on_map.end(); iterator++, i2++) //Remove the ore that was just picked up from the ore on map list.
+					{
+						cout << "Size: " << ore_on_map.size() << "\n";
+						if(ore_on_map[i2]->containing_tile == this && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+						{
+							cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+							out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+
+							ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+
+							done = true; //The ore has been found. No use lingering around in this loop.
+						}
+					}
+
+					orelist.erase(orelist.begin()); //Remove the ore from the tile's orelist.
+
+					cout << "Picked up ore!\n"; //Debugging output.
+				}
+			}
+
+			unitlist[i].move_path.erase( unitlist[i].move_path.begin(), unitlist[i].move_path.end() ); //Empty move path.
 		}
 		//If the unit is going somewhere...
 		else if(unitlist[i].move == true && unitlist[i].move_frame != fps_counter && paused != true && unitlist[i].allow_move == true)
@@ -427,7 +520,7 @@ void tile::move_unit(int i)
 		{
 			unitlist[i].move_path.erase(unitlist[i].move_path.begin()); //Remove the tile the unit just moved to from its move route.
 		}*/
-		newUnit = unitlist[i]; //Copy this unit over to the new one. //TODO: This randomally fails. More info: Seems to crash after shovelling ore.
+		newUnit = unitlist[i]; //Copy this unit over to the new one.
 		newUnit.wx = Map[unitlist[i].move_path[0]].wx; //Assign the new unit's world x.
 		newUnit.wy = Map[unitlist[i].move_path[0]].wy; //Assign the new unit's world y.
 		newUnit.layer = Map[unitlist[i].move_path[0]].layer; //Assign the new unit's layer.
@@ -438,121 +531,6 @@ void tile::move_unit(int i)
 
 		if(!Map[new_tile_id].obstruction)
 		{
-			if(unitlist[i].move_path.size() == 0)
-			{
-
-				//unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
-				newUnit.move_frame = 0;
-				if(newUnit.mine_on_reach_goal == true)
-				{
-					newUnit.mine_on_reach_goal = false; //Reset this. Otherwise it'd be the random walls popping up glitch all over again.
-					newUnit.mining = true; //Let the game know the unit is now mining the tile.
-				}
-				else if(newUnit.chop_on_reach_goal == true)
-				{
-					newUnit.chop_on_reach_goal = false; //Reset this. Otherwise bad stuff can happen.
-					newUnit.chopping = true; //Let the game know the unit is now chopping the tree.
-				}
-				else if(newUnit.shovel_on_reach_goal == true)
-				{
-					newUnit.shovel_on_reach_goal = false; //Reset this. Otherwise bad stuff will happen.
-					newUnit.shovelling = true; //Let the game know the unit is now shovelling the rubble.
-				}
-
-				//TODO: Check if the unit is picking up any ore.
-				//Then check if it can pick up ore.
-				//Then pick up the ore.
-
-				if(newUnit.pick_up_on_reach_goal == true) //If the unit is supposed to pick something up...
-				{
-					//TODO: Change this later to check if the unit can pick up the specified object.
-					newUnit.pick_up_on_reach_goal = false; //Reset this. Otherwise bad things will happen.
-
-					//TODO: Check to see if the tile still has the item the unit was sent to pick up.
-					//if(tile_has_whatever_unit_was_picking_up)
-					//{
-						//TODO: add whatever that was to the inventory
-					//}
-
-					if(Map[unitlist[i].move_path[0]].orelist.size() < 1) //Check if there even is any ore here. TODO: Refine this to check if the item the player requested still is on the tile.
-					{
-						cout << "Hey, there's nothing to pick up here!\n"; //TODO: Make a message pop up informing the player that there's nothing to pick up there.
-					}
-					else
-					{
-						//Add the item into the player's inventory.
-
-						newUnit.ore_list.push_back(Map[unitlist[i].move_path[0]].orelist[0]); //Add the ore to the tile's orelist.
-
-						//Map[unitlist[i].move_path[0]].orelist.erase(Map[unitlist[i].move_path[0]].orelist.begin()); //Remove the ore from the tile's orelist.
-
-						bool done = false; //Used to control the loop below.
-						int i2 = 0;
-						vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore list.
-
-						/*while(done == false) //So, here the game loops until it's either gone through the entire ore on map list or it's found the ore it's looking for.
-						{
-							cout << "Loop: " << i2 << "\n";
-							if(iterator >= ore_on_map.end())
-							{
-								done = true; //Uh oh, it reached the end of the ore on map list. Something done borked.
-								cout << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
-								out_string << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
-							}
-							else
-							{
-								if(ore_on_map[i2]->containing_tile->ID == ID) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
-								{
-									cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
-
-									ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
-
-									done = true; //The ore has been found. No use lingering around in this loop.
-								}
-							}
-
-							i2++; //Obviously, increment this.
-							iterator++;
-						}*/
-
-						for(i2 = 0; iterator < ore_on_map.end(); iterator++, i2++) //Remove the ore that was just picked up from the ore on map list.
-						{
-							cout << "Size: " << ore_on_map.size() << "\n";
-							//cout << "ID: " << ore_on_map[i2]->containing_tile->ID << "\n";
-							if(ore_on_map[i2]->containing_tile == this && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
-							{
-								cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
-								out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
-
-								ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
-
-								done = true; //The ore has been found. No use lingering around in this loop.
-							}
-						}
-
-						Map[unitlist[i].move_path[0]].orelist.erase(Map[unitlist[i].move_path[0]].orelist.begin()); //Remove the ore from the tile's orelist.
-
-						cout << "Picked up ore!\n"; //Debugging output.
-					}
-				}
-
-				/*if(unitlist.size() <= 1)
-				{
-					new_tile_id = unitlist[i].move_path[0]; //Copy this over since we need it...
-					cout << "Removing tile from Active_Map.\n"; //Debugging output.
-					Active_Map_Entry = -1; //Reset this if there's no reason to keep it in Active_Map.
-					Active_Map.erase(Active_Map.begin() + Active_Map_Entry); //Remove this tile from Active_Map.
-				}
-				Active_Map.push_back(Map[new_tile_id].ID); //Add the index of the tile the unit just moved to to Active_Map.
-				cout << "Entry: " << Active_Map.size() - 1 << "\n";
-				Map[new_tile_id].Active_Map_Entry = Active_Map.size() - 1; //Let the tile know where it's entry in Active_Map is.*/
-
-				/*if(unitlist[i].state == "constructing")
-				{
-					turn_to_construction(i); //Construct whatever the unit's constructing.
-				}*/
-			}
-
 			Map[unitlist[i].move_path[0]].unitlist.push_back(newUnit);
 
 			if(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_frame != 0)
@@ -560,9 +538,10 @@ void tile::move_unit(int i)
 				Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_path.erase(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_path.begin()); //Remove the tile the unit just moved to from its move route.
 			}
 
-			if(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].selected) //If the unit is selected.
+			if(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].selected && selected_unit == &unitlist[i]) //If the unit is selected.
 			{
 				selected_unit = &Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1]; //Let the game know this is the currently selected unit.
+				cout << "Transferring over selected unit status.\n";
 			}
 
 			unitlist.erase(unitlist.begin() + i); //Remove this unit from this tile. Otherwise it would be the self replicating raiders glitch all over again. //TODO: This randomally crashes.

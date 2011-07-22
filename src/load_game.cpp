@@ -37,6 +37,7 @@ bool load_game() //Load the game.
 
 		return false;
 	}
+	field_drill_wall.field_data = "drill wall"; //Let the game know this is a drill wall field.
 	cout << "\n\n";
 	out_string << "\n\n";
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);

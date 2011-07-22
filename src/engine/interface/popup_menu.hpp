@@ -5,11 +5,15 @@
 #include "popup_menu_field.hpp"
 
 class popup_menu_field;
+class tile;
 
 class popup_menu //The popup menu class.
 {
 public:
 	std::vector<popup_menu_field> fields; //All the fields of the menu. You know, the little buttons you click on in a popup menu...
+	bool has_clicked_field; //Has one of the fields of this popup menu been clicked?
+	popup_menu_field* clicked_field; //Pointer to the clicked field.
+	tile *event_tile;
 
 	//The following two have to do with the location on the screen to draw the menu.
 	int x; 

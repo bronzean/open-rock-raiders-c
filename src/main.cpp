@@ -333,6 +333,7 @@ int main( int argc, char* argv[] )
 	SDL_FreeSurface(screen); //Free the screen's surface.
 	TTF_CloseFont(font1); //Free font1.
 	TTF_CloseFont(font2); //Free font2.
+	SDL_FreeSurface(field_drill_wall.sprite);
 
         SDL_FreeSurface(Interface.construct_wall_button.sprite);
         SDL_FreeSurface(Interface.construct_door_button.sprite);

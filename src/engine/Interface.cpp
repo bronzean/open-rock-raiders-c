@@ -27,7 +27,12 @@ void interface::update()
 			}
 
 			construct_wall_button.update();
-                        construct_door_button.update();
+			construct_door_button.update();
+
+			if(active_popup_menu)
+			{
+				active_popup_menus[0]->draw_menu(); //Draw the currently active popup menu.
+			}
 		}
 	}
 

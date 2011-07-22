@@ -34,7 +34,6 @@ void button::init(int button_width, int button_height, int X, int Y, SDL_Surface
 //Stuff to do with the mouse and the object.
 bool button::clicked()
 {
-	//Teleportation code.
 	if(event_struct.button.x >= x1 && event_struct.button.x <= x2 && event_struct.button.y >= y1 && event_struct.button.y <= y2 && state == 1)
 	{
 		return true;

@@ -134,3 +134,5 @@ bool active_popup_menu = false; //Is a popup menu active?
 
 bool unit_selected = false; //Is a unit currently selected?
 bClassUnit* selected_unit = NULL; //Pointer to the selected unit.
+
+bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot can units be selected/deselected

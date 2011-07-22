@@ -33,7 +33,19 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 						std::cout << "Left click\n"; //Debugging output.
 						out_string << "Left click\n"; //Debugging output.
 
-						if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
+						if(active_popup_menu)
+						{
+							for(int i = 0; i < Interface.active_popup_menus.size(); i++)
+							{
+								if(Interface.active_popup_menus[0]->fields[i].clicked())
+								{
+									//TODO: Let whatever is using these popup menus know that it has been clicked.
+
+									cout << "A popup menu's field has been clicked.\n";
+								}
+							}
+						}
+						else if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
 						{
 							//Teleport code here
 							std::cout << "\nGlobal teleport button clicked.\n"; //Debugging output.
@@ -247,6 +259,39 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 						if(unit_selected)
 						{
 							//TODO: Display the popup menu.
+
+							Interface.active_popup_menus.clear(); //Empty this.
+							active_popup_menu = false; //No active popup menu...
+							allow_unit_selection = true; //Allow units to be selected/deselected.
+
+							popup_menu *_popup_menu = selected_unit->wall_popup_menu; //Assign a pointer to the selected unit's popup menu.
+
+							//if(selected_unit->wall_popup_menu->fields.size() <= 0) //Check if the wall_popup_menu of the unit is not empty. NOTE: This snippet crashes.
+							if(_popup_menu == NULL) //Check if the wall_popup_menu of the unit actually exists.
+							{
+								//Do NOTHING.
+
+								cout << "DO NOTHING.\n";
+
+								//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+							}
+							else //Unit's wall_popup_menu is not empty. That means stuff happens when you click on a wall.
+							{
+								if(Map[rightclick_tile_id].wall)
+								{
+									Interface.active_popup_menus.push_back(selected_unit->wall_popup_menu); //Store the location of the active popup menu.
+
+									active_popup_menu = true; //Let there game know there's currently an active popup menu.
+
+									allow_unit_selection = false; //Dissallow the deselection of the unit.
+
+									_popup_menu->x = event_struct.button.x;
+									_popup_menu->y = event_struct.button.y;
+									_popup_menu->event_tile = &Map[rightclick_tile_id]; //Let the popup menu know which tile is involved in this.
+
+									cout << "Storing popup menu of the unit.\n";
+								}
+							}
 						}
 					}
 				}

@@ -6,6 +6,8 @@ popup_menu::popup_menu() //Constructor.
 {
 	x = 0;
 	y = 0;
+	has_clicked_field = false;
+	clicked_field = NULL;
 }
 
 popup_menu::~popup_menu() //Deconstructor.
@@ -36,7 +38,9 @@ void popup_menu::draw_menu()
 	//TODO: Loop through all the fields and draw their sprites.
 	for(int i = 0; iterator < fields.end(); i++, iterator++)
 	{
-		fields[i].draw_sprite(new_x, new_y); //Draw the sprite of the field.
+		fields[i].x = new_x;
+		fields[i].y = new_y;
+		fields[i].draw_sprite(); //Draw the sprite of the field.
 
 		new_y += fields[i].sprite->h; //This ensures the next field will be drawn at the correct position.
 	}

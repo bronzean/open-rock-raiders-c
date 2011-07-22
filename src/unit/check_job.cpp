@@ -60,6 +60,8 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				}
 
 				done = true;
+
+				cout << "Taken job!\n";
 			}
 			iterator2++;
 			i++;

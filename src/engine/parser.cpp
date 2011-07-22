@@ -424,6 +424,13 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 					{
 						tool new_tool = Tool_Type_Manager.get_by_id(atoi(stage_object[3].c_str())); //Find the tool with the specified ID.
 						newUnit.tool_list.push_back(new_tool); //Add the tool it found to the new unit's tool list.
+
+						if(newUnit.tool_list[newUnit.tool_list.size() - 1].can_drill_wall == true) //Check if the raider is carying a drill.
+						{
+							newUnit.wall_popup_menu = new popup_menu;
+							newUnit.wall_popup_menu->fields.push_back(field_drill_wall); //Add this to the unit's popup menu.
+							newUnit.wall_popup_menu->fields[newUnit.wall_popup_menu->fields.size() - 1].set_parent_menu(newUnit.wall_popup_menu); //Let the new field know what popup_menu contains it.
+						}
 					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);

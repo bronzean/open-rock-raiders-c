@@ -151,7 +151,7 @@ public:
 	std::vector<animation> animations; //Stores all of the tile's animations.
 
 	//static popup_menu unit_popup_menu; //The unit's popup menu. NOTE: Unused
-	static popup_menu wall_popup_menu; //When the user clicks on a wall...
+	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.
@@ -175,6 +175,7 @@ public:
 		select_rubble_to_shovel_spr = NULL;
 		shovelling_message_spr = NULL;
 		select_wall_to_mine_spr = NULL;
+		wall_popup_menu = NULL;
 	}
 
 	void init(int ID, SDL_Surface *SPRITE, std::string NAME, SDL_Surface *SPRITE_SELECT, bool SELECTABLE, int MOVE_SPEED, int MAX_HEALTH); //Initialize a new unit type.
