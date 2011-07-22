@@ -190,155 +190,155 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 								}
 								else
 								{
-                                                                            //TODO: add a construct door command to the job que.
-                                                                            job new_job;
+									//TODO: add a construct door command to the job que.
+									job new_job;
 
-                                                                            new_job.type = "construct";
-                                                                            new_job.construction_type = "door";
-                                                                            new_job.tasked_tile = &Map[tile_id];
+									new_job.type = "construct";
+									new_job.construction_type = "door";
+									new_job.tasked_tile = &Map[tile_id];
 
-                                                                            Job_Que.add_job(new_job);
-                                                                            //Job_Que.jobs[Job_Que.jobs.size() - 1].tasked_tile = &Map[tile_id];
+									Job_Que.add_job(new_job);
+									//Job_Que.jobs[Job_Que.jobs.size() - 1].tasked_tile = &Map[tile_id];
 
-                                                                            cout << "Added job!\n";
+									cout << "Added job!\n";
 
-                                                                            allow_unit_selection = true;
-                                                                            construction_door_location_select = false;
-                                                                            construction_location_select = false;
-                                                                    }
-                                                            }
-                                                            else
-                                                            {
-                                                                    construction_location_select = false;
-                                                            }
-                                                    }
-                                            }
-                                    }
-                                    if(event_struct.button.button == SDL_BUTTON_RIGHT)
-                                    {
-                                            std::cout << "Right click\n"; //Debugging output.
-                                            out_string << "Right click\n";
+									allow_unit_selection = true;
+									construction_door_location_select = false;
+									construction_location_select = false;
+								}
+							}
+							else
+							{
+								construction_location_select = false;
+							}
+						}
+					}
+				}
+				if(event_struct.button.button == SDL_BUTTON_RIGHT)
+				{
+					std::cout << "Right click\n"; //Debugging output.
+					out_string << "Right click\n";
 
-                                            if(!server)
-                                            {
-                                                    bool run = true; //Controls the loop below.
+					if(!server)
+					{
+						bool run = true; //Controls the loop below.
 
-                                                    //Check if a tile was clicked
-                                                    for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++)
-                                                    {
-                                                            if(run)
-                                                            {
+						//Check if a tile was clicked
+						for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++)
+						{
+							if(run)
+							{
 
-                                                                    //Check if the tile is 'in bounds'.
-                                                                    if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
-                                                                    {
-                                                                            rightclick_tile_id = i; //Assign the tile id...
+								//Check if the tile is 'in bounds'.
+								if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+								{
+									rightclick_tile_id = i; //Assign the tile id...
 
-                                                                            run = false;
+									run = false;
 
-                                                                            std::cout << "\nFound the tile that the right click took place over...\n";
-                                                                            out_string << "\nFound the tile that the right click took place over...\n";
-                                                                            std::cout << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
-                                                                            out_string << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
-                                                                    }
-                                                            }
-                                                    }
-                                            }
-                                    }
-                            }
+									std::cout << "\nFound the tile that the right click took place over...\n";
+									out_string << "\nFound the tile that the right click took place over...\n";
+									std::cout << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
+									out_string << "Position of that tile: (" << Map[rightclick_tile_id].wx << "," << Map[rightclick_tile_id].wy << "," << Map[rightclick_tile_id].layer << ") and index is: " << i << "\n";
+								}
+							}
+						}
+					}
+				}
+			}
 
-                            if(event_struct.type == SDL_KEYDOWN)
-                            {
-                                    switch(event_struct.key.keysym.sym)
-                                    {
-                                            case SDLK_p: //Here, we check if the p key was pressed...
-                                                    if(!paused)
-                                                    {
-                                                            paused = true; //If the game isn't paused, pause the game.
-                                                            std::cout << "Paused.\n"; //Debugging output.
-                                                            out_string << "Paused.\n";
-                                                    }
-                                                    else
-                                                    {
-                                                            paused = false; //Unpuase the game if it's paused.
-                                                            std::cout << "Unpaused.\n"; //Debugging output.
-                                                            out_string << "Unpaused.\n";
-                                                    }
-                                                    break;
-                                            case SDLK_2:
-                                                    //Check if the camera is on the last layer...
-                                                    if(PCamera->layer < num_layers  - 1)
-                                                    {
-                                                            PCamera->layer++; //If so, move it up a layer.
-                                                            std::cout << "\nMoving camera up a layer\n"; //Debugging output.
-                                                            out_string << "\nMoving camera up a layer\n";
+			if(event_struct.type == SDL_KEYDOWN)
+			{
+				switch(event_struct.key.keysym.sym)
+				{
+					case SDLK_p: //Here, we check if the p key was pressed...
+						if(!paused)
+						{
+							paused = true; //If the game isn't paused, pause the game.
+							std::cout << "Paused.\n"; //Debugging output.
+							out_string << "Paused.\n";
+						}
+						else
+						{
+							paused = false; //Unpuase the game if it's paused.
+							std::cout << "Unpaused.\n"; //Debugging output.
+							out_string << "Unpaused.\n";
+						}
+						break;
+					case SDLK_2:
+						//Check if the camera is on the last layer...
+						if(PCamera->layer < num_layers  - 1)
+						{
+							PCamera->layer++; //If so, move it up a layer.
+							std::cout << "\nMoving camera up a layer\n"; //Debugging output.
+							out_string << "\nMoving camera up a layer\n"; //Debugging output.
 
-                                                            //current_layer_sprite = NULL; //Reset current_layer_sprite so that it doesn't keep expanding it with new messages.
-                                                            current_layer_string.str(""); //Reset current_layer_string so that it doesn't keep expanding it with new messages.
-                                                            current_layer_string << "Current layer: " << PCamera->layer; //The text that informs the player what layer they're on.
-                                                            current_layer_sprite = TTF_RenderText_Solid(font1, current_layer_string.str().c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+							//current_layer_sprite = NULL; //Reset current_layer_sprite so that it doesn't keep expanding it with new messages.
+							current_layer_string.str(""); //Reset current_layer_string so that it doesn't keep expanding it with new messages.
+							current_layer_string << "Current layer: " << PCamera->layer; //The text that informs the player what layer they're on.
+							current_layer_sprite = TTF_RenderText_Solid(font1, current_layer_string.str().c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 
-                                                            //Now add all the tiles that have come into the camera's view, and remove the old ones.
-                                                            int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
-                                                            int current_tile = layer_offset; //The current tile it's working on.
+							//Now add all the tiles that have come into the camera's view, and remove the old ones.
+							int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
+							int current_tile = layer_offset; //The current tile it's working on.
 
-                                                            Draw_Map.clear(); //Empty Draw_Map.
+							Draw_Map.clear(); //Empty Draw_Map.
 
-                                                            while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
-                                                            {
-                                                                    if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
-                                                                    {
-                                                                            Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-                                                                    }
+							while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+							{
+								if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
+								{
+									Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
+								}
 
-                                                                    current_tile++; //Increment current tile.
-                                                            }
-                                                    }
-                                                    break;
+								current_tile++; //Increment current tile.
+							}
+						}
+						break;
 
-                                            case SDLK_3:
-                                                    //Check if the camera is on the last layer...
-                                                    if(PCamera->layer > 0)
-                                                    {
-                                                            PCamera->layer--; //If so, move it up a layer.
-                                                            std::cout << "\nMoving camera down a layer\n"; //Debugging output.
-                                                            out_string << "\nMoving camera down a layer\n";
+					case SDLK_3:
+						//Check if the camera is on the last layer...
+						if(PCamera->layer > 0)
+						{
+							PCamera->layer--; //If so, move it up a layer.
+							std::cout << "\nMoving camera down a layer\n"; //Debugging output.
+							out_string << "\nMoving camera down a layer\n";
 
-                                                            current_layer_string.str(""); //Reset current_layer_string so that it doesn't keep expanding it with new messages.
-                                                            current_layer_string << "Current layer: " << PCamera->layer; //The text that informs the player what layer they're on.
-                                                            current_layer_sprite = TTF_RenderText_Solid(font1, current_layer_string.str().c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+							current_layer_string.str(""); //Reset current_layer_string so that it doesn't keep expanding it with new messages.
+							current_layer_string << "Current layer: " << PCamera->layer; //The text that informs the player what layer they're on.
+							current_layer_sprite = TTF_RenderText_Solid(font1, current_layer_string.str().c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 
-                                                            //Now add all the tiles that have come into the camera's view, and remove the old ones.
-                                                            int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
-                                                            int current_tile = layer_offset; //The current tile it's working on.
+							//Now add all the tiles that have come into the camera's view, and remove the old ones.
+							int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
+							int current_tile = layer_offset; //The current tile it's working on.
 
-                                                            Draw_Map.clear(); //Empty Draw_Map.
+							Draw_Map.clear(); //Empty Draw_Map.
 
-                                                            while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
-                                                            {
-                                                                    if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
-                                                                    {
-                                                                            Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
-                                                                    }
+							while(current_tile < layer_offset + (num_row_objects * num_col_objects)) //While current_tile is still on this same layer.
+							{
+								if(Map[current_tile].layer == PCamera->layer && Map[current_tile].get_wx() + Map[current_tile].get_width() >= PCamera->wx && Map[current_tile].get_wx() <= (PCamera->wx + SCREEN_WIDTH) && Map[current_tile].get_wy() + Map[current_tile].get_height() >= PCamera->wy && Map[current_tile].get_wy() <= (PCamera->wy + SCREEN_HEIGHT)) //If the tile is onscreen...
+								{
+									Draw_Map.push_back(current_tile); //Add the ID of this tile to the Draw_Map array. (Might it have been better to say vector? But, after all, vectors are really arays in the end...
+								}
 
-                                                                    current_tile++; //Increment current tile.
-                                                            }
-                                                    }
-                                                    break;
-                                            case SDLK_LEFT:
-                                                    move_issued = true;
-                                                    break;
-                                            case SDLK_RIGHT:
-                                                    move_issued = true;
-                                                    break;
-                                            case SDLK_UP:
-                                                    move_issued = true;
-                                                    break;
-                                            case SDLK_DOWN:
-                                                    move_issued = true;
-                                                    break;
-                                    }
-                            }
-                    }
+								current_tile++; //Increment current tile.
+							}
+						}
+						break;
+					case SDLK_LEFT:
+						move_issued = true;
+						break;
+					case SDLK_RIGHT:
+						move_issued = true;
+						break;
+					case SDLK_UP:
+						move_issued = true;
+						break;
+					case SDLK_DOWN:
+						move_issued = true;
+						break;
+				}
+			}
+		}
 	}
 }
