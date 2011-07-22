@@ -131,3 +131,6 @@ bool server = false; //Is the game running in server or client mode?
 int receivedByteCount = 0; //Variable keeping track of the size of incoming data.
 
 bool active_popup_menu = false; //Is a popup menu active?
+
+bool unit_selected = false; //Is a unit currently selected?
+bClassUnit* selected_unit = NULL; //Pointer to the selected unit.

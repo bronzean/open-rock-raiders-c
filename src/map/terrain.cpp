@@ -560,6 +560,11 @@ void tile::move_unit(int i)
 				Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_path.erase(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].move_path.begin()); //Remove the tile the unit just moved to from its move route.
 			}
 
+			if(Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1].selected) //If the unit is selected.
+			{
+				selected_unit = &Map[unitlist[i].move_path[0]].unitlist[Map[unitlist[i].move_path[0]].unitlist.size() - 1]; //Let the game know this is the currently selected unit.
+			}
+
 			unitlist.erase(unitlist.begin() + i); //Remove this unit from this tile. Otherwise it would be the self replicating raiders glitch all over again. //TODO: This randomally crashes.
 
 	

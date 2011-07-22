@@ -4,6 +4,8 @@
 #include "../../Engine.hpp"
 #include "popup_menu_field.hpp"
 
+class popup_menu_field;
+
 class popup_menu //The popup menu class.
 {
 public:

@@ -178,3 +178,7 @@ static IPaddress serverIP;
 extern int receivedByteCount; //Variable keeping track of the size of incoming data.
 
 extern bool active_popup_menu; //Is a popup menu active?
+
+extern bool unit_selected; //Is a unit currently selected?
+class bClassUnit;
+extern bClassUnit* selected_unit; //Pointer to the selected unit.

@@ -12,6 +12,37 @@ bool load_game() //Load the game.
 	string load_text = "";
 	SDL_Surface *load_text_sprite = NULL;
 
+
+	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+	//Let the user know the interface stuff is being loaded...
+	load_text = "Loading Interface stuff.";
+	load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+	SDL_FreeSurface(load_text_sprite);
+	if(SDL_Flip(screen) == -1)
+	{
+		std::cerr << "\nError Updating Screen\n";
+		out_string << "\nError Updating Screen\n";
+		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+		fflush(GameLog);
+
+		return false;
+	}
+	cout << "Loading and initializing popup_menu_fields.\n"; //Debugging output.
+	//TODO: Load popup_menu_field types.
+	if(!field_drill_wall.load_sprite("data/resource/interface/menu/fields/drill_wall.png")) //Load the drill wall popup menu field's sprite. With error checking.
+	{
+		cout << "Failed to load drill_wall popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load drill_wall popup_menu_field sprite.\n";
+
+		return false;
+	}
+	cout << "\n\n";
+	out_string << "\n\n";
+	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+	fflush(GameLog);
+	out_string.str(""); //Reset out_string
+
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 	//Let the user know the tile types are being loaded...
 	load_text = "Loading tile types";
@@ -24,7 +55,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	Tile_Type_Manager.load_types_from_file("data/terrain.cfg"); //load tile types
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
@@ -43,7 +74,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	Tool_Type_Manager.load_types_from_file("data/tools.cfg"); //load tool types
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
@@ -62,7 +93,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	Ore_Type_Manager.load_types_from_file("data/ore.cfg"); //load ore types
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
@@ -81,7 +112,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	Energy_Crystal_Type_Manager.load_types_from_file("data/energy_crystal.cfg"); //load energy_crystal types
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
@@ -100,7 +131,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	Unit_Type_Manager.load_types_from_file("data/unit.cfg"); //Load the unit types.
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
@@ -119,7 +150,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	//Here all the constructions are initlialized and resources loaded.
 	c_wall.init("wall", true, false, false, 0, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
@@ -160,7 +191,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	//load the level...
 	std::string map_path = map_folder_path;
@@ -203,7 +234,7 @@ bool load_game() //Load the game.
 		out_string << "\nError Updating Screen\n";
 		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 		fflush(GameLog);
-		return 1;
+		return false;
 	}
 	//TODO: load whatever else needs to be loaded...
 	//Interface.g_teleport_button.init(teleport_button_spr->w, teleport_button_spr->h, teleport_button_spr, no_teleport_button_spr); //Initialize the teleport button.
@@ -211,10 +242,10 @@ bool load_game() //Load the game.
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string
 
-	if(map_folder_path == "maps/default/")
+	/*if(map_folder_path == "maps/default/")
 	{
 		Map[74].construct_construction(c_door);
-	}
+	}*/
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 	GameState = Level; //Done loading everything. Enter the level now.

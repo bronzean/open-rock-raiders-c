@@ -153,6 +153,7 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 
 std::string bClassUnit::update()
 {
+
 	update_return = ""; //The variable it returns.
 
 	//Check how many frames have passed since last move.
@@ -185,6 +186,7 @@ std::string bClassUnit::update()
 				for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a drill.
 				{
 					if(tool_list[i].can_drill_wall == true) //If the the tool at index i in this tile's tool_list is able to drill walls...
+
 					{
 						found = true; //Let's the game know it found a drill in the unit's inventory.
 					}
@@ -378,16 +380,21 @@ int bClassUnit::get_height() //Returns the height of the unit.
 
 void bClassUnit::select() //Checks if the player selected/deselected the unit.
 {
-
 	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && mining_mode == false && selectable == true && allow_deselect == true && allow_unit_selection) //If the left mouse button was pressed and this unit can be selected...
 	{
 		if(event_struct.button.x + PCamera->wx >= wx && event_struct.button.x + PCamera->wx <= wx + width && event_struct.button.y + PCamera->wy >= wy && event_struct.button.y + PCamera->wy <= wy + height && mining_mode != true && shovel_mode != true /*&& leftclick_tile_id != -1*/) //Checks if the mouse clicked on this unit.
 		{
-			if(selected == false) //If the unit is not selected allready.
+			if(!unit_selected)
 			{
-				std::cout << "\nSelected " << name << "\n"; //Let the user know this unit was selected.
+				if(selected == false) //If the unit is not selected allready.
+				{
+					std::cout << "\nSelected " << name << "\n"; //Let the user know this unit was selected.
+				}
+				selected = true; //Let's the game know this unit has been selected.
+
+				unit_selected = true; //Let the game know a unit is selected.
+				selected_unit = this; //Let the game know which unit is selected.
 			}
-			selected = true; //Let's the game know this unit has been selected.
 		}
 		else //Ok, the user did not click on this unit.
 		{
@@ -395,7 +402,9 @@ void bClassUnit::select() //Checks if the player selected/deselected the unit.
 			{
 				std::cout << "\nDeselected " << name << "\n"; //Let the user know the unit has been deselected.
 				mining_mode = false; //No use to keep mining mode on anymore since it's not even selected anymore.
-				shovel_mode = false; //No use to keep shovelling mode on anymore since it's not even selected anymore.
+				shovel_mode = false; //No use to keep shovelling mode on anymore since it's not even selected anymore. 
+				unit_selected = false; //Let the game know no unit is currently selected.
+				selected_unit = NULL; //Reset this.
 			}
 
 			selected = false; //Let's the game know this unit is not selected.

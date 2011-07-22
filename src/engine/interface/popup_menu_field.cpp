@@ -15,7 +15,12 @@ bool popup_menu_field::load_sprite(string filepath) //Load the field's sprite.
 {
 	//TODO: Load the field's sprite.
 
-	return true;
+	if(!img_load_safe(filepath, &sprite)) //Load the sprite. With error checking.
+	{
+		return false; //Error. Abort! Abort!
+	}
+
+	return true; //Success!
 }
 
 bool popup_menu_field::render_field_sprite(std::string render_text) //Don't want to load a sprite? Then simply render the field's text!
