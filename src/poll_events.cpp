@@ -37,7 +37,7 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 						{
 							bool found = false;
 
-							for(int i = 0; i < Interface.active_popup_menus.size(); i++)
+							for(int i = 0; i < Interface.active_popup_menus[0]->fields.size(); i++)
 							{
 								if(Interface.active_popup_menus[0]->fields[i].clicked())
 								{
@@ -232,6 +232,8 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 							{
 								construction_location_select = false;
 							}
+
+							//TODO: Move unit selection code here.
 						}
 					}
 				}
@@ -342,6 +344,24 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 									_popup_menu->y = event_struct.button.y;
 
 									_popup_menu->event_tile = &Map[rightclick_tile_id]; //Let the popup menu know which tile is involved in this.
+
+									for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore" fields.
+									{
+										if(_popup_menu->fields[i].field_data == "pickup any ore") //Check if the current field is a "pickup any ore" field.
+										{
+											_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
+											i--; //Deincrement this so that no entries are skipped.
+										}
+									}
+
+									if(Map[rightclick_tile_id].orelist.size() > 0) //If there's any ore on this tile.
+									{
+										//TODO: Add the "pickup any ore" field
+										selected_unit->rubble_popup_menu->fields.push_back(field_pickup_any_ore); //Add the "pick up any any ore" field.
+										selected_unit->rubble_popup_menu->fields[selected_unit->rubble_popup_menu->fields.size() - 1].parent_menu = selected_unit->rubble_popup_menu; //Assign the new field's parent menu.
+
+										//TODO: Add a "Pick up ore" field for every ore.
+									}
 
 									cout << "Storing popup menu of the unit.\n"; //Debugging output.
 								}

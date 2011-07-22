@@ -38,7 +38,7 @@ bool load_game() //Load the game.
 
 		return false;
 	}
-	field_drill_wall.field_data = "drill wall"; //Let the game know this is a drill wall field.
+	field_drill_wall.field_data = "drill wall"; //Let the game know that this is a drill wall field.
 
 	if(!field_shovel_rubble.load_sprite("data/resource/interface/menu/fields/shovel_rubble.png")) //Load the shovel rubble popup menu field's sprite. With error checking.
 	{
@@ -47,7 +47,25 @@ bool load_game() //Load the game.
 
 		return false;
 	}
-	field_shovel_rubble.field_data = "shovel rubble"; //Let the game know this is a shovel rubble field.
+	field_shovel_rubble.field_data = "shovel rubble"; //Let the game know that this is a shovel rubble field.
+
+	if(!field_moveto.load_sprite("data/resource/interface/menu/fields/moveto.png"))
+	{
+		cout << "Failed to load moveto popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to moveto popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_moveto.field_data = "moveto"; //Let the game know that this is a moveto field.
+
+	if(!field_pickup_any_ore.load_sprite("data/resource/interface/menu/fields/pickup_any_ore.png"))
+	{
+		cout << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a moveto field.
 
 	cout << "\n\n";
 	out_string << "\n\n";

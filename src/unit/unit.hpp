@@ -214,6 +214,8 @@ public:
 
 	void wall_popup_menu_update(); //Update the wall_popup_menu.
 	void rubble_popup_menu_update(); //Update the rubble_popup_menu.
+
+	void cancel_current_activity(); //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
 };
 
 class unit_type_manager //Manages all the base types of units.

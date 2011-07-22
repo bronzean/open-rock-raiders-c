@@ -14,6 +14,8 @@ void bClassUnit::wall_popup_menu_update() //Update the wall_popup_menu.
 		{
 			cout << "\nI see my drill wall field has been clicked.\n"; //Debugging output.
 
+			cancel_current_activity(); //Cancel whatever the unit is currently doing.
+
 			tile* event_tile = wall_popup_menu->event_tile; //Copy this over so that there's no need to write the wall_popup_menu_part.
 
 			move = true; //Let the game know this unit is moving.

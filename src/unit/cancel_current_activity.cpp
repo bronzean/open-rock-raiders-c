@@ -1,0 +1,31 @@
+/* Copyright the ORR-C Dev Team */
+#include "unit.hpp" //Blablabla, include unit.hpp
+
+void bClassUnit::cancel_current_activity() //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
+{
+	move = false;
+	move_destination = -1;
+	move_destination_ramp = -1;
+	calculate_need_ramp = false;
+	need_path = false;
+
+	mining = false;
+	mining_mode = false;
+	mine_on_reach_goal = false;
+	mine_tile_id = 0;
+
+	shovelling = false;
+	shovel_on_reach_goal = false;
+	shovel_mode = false;
+
+	chopping = false;
+	chop_on_reach_goal = false;
+	chop_mode = false;
+
+	pick_up_on_reach_goal = false;
+	pick_up_mode = false;
+	pick_up_object_type = -1;
+	pick_up_stage = 0;
+
+	job_state = "idling";
+}

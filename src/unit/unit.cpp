@@ -298,21 +298,24 @@ std::string bClassUnit::update()
 			check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
 		}
 
-		if(wall_popup_menu != NULL) //Make sure the wall_popup_menu even exists.
-		{
-			if(!wall_popup_menu->fields.empty()) //Make sure that wall_popup_menu is not empty.
+		//if(active_popup_menu)
+		//{
+			if(wall_popup_menu != NULL) //Make sure the wall_popup_menu even exists.
 			{
-				wall_popup_menu_update(); //Update the wall_popup_menu.
+				if(!wall_popup_menu->fields.empty()) //Make sure that wall_popup_menu is not empty.
+				{
+					wall_popup_menu_update(); //Update the wall_popup_menu.
+				}
 			}
-		}
 
-		if(rubble_popup_menu != NULL) //Make sure the rubble_popup_menu even exists.
-		{
-			if(!rubble_popup_menu->fields.empty()) //Make sure that rubble_popup_menu is not empty.
+			if(rubble_popup_menu != NULL) //Make sure the rubble_popup_menu even exists.
 			{
-				rubble_popup_menu_update(); //Update the rubble_popup_menu.
+				if(!rubble_popup_menu->fields.empty()) //Make sure that rubble_popup_menu is not empty.
+				{
+					rubble_popup_menu_update(); //Update the rubble_popup_menu.
+				}
 			}
-		}
+		//}
 	}
 
 	if(job_state == "idle")
