@@ -150,7 +150,8 @@ public:
 	bool animation_playing; //Is the unit currently playing an animation?
 	std::vector<animation> animations; //Stores all of the tile's animations.
 
-	static popup_menu unit_popup_menu; //The unit's popup menu.
+	//static popup_menu unit_popup_menu; //The unit's popup menu. NOTE: Unused
+	static popup_menu wall_popup_menu; //When the user clicks on a wall...
 	
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.

@@ -243,6 +243,11 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 								}
 							}
 						}
+
+						if(unit_selected)
+						{
+							//TODO: Display the popup menu.
+						}
 					}
 				}
 			}
