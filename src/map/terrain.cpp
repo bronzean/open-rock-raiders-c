@@ -779,10 +779,10 @@ void tile::mine_to_ground(int i)
 
 			if(Map[unitlist[i].mine_tile_id].drilling_animation == true)
 			{
-				if(Map[unitlist[i].mine_tile_id].num_shovels != Map[unitlist[i].mine_tile_id].total_shovels)
-				{
+				//if(Map[unitlist[i].mine_tile_id].num_shovels != Map[unitlist[i].mine_tile_id].total_shovels)
+				//{
 					Map[unitlist[i].mine_tile_id].animations[Map[unitlist[i].mine_tile_id].drilling_animation_entry].proceed_animation(); //Increase the animation thingy.
-				}
+				//}
 				Map[unitlist[i].mine_tile_id].active_animation = true; //Let the game know an animation is going on for this tile.
 				Map[unitlist[i].mine_tile_id].active_animation_entry = Map[unitlist[i].mine_tile_id].drilling_animation_entry; //Let it know the entry of the active animation in the animations vector.
 				cout << "Mine tile ID: " << Map[unitlist[i].mine_tile_id].ID << "\n";
@@ -810,6 +810,20 @@ void tile::mine_to_ground(int i)
 					found = true;
 					//cout << "Wall's new health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1]<< "\n";
 					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!" message.
+
+					if(!active_animation)
+					{
+						if(Map[unitlist[i].mine_tile_id].drilling_animation == true)
+						{
+							/*if(Map[unitlist[i].mine_tile_id].num_shovels != Map[unitlist[i].mine_tile_id].total_shovels)
+							{
+								Map[unitlist[i].mine_tile_id].animations[Map[unitlist[i].mine_tile_id].drilling_animation_entry].proceed_animation(); //Increase the animation thingy.
+							}*/
+							Map[unitlist[i].mine_tile_id].active_animation = true; //Let the game know an animation is going on for this tile.
+							Map[unitlist[i].mine_tile_id].active_animation_entry = Map[unitlist[i].mine_tile_id].drilling_animation_entry; //Let it know the entry of the active animation in the animations vector.
+							//cout << "Mine tile ID: " << Map[unitlist[i].mine_tile_id].ID << "\n";
+						}
+					}
 				}
 			}
 		}
