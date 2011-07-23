@@ -37,6 +37,7 @@ tile::tile() //Constructor. Initialize an empty tile.
 	has_construction = false;
 	obstruction = false;
 	ground = false;
+	construction_in_progress = false;
 }
 
 void tile::init(int ID, SDL_Surface *SPRITE, std::string NAME, bool WALL, bool RAMP, bool UP_RAMP, bool DOWN_RAMP, bool SELF_SUPPORTING, int ORE_TYPE, bool CAN_MINE, int MINIMUMN_MINING_POWER, bool AIR, bool TURN_TO_GROUND, int GROUND_TYPE, bool GENERATE_ORE_ON_MINE, int NUM_ORE_TO_GENERATE, bool TREE, bool RUBBLE)
@@ -460,6 +461,12 @@ void tile::update()
 
 					cout << "Picked up ore!\n"; //Debugging output.
 				}
+			}
+
+			if(unitlist[i].close_door) //Check if the unit is supposed to close a door upon reaching its goal.
+			{
+				unitlist[i].close_door = false; //Reset this,
+				unitlist[i].closing_door = true; //Let the game know the unit is now in the process of closing the door.
 			}
 
 			unitlist[i].move_path.erase( unitlist[i].move_path.begin(), unitlist[i].move_path.end() ); //Empty move path.

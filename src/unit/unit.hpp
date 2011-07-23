@@ -159,8 +159,7 @@ public:
 
 	bool close_door; //Unit has to close a door?
 	bool closing_door; //Currently closing a door?
-
-	
+	tile* close_door_tile; //Pointer to the tile containing this door.
 
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.
@@ -225,6 +224,11 @@ public:
 	void ground_popup_menu_update(); //Update the ground_popup_menu.
 
 	void cancel_current_activity(); //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
+
+	/* --------------------------------------------------------------
+	 * The get_free_neighbor_tile function finds a free tile adjacent to the tile passed to it, and returns a pointer to it. Returns null on fail.
+	 * ----------------------------------------------------------- */
+	tile* get_free_neighbor_tile(tile* src_tile); 
 };
 
 class unit_type_manager //Manages all the base types of units.

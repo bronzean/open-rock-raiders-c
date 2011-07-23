@@ -14,9 +14,12 @@ construction::construction() //Constructor. Initializes an empty construction.
 	door_strength = 0;
 	locked = false;
 	open_time = 0;
+	close_time = 0;
 	construction_open = false;
 	opening = false;
+	closing = false;
 	open_ammount = 0;
+	close_ammount = 0;
 	can_automatic_open = false;
 
 	/*door_open_animation = false;
@@ -61,9 +64,12 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	locked = Construction.locked;
 	door_strength = Construction.door_strength;
 	open_time = Construction.open_time;
+	close_time = Construction.close_time;
 	construction_open = Construction.construction_open;
 	opening = Construction.opening;
+	closing = Construction.closing;
 	open_ammount = Construction.open_ammount;
+	close_ammount = Construction.close_ammount;
 	can_automatic_open = Construction.can_automatic_open;
 
 	active_animation = Construction.active_animation;
@@ -97,7 +103,7 @@ void construction::draw_sprite(int wx, int wy, int layer) //Draw the constructio
 	}
 }
 
-void construction::open_thyself(bool automatic)
+void construction::open_thyself(bool automatic)  //Open the construction! (Door, for example.)
 {
 	if(!locked)
 	{
@@ -116,6 +122,8 @@ void construction::open_thyself(bool automatic)
 				construction_open = true; //Let the game know the door is now open.
 				active_animation = false; //Let the game know the animation is over.
 				active_animation_entry = 0; //Let the game know the active animation's entry.
+				close_ammount = 0;
+				open_ammount = 0;
 
 				cout << "Door opened.\n"; //Debugging output.
 			}
@@ -125,6 +133,12 @@ void construction::open_thyself(bool automatic)
 				animations[open_animation_entry].proceed_animation(); //Proceed the animation.
 			}
 		}
+		else
+		{
+			construction_open = true; //Let the game know the construction is now open.
+			close_ammount = 0;
+			open_ammount = 0;
+		}
 
 		open_ammount++;
 	}
@@ -132,6 +146,49 @@ void construction::open_thyself(bool automatic)
 	{
 		cout << "Can't open a locked door foo!\n"; //Yell at user.
 	}
+}
+
+void construction::close_thyself(bool automatic) //Close the construction! (Door, for example.)
+{
+	if(automatic && can_automatic_open) //Check if it is set to automatically open, and check if it even CAN automatically open.
+	{
+		closing = true; //Yay, automatic opening.
+	}
+
+	if(close_animation) //If it has a closing animation...
+	{
+		active_animation = true;
+		active_animation_entry = close_animation_entry;
+		if(close_ammount >= close_time * animations[close_animation_entry].num_frames) //Check if it is done closing.
+		{
+			closing = false; //Not closing anymore, it is closed!
+			construction_open = false; //Let the game know the door is now closed.
+			active_animation = false; //Let the game know the animation is over.
+			active_animation_entry = 0; //Let the game know the active animation's entry.
+			close_ammount = 0;
+			open_ammount = 0;
+
+			cout << "Door closed.\n"; //Debugging output.
+
+			cout << "Num_frames: " << animations[close_animation_entry].num_frames << "\nclose ammount: " << close_ammount << "\nclose_time: " << close_time << "\n\n";
+		}
+
+		if((float)close_ammount / (float)close_time >= (float)animations[close_animation_entry].current_frame + 1) //Check if it's time to progress the closing animation.
+		{
+			animations[close_animation_entry].proceed_animation(); //Proceed the animation.
+		}
+	}
+	else
+	{
+		closing = false;
+		construction_open = false; //Let the game know the costruction is now closed.
+		close_ammount = 0;
+		open_ammount = 0;
+
+		cout << "Door closed. No animation.n";
+	}
+
+	close_ammount++;
 }
 
 /*void bClassUnit::select() //Checks if the player selected/deselected the unit.

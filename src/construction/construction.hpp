@@ -20,17 +20,20 @@ public:
 	bool door; //Is it a door?
 	bool locked; //Is it locked? (Used by doors and the like)
 	bool construction_open; //Is it currently open? (Used by doors and the like)
-	bool opening; //Is it in the process of opening. Used only on powered engine door things and the like. Ones the unit doesn't have to open for themselves.
+	bool opening; //Is it in the process of opening? Used only on powered engine door things and the like. Ones the unit doesn't have to open for themselves.
+	bool closing; //Is it in the process of closing? Used only on powered engine door things and the like. Ones the unit doesn't have to stand there closing.
 	int door_strength; //What is the strength of the door? Used to calculate how easy it is for a monsters to force it open.
 	int open_ammount; //Pretty much open progress. (Used by doors and the like)
-	bool can_automatic_open; //Does the construction have the ability to open by itself? That is, doesn't require something to actively be opening it. (Used by doors and the like)
+	int close_ammount; //Pretty much close progress. (Used by doors and the like)
+	bool can_automatic_open; //Does the construction have the ability to open/close by itself? That is, doesn't require something to actively be opening it. (Used by doors and the like)
 
 	/*bool door_open_animation; //Does the door have an animation that plays when it's opened?
 	bool door_close_animation; //Does the door have an animation that plays when it's closed?
 	int door_open_animation_entry; //Stores the index of the door opening animation's entry in the animations vector.
 	int door_close_animation_entry; //Stores the index of the door closing animation's entry in the animations vector.*/
 
-	int open_time; //How many frames it takes for the door to open. If using animations, then how much time is spent on each frame of the animation.
+	int open_time; //How many frames it takes for the construction to open. If using animations, then how much time is spent on each frame of the animation.
+	int close_time; //How many framed it takes for the construction to open. If using animations, then how much time is spent on each frame of the animation.
 
 	std::vector<animation> animations; //Stores all of the tile's animations.
 	bool active_animation; //Is an animation currently going on?
@@ -49,7 +52,8 @@ public:
 
 	bool load_config(std::string folderpath); //Load the properties of the construction. (Used only for animations at the moment.)
 
-	void open_thyself(bool automatic);
+	void open_thyself(bool automatic); //Open the construction! (Door, for example.)
+	void close_thyself(bool automatic); //Close the construction! (Door, for example.)
 
 	construction(); //Constructor. Initializes an empty construction.
 	~construction() //Deconstructor.

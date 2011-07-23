@@ -173,14 +173,14 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 
 			tile* event_tile = ground_popup_menu->event_tile; //Copy this over so that there's no need to write the ground_popup_menu part.
 
-			move = true; //Let the game know this unit is moving.
-			move_destination = event_tile->ID; //Let the game know where the unit is going.
+			//move = true; //Let the game know this unit is moving.
+			//move_destination = event_tile->ID; //Let the game know where the unit is going.
 
 			cout << "Event tile ID: " << event_tile->ID << "\n";
 
 			int layer_offset = (num_row_objects * num_col_objects * event_tile->layer); //Assign the layer offset.
 
-			if(calculate_path() == false) //Now, calculate the path.
+			/*if(calculate_path() == false) //Now, calculate the path.
 			{
 				//What...Something done borked. The tile is inaccessible.
 				move = false; //Tell the unit it's staying put
@@ -190,6 +190,17 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 			{
 				//Create the new job.
 				job_state = "incide_usa";
+			}*/
+
+			close_door = true; //Let the unit know it gonna be closing a door.
+			close_door_tile = event_tile; //Let the game know which tile contains the door the unit hath been commanded to close.
+
+			tile* destination_tile = NULL;
+			destination_tile = get_free_neighbor_tile(event_tile); //Assign the move destination to be a neighbour of the door tile.
+			if(!destination_tile) //Error checking.
+			{
+				cout << "Can't find path to door!\n";
+				cancel_current_activity();
 			}
 
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.

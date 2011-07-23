@@ -1,3 +1,4 @@
 [OPEN_ANIMATION](open_animation.2dap)
 [CLOSE_ANIMATION](close_animation.2dap)
 [OPEN_TIME](25) Number of frames the game spends on each stage of the opening animation. If no animation is provided, ammount of time that transpires until it opens.
+[CLOSE_TIME](25) Number of frames the game spends on each stage of thclosingopening animation. If no animation is provided, ammount of time that transpires until it closes.

@@ -90,6 +90,47 @@ bool construction::load_config(std::string folderpath)
 					}
 				}
 			}
+			else if(command == "CLOSE_ANIMATION") //Found the entry that specifies where the construction's close animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						//Debugging output.
+						out_string << "Kay, I found the stuff that has to do with the closing animation.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						animations.push_back(new_animation); //Add the open animation to the construction's animation vector.
+						close_animation_entry = animations.size() - 1; //Let the game know what the open animation's location in the animations vector is.
+
+						close_animation = true; //Let's the game know that the construction has an open animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
 			else if(command == "OPEN_TIME") //Found the entry that specifies the open time.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -106,6 +147,33 @@ bool construction::load_config(std::string folderpath)
 						quit = true;
 
 						open_time = atoi(num_command.c_str()); //Save the value, of course.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "CLOSE_TIME") //Found the entry that specifies the close time.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						close_time = atoi(num_command.c_str()); //Save the value, of course.
 					}
 					else if(temp == '(')
 					{

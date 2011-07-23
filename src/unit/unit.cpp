@@ -93,6 +93,10 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 
 	my_job = NULL;
 
+	close_door = false;
+	closing_door = false;
+	close_door_tile = NULL;
+
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
@@ -160,7 +164,6 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 
 std::string bClassUnit::update()
 {
-
 	update_return = ""; //The variable it returns.
 
 	if(allow_deselect && allow_unit_selection) //If the unit is allowed to be deselected...TODO: If shift or some other key is pressed, make it so that allow_deselect will equal false.
@@ -178,6 +181,26 @@ std::string bClassUnit::update()
 			frames_since_last_move = 0; //Reset frames_since_last_move.
 		}
 		frames_since_last_move++; //Increment the frames that have passed since the last move.
+	}
+
+	if(closing_door)
+	{
+		if(close_door_tile->has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+		{
+			if(close_door_tile->local_construction->door) //Check if that tile even has a door.
+			{
+				if(close_door_tile->local_construction->construction_open) //Check if the door is open.
+				{
+					close_door_tile->local_construction->close_thyself(false); //Close the door!
+				}
+				else //Door is open.
+				{
+					cout << "Done closing door.\n"; //Debugging output.
+
+					cancel_current_activity(); //Wrap things up.
+				}
+			}
+		}
 	}
 
 	if(!server)

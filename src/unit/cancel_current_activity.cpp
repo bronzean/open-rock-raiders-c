@@ -29,8 +29,12 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 	pick_up_object_type = -1;
 	pick_up_stage = 0;
 
+	close_door = false;
+	closing_door = false;
+	close_door_tile = NULL;
+
 	job_state = "idling";
-	if(my_job)
+	if(my_job /* && my_job_is_global */)
 	{
 		my_job->taken = false;
 		Job_Que.jobs.push_back(*my_job);
