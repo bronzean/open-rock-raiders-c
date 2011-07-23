@@ -20,8 +20,8 @@ d				Move camera west.
 3				Move camera down a layer.
 
 Controlling your units:
-Left click			Select/deselect a unit, issue a mine command for if in mining mode.
-Right click			Issue a move command if a unit is selected.
+Left click			Select/deselect a unit, issue a mine command for if in mining mode, click buttons (durr).
+Right click			Give commands.
 4				Enter mining mode for that unit.
 g				Issue a pick up command if a unit is selected.
 r				Issue a shovel command if a unit is selected.
