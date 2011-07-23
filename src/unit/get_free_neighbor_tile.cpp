@@ -8,6 +8,18 @@ tile* bClassUnit::get_free_neighbor_tile(tile* src_tile)
 
 	move = true; //I LIKE TO MOVE IT MOVE IT.
 
+	//First, calculate the path to the tile, and see if the tile right before the destination works. (It should, by the way...)
+	move_destination = src_tile->ID;
+	if(calculate_path()) //Calculate the path.
+	{
+		move_destination = move_path[move_path.size() - 2];
+		if(calculate_path())
+		{
+			return &Map[move_destination]; //Return the tile it found.
+		}
+	}
+	
+
 	bool calculate_next_tile = false; //Set to true if the current tile failed the check.
 
 	cout << "WX = " << src_tile->wx << ", WY = " << src_tile->wy << ", layer_offset = " << layer_offset << "\n"; //Debugging output.
