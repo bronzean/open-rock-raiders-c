@@ -124,6 +124,7 @@ void construction::open_thyself(bool automatic)  //Open the construction! (Door,
 				active_animation_entry = 0; //Let the game know the active animation's entry.
 				close_ammount = 0;
 				open_ammount = 0;
+				animations[open_animation_entry].current_frame = 0;
 
 				cout << "Door opened.\n"; //Debugging output.
 			}
@@ -167,6 +168,7 @@ void construction::close_thyself(bool automatic) //Close the construction! (Door
 			active_animation_entry = 0; //Let the game know the active animation's entry.
 			close_ammount = 0;
 			open_ammount = 0;
+			animations[close_animation_entry].current_frame = 0;
 
 			cout << "Door closed.\n"; //Debugging output.
 
