@@ -894,6 +894,12 @@ bool tile_manager::load_tile(string folderpath)
 	}
 
 	new_tile.init(tile_type, tile_sprite, tile_name, tile_wall, tile_ramp, tile_up_ramp, tile_down_ramp, tile_self_supporting, tile_ore_type, tile_can_mine, tile_minimumn_mining_power, tile_air, tile_turn_to_ground, tile_ground_type, tile_generate_ore_on_mine, tile_num_ore_to_gen/*, tile_health*/, tile_tree, tile_rubble/*, tile_health_per_shovel*/); //Initialize the new tile.
+
+	if(!new_tile.wall && !new_tile.air && !new_tile.rubble && !new_tile.ramp) //Check if it's a ground tile.
+	{
+		new_tile.ground = true; //Ground tile. Set this variable to represent that.
+	}
+
 	tile_list.push_back(new_tile);
 
 	return true;

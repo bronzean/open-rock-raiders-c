@@ -36,8 +36,10 @@ public:
 	bool up_ramp; //Let's the game know where it leads.
 	bool down_ramp; //Let's the game know where it leads.
 
+	bool ground; //Is it a ground tile?
+
 	bool wall; //Is it a wall?
-	bool self_supporting; //Does the wall support itself? As in, doesn't collapse if it's not connected to enough walls/not connected in the right way. False = The way it is in RR. True = Doesn't have ot be connected to any other walls.
+	bool self_supporting; //Does the wall support itself? As in, doesn't collapse if it's not connected to enough walls/not connected in the right way. False = The way it is in RR. True = Doesn't have to be connected to any other walls.
 	bool generate_ore_on_mine; //Does this tile generate ore when it is mined?
 	int ore_type; //What type of ore does this tile generale when mined, if it can be mined?
 	bool can_mine; //Can this wall be mined?

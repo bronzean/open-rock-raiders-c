@@ -3,7 +3,7 @@
 #include "../engine/Interface.hpp"
 
 /* --------------------------------------------------------------
- * Everything related to updating the wall_popup_menu thing is defined here.
+ * Everything related to updating the rubble_popup_menu thing is defined here.
  * ----------------------------------------------------------- */
 
 void bClassUnit::rubble_popup_menu_update() //Update the wall_popup_menu.

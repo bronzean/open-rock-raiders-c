@@ -86,8 +86,12 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	drilling_animation_left_entry = 0;
 	drilling_animation_left = false;
 	construction_repositioning = 0;
+
 	wall_popup_menu = NULL;
 	rubble_popup_menu = NULL;
+	ground_popup_menu = NULL;
+
+	my_job = NULL;
 
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
@@ -298,9 +302,9 @@ std::string bClassUnit::update()
 			check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
 		}
 
-		//if(active_popup_menu)
-		//{
-			if(wall_popup_menu != NULL) //Make sure the wall_popup_menu even exists.
+		if(active_popup_menu)
+		{
+			if(wall_popup_menu != NULL) //Make sure that wall_popup_menu even exists.
 			{
 				if(!wall_popup_menu->fields.empty()) //Make sure that wall_popup_menu is not empty.
 				{
@@ -308,14 +312,22 @@ std::string bClassUnit::update()
 				}
 			}
 
-			if(rubble_popup_menu != NULL) //Make sure the rubble_popup_menu even exists.
+			if(rubble_popup_menu != NULL) //Make sure that rubble_popup_menu even exists.
 			{
 				if(!rubble_popup_menu->fields.empty()) //Make sure that rubble_popup_menu is not empty.
 				{
 					rubble_popup_menu_update(); //Update the rubble_popup_menu.
 				}
 			}
-		//}
+
+			if(ground_popup_menu != NULL) //Make sure that ground_popup_menu even exists.
+			{
+				if(!ground_popup_menu->fields.empty()) //Make sure that ground_popup_menu is not empty.
+				{
+					ground_popup_menu_update(); //Update the ground_popup_menu.
+				}
+			}
+		}
 	}
 
 	if(job_state == "idle")

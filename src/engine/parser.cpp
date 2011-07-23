@@ -420,6 +420,14 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 					newUnit.c_health = 100; //Assign the new unit's current health.					
 					//std::cout << "Created new unit.\n";
 
+					newUnit.rubble_popup_menu = new popup_menu;
+					newUnit.rubble_popup_menu->fields.push_back(field_moveto); //Add this to the unit's popup menu.
+					newUnit.rubble_popup_menu->fields[newUnit.rubble_popup_menu->fields.size() - 1].set_parent_menu(newUnit.rubble_popup_menu); //Let the new field know what popup_menu contains it.
+
+					newUnit.ground_popup_menu = new popup_menu;
+					newUnit.ground_popup_menu->fields.push_back(field_moveto); //Add this to the unit's popup menu.
+					newUnit.ground_popup_menu->fields[newUnit.ground_popup_menu->fields.size() - 1].set_parent_menu(newUnit.ground_popup_menu); //Let the new field know what popup_menu contains it.
+
 					if(stage_object[2] != "0")
 					{
 						tool new_tool = Tool_Type_Manager.get_by_id(atoi(stage_object[3].c_str())); //Find the tool with the specified ID.
@@ -431,10 +439,6 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 							newUnit.wall_popup_menu->fields.push_back(field_drill_wall); //Add this to the unit's popup menu.
 							newUnit.wall_popup_menu->fields[newUnit.wall_popup_menu->fields.size() - 1].set_parent_menu(newUnit.wall_popup_menu); //Let the new field know what popup_menu contains it.
 						}
-
-						newUnit.rubble_popup_menu = new popup_menu;
-						newUnit.rubble_popup_menu->fields.push_back(field_moveto); //Add this to the unit's popup menu.
-						newUnit.rubble_popup_menu->fields[newUnit.rubble_popup_menu->fields.size() - 1].set_parent_menu(newUnit.rubble_popup_menu); //Let the new field know what popup_menu contains it.
 
 						if(newUnit.tool_list[newUnit.tool_list.size() - 1].can_clear_rubble == true) //Check if the raider is carying a shovel.
 						{

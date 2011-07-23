@@ -138,6 +138,8 @@ public:
 	 * - Means the unit is constructing something.
 	 * chopping
 	 * - Means the unit is choppin' trees.
+	 * incide_usa
+	 * - Means the unit is closing a door.
 	 */
 
 	int construction_repositioning; //A unit has to move off the construction it is building when it nears completion. This variable is used in that. 0 = false. 1 = true. 2 = Already done.
@@ -152,8 +154,14 @@ public:
 
 	//static popup_menu unit_popup_menu; //The unit's popup menu. NOTE: Unused
 	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
-	popup_menu *rubble_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
+	popup_menu *rubble_popup_menu; //When the user clicks on rubble (with this unit selected)...This is the popup menu that's used.
+	popup_menu *ground_popup_menu; //When the user clicks on ground (with this unit selected)...This is the popup menu that's used.
+
+	bool close_door; //Unit has to close a door?
+	bool closing_door; //Currently closing a door?
+
 	
+
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.
 	~bClassUnit() //Deconstructor.
@@ -214,6 +222,7 @@ public:
 
 	void wall_popup_menu_update(); //Update the wall_popup_menu.
 	void rubble_popup_menu_update(); //Update the rubble_popup_menu.
+	void ground_popup_menu_update(); //Update the ground_popup_menu.
 
 	void cancel_current_activity(); //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
 };

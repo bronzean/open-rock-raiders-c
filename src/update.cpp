@@ -43,8 +43,8 @@ void *DrawScreen(void *param) //Draw everything.
 			//cout << "Screen set to not needing updating!\n";
 
 			//cout << "Done with delay!\n";
+			SDL_Delay(GFPS); //Pause the thread.
 		}
-		SDL_Delay(GFPS); //Pause the thread.
 	}
 	pthread_exit(NULL); //We have no use for this anymore; the game is over. Terminate it.
 }
@@ -151,16 +151,16 @@ int update()
 
 	else if(GameState == Level && gameover != true)
 	{
-                        vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
-                        int counter = 0; //Used in the for loop below...
+		vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
+		int counter = 0; //Used in the for loop below...
 
-                        try
-                        {
-                                for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
-                                {
-                                        Map[Active_Map[counter]].update(); //Update all the tiles it holds.
-                                }
-                        }
+		try
+		{
+		for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
+		{
+			Map[Active_Map[counter]].update(); //Update all the tiles it holds.
+			}
+		}
                         catch(...)
                         {
                                 cerr << "Caught exception when updating Active_Map.\n";

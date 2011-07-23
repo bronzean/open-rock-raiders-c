@@ -185,6 +185,8 @@ run_keycheck_thread()
 
 128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times.
 
+129. Add a "GROUND" paramater to the tile types.
+
 
 
 --Done--

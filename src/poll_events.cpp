@@ -368,6 +368,91 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 
 								rightclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
 							}
+							else if(Map[rightclick_tile_id].ground) //Check if the right clicked tile is ground.
+							{
+								if(!Map[rightclick_tile_id].obstruction)
+								{
+									cout << "Checking ground_popup_menu.\n";
+									popup_menu *_popup_menu = selected_unit->ground_popup_menu; //Assign a pointer to the selected unit's popup menu.
+
+									if(_popup_menu == NULL) //Check if the ground_popup_menu of the unit actually exists.
+									{
+										//Do NOTHING.
+
+										cout << "Do NOTHING.\n"; //Debugging output.
+
+										//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+									}
+									else if(_popup_menu->fields.empty())
+									{
+										//Do NOTHING.
+
+										cout << "Do NOTHING.\n";
+
+										//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+									}
+									else //Unit's ground_popup_menu is not empty. That means stuff happens when you click on ground.
+									{
+										Interface.active_popup_menus.push_back(selected_unit->ground_popup_menu); //Store the location of the active popup menu.
+
+										active_popup_menu = true; //Let the game know that there's currently an active popup menu.
+
+										allow_unit_selection = false; //Dissallow the deselection of the unit.
+
+										//Tell the popup menu where to draw.
+										_popup_menu->x = event_struct.button.x;
+										_popup_menu->y = event_struct.button.y;
+
+										_popup_menu->event_tile = &Map[rightclick_tile_id]; //Let the popup menu know which tile is involved in this.
+
+										for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore", and the constructions, fields, and close/open fields.
+										{
+											if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "close door") //Check if the current field is one to be removed.
+											{
+												_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
+												i--; //Deincrement this so that no entries are skipped.
+											}
+										}
+
+										if(Map[rightclick_tile_id].orelist.size() > 0) //If there's any ore on this tile.
+										{
+											//TODO: Add the "pickup any ore" field
+											selected_unit->ground_popup_menu->fields.push_back(field_pickup_any_ore); //Add the "pick up any ore" field.
+											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+
+											//TODO: Add a "Pick up ore" field for every ore.
+										}
+										else if(!Map[rightclick_tile_id].has_construction) //No ore. Check if there is a construction on here.
+										{
+											selected_unit->ground_popup_menu->fields.push_back(field_construct_wall); //Add the "construct wall" field.
+											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+											selected_unit->ground_popup_menu->fields.push_back(field_construct_door); //Add the "construct door" field.
+											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+										}
+
+										if(Map[rightclick_tile_id].has_construction) //Check if the tile has a construction on it.
+										{
+											if(Map[rightclick_tile_id].local_construction->door) //Check if the construction is a door.
+											{
+												if(Map[rightclick_tile_id].local_construction->construction_open) //Check if the door is open.
+												{
+													selected_unit->ground_popup_menu->fields.push_back(field_close_door); //Add the "close door" field.
+													selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+												}
+												else //Door isn't open.
+												{
+													selected_unit->ground_popup_menu->fields.push_back(field_open_door); //Add the "open door" field.
+													selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+												}
+											}
+										}
+
+										cout << "Storing popup menu of the unit.\n"; //Debugging output.
+									}
+
+									rightclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
+								}
+							}
 
 						}
 					}

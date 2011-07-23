@@ -43,7 +43,7 @@ bool load_game() //Load the game.
 	if(!field_shovel_rubble.load_sprite("data/resource/interface/menu/fields/shovel_rubble.png")) //Load the shovel rubble popup menu field's sprite. With error checking.
 	{
 		cout << "Failed to load shovel_rubble popup_menu_field sprite.\n"; //Debugging output.
-		out_string << "Failed to load shovel_rubble popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load load shovel_rubble popup_menu_field sprite.\n"; //Debugging output.
 
 		return false;
 	}
@@ -52,7 +52,7 @@ bool load_game() //Load the game.
 	if(!field_moveto.load_sprite("data/resource/interface/menu/fields/moveto.png"))
 	{
 		cout << "Failed to load moveto popup_menu_field sprite.\n"; //Debugging output.
-		out_string << "Failed to moveto popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load moveto popup_menu_field sprite.\n"; //Debugging output.
 
 		return false;
 	}
@@ -61,11 +61,47 @@ bool load_game() //Load the game.
 	if(!field_pickup_any_ore.load_sprite("data/resource/interface/menu/fields/pickup_any_ore.png"))
 	{
 		cout << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
-		out_string << "Failed to pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
 
 		return false;
 	}
-	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a moveto field.
+	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a pickup any ore field.
+
+	if(!field_construct_wall.load_sprite("data/resource/interface/menu/fields/construct_wall.png"))
+	{
+		cout << "Failed to load construct_wall popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load construct_wall popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_construct_wall.field_data = "construct wall"; //Let the game know that this is a construct wall field.
+
+	if(!field_construct_door.load_sprite("data/resource/interface/menu/fields/construct_door.png"))
+	{
+		cout << "Failed to load construct_door popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load construct_door popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_construct_door.field_data = "construct door"; //Let the game know that this is a construct door field.
+
+	if(!field_open_door.load_sprite("data/resource/interface/menu/fields/open_door.png"))
+	{
+		cout << "Failed to load open_door popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to open_door popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_open_door.field_data = "open door"; //Let the game know that this is a close door field.
+
+	if(!field_close_door.load_sprite("data/resource/interface/menu/fields/close_door.png"))
+	{
+		cout << "Failed to load close_door popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to close_door popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_close_door.field_data = "close door"; //Let the game know that this is a close door field.
 
 	cout << "\n\n";
 	out_string << "\n\n";

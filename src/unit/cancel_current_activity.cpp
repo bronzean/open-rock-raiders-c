@@ -3,6 +3,8 @@
 
 void bClassUnit::cancel_current_activity() //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
 {
+	move_path.clear();
+
 	move = false;
 	move_destination = -1;
 	move_destination_ramp = -1;
@@ -28,4 +30,11 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 	pick_up_stage = 0;
 
 	job_state = "idling";
+	if(my_job)
+	{
+		my_job->taken = false;
+		Job_Que.jobs.push_back(*my_job);
+		delete my_job;
+		my_job = NULL;
+	}
 }

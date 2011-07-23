@@ -31,15 +31,17 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				 * Then finally let everybody else know that this job has been taken.
 				 */
 
+				cancel_current_activity();
+
 				move_destination = Job_Que.jobs[i].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
 				move = true; //Let the game know this unit is going somewhere.
-				move_path.clear(); //Empty the move path so that movement doesn't glitch.
-				mining = false; //Let the game know the unit has moved away and has stopped mining the tile.
-				mine_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
-				pick_up_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
-				mine_tile_id = 0; //Reset mine_tile_id.
-				shovelling = false; //Let the game know the unit has moved away and has stopped shovelling the tile.
-				shovel_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
+				//move_path.clear(); //Empty the move path so that movement doesn't glitch.
+				//mining = false; //Let the game know the unit has moved away and has stopped mining the tile.
+				//mine_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
+				//pick_up_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
+				//mine_tile_id = 0; //Reset mine_tile_id.
+				//shovelling = false; //Let the game know the unit has moved away and has stopped shovelling the tile.
+				//shovel_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
 				move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 
 				if(calculate_path() == false) //If it can't calculate find a path...
