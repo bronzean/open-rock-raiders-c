@@ -14,6 +14,17 @@ void tile::wall_popup_menu_update() //Update the wall_popup_menu.
 		{
 			cout << "\nI see my drill wall field has been clicked.\n"; //Debugging output.
 
+			//TODO: Add a drill wall job.
+
+			job new_job; //The new job.
+
+			new_job.type = "drill wall"; //Set the job type.
+			new_job.tasked_tile = this; //Tell the game which tile is involved with this job.
+
+			Job_Que.add_job(new_job); //Add the job to the job que.
+
+			cout << "Added job!\n"; //Debugging output.
+
 			wall_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
 			wall_popup_menu->clicked_field = NULL; //Reset this.
 		}
@@ -28,7 +39,8 @@ void tile::wall_popup_menu_update() //Update the wall_popup_menu.
 		Interface.active_popup_menus.clear(); //Empty this.
 		active_popup_menu = false; //No active popup menu...
 		allow_unit_selection = true; //Allow units to be selected/deselected.
-		tile_selected = false;
-		selected_tile = NULL;
+		selected = false; //This tile is selected no longer.
+		tile_selected = false; //No selected tile.
+		selected_tile = NULL; //Reset this.
 	}
 }

@@ -52,7 +52,7 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 				//Check if the raider can move off this tile once the construction is built.
 				//-------------------------------------
 
-				int layer_offset = (num_row_objects * num_col_objects * Map[my_job->tasked_tile->ID].layer); //Assign the layer offset.
+				/*int layer_offset = (num_row_objects * num_col_objects * Map[my_job->tasked_tile->ID].layer); //Assign the layer offset.
 
 				move = true; //I LIKE TO MOVE IT MOVE IT.
 
@@ -149,7 +149,18 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 					delete my_job; //Free memory.
 					job_state = "idling"; //Unit is now idling.
 					cout << "What? Something failed.\n"; //Debugging ouput.
+				}*/
+
+				my_job->tasked_tile->construction_in_progress = true;
+
+				construction_repositioning = 1; //Let the game know this unit is relocating itself.
+
+				if(!get_free_neighbor_tile(my_job->tasked_tile)) //See if it can find a free neighbor tile.
+				{
+					cancel_current_activity(); //Blarg. Can't finish construction. Cancel it.
 				}
+
+				//TODO: Make sure the unit is not moving on a tile with the construction in progress variable set to true (in terrain.cpp)
 			}
 			else if(construction_repositioning == 1 && move == false) //Checks if the unit has relocated and is now pending construction finalisation.
 			{
@@ -187,32 +198,3 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 		}
 	}
 }
-
-
-
-/* Here's the debugging output that got generated:
-
-WX = 160, WY = 160, layer_offset = 0
-Move_destination = 74.
-Path to ramp found!
-Door! Can't move there foo.
-Move_destination = 76.
-Error: Can't move onto the unmovable!
-Map[move_destination].wall = 1, Map[move_destination].air = 0, Map[move_destination].obstruction = 1
-ID of said tile: 76
-move_destination = 76.
-Door! Can't move there foo.
-Move_destination = 61.
-Path to ramp found!
-Door! Can't move there foo.
-Move_destination = 89.
-Error: Can't move onto the unmovable!
-Map[move_destination].wall = 1, Map[move_destination].air = 0, Map[move_destination].obstruction = 1
-ID of said tile: 89
-move_destination = 89.
-Door! Can't move there foo.
-What's this? Failed all the checks...
-What? Something failed.
-
-Only 74 had a door.
-See the problem?*/

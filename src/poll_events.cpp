@@ -268,6 +268,10 @@ tile_popup_menu_force_draw:
 								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true)
 								{
 									cout << "Invalid tile!\n\n";
+
+									allow_unit_selection = true;
+									construction_wall_location_select = false;
+									construction_location_select = false;
 								}
 								else
 								{
@@ -314,6 +318,10 @@ tile_popup_menu_force_draw:
 								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true)
 								{
 									cout << "Invalid tile!\n\n";
+
+									allow_unit_selection = true;
+									construction_wall_location_select = false;
+									construction_location_select = false;
 								}
 								else
 								{

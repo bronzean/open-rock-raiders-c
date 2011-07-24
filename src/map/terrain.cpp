@@ -800,10 +800,16 @@ void tile::mine_to_ground(int i)
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
 			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
+
+			if(unitlist[i].my_job != NULL) //Check if the unit has a job.
+			{
+				delete unitlist[i].my_job; //Delete the unit's job.
+				unitlist[i].my_job = NULL;
+			}
 		}
 		else if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] <= 0) //This checks if the current drill is done.
 		{
-			out_string << "Done with a drill!\n"; //Debugging output.
+			//out_string << "Done with a drill!\n"; //Debugging output.
 			Map[unitlist[i].mine_tile_id].health.pop_back(); //Remove the last element of health. For obvious reasons.
 
 			/*out_string << "Health: \n";
@@ -821,7 +827,7 @@ void tile::mine_to_ground(int i)
 				//}
 				Map[unitlist[i].mine_tile_id].active_animation = true; //Let the game know an animation is going on for this tile.
 				Map[unitlist[i].mine_tile_id].active_animation_entry = Map[unitlist[i].mine_tile_id].drilling_animation_entry; //Let it know the entry of the active animation in the animations vector.
-				cout << "Mine tile ID: " << Map[unitlist[i].mine_tile_id].ID << "\n";
+				//cout << "Mine tile ID: " << Map[unitlist[i].mine_tile_id].ID << "\n";
 			}
 
 			Map[unitlist[i].mine_tile_id].num_shovels--; //First, reduce the number of drills left.
@@ -842,7 +848,7 @@ void tile::mine_to_ground(int i)
 			{
 				if(found == false && unitlist[i].tool_list[counter].can_drill_wall == true && Map[unitlist[i].mine_tile_id].minimumn_mining_power <= unitlist[i].tool_list[counter].drill_power) //If the tool meets all the requirements to mine this wall...
 				{
-					Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's shovel rate from this tile's health.
+					Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's drill rate from this tile's health.
 					found = true;
 					//cout << "Wall's new health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1]<< "\n";
 					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!" message.
@@ -861,6 +867,13 @@ void tile::mine_to_ground(int i)
 						}
 					}
 				}
+			}
+
+			if(!found) //If it couldn't find a viable tool with which to drill the wall with.
+			{
+				cout << "Fool, watcha tryin to do? Don't ya know better than to tell units to mine walls which they can't mine?\n"; //Yell at the player.
+
+				unitlist[i].cancel_current_activity(); //Cancel drilling.
 			}
 		}
 	}

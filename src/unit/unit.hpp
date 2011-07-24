@@ -78,6 +78,7 @@ public:
 	bool carrying_resource; //If it's carrying an ore or energy crystal, set this to true, so that it doesn't pick up any others...
 
 	bool mining_mode; //Used in the mining code.
+	bool can_mine_wall; //Can the unit even mine stuff?
 	int mine_tile_id; //The ID of the tile the unit needs to mine.
 	bool mine_on_reach_goal; //Is the unit moving somewhere to mine a tile.
 	std::string select_wall_to_mine_str; //A message that is displayed when the player wants to select a wall to mine.

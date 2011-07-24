@@ -97,6 +97,8 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	closing_door = false;
 	close_door_tile = NULL;
 
+	can_mine_wall = false;
+
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
