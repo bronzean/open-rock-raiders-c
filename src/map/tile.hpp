@@ -86,6 +86,8 @@ public:
 
 	bool obstruction; //Is this tile an obstruction? Wall tiles, for example, are obstructions.
 
+	bool visible; //Can the player see it?
+
 	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
 	popup_menu *rubble_popup_menu; //When the user clicks on rubble (with this unit selected)...This is the popup menu that's used.
 	popup_menu *ground_popup_menu; //When the user clicks on ground (with this unit selected)...This is the popup menu that's used.

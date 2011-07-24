@@ -77,7 +77,7 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	shovelling_message_str = "I'mma shovel some rubble!";
 	shovelling_message_spr = NULL;
 	animation_playing = false;
-	job_state = "idle";
+	job_state = "idling";
 	construct_rate = 1;
 	constructing_message_str = "Bob the builder!";
 	constructing_message_spr = NULL;
@@ -98,6 +98,8 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	close_door_tile = NULL;
 
 	can_mine_wall = false;
+
+	can_shovel_rubble = false;
 
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
@@ -160,6 +162,8 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 			{
 				draw_inventory(); //Let the player know what tools this guy is carrying.
 			}
+
+			cout << "Job state: " << job_state << "\n";
 		}
 	}
 }
@@ -355,7 +359,7 @@ std::string bClassUnit::update()
 		}
 	}
 
-	if(job_state == "idle")
+	if(job_state == "idling")
 	{
 		check_job(); //Since the unit is idling, might as well give it something to do.
 	}

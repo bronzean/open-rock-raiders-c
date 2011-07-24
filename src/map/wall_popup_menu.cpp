@@ -14,7 +14,7 @@ void tile::wall_popup_menu_update() //Update the wall_popup_menu.
 		{
 			cout << "\nI see my drill wall field has been clicked.\n"; //Debugging output.
 
-			//TODO: Add a drill wall job.
+			//Add a drill wall job.
 
 			job new_job; //The new job.
 

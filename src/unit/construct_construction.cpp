@@ -44,7 +44,9 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 
 				construction_repositioning = 0; //Reset this so the raider moves off the tile next time too.
 
-				job_state = "idle"; //Unit's done building. Now it's time for it to idle again.
+				//job_state = "idle"; //Unit's done building. Now it's time for it to idle again.
+
+				cancel_current_activity();
 			}
 			else if(my_job->construction_health <= 0 && construction_repositioning == 0) //Check if it's time to move off the tile.
 			{

@@ -321,13 +321,21 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 					w++;
 				}
 
-				if(new_tile.wall == true && new_tile.can_mine == true) //Check if the new tile is a wall and if that wall can be mined.
+				/*if(new_tile.wall == true && new_tile.can_mine == true) //Check if the new tile is a wall and if that wall can be mined.
 				{
 					new_tile.wall_popup_menu = new popup_menu; //Create a new popup menu for this wall.
 
 					new_tile.wall_popup_menu->fields.push_back(field_drill_wall); //Add this to the tile's popup menu.
 					new_tile.wall_popup_menu->fields[new_tile.wall_popup_menu->fields.size() - 1].set_parent_menu(new_tile.wall_popup_menu); //Let the new field know what popup_menu contains it.
 				}
+
+				if(new_tile.rubble == true) //Check if the new tile is rubble.
+				{
+					new_tile.rubble_popup_menu = new popup_menu; //Create a new popup menu for this rubble.
+
+					new_tile.rubble_popup_menu->fields.push_back(field_shovel_rubble); //Add this to the tile's popup menu.
+					new_tile.rubble_popup_menu->fields[new_tile.rubble_popup_menu->fields.size() - 1].set_parent_menu(new_tile.rubble_popup_menu); //Let the new field know what popup_menu contains it.
+				}*/
 
 				tiles_per_loop++;
 
@@ -453,6 +461,8 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 						{
 							newUnit.rubble_popup_menu->fields.push_back(field_shovel_rubble); //Add this to the unit's popup menu.
 							newUnit.rubble_popup_menu->fields[newUnit.rubble_popup_menu->fields.size() - 1].set_parent_menu(newUnit.rubble_popup_menu); //Let the new field know what popup_menu contains it.
+
+							newUnit.can_shovel_rubble = true; //Let the game know this unit has the ability to shovel rubble.
 						}
 					}
 

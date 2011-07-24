@@ -141,8 +141,6 @@ run_keycheck_thread()
 
 101. Make a constructions menu.
 
-103. Implement that "ore on map" thing.
-
 104. Program stockpiles.
 
 105. Change the bool mining and all similar stuff in units to use the job_state variable.
@@ -175,17 +173,31 @@ run_keycheck_thread()
 
 123. Raider drilling animations.
 
-124. Make walls not be buildable on rubble. And, probably, quite a few other constructions.
-
 125. Make the location of the "Press enter to enter the test level" text configurable via the interface CFG.
 
 126. When you select a unit, highlight the like you gave them a command to do blablabla on. Maybe simply draw an icon above it. (I like the idea of that...)
 
 127. When a shovel command is issued on rubble, or a drill command on a wall, or a construction command on a tile. Signify this. Maybe highlight the tile or something.
 
-128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times.
-
 129. Add a "GROUND" paramater to the tile types.
+
+130. Whenever the orelist of the tile is expanded, add the "pickup any ore" field to the tile's rubble_popup_menu or the ground_popup_menu (depending on what type of tile it is).
+
+131. Update the job_que to be a linked list.
+
+132. Update the map to be a binary tree (pretty much a linked list).
+
+133. Put units in their own global linked list. Tiles will simply have a vector of pointers to all the units on them.
+
+134. Implement 2D lighting.
+
+135. Give the raider a moving animation.
+
+136. Implement a "allow_unit_selection_turn_to_true_next_frame", which is pretty much a variable that is checked at every frame's start to see if it is true. If it is true, then set allow_unit_selection to true.
+
+137. Make units close doors behind themselves.
+
+138. Check to make sure the tile is still ruble before shovelling it. (Likewise for mining)
 
 
 
@@ -283,6 +295,8 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 
 102. Implement that job que. - DONE. Yes, it is a repeat.
 
+103. Implement that "ore on map" thing. - DONE.
+
 106. The reason the game kept crashing when there was the "SDL_FreeSurface" thing in the unit's deconstructor was that it was freeing the actual image from the unit type. So, make sure to free all the surfaces at the end of the program and only in the unit type. For each individual unit, simply set the surface pointer to NULL. - DONE
 
 109. Check to make sure that the tile doesn't have an existing construction on it. - DONE
@@ -290,6 +304,10 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 110. Combine client and server. How? Same thing as with 3D and 2D mode. bool server - DONE
 
 121. Messages stay onscreen one frame too long. Fix this - DONE
+
+124. Make walls not be buildable on rubble. And, probably, quite a few other constructions. - DONE.
+
+128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times. - DONE.
 
 
 

@@ -39,6 +39,7 @@ tile::tile() //Constructor. Initialize an empty tile.
 	ground = false;
 	construction_in_progress = false;
 	selected = false;
+	visible = false;
 
 	wall_popup_menu = NULL;
 	ground_popup_menu = NULL;
@@ -799,13 +800,15 @@ void tile::mine_to_ground(int i)
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
-			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
+			//unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
 
 			if(unitlist[i].my_job != NULL) //Check if the unit has a job.
 			{
 				delete unitlist[i].my_job; //Delete the unit's job.
 				unitlist[i].my_job = NULL;
 			}
+
+			unitlist[i].cancel_current_activity();
 		}
 		else if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] <= 0) //This checks if the current drill is done.
 		{
@@ -1059,7 +1062,17 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n"; //Debugging output.
 
-			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
+			//unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
+
+			if(unitlist[i].my_job != NULL) //Check if the unit has a job.
+			{
+				delete unitlist[i].my_job; //Delete the unit's job.
+				unitlist[i].my_job = NULL;
+
+				cout << "Removed unit's job.\n";
+			}
+
+			unitlist[i].cancel_current_activity();
 		}
 		//else if(health[num_shovels - 1] <= 0) //This checks if the current shovel is done.
 		else if(health[num_shovels - 1] <= 0) //This checks if the current shovel is done.
@@ -1093,26 +1106,7 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 				ore_on_map[ore_on_map.size() - 1] = &orelist[orelist.size() - 1];
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
 
-				cout << "ore.containing_tile->ID = " << ore_on_map[ore_on_map.size() - 1]->containing_tile->ID << "\n"; //TODO: Valgrind says:
-				/*
-				==15706== 
-				==15706== 1 errors in context 1 of 274:
-				==15706== Invalid read of size 4
-				==15706==    at 0x429FBE: tile::rubble_to_ground(int) (terrain.cpp:994)
-				==15706==    by 0x4270BD: tile::update() (terrain.cpp:388)
-				==15706==    by 0x41CDE9: update() (update.cpp:161)
-				==15706==    by 0x41ED9F: main (main.cpp:224)
-				==15706==  Address 0xa0 is not stack'd, malloc'd or (recently) free'd
-				==15706== 
-				==15706== 
-				==15706== 1 errors in context 2 of 274:
-				==15706== Invalid read of size 8
-				==15706==    at 0x429FBA: tile::rubble_to_ground(int) (terrain.cpp:994)
-				==15706==    by 0x4270BD: tile::update() (terrain.cpp:388)
-				==15706==    by 0x41CDE9: update() (update.cpp:161)
-				==15706==    by 0x41ED9F: main (main.cpp:224)
-				==15706==  Address 0x1149cc98 is not stack'd, malloc'd or (recently) free'd
-				*/
+				cout << "ore.containing_tile->ID = " << ore_on_map[ore_on_map.size() - 1]->containing_tile->ID << "\n";
 
 				cout << "Generating ore with type: " << ore_gen_ids[0] << "\n\n"; //Debugging output.
 			}

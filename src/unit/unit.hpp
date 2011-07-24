@@ -23,8 +23,6 @@ public:
 	int wx, wy, wz; //The world x, world y, and world z.
 	int layer; //The layer it's on.
 
-	int move_speed; //The speed the unit moves at.
-
 	int m_health; //The max health.
 	int c_health; //The current health.
 
@@ -45,6 +43,7 @@ public:
 	int que_num; //NOTE: UNUSED.
 
 	int move_destination; //The tile to move to.
+	int move_speed; //The speed the unit moves at. If there is a moving animation, then this is the ammount of frames spent on each frame of the animation. If there is no moving animation, then this is how many frames transpire until the unit moves to the next tile.
 	int move_destination_ramp; //The tile to move to. This means it first has to move to a ramp tile.
 	//Move up or down a layer when you reach the ramp?
 	int move_layer_ramp; //0 = move down, 1 = move up.
@@ -116,6 +115,7 @@ public:
 	bool shovel_on_reach_goal; //Will the unit be shovelling stuff when it reaches its goal?svn add --depth=infinity * --force
 	bool shovelling; //Is the unit currently shovelling something?
 	bool shovel_mode; //Is the game waiting for the player to select some rubble to shovel?
+	bool can_shovel_rubble; //Does the unit even possess the ability to shovel rubble?
 	std::string select_rubble_to_shovel_str; //Displayed when the player is selecting rubble to shovel.
 	SDL_Surface *select_rubble_to_shovel_spr; //Displayed when the player is selecting rubble to shovel.
 	std::string shovelling_message_str; //A message that is displayed while the unit is shovelling.

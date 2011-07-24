@@ -51,6 +51,7 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 								active_popup_menu = false;
 								Interface.active_popup_menus.clear();
 								tile_selected = false;
+								selected_tile->selected = false;
 								selected_tile = NULL;
 
 								cout << "None found.\n";
@@ -66,7 +67,7 @@ tile_popup_menu_force_draw:
 
 							if(selected_tile->wall == true) //Check if the selected tile is a wall.
 							{
-								cout << "Is a wall.\n";
+								cout << "Is a wall.\n"; //Debugging output.
 								popup_menu *_popup_menu = selected_tile->wall_popup_menu; //Assign a pointer to the selected tile's popup menu.
 
 								if(_popup_menu == NULL) //Check if the wall_popup_menu of the tile actually exists.
@@ -74,6 +75,13 @@ tile_popup_menu_force_draw:
 									//Do NOTHING.
 
 									cout << "Do NOTHING.\n";
+
+									Interface.active_popup_menus.clear(); //Empty this.
+									active_popup_menu = false; //No active popup menu...
+									allow_unit_selection = true; //Allow units to be selected/deselected.
+									selected_tile->selected = false; //This tile is selected no longer.
+									tile_selected = false; //No selected tile.
+									selected_tile = NULL; //Reset this.
 
 									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
 								}
@@ -83,14 +91,21 @@ tile_popup_menu_force_draw:
 
 									cout << "Do NOTHING.\n";
 
+									Interface.active_popup_menus.clear(); //Empty this.
+									active_popup_menu = false; //No active popup menu...
+									allow_unit_selection = true; //Allow units to be selected/deselected.
+									selected_tile->selected = false; //This tile is selected no longer.
+									tile_selected = false; //No selected tile.
+									selected_tile = NULL; //Reset this.
+
 									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
 								}
-								else //Tile's wall_popup_menu is not empty. That means stuff happens when you click on a wall.
+								else //Tile's wall_popup_menu is not empty. That means stuff happens when you click on this wall.
 								{
 									Interface.active_popup_menus.push_back(selected_tile->wall_popup_menu); //Store the location of the active popup menu.
 									active_popup_menu = true; //Let there game know that there's currently an active popup menu.
 
-									allow_unit_selection = false;
+									allow_unit_selection = false; //Dissallow the selection (and consequently, deselection) of units.
 
 									//Tell the popup menu where to draw.
 									_popup_menu->x = event_struct.button.x;
@@ -99,6 +114,59 @@ tile_popup_menu_force_draw:
 									_popup_menu->event_tile = &Map[leftclick_tile_id]; //Let the popup menu know which tile is involved in this.
 
 									cout << "Storing popup menu of the tile.\n"; //Debugging output.
+								}
+
+								leftclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
+							}
+							else if(selected_tile->rubble) //Check if the selected tile is rubble.
+							{
+								cout << "Rubble trouble!\n"; //Debugging output.
+								popup_menu *_popup_menu = selected_tile->rubble_popup_menu; //Assign a pointer to the selected tile's popup menu.
+
+								if(_popup_menu == NULL) //Check if the rubble_popup_menu of the tile actually exists.
+								{
+									//Do NOTHING.
+
+									cout << "Do NOTHING.\n";
+
+									Interface.active_popup_menus.clear(); //Empty this.
+									active_popup_menu = false; //No active popup menu...
+									allow_unit_selection = true; //Allow units to be selected/deselected.
+									selected_tile->selected = false; //This tile is selected no longer.
+									tile_selected = false; //No selected tile.
+									selected_tile = NULL; //Reset this.
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else if(_popup_menu->fields.empty())
+								{
+									//Do NOTHING.
+
+									Interface.active_popup_menus.clear(); //Empty this.
+									active_popup_menu = false; //No active popup menu...
+									allow_unit_selection = true; //Allow units to be selected/deselected.
+									selected_tile->selected = false; //This tile is selected no longer.
+									tile_selected = false; //No selected tile.
+									selected_tile = NULL; //Reset this.
+
+									cout << "Do NOTHING.\n";
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else //Tile's rubble_popup_menu is not empty. That means stuff happens when you click on this rubble.
+								{
+									Interface.active_popup_menus.push_back(_popup_menu); //Store the location of the active popup menu.
+									active_popup_menu = true; //Let the game know that there's currently an active popup menu.
+
+									allow_unit_selection = false; //Dissallow the selection (and consequently, deselection) of units.
+
+									//Tell the popup menu where to draw.
+									_popup_menu->x = event_struct.button.x;
+									_popup_menu->y = event_struct.button.y;
+
+									_popup_menu->event_tile = &Map[leftclick_tile_id]; //Let the popup menu know which tile is involved in this.
+
+									cout << "Storying popup menu of the tile.\n"; //Debugging output.
 								}
 
 								leftclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
@@ -202,7 +270,7 @@ tile_popup_menu_force_draw:
 												if(!unit_selected)
 												{
 													cout << "Bringing up popup menu for tile.\n"; //Debugging output.
-													//TODO: Bring up an 'actions' menu (Like in LRR).
+													//Bring up an 'actions' menu (Like in LRR).
 
 													Map[leftclick_tile_id].selected = true; //Let the tile know it is now selected.
 													tile_selected = true; //Let the game know that a tile is currently selected.
@@ -325,7 +393,7 @@ tile_popup_menu_force_draw:
 								}
 								else
 								{
-									//TODO: add a construct door command to the job que.
+									//Add a construct door command to the job que.
 									job new_job;
 
 									new_job.type = "construct";
