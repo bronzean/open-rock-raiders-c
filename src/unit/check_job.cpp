@@ -8,7 +8,11 @@ using namespace std;
 
 void bClassUnit::check_job() //Give the unit something to do out of the job que.
 {
-	//TODO: Look through the job que until a job is found that this unit can perform.
+	//Look through the job que until a job is found that this unit can perform.
+	//TODO: Assign the closest job.
+
+	vector<int> jobs;
+	vector<vector<int> > movepaths;
 
 	if(selected)
 	{
@@ -51,19 +55,23 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 
 				if(calculate_path() == false) //If it can't calculate find a path...
 				{
-					move = false; //Tell the unit it doesn't have anywhere to go.
-					move_destination = 0; //Reset the unit's move destination.
-					move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
+					cancel_current_activity();
 				}
 
 				else
 				{
-					Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
+					/*Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
 					job_state = "constructing"; //The unit is constructing something.
 					//my_job = &Job_Que.jobs[i]; //Let the unit know which job it's doing.
 					my_job = new job;
 					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
 					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
+					*/
+
+					jobs.push_back(i); //Store the index of this job.
+					movepaths.push_back(move_path);
+
+					cancel_current_activity();
 				}
 
 				done = true;
@@ -84,14 +92,19 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				}
 				else
 				{
-					Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
+					/*Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
 					job_state = "drilling"; //The unit is drilling a wall now.
 					my_job = new job;
 					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
 					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
 
 					mine_on_reach_goal = true; //Let the game know the unit will be mining a wall upon reaching its destination.
-					mine_tile_id = my_job->tasked_tile->ID; //Let the game know which tile the unit has been commanded to mine.
+					mine_tile_id = my_job->tasked_tile->ID; //Let the game know which tile the unit has been commanded to mine.*/
+
+					jobs.push_back(i); //Store the index of this job.
+					movepaths.push_back(move_path);
+
+					cancel_current_activity();
 				}
 			}
 			else if(Job_Que.jobs[i].type == "shovel rubble" && Job_Que.jobs[i].taken == false && can_shovel_rubble) //Check if the job is a drill wall job.
@@ -109,17 +122,95 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				}
 				else
 				{
-					Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
+					/*Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
 					job_state = "shoveling"; //The unit is drilling a wall now.
 					my_job = new job;
 					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
 					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
 
-					shovel_on_reach_goal = true; //Let the game know the unit will be shoveling rubble upon reaching its destination.
+					shovel_on_reach_goal = true; //Let the game know the unit will be shoveling rubble upon reaching its destination.*/
+
+					jobs.push_back(i); //Store the index of this job.
+					movepaths.push_back(move_path);
+
+					cout << "move_path.size(): " << move_path.size() << "\n";
+
+					cancel_current_activity();
 				}
 			}
 			iterator2++;
 			i++;
+		}
+	}
+
+	int shortest_distance = -1;
+	int closest_job = 0;
+	bool found = false;
+
+	for(int i2 = 0; i2 < jobs.size(); i2++)
+	{
+		if(shortest_distance == -1)
+		{
+			closest_job = jobs[i2];
+			shortest_distance = movepaths[i2].size();
+			found = true;
+
+			cout << "First job.\n";
+		}
+		else if(movepaths[i2].size() < shortest_distance)
+		{
+			closest_job = jobs[i2];
+			shortest_distance = movepaths[i].size();
+			found = true;
+
+			cout << "Found closer job.\n";
+		}
+	}
+
+	if(found)
+	{
+		cout << "Found job. Adding.\n";
+
+		if(Job_Que.jobs[closest_job].type == "construct")
+		{
+			move = true;
+			move_destination = Job_Que.jobs[closest_job].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
+			move_path = movepaths[closest_job];
+
+			Job_Que.jobs[closest_job].taken = true; //The job has been taken. Let everybody know that.
+			job_state = "constructing"; //The unit is constructing something.
+			my_job = new job;
+			*my_job = Job_Que.jobs[closest_job]; //Let the unit know which job it's doing.
+			Job_Que.jobs.erase(Job_Que.jobs.begin() + closest_job); //Remove the job from the job que.
+		}
+		else if(Job_Que.jobs[closest_job].type == "drill wall")
+		{
+			move = true;
+			move_destination = Job_Que.jobs[closest_job].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
+			move_path = movepaths[closest_job];
+
+			Job_Que.jobs[closest_job].taken = true; //The job has been taken. Let everybody know that.
+			job_state = "drilling"; //The unit is drilling a wall now.
+			my_job = new job;
+			*my_job = Job_Que.jobs[closest_job]; //Let the unit know which job it's doing.
+			Job_Que.jobs.erase(Job_Que.jobs.begin() + closest_job); //Remove the job from the job que.
+
+			mine_on_reach_goal = true; //Let the game know the unit will be mining a wall upon reaching its destination.
+			mine_tile_id = my_job->tasked_tile->ID; //Let the game know which tile the unit has been commanded to mine.
+		}
+		else if(Job_Que.jobs[closest_job].type == "shovel rubble")
+		{
+			move = true;
+			move_destination = Job_Que.jobs[closest_job].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
+			move_path = movepaths[closest_job];
+
+			Job_Que.jobs[closest_job].taken = true; //The job has been taken. Let everybody know that.
+			job_state = "shoveling"; //The unit is drilling a wall now.
+			my_job = new job;
+			*my_job = Job_Que.jobs[closest_job]; //Let the unit know which job it's doing.
+			Job_Que.jobs.erase(Job_Que.jobs.begin() + closest_job); //Remove the job from the job que.
+
+			shovel_on_reach_goal = true; //Let the game know the unit will be shoveling rubble upon reaching its destination.
 		}
 	}
 }

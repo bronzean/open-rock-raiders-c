@@ -199,6 +199,10 @@ run_keycheck_thread()
 
 138. Check to make sure the tile is still ruble before shovelling it. (Likewise for mining)
 
+139. Add the smart ai variable.
+
+140. Make the find_job code take the smart ai variable into account.
+
 
 
 --Done--

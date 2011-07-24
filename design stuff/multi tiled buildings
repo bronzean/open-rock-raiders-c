@@ -1,6 +1,6 @@
 [7:30:25 AM PDT] Ciprian: See, the next step is to incorparte buildings/bases
 [7:31:42 AM PDT] Ciprian: You got any ideas codewise?
-[7:32:08 AM PDT] Ciprian: SHould a building be a bunch of smaller buildings connected together and functioning as one entity?
+[7:32:08 AM PDT] Ciprian: Should a building be a bunch of smaller buildings connected together and functioning as one entity?
 [7:32:25 AM PDT] Ciprian: Kind of like how a car has all these different parts working together to create a car
 [7:35:05 AM PDT] Jared Amos: Hm, maybe we could have the main building which does a basic function. It can be upgraded to perform that function better. And then there are add-ons that have to be built next to the main building or a connector. The connectors being like an extension cord for the add-ons, so more than 4 can be installed. The add-ons further improve functionality or add new more advanced functions.
 [7:35:38 AM PDT] Ciprian: Hmm...Building upgrades also being visual
@@ -22,3 +22,12 @@ bool is_parent;
 [7:37:31 AM PDT] Ciprian: or where ore is deposited
 [7:37:36 AM PDT] Ciprian: or where ECs are deposited...
 [7:37:42 AM PDT] Ciprian: But...I'mma write these two ideas down
+
+Actually, better idea:
+A building is a linked list of pointers to the tiles that contain it and the constructions that compose it.
+It also has a linked list consisting of pointers to all its constructions.
+
+How do you get from constructions to buildings? Easy!
+Simply click the "Assign building" button, and left click on every tile you want to add.
+Optionally, left click on a corner, right click on the other corner, and all tiles in that area will be selected.
+Use ctrl + left click to remove the tile you clicked on, and ctrl + left click in a corner followed by ctrl + right click in the other corner to remove all tiles in between those two.
