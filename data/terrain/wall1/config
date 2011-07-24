@@ -10,5 +10,5 @@ GENERATE_ORE_ON_MINE(TRUE)
 TURN_INTO_RUBBLE(TRUE)
 RUBBLE_TYPE(5) Rubble's ID
 [NUM_ORE](1)
-[HEALTH](25)(25)(25)(25)
+[HEALTH](5)(5)(5)(5)(5)(5)(5)(5)(5)(5)(5)(5)
 [DRILLING_ANIMATION](cracking_animation.2dap) The wall cracking from the unit drilling at it animation.

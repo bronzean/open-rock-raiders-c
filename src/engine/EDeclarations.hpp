@@ -180,5 +180,9 @@ extern int receivedByteCount; //Variable keeping track of the size of incoming d
 extern bool active_popup_menu; //Is a popup menu active?
 
 extern bool unit_selected; //Is a unit currently selected?
-class bClassUnit;
+class bClassUnit; //Forward declaration so that the selected_unit variable works properly.
 extern bClassUnit* selected_unit; //Pointer to the selected unit.
+
+extern bool tile_selected; //Is a tile currently selected?
+class tile; //Forward declaration so that the selected_tile variable works properly.
+extern tile* selected_tile; //Pointer to the selected tile.

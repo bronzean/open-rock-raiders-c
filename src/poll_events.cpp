@@ -47,11 +47,81 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 							}
 							if(!found)
 							{
-								allow_unit_selection = true;
+								//allow_unit_selection = true;
 								active_popup_menu = false;
 								Interface.active_popup_menus.clear();
 
 								cout << "None found.\n";
+							}
+						}
+						else if(tile_selected)
+						{
+tile_popup_menu_force_draw:
+							cout << "Checking tile thing\n";
+
+							Interface.active_popup_menus.clear(); //Empty this.
+							active_popup_menu = false; //No active popup menu...
+
+							if(selected_tile->wall) //Check if the selected tile is a wall.
+							{
+								popup_menu *_popup_menu = selected_tile->wall_popup_menu; //Assign a pointer to the selected tile's popup menu.
+
+								if(_popup_menu == NULL) //Check if the wall_popup_menu of the tile actually exists.
+								{
+									//Do NOTHING.
+
+									cout << "Do NOTHING.\n";
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else if(_popup_menu->fields.empty())
+								{
+									//Do NOTHING.
+
+									cout << "Do NOTHING.\n";
+
+									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
+								}
+								else //Tile's wall_popup_menu is not empty. That means stuff happens when you click on a wall.
+								{
+									Interface.active_popup_menus.push_back(selected_tile->wall_popup_menu); //Store the location of the active popup menu.
+									active_popup_menu = true; //Let there game know that there's currently an active popup menu.
+
+									allow_unit_selection = false;
+
+									//Tell the popup menu where to draw.
+									_popup_menu->x = event_struct.button.x;
+									_popup_menu->y = event_struct.button.y;
+
+									_popup_menu->event_tile = &Map[leftclick_tile_id]; //Let the popup menu know which tile is involved in this.
+
+									cout << "Storing popup menu of the tile.\n"; //Debugging output.
+								}
+
+								leftclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
+							}
+							else //Ya, tile doesn't yet have a popup menu.
+							{
+								//Remove the tile from the active map (if applicable).
+								if(selected_tile->unitlist.size() < 1)
+								{
+									cout << "Removing tile from Active_Map.\n"; //Debugging output.
+									bool done = false;
+									for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++)
+									{
+										if(Map[Active_Map[i2]].ID == selected_tile->ID && done == false)
+										{
+											Active_Map.erase(Active_Map.begin() + i2); //Remove this tile from Active_Map.
+											done = true;
+										}
+									}
+								}
+
+								selected_tile->selected = false;
+								tile_selected = false;
+								selected_tile = NULL;
+
+								Interface.active_popup_menus.clear(); //Empty this, of course.
 							}
 						}
 						else if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
@@ -125,7 +195,28 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 
 												if(!unit_selected)
 												{
+													cout << "Bringing up popup menu for tile.\n"; //Debugging output.
 													//TODO: Bring up an 'actions' menu (Like in LRR).
+
+													Map[leftclick_tile_id].selected = true; //Let the tile know it is now selected.
+													tile_selected = true; //Let the game know that a tile is currently selected.
+													selected_tile = &Map[leftclick_tile_id]; //Store a pointer to the currently selected tile.
+
+													//TODO: Store the tile in the active tiles vector.
+													bool found = false;
+
+													for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++) //Check to see if the tile is already in active_map.
+													{
+														if(Map[Active_Map[i2]].ID == selected_tile->ID && found == false)
+														{
+															found = true;
+														}
+													}
+
+													if(!found)
+													{
+														Active_Map.push_back(selected_tile->ID);
+													}
 												}
 											}
 
@@ -133,6 +224,11 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 											run = false;
 										}
 									}
+								}
+
+								if(tile_selected)
+								{
+									goto tile_popup_menu_force_draw; //Force it to draw the popup menu of the tile on this click. This way, tiles don't have to be double clicked for them to draw their popup menu.
 								}
 							}
 							else if(construction_wall_location_select)

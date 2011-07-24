@@ -38,6 +38,11 @@ tile::tile() //Constructor. Initialize an empty tile.
 	obstruction = false;
 	ground = false;
 	construction_in_progress = false;
+	selected = false;
+
+	wall_popup_menu = NULL;
+	ground_popup_menu = NULL;
+	rubble_popup_menu = NULL;
 }
 
 void tile::init(int ID, SDL_Surface *SPRITE, std::string NAME, bool WALL, bool RAMP, bool UP_RAMP, bool DOWN_RAMP, bool SELF_SUPPORTING, int ORE_TYPE, bool CAN_MINE, int MINIMUMN_MINING_POWER, bool AIR, bool TURN_TO_GROUND, int GROUND_TYPE, bool GENERATE_ORE_ON_MINE, int NUM_ORE_TO_GENERATE, bool TREE, bool RUBBLE)
@@ -102,7 +107,37 @@ void tile::update()
 {
 	//draw_sprite(); //Draw the tile's sprite
 
-	for(unsigned int i = 0; i < unitlist.size(); i++)
+	if(!server)
+	{
+		if(active_popup_menu && selected)
+		{
+			if(wall_popup_menu != NULL) //Make sure that wall_popup_menu even exists.
+			{
+				if(!wall_popup_menu->fields.empty()) //Make sure that wall_popup_menu is not empty.
+				{
+					wall_popup_menu_update(); //Update the wall_popup_menu.
+				}
+			}
+
+			if(rubble_popup_menu != NULL) //Make sure that rubble_popup_menu even exists.
+			{
+				if(!rubble_popup_menu->fields.empty()) //Make sure that rubble_popup_menu is not empty.
+				{
+					rubble_popup_menu_update(); //Update the rubble_popup_menu.
+				}
+			}
+
+			if(ground_popup_menu != NULL) //Make sure that ground_popup_menu even exists.
+			{
+				if(!ground_popup_menu->fields.empty()) //Make sure that ground_popup_menu is not empty.
+				{
+					ground_popup_menu_update(); //Update the ground_popup_menu.
+				}
+			}
+		}
+	}
+
+	for(unsigned int i = 0; i < unitlist.size(); i++) //Loop through the tile's unitlist.
 	{
 		new_tile = 0; //Reset new_tile.
 		//temp = ""; //Reset temp.
@@ -702,6 +737,7 @@ int tile::get_height()
 
 void tile::mine_to_ground(int i)
 {
+	Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!"
 	if(!paused)
 	{
 		//bClassUnit *temp_unit = &unitlist[i];
@@ -927,7 +963,6 @@ void tile::chop_to_ground(int i)
 
 void tile::rubble_to_ground(int i) //TODO: This fails on generating the third ore in a three ore generating thing.
 {
-
 	Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].shovelling_message_spr, 1, false); //Draw the "I'm shovelling" message.
 
 	if(!paused)

@@ -12,12 +12,15 @@ class ore;
 class energy_crystal;
 class animation;
 class construction;
+class popup_menu;
 
 class tile
 {
 public:
 	int wx, wy, layer; //The position of the tile.
 	int plane;
+
+	bool selected; //Is the tile currently selected?
 
 	SDL_Surface *sprite; //The tile's sprite
 
@@ -83,6 +86,10 @@ public:
 
 	bool obstruction; //Is this tile an obstruction? Wall tiles, for example, are obstructions.
 
+	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
+	popup_menu *rubble_popup_menu; //When the user clicks on rubble (with this unit selected)...This is the popup menu that's used.
+	popup_menu *ground_popup_menu; //When the user clicks on ground (with this unit selected)...This is the popup menu that's used.
+
 	tile(); //Constructor. Initialize an empty tile.
 	~tile() //Deconstructor.
 	{
@@ -105,6 +112,10 @@ public:
 	void rubble_to_ground(int i); //Changes a rubble tile to a ground tile.
 
 	void construct_construction(construction c_type); //Creates a construction here.
+
+	void wall_popup_menu_update(); //Update the wall_popup_menu.
+	void rubble_popup_menu_update(); //Update the rubble_popup_menu.
+	void ground_popup_menu_update(); //Update the ground_popup_menu.
 };
 
 class tile_manager //Manages all the base types of tiles.
