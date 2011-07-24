@@ -361,7 +361,15 @@ std::string bClassUnit::update()
 
 	if(job_state == "idling")
 	{
-		check_job(); //Since the unit is idling, might as well give it something to do.
+		try
+		{
+			check_job(); //Since the unit is idling, might as well give it something to do.
+		}
+		catch(...)
+		{
+			cout << "Caught exception from check_job().\n";
+			gameover = true;
+		}
 	}
 	else if(job_state == "constructing")
 	{

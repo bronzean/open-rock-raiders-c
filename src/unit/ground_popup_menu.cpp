@@ -191,6 +191,7 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 				//Create the new job.
 				job_state = "incide_usa";
 			}*/
+			job_state = "incide_usa";
 
 			close_door = true; //Let the unit know it gonna be closing a door.
 			close_door_tile = event_tile; //Let the game know which tile contains the door the unit hath been commanded to close.
@@ -205,6 +206,8 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
 			ground_popup_menu->clicked_field = NULL; //Reset this.
+
+			cout << "\n";
 		}
 		else
 		{

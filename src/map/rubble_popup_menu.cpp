@@ -32,6 +32,19 @@ void tile::rubble_popup_menu_update() //Update the wall_popup_menu.
 		}
 		else if(rubble_popup_menu->clicked_field->field_data == "pickup any ore") //Check if the clicked field is a "pickup any ore" field.
 		{
+			cout << "\nI see my pickup any ore field has been clicked.\n"; //Debugging output.
+
+			//Add a pick up ore job.
+
+			job new_job; //The new job.
+
+			new_job.type = "pick up ore"; //Set the job type.
+			new_job.tasked_tile = this; //Tell the game which tile is involved with this job.
+
+			Job_Que.add_job(new_job); //Add the job to the job que.
+
+			cout << "Added job!\n"; //Debugging output.
+
 			rubble_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
 			rubble_popup_menu->clicked_field = NULL; //Reset this.
 		}

@@ -50,9 +50,12 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 								allow_unit_selection = true;
 								active_popup_menu = false;
 								Interface.active_popup_menus.clear();
-								tile_selected = false;
-								selected_tile->selected = false;
-								selected_tile = NULL;
+								if(tile_selected)
+								{
+									tile_selected = false;
+									selected_tile->selected = false;
+									selected_tile = NULL;
+								}
 
 								cout << "None found.\n";
 							}
@@ -142,14 +145,14 @@ tile_popup_menu_force_draw:
 								{
 									//Do NOTHING.
 
+									cout << "Do NOTHING.\n";
+
 									Interface.active_popup_menus.clear(); //Empty this.
 									active_popup_menu = false; //No active popup menu...
 									allow_unit_selection = true; //Allow units to be selected/deselected.
 									selected_tile->selected = false; //This tile is selected no longer.
 									tile_selected = false; //No selected tile.
 									selected_tile = NULL; //Reset this.
-
-									cout << "Do NOTHING.\n";
 
 									//TODO: Play a sound and show the "YOU CAN'T DO THAT" icon.
 								}
@@ -166,7 +169,22 @@ tile_popup_menu_force_draw:
 
 									_popup_menu->event_tile = &Map[leftclick_tile_id]; //Let the popup menu know which tile is involved in this.
 
-									cout << "Storying popup menu of the tile.\n"; //Debugging output.
+									for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore" fields.
+									{
+										if(_popup_menu->fields[i].field_data == "pickup any ore") //Check if the current field is a "pickup any ore" field.
+										{
+											_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
+											i--; //Deincrement this so that no entries are skipped.
+										}
+									}
+
+									if(_popup_menu->event_tile->orelist.size() >= 1) //Check if there's any ore on the tile.
+									{
+										_popup_menu->fields.push_back(field_pickup_any_ore); //There is ore. Add the "pickup any ore" field.
+										_popup_menu->fields[_popup_menu->fields.size() - 1].parent_menu = _popup_menu; //Tell the field which popup menu it is a part of.
+									}
+
+									cout << "Storing popup menu of the tile.\n"; //Debugging output.
 								}
 
 								leftclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...

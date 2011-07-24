@@ -404,7 +404,7 @@ void tile::update()
 
 			if(unitlist[i].job_state == "moving") //If the unit's command is simply "move", then...
 			{
-				unitlist[i].job_state = "idle"; //Since it reached its destination, set its current state to idle.
+				unitlist[i].job_state = "idling"; //Since it reached its destination, set its current state to idle.
 			}
 
 			if(unitlist[i].mine_on_reach_goal)
@@ -429,6 +429,7 @@ void tile::update()
 
 			if(unitlist[i].pick_up_on_reach_goal == true) //If the unit is supposed to pick something up...
 			{
+				cout << "Pick up ore on reach goal stuff taking place.\n";
 				//TODO: Change this later to check if the unit can pick up the specified object.
 				unitlist[i].pick_up_on_reach_goal = false; //Reset this. Otherwise bad things will happen.
 
@@ -441,6 +442,14 @@ void tile::update()
 				if(orelist.size() < 1) //Check if there even is any ore here. TODO: Refine this to check if the item the player requested still is on the tile.
 				{
 					cout << "Hey, there's nothing to pick up here!\n"; //TODO: Make a message pop up informing the player that there's nothing to pick up there.
+
+					if(unitlist[i].my_job) //Check if the unit's job exists.
+					{
+						delete unitlist[i].my_job; //DELETE.
+						unitlist[i].my_job = NULL; //Reset.
+					}
+
+					unitlist[i].cancel_current_activity();
 				}
 				else
 				{
@@ -496,7 +505,11 @@ void tile::update()
 					orelist.erase(orelist.begin()); //Remove the ore from the tile's orelist.
 
 					cout << "Picked up ore!\n"; //Debugging output.
+
+					unitlist[i].cancel_current_activity();
 				}
+
+				unitlist[i].cancel_current_activity();
 			}
 
 			if(unitlist[i].close_door) //Check if the unit is supposed to close a door upon reaching its goal.
@@ -800,8 +813,6 @@ void tile::mine_to_ground(int i)
 
 			std::cout << "\n\n" << new_tile.wx << "," << new_tile.wy << "," << new_tile.layer << "," << new_tile.ID << "," << Map[unitlist[i].mine_tile_id].ground_type << "," << new_tile.type_id << "\n\n";
 
-			//unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
-
 			if(unitlist[i].my_job != NULL) //Check if the unit has a job.
 			{
 				delete unitlist[i].my_job; //Delete the unit's job.
@@ -952,7 +963,9 @@ void tile::chop_to_ground(int i)
 				ore_on_map[ore_on_map.size() - 1]->containing_tile = &Map[unitlist[i].mine_tile_id]; //I guess this has to be reset for some weird reason.
 			}
 
-			unitlist[i].job_state = "idle"; //Be sure to reset the unit's state!
+			//unitlist[i].job_state = "idling"; //Be sure to reset the unit's state!
+
+			unitlist[i].cancel_current_activity();
 		}
 		else
 		{
@@ -1110,6 +1123,19 @@ void tile::rubble_to_ground(int i) //TODO: This fails on generating the third or
 
 				cout << "Generating ore with type: " << ore_gen_ids[0] << "\n\n"; //Debugging output.
 			}
+
+			//Check to see if the "pickup any ore" field has been added.
+			bool found = false;
+
+			/*if(rubble_popup_menu != NULL)
+			{
+				if(!rubble_popup_menu->fields.empty())
+				{
+					for(int i = 0; i < rubble_popup_menu->fields.size)
+					{
+					}
+				}
+			}*/
 
 
 			//TODO: Increase the animation thingy...

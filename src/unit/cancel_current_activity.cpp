@@ -4,7 +4,6 @@
 void bClassUnit::cancel_current_activity() //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
 {
 	move_path.clear();
-
 	move = false;
 	move_destination = -1;
 	move_destination_ramp = -1;
