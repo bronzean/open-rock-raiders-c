@@ -20,6 +20,7 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 			Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, constructing_message_spr, 1, false); //Draw the "I'm Bob the builder!" message.
 
 			my_job->construction_health -= construct_rate; //Progress the construction.
+			my_job->tasked_tile->construction_in_progress = true;
 
 			if(my_job->construction_health <= 0 && construction_repositioning == 2) //Check if it's done constructing, and if the unit has already moved off the building's tile.
 			{
@@ -38,6 +39,8 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 				{
 					my_job->tasked_tile->construct_construction(c_door); //Add the door construction to the specified tile.
 				}
+
+				my_job->tasked_tile->construction_in_progress = false;
 
 				delete my_job; //Free that memory!!!
 				my_job = NULL; //Reset this.
@@ -153,13 +156,14 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 					cout << "What? Something failed.\n"; //Debugging ouput.
 				}*/
 
-				my_job->tasked_tile->construction_in_progress = true;
-
 				construction_repositioning = 1; //Let the game know this unit is relocating itself.
 
-				if(!get_free_neighbor_tile(my_job->tasked_tile)) //See if it can find a free neighbor tile.
+				if(get_free_neighbor_tile(my_job->tasked_tile) == NULL) //See if it can find a free neighbor tile.
 				{
+					cout << "Failed to find empty tile.\n";
+
 					cancel_current_activity(); //Blarg. Can't finish construction. Cancel it.
+					return;
 				}
 
 				//TODO: Make sure the unit is not moving on a tile with the construction in progress variable set to true (in terrain.cpp)

@@ -309,6 +309,10 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 
 128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times. - DONE.
 
+129. Sometimes the same path is added twice into the movepath. Fix this.
+
+130. Make the unit go to the closest job.
+
 
 
 --Cancelled--
