@@ -41,7 +41,7 @@
 #include "engine/EDeclarations.hpp"
 #include "engine/parser.hpp"
 
-#define VERSION "0.0.4.2"
+#define VERSION "0.0.4.3"
 
 //The following two are a quick solution to unhardcoding tile size.
 //TODO: REPLACE ALL HARDCODED TILE SIZES IN CODE WITH THESE TWO VARIABLE NAMES
