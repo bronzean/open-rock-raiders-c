@@ -96,6 +96,9 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	close_door = false;
 	closing_door = false;
 	close_door_tile = NULL;
+	needs_to_close_door = false;
+	needs_to_close_door_tile = NULL;
+	moves_till_close_door_time = 0;
 
 	can_mine_wall = false;
 
@@ -202,6 +205,12 @@ std::string bClassUnit::update()
 				else //Door is open.
 				{
 					cout << "Done closing door.\n"; //Debugging output.
+
+					if(my_job) //Check if the unit's job exists.
+					{
+						delete my_job; //Delete it.
+						my_job = NULL; //Reset this.
+					}
 
 					cancel_current_activity(); //Wrap things up.
 				}

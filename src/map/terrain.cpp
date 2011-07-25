@@ -44,6 +44,9 @@ tile::tile() //Constructor. Initialize an empty tile.
 	wall_popup_menu = NULL;
 	ground_popup_menu = NULL;
 	rubble_popup_menu = NULL;
+
+	targeted_for_drilling = false;
+	sprite_targeted_for_drilling_spr = NULL;
 }
 
 void tile::init(int ID, SDL_Surface *SPRITE, std::string NAME, bool WALL, bool RAMP, bool UP_RAMP, bool DOWN_RAMP, bool SELF_SUPPORTING, int ORE_TYPE, bool CAN_MINE, int MINIMUMN_MINING_POWER, bool AIR, bool TURN_TO_GROUND, int GROUND_TYPE, bool GENERATE_ORE_ON_MINE, int NUM_ORE_TO_GENERATE, bool TREE, bool RUBBLE)
@@ -402,81 +405,171 @@ void tile::update()
 			cout << "Reached destination.\n\n";
 			out_string << "Reached destination.\n\n";
 
-			if(unitlist[i].job_state == "moving") //If the unit's command is simply "move", then...
-			{
-				unitlist[i].job_state = "idling"; //Since it reached its destination, set its current state to idle.
-			}
+			bool can_continue = true;
 
-			if(unitlist[i].mine_on_reach_goal)
+			if(unitlist[i].needs_to_close_door)
 			{
-				unitlist[i].mine_on_reach_goal = false; //Reset this. Otherwise it'd be the random walls popping up glitch all over again.
-				unitlist[i].mining = true; //Let the game know the unit is now mining the tile.
-			}
-			else if(unitlist[i].chop_on_reach_goal == true)
-			{
-				unitlist[i].chop_on_reach_goal = false; //Reset this. Otherwise bad stuff can happen.
-				unitlist[i].chopping = true; //Let the game know the unit is now chopping the tree.
-			}
-			else if(unitlist[i].shovel_on_reach_goal == true)
-			{
-				unitlist[i].shovel_on_reach_goal = false; //Reset this. Otherwise bad stuff will happen.
-				unitlist[i].shovelling = true; //Let the game know the unit is now shovelling the rubble.
-			}
-
-			//TODO: Check if the unit is picking up any ore.
-			//Then check if it can pick up ore.
-			//Then pick up the ore.
-
-			if(unitlist[i].pick_up_on_reach_goal == true) //If the unit is supposed to pick something up...
-			{
-				cout << "Pick up ore on reach goal stuff taking place.\n";
-				//TODO: Change this later to check if the unit can pick up the specified object.
-				unitlist[i].pick_up_on_reach_goal = false; //Reset this. Otherwise bad things will happen.
-
-				//TODO: Check to see if the tile still has the item the unit was sent to pick up.
-				//if(tile_has_whatever_unit_was_picking_up)
-				//{
-					//TODO: add whatever that was to the inventory
-				//}
-
-				if(orelist.size() < 1) //Check if there even is any ore here. TODO: Refine this to check if the item the player requested still is on the tile.
+				if(unitlist[i].moves_till_close_door_time <= 0) //Check if it's time to close the door.
 				{
-					cout << "Hey, there's nothing to pick up here!\n"; //TODO: Make a message pop up informing the player that there's nothing to pick up there.
-
-					if(unitlist[i].my_job) //Check if the unit's job exists.
+					cout << "Unit needs to close door.\n"; //Debugging output.
+					if(unitlist[i].needs_to_close_door_tile->has_construction) //Check if the tile has a construction.
 					{
-						delete unitlist[i].my_job; //DELETE.
-						unitlist[i].my_job = NULL; //Reset.
-					}
-
-					unitlist[i].cancel_current_activity();
-				}
-				else
-				{
-					//Add the item into the player's inventory.
-
-					unitlist[i].ore_list.push_back(orelist[0]); //Add the ore to the tile's orelist.
-
-					//Map[unitlist[i].move_path[0]].orelist.erase(Map[unitlist[i].move_path[0]].orelist.begin()); //Remove the ore from the tile's orelist.
-
-					bool done = false; //Used to control the loop below.
-					int i2 = 0;
-					vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore list.
-
-					/*while(done == false) //So, here the game loops until it's either gone through the entire ore on map list or it's found the ore it's looking for.
-					{
-						cout << "Loop: " << i2 << "\n";
-						if(iterator >= ore_on_map.end())
+						if(unitlist[i].needs_to_close_door_tile->local_construction->door && unitlist[i].needs_to_close_door_tile->local_construction->construction_open) //Check if it's a door and if the door is open.
 						{
-							done = true; //Uh oh, it reached the end of the ore on map list. Something done borked.
-							cout << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
-							out_string << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+							unitlist[i].needs_to_close_door_tile->local_construction->close_thyself(false); //INCIDE USA MA.
+							can_continue = false;
+							unitlist[i].move = true;
+
+							cout << "closing door.\n"; //Debugging output.
 						}
 						else
 						{
-							if(ore_on_map[i2]->containing_tile->ID == ID) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+							unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+							unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+
+							cout << "Door already closed, or not a door.\n"; //Debugging output.
+						}
+
+						if(!unitlist[i].needs_to_close_door_tile->local_construction->construction_open)
+						{
+							unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+							unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+						}
+					}
+					else
+					{
+						unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+						unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+
+						cout << "Tile doesn't even have construction!\n"; //Debugging output.
+					}
+				}
+				else
+				{
+					unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+					unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+				}
+			}
+
+			if(can_continue)
+			{
+				if(unitlist[i].job_state == "moving") //If the unit's command is simply "move", then...
+				{
+					unitlist[i].job_state = "idling"; //Since it reached its destination, set its current state to idle.
+				}
+
+				if(unitlist[i].mine_on_reach_goal)
+				{
+					unitlist[i].mine_on_reach_goal = false; //Reset this. Otherwise it'd be the random walls popping up glitch all over again.
+					if(Map[unitlist[i].mine_tile_id].wall && Map[unitlist[i].mine_tile_id].can_mine) //Check if the tile still is a wall that can be mined!
+					{
+						unitlist[i].mining = true; //Let the game know the unit is now mining the tile.
+					}
+					else
+					{
+						if(unitlist[i].my_job)
+						{
+							delete unitlist[i].my_job;
+							unitlist[i].my_job = NULL;
+						}
+						unitlist[i].cancel_current_activity(); //Not a drillable wall anymore. Cancelling drilling.
+					}
+				}
+				else if(unitlist[i].chop_on_reach_goal == true)
+				{
+					unitlist[i].chop_on_reach_goal = false; //Reset this. Otherwise bad stuff can happen.
+					unitlist[i].chopping = true; //Let the game know the unit is now chopping the tree.
+				}
+				else if(unitlist[i].shovel_on_reach_goal == true)
+				{
+					unitlist[i].shovel_on_reach_goal = false; //Reset this. Otherwise bad stuff will happen.
+					if(rubble) //Check if this tile is even rubble still.
+					{
+						unitlist[i].shovelling = true; //Let the game know the unit is now shovelling the rubble.
+					}
+					else
+					{
+						if(unitlist[i].my_job)
+						{
+							delete unitlist[i].my_job;
+							unitlist[i].my_job = NULL;
+						}
+						unitlist[i].cancel_current_activity(); //Not rubble anymore. Cancelling shovelling.
+					}
+				}
+
+				//TODO: Check if the unit is picking up any ore.
+				//Then check if it can pick up ore.
+				//Then pick up the ore.
+
+				else if(unitlist[i].pick_up_on_reach_goal == true) //If the unit is supposed to pick something up...
+				{
+					cout << "Pick up ore on reach goal stuff taking place.\n";
+					//TODO: Change this later to check if the unit can pick up the specified object.
+					unitlist[i].pick_up_on_reach_goal = false; //Reset this. Otherwise bad things will happen.
+
+					//TODO: Check to see if the tile still has the item the unit was sent to pick up.
+					//if(tile_has_whatever_unit_was_picking_up)
+					//{
+						//TODO: add whatever that was to the inventory
+					//}
+
+					if(orelist.size() < 1) //Check if there even is any ore here. TODO: Refine this to check if the item the player requested still is on the tile.
+					{
+						cout << "Hey, there's nothing to pick up here!\n"; //TODO: Make a message pop up informing the player that there's nothing to pick up there.
+
+						if(unitlist[i].my_job) //Check if the unit's job exists.
+						{
+							delete unitlist[i].my_job; //DELETE.
+							unitlist[i].my_job = NULL; //Reset.
+						}
+
+						unitlist[i].cancel_current_activity();
+					}
+					else
+					{
+						//Add the item into the player's inventory.
+
+						unitlist[i].ore_list.push_back(orelist[0]); //Add the ore to the tile's orelist.
+
+						//Map[unitlist[i].move_path[0]].orelist.erase(Map[unitlist[i].move_path[0]].orelist.begin()); //Remove the ore from the tile's orelist.
+
+						bool done = false; //Used to control the loop below.
+						int i2 = 0;
+						vector<ore*>::iterator iterator = ore_on_map.begin(); //Used to loop through ore list.
+
+						/*while(done == false) //So, here the game loops until it's either gone through the entire ore on map list or it's found the ore it's looking for.
+						{
+							cout << "Loop: " << i2 << "\n";
+							if(iterator >= ore_on_map.end())
+							{
+								done = true; //Uh oh, it reached the end of the ore on map list. Something done borked.
+								cout << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+								out_string << "Uh oh, reached the end of the ore on map list when I shouldn't have. Something done borked. Error code: 1\n"; //Let the user know that something went wrong.
+							}
+							else
+							{
+								if(ore_on_map[i2]->containing_tile->ID == ID) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
+								{
+									cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+
+									ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
+
+									done = true; //The ore has been found. No use lingering around in this loop.
+								}
+							}
+
+							i2++; //Obviously, increment this.
+							iterator++;
+						}*/
+
+						for(i2 = 0; iterator < ore_on_map.end(); iterator++, i2++) //Remove the ore that was just picked up from the ore on map list.
+						{
+							cout << "Size: " << ore_on_map.size() << "\n";
+							if(ore_on_map[i2]->containing_tile == this && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
 							{
 								cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+								out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
 
 								ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
 
@@ -484,41 +577,39 @@ void tile::update()
 							}
 						}
 
-						i2++; //Obviously, increment this.
-						iterator++;
-					}*/
+						orelist.erase(orelist.begin()); //Remove the ore from the tile's orelist.
 
-					for(i2 = 0; iterator < ore_on_map.end(); iterator++, i2++) //Remove the ore that was just picked up from the ore on map list.
-					{
-						cout << "Size: " << ore_on_map.size() << "\n";
-						if(ore_on_map[i2]->containing_tile == this && done == false) //So, if the tile the ore claims it's located on is equal to this tile, then we've found the ore...TODO: This is very primitive. Later, this will need to be redone to be better.
-						{
-							cout << "I did it! Found the ore! Removing it!\n"; //Debugging output.
-							out_string << "I did it! Found the ore! Removing it!\n"; //Debugging output.
+						cout << "Picked up ore!\n"; //Debugging output.
 
-							ore_on_map.erase(iterator); //Remove the ore from the ore_on_map list.
-
-							done = true; //The ore has been found. No use lingering around in this loop.
-						}
+						unitlist[i].cancel_current_activity();
 					}
-
-					orelist.erase(orelist.begin()); //Remove the ore from the tile's orelist.
-
-					cout << "Picked up ore!\n"; //Debugging output.
 
 					unitlist[i].cancel_current_activity();
 				}
 
-				unitlist[i].cancel_current_activity();
-			}
+				else if(unitlist[i].close_door) //Check if the unit is supposed to close a door upon reaching its goal.
+				{
+					unitlist[i].close_door = false; //Reset this,
+					unitlist[i].closing_door = true; //Let the game know the unit is now in the process of closing the door.
+				}
+				else //Just a simple moveto command.
+				{
+					if(unitlist[i].my_job) //Check if the unit's job exists.
+					{
+						if(unitlist[i].my_job->type == "open door")
+						{
+							delete unitlist[i].my_job; //DELETE.
+							unitlist[i].my_job = NULL; //Reset.
+						}
+					}
+					else
+					{
+						unitlist[i].cancel_current_activity();
+					}
+				}
 
-			if(unitlist[i].close_door) //Check if the unit is supposed to close a door upon reaching its goal.
-			{
-				unitlist[i].close_door = false; //Reset this,
-				unitlist[i].closing_door = true; //Let the game know the unit is now in the process of closing the door.
+				unitlist[i].move_path.erase( unitlist[i].move_path.begin(), unitlist[i].move_path.end() ); //Empty move path.
 			}
-
-			unitlist[i].move_path.erase( unitlist[i].move_path.begin(), unitlist[i].move_path.end() ); //Empty move path.
 		}
 		//If the unit is going somewhere...
 		else if(unitlist[i].move == true && unitlist[i].move_frame != fps_counter && paused != true && unitlist[i].allow_move == true)
@@ -543,6 +634,7 @@ void tile::update()
 void tile::move_unit(int i)
 {
 	bool can_continue = true;
+
 	if(unitlist[i].move_path.size() >= 1)
 	{
 		if(Map[unitlist[i].move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
@@ -559,6 +651,65 @@ void tile::move_unit(int i)
 					Map[unitlist[i].move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
 				/*}*/
 				can_continue = false;
+
+				bool allowed_to_close_door = true;
+
+				if(unitlist[i].my_job)
+				{
+					if(unitlist[i].my_job->type == "open door" && unitlist[i].my_job->tasked_tile == &Map[unitlist[i].move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+					{
+						allowed_to_close_door = false;
+					}
+				}
+
+				if(allowed_to_close_door)
+				{
+					unitlist[i].needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+					unitlist[i].needs_to_close_door_tile = &Map[unitlist[i].move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+					unitlist[i].moves_till_close_door_time = 3;
+				}
+			}
+		}
+
+		if(unitlist[i].needs_to_close_door)
+		{
+			if(unitlist[i].moves_till_close_door_time <= 0) //Check if it's time to close the door.
+			{
+				cout << "Unit needs to close door.\n"; //Debugging output.
+				if(unitlist[i].needs_to_close_door_tile->has_construction) //Check if the tile has a construction.
+				{
+					if(unitlist[i].needs_to_close_door_tile->local_construction->door && unitlist[i].needs_to_close_door_tile->local_construction->construction_open) //Check if it's a door and if the door is open.
+					{
+						unitlist[i].needs_to_close_door_tile->local_construction->close_thyself(false); //INCIDE USA MA.
+						can_continue = false;
+
+						cout << "closing door.\n"; //Debugging output.
+					}
+					else
+					{
+						unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+						unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+
+						cout << "Door already closed, or not a door.\n"; //Debugging output.
+					}
+
+					/*if(!unitlist[i].needs_to_close_door_tile->local_construction->construction_open)
+					{
+						unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+						unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+					}*/
+				}
+				else
+				{
+					unitlist[i].needs_to_close_door = false; //Tell the unit it needs to close the door behind itself no longer.
+					unitlist[i].needs_to_close_door_tile = NULL; //Reset this.
+
+					cout << "Tile doesn't even have construction!\n"; //Debugging output.
+				}
+			}
+			else
+			{
+				unitlist[i].moves_till_close_door_time--; //Deincrement this.
 			}
 		}
 	}

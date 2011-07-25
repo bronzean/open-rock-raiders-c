@@ -916,6 +916,17 @@ bool tile_manager::load_tile(string folderpath)
 		new_tile.rubble_popup_menu->fields[new_tile.rubble_popup_menu->fields.size() - 1].set_parent_menu(new_tile.rubble_popup_menu); //Let the new field know what popup_menu contains it.
 	}
 
+	if(new_tile.ground) //Check if the new tile is ground.
+	{
+		new_tile.ground_popup_menu = new popup_menu; //Create a new popup menu for this ground.
+
+
+		new_tile.ground_popup_menu->fields.push_back(field_construct_wall); //Add this to the tile's popup menu.
+		new_tile.ground_popup_menu->fields[new_tile.ground_popup_menu->fields.size() - 1].set_parent_menu(new_tile.ground_popup_menu); //Let the new field know what popup_menu contains it.
+		new_tile.ground_popup_menu->fields.push_back(field_construct_door); //Add this to the tile's popup menu.
+		new_tile.ground_popup_menu->fields[new_tile.ground_popup_menu->fields.size() - 1].set_parent_menu(new_tile.ground_popup_menu); //Let the new field know what popup_menu contains it.
+	}
+
 	tile_list.push_back(new_tile);
 
 	return true;

@@ -203,6 +203,19 @@ run_keycheck_thread()
 
 140. Make the find_job code take the smart ai variable into account.
 
+141. Sometimes the same path is added twice into the movepath. Fix this.
+
+142. Use this sort of thing when calculating draw_map:
+if(start_row_is_not_first_row)
+{
+	start_row_id -= number_of_tiles_per_row;
+}
+calculate_draw_map();
+
+143. Ensure units don't build stuff on a tile that already has something in the process of getting built.
+
+144. "pickup all ore" field. Pretty much loops over and over again and adds a "pickup any ore" job for each ore it finds on the tile.
+
 
 
 --Done--
@@ -313,9 +326,7 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 
 128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times. - DONE.
 
-129. Sometimes the same path is added twice into the movepath. Fix this.
-
-130. Make the unit go to the closest job.
+130. Make the unit go to the closest job. - DONE.
 
 
 

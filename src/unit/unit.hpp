@@ -161,6 +161,9 @@ public:
 	bool close_door; //Unit has to close a door?
 	bool closing_door; //Currently closing a door?
 	tile* close_door_tile; //Pointer to the tile containing this door.
+	bool needs_to_close_door; //Does the unit need to close the door behind itself?
+	tile* needs_to_close_door_tile; //Pointer to the tile containing the door the unit needs to close.
+	int moves_till_close_door_time; //In what number of moves does the unit need to close the door behind itself? (Used in conjuction with needs_to_close_door)
 
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.

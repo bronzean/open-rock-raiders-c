@@ -88,6 +88,9 @@ public:
 
 	bool visible; //Can the player see it?
 
+	bool targeted_for_drilling; //Has the tile been targetting for drilling?
+	SDL_Surface *sprite_targeted_for_drilling_spr; //The sprite that overlays this tile's sprite when it has been targeted for drilling.
+
 	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
 	popup_menu *rubble_popup_menu; //When the user clicks on rubble (with this unit selected)...This is the popup menu that's used.
 	popup_menu *ground_popup_menu; //When the user clicks on ground (with this unit selected)...This is the popup menu that's used.

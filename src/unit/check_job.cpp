@@ -164,6 +164,52 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 					cancel_current_activity();
 				}
 			}
+			else if(Job_Que.jobs[i].type == "open door" && Job_Que.jobs[i].taken == false) //Check if the job is a pick up ore job.
+			{
+				cout << "Found open door job.\n"; //Debugging output.
+
+				cancel_current_activity();
+
+				move = true; //Let the game know this unit is gonna move.
+				move_destination = Job_Que.jobs[i].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
+
+				if(!calculate_path()) //Make sure the unit can reach the wall.
+				{
+					cancel_current_activity();
+				}
+				else
+				{
+					jobs.push_back(i); //Store the index of this job.
+					movepaths.push_back(move_path);
+
+					cout << "Saving open door job.\n";
+
+					cancel_current_activity();
+				}
+			}
+			else if(Job_Que.jobs[i].type == "incide_usa" && Job_Que.jobs[i].taken == false) //Check if the job is a pick up ore job.
+			{
+				cout << "Found close door job.\n"; //Debugging output.
+
+				cancel_current_activity();
+
+				tile* destination_tile = NULL;
+				destination_tile = get_free_neighbor_tile(Job_Que.jobs[i].tasked_tile); //Assign the move destination to be a neighbour of the door tile.
+				if(!destination_tile) //Error checking.
+				{
+					cout << "Can't find path to door!\n";
+					cancel_current_activity();
+				}
+				else
+				{
+					jobs.push_back(i); //Store the index of this job.
+					movepaths.push_back(move_path);
+
+					cout << "Saving open door job.\n";
+
+					cancel_current_activity();
+				}
+			}
 			iterator2++;
 			i++;
 
@@ -275,36 +321,48 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 		}
 		else if(Job_Que.jobs[closest_job].type == "pick up ore")
 		{
-			cout << "1\n";
 			move = true;
-			cout << "2\n";
 			move_destination = Job_Que.jobs[closest_job].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
-			cout << "3\n";
-			//move_path = movepaths[closest_job];
 			move_path.clear();
 			move_path = movepaths[closest_job_movepath];
-			//move_path =  vec(movepaths[closest_job], movepaths[closest_job] + sizeof(movepaths[closest_job]))
-			cout << "closest_job = " << closest_job << "\n";
-			cout << "movepaths.size() = " << movepaths.size() << "\n";
-			cout << "movepaths[closest_job][0] = " << movepaths[closest_job_movepath][0] << "\n";
-			//copy(movepaths[closest_job_movepath].begin(), movepaths[closest_job_movepath].end(), move_path.begin());
-			cout << "4\n";
 
 			Job_Que.jobs[closest_job].taken = true; //The job has been taken. Let everybody know that.
-			cout << "5\n";
 			job_state = "picking_up"; //The unit is drilling a wall now.
-			cout << "6\n";
 			my_job = new job;
-			cout << "7\n";
 			*my_job = Job_Que.jobs[closest_job]; //Let the unit know which job it's doing.
-			cout << "8\n";
 			Job_Que.jobs.erase(Job_Que.jobs.begin() + closest_job); //Remove the job from the job que.
-			cout << "9\n";
 
 			pick_up_on_reach_goal = true; //Let the game know the unit will be picking up stuff upon reaching its destination.
-			cout << "10\n";
 			pick_up_object_type = 0; //Let the game know the unit is picking up ore.
-			cout << "11\n";
+		}
+		else if(Job_Que.jobs[closest_job].type == "open door")
+		{
+			move = true;
+			move_destination = Job_Que.jobs[closest_job].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
+			move_path.clear();
+			move_path = movepaths[closest_job_movepath];
+
+			Job_Que.jobs[closest_job].taken = true; //The job has been taken. Let everybody know that.
+			job_state = "moving"; //The unit is drilling a wall now.
+			my_job = new job;
+			*my_job = Job_Que.jobs[closest_job]; //Let the unit know which job it's doing.
+			Job_Que.jobs.erase(Job_Que.jobs.begin() + closest_job); //Remove the job from the job que.
+		}
+		else if(Job_Que.jobs[closest_job].type == "incide_usa")
+		{
+			move = true;
+			move_destination = Job_Que.jobs[closest_job].tasked_tile->ID; //move_destination is the index in the map array of the tile that the unit has to move to.
+			move_path.clear();
+			move_path = movepaths[closest_job_movepath];
+
+			Job_Que.jobs[closest_job].taken = true; //The job has been taken. Let everybody know that.
+			job_state = "incide_usa"; //The unit is drilling a wall now.
+			my_job = new job;
+			*my_job = Job_Que.jobs[closest_job]; //Let the unit know which job it's doing.
+			Job_Que.jobs.erase(Job_Que.jobs.begin() + closest_job); //Remove the job from the job que.
+
+			close_door = true; //Let the unit know it gonna be closing a door.
+			close_door_tile = my_job->tasked_tile; //Let the game know which tile contains the door the unit hath been commanded to close.
 		}
 	}
 
