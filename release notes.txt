@@ -1,3 +1,15 @@
+8:50 PM Pacific Time, July 24th, 2011:
+0.0.4.3
+- More interface stuff.
+- Better jobs handling.
+- Too many bug fixes to recount.
+- Several minor improvements.
+- The screen may flicker, although this is rare for me in this release. If it is a problem, try to reduce the GFPS (edit data/game.cfg) or the FPS cap.
+- Feel free to mod the game. Maps are in maps/ and the data files are in data/
+- Please send us your entire gamelog.txt if you experience random crashes, or if you think you have found a bug.
+- The mouse can be unresponsive at times. Especially in the windows build.
+- Moving the camera around is not recommended if you are playing with a very high FPS cap. Works fine for me until around 300+ FPS.
+
 12:55 PM Pacific Time, July 23th, 2011:
 0.0.4.2
 - Door animations are in.
