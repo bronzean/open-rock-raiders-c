@@ -38,6 +38,7 @@ Other:
 n				Increase FPS Cap.
 m				Decrease FPS Cap.
 p				Pause the game.
+Left click on a tile to select it.
 
 Hitting escape will quit the game at any time.
 
