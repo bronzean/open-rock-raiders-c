@@ -186,3 +186,7 @@ extern bClassUnit* selected_unit; //Pointer to the selected unit.
 extern bool tile_selected; //Is a tile currently selected?
 class tile; //Forward declaration so that the selected_tile variable works properly.
 extern tile* selected_tile; //Pointer to the selected tile.
+
+extern bool construction_selected; //Is a construction currently selected?
+class construction; //Forward declaration so that the selected_construction variable works properly.
+extern construction* selected_construction; //Pointer to the selected construction.

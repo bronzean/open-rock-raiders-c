@@ -16,7 +16,7 @@ SDL_Surface *pause_text_spr = NULL;
 
 int SCREEN_WIDTH = 800;
 int SCREEN_HEIGHT = 600;
-int SCREEN_BPP = 32;
+int SCREEN_BPP = 24;
 bool FULLSCREEN = false;
 int FPS = 50;
 int GFPS = 50;
@@ -139,3 +139,6 @@ bool tile_selected = false; //Is a tile currently selected?
 tile* selected_tile = NULL; //Pointer to the selected tile.
 
 bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot can units be selected/deselected
+
+bool construction_selected = false; //Is a construction currently selected?
+construction* selected_construction = NULL; //Pointer to the selected construction.

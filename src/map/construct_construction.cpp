@@ -17,4 +17,5 @@ void tile::construct_construction(construction c_type) //Creates a construction 
 	{
 		obstruction = true; //Since the construction is a wall, then this tile is an obstruction.
 	}
+	local_construction->containing_tile = this; //Let the construction know what tile contains it.
 }

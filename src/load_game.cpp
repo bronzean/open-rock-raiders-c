@@ -205,6 +205,7 @@ bool load_game() //Load the game.
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string
 
+
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 	//Let the user know the level is being loaded...
 	load_text = "Initializing constructions.";
@@ -219,32 +220,48 @@ bool load_game() //Load the game.
 		fflush(GameLog);
 		return false;
 	}
+
 	//Here all the constructions are initlialized and resources loaded.
-	c_wall.init("wall", true, false, false, 0, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
+	c_wall.init("wall", true, false, false, false, 0, 0, "data/construction/wall/sprite.png"); //Initialize the wall construction.
 	if(c_wall.sprite == NULL)
 	{
-		throw 0;
+		return false;
 	}
 	//c_floor.init(); //TODO: Ya, this needs to be done...
-	c_door.init("door", false, false, true, 2, 1, "data/construction/door/sprite.png");
+
+	c_teleporter1.init("teleporter1", false, false, false, true, 0, 2, "data/construction/teleporter1/sprite.png");
+	if(c_teleporter1.sprite == NULL)
+	{
+		return false;
+	}
+	c_teleporter1.selectable = true; //This can be selected.
+	img_load_safe("data/construction/teleporter1/sprite_select.png", &c_teleporter1.sprite_select);
+	if(!c_teleporter1.sprite_select)
+	{
+		return false;
+	}
+
+	c_door.init("door", false, false, true, false, 2, 1, "data/construction/door/sprite.png");
 	if(c_door.sprite == NULL)
 	{
-		throw 0;
+		return false;
 	}
 	img_load_safe("data/construction/door/sprite_open.png", &c_door.sprite_open);
 	if(c_door.sprite_open == NULL)
 	{
-		throw 0;
+		return false;
 	}
 	if(!c_door.load_config("data/construction/door/"))
 	{
 		cout << "Failed to load door construction configuration.\n"; //Debugging output.
 		out_string << "Failed to load door construction configuration.\n"; //Debugging output.
-		throw 0; //ABORT.
+		return false; //ABORT.
 	}
+
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string
+
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
 	//Let the user know the level is being loaded...
@@ -308,6 +325,11 @@ bool load_game() //Load the game.
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string
+
+	if(map_folder_path == "maps/default/")
+	{
+		Map[26].construct_construction(c_teleporter1);
+	}
 
 	if(map_folder_path == "maps/default/")
 	{

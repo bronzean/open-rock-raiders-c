@@ -216,6 +216,18 @@ calculate_draw_map();
 
 144. "pickup all ore" field. Pretty much loops over and over again and adds a "pickup any ore" job for each ore it finds on the tile.
 
+145. To make the teleporter teleport in a radius, use this code:
+int num_move_left = 4;
+while(num_move_left >= 0)
+{
+	if(get_random() == 25 % chance)
+	{
+		num_move_left = 0;
+	}
+}
+
+146. Currently, when a tile with a teleporter is clicked on, the active tile seems to get stuck or something. It'll always think that tile is selected for the popup menus.
+
 
 
 --Done--

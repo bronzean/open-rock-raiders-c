@@ -4,11 +4,19 @@
 construction::construction() //Constructor. Initializes an empty construction.
 {
 	name = "";
-	wall = false;
 	type_id = 0;
-	sprite = NULL;
-	sprite_open = NULL;
+
+	wall = false;
+
 	floor = false;
+
+	sprite = NULL;
+	sprite_select = NULL;
+	sprite_open = NULL;
+
+	teleporter = false;
+	teleport_signal_strength = 0;
+	teleport_unit_type = NULL;
 
 	door = false;
 	door_strength = 0;
@@ -34,14 +42,21 @@ construction::construction() //Constructor. Initializes an empty construction.
 	open_animation_entry = 0;
 	close_animation = false;
 	close_animation_entry = 0;
+
+	containing_tile = NULL;
+
+	selectable = false;
+	selected = false;
+	allow_deselect = true;
 }
 
-void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.
+void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.
 {
 	name = NAME;
 	wall = WALL;
 	floor = FLOOR;
 	type_id = TYPE_ID;
+	teleporter = TELEPORTER;
 	//sprite = img_load3(SPRITE);
 	if(SPRITE != "")
 	{
@@ -54,11 +69,17 @@ void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int 
 void construction::copy_from(construction Construction) //Give this tile the properties of the one being copied.
 {
 	name = Construction.name;
-	wall = Construction.wall;
-	floor = Construction.floor;
 	type_id = Construction.type_id;
+
+	wall = Construction.wall;
+
+	floor = Construction.floor;
+
 	sprite = Construction.sprite;
+	sprite_select = Construction.sprite_select;
 	sprite_open = Construction.sprite_open;
+
+	selectable = Construction.selectable;
 
 	door = Construction.door;
 	locked = Construction.locked;
@@ -80,6 +101,10 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	open_animation_entry = Construction.open_animation_entry;
 	close_animation = Construction.close_animation;
 	close_animation_entry = Construction.close_animation_entry;
+
+	teleporter = Construction.teleporter;
+	teleport_signal_strength = Construction.teleport_signal_strength;
+	teleport_unit_type = Construction.teleport_unit_type;
 }
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.
@@ -98,7 +123,14 @@ void construction::draw_sprite(int wx, int wy, int layer) //Draw the constructio
 		}
 		else //Not open? Ok then, draw the normal sprite (Which doubles as the closed sprite for constructions which also have a sprite_open).
 		{
-			draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
+			if(selected)
+			{
+				draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite_select, screen); //Now draw the sprite to the screen.
+			}
+			else
+			{
+				draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
+			}
 		}
 	}
 }
@@ -193,33 +225,39 @@ void construction::close_thyself(bool automatic) //Close the construction! (Door
 	close_ammount++;
 }
 
-/*void bClassUnit::select() //Checks if the player selected/deselected the unit.
+void construction::select() //Checks if the player selected/deselected the construction.
 {
-
-	if(event_struct.button.button == SDL_BUTTON_LEFT && event_struct.type == SDL_MOUSEBUTTONDOWN && mining_mode == false && selectable == true && allow_deselect == true && allow_unit_selection) //If the left mouse button was pressed and this unit can be selected...
+	if(event_struct.button.button == SDL_BUTTON_LEFT && selectable == true && allow_deselect == true) //If the left mouse button was pressed and this construction can be selected...
 	{
-		if(event_struct.button.x + PCamera->wx >= wx && event_struct.button.x + PCamera->wx <= wx + width && event_struct.button.y + PCamera->wy >= wy && event_struct.button.y + PCamera->wy <= wy + height && mining_mode != true && shovel_mode != true ) //Checks if the mouse clicked on this unit.
+		if(event_struct.button.x + PCamera->wx >= containing_tile->wx && event_struct.button.x + PCamera->wx <= containing_tile->wx + sprite->w && event_struct.button.y + PCamera->wy >= containing_tile->wy && event_struct.button.y + PCamera->wy <= containing_tile->wy + sprite->h) //Checks if the mouse clicked on this construction.
 		{
-			if(selected == false) //If the unit is not selected allready.
+			if(selected == false) //If the construction is not selected already.
 			{
-				std::cout << "\nSelected " << name << "\n"; //Let the user know this unit was selected.
+				std::cout << "\nSelected " << name << "\n"; //Let the user know this construction was selected.
 			}
-			selected = true; //Let's the game know this unit has been selected.
+			selected = true; //Lets the game know this construction has been selected.
 		}
-		else //Ok, the user did not click on this unit.
+		else //Ok, the user did not click on this construction.
 		{
-			if(selected == true) //If the unit is selected.
+			if(selected == true) //If the construction is selected.
 			{
-				std::cout << "\nDeselected " << name << "\n"; //Let the user know the unit has been deselected.
-				mining_mode = false; //No use to keep mining mode on anymore since it's not even selected anymore.
-				shovel_mode = false; //No use to keep shovelling mode on anymore since it's not even selected anymore.
+				std::cout << "\nDeselected " << name << "\n"; //Let the user know the construction has been deselected.
+				if(construction_selected)
+				{
+					if(selected_construction == this)
+					{
+						construction_selected = false;
+						selected_construction = NULL;
+					}
+				}
 			}
 
-			selected = false; //Let's the game know this unit is not selected.
+			selected = false; //Let's the game know this construction is not selected.
 		}
 	}
-}*/
+}
 
 construction c_wall;
 construction c_floor;
 construction c_door;
+construction c_teleporter1; //Teleportation device.

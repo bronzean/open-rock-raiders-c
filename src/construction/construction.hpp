@@ -7,14 +7,30 @@
 #pragma once
 #include "../engine/EObject.hpp"
 
+typedef bClassUnit unit;
+
 class construction //It's a construction. Most basic piece of a building.
 {
 public:
 	std::string name; //The name of this construction.
-	bool wall; //Is it a wall?
-	bool floor; //Is it a floor?
 	int type_id; //Let's the game know what type it is.
+
+	bool wall; //Is it a wall?
+
+	bool floor; //Is it a floor?
+
+	tile *containing_tile; //What tile is this construction built on?
+
+	bool selectable; //Can this construction be selected?
+	bool selected; //Can this construction be selected?
+	bool allow_deselect; //Is the construction allowed to be deselected/selected?
+
+	bool teleporter; //Is it a teleporter?
+	int teleport_signal_strength; //The teleport signal strength.
+	unit* teleport_unit_type; //What type of unit does it deleport?
+
 	SDL_Surface *sprite; //The construction's sprite.
+	SDL_Surface *sprite_select; //The construction's selected sprite.
 	SDL_Surface *sprite_open; //The construction's open sprite.
 
 	bool door; //Is it a door?
@@ -44,7 +60,7 @@ public:
 	bool close_animation; //Does the construction have a closing animation?
 	int close_animation_entry; //Stores the index of the close animation's entry in the animations vector.
 
-	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
+	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
 	void copy_from(construction Construction); //Give this tile the properties of the one being copied.
 
@@ -55,6 +71,8 @@ public:
 	void open_thyself(bool automatic); //Open the construction! (Door, for example.)
 	void close_thyself(bool automatic); //Close the construction! (Door, for example.)
 
+	void select(); //Checks if the player selected/deselected the construction.
+
 	construction(); //Constructor. Initializes an empty construction.
 	~construction() //Deconstructor.
 	{
@@ -64,6 +82,7 @@ public:
 extern construction c_wall; //Wall construction.
 extern construction c_floor; //Floor construction.
 extern construction c_door; //Door construction.
+extern construction c_teleporter1; //Teleportation device.
 
 extern bool construction_location_select;
 extern bool construction_wall_location_select; //Is the game waiting for the user to select where to place wall the construction?

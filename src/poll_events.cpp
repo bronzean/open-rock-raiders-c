@@ -198,7 +198,7 @@ tile_popup_menu_force_draw:
 								{
 									//Do NOTHING.
 
-									cout << "Do NOTHING.\n";
+									cout << "Do NOTHING 1.\n";
 
 									Interface.active_popup_menus.clear(); //Empty this.
 									active_popup_menu = false; //No active popup menu...
@@ -213,7 +213,8 @@ tile_popup_menu_force_draw:
 								{
 									//Do NOTHING.
 
-									cout << "Do NOTHING.\n";
+									cout << "Do NOTHING 2.\n";
+									cout << "Event tile id: " << _popup_menu->event_tile->ID << "\n";
 
 									Interface.active_popup_menus.clear(); //Empty this.
 									active_popup_menu = false; //No active popup menu...
@@ -228,6 +229,8 @@ tile_popup_menu_force_draw:
 								{
 									Interface.active_popup_menus.push_back(_popup_menu); //Store the location of the active popup menu.
 									active_popup_menu = true; //Let the game know that there's currently an active popup menu.
+
+									bool stored = true; //Did it successfully store the popup menu?
 
 									allow_unit_selection = false; //Dissallow the selection (and consequently, deselection) of units.
 
@@ -254,6 +257,9 @@ tile_popup_menu_force_draw:
 
 									if(_popup_menu->event_tile->has_construction) //Check if the tile has a construction on it.
 									{
+										cout << "Has construction.\n";
+										cout << "Event tile id: " << _popup_menu->event_tile->ID << "\n";
+
 										if(_popup_menu->event_tile->local_construction->door) //Check if the construction is a door.
 										{
 											if(_popup_menu->event_tile->local_construction->construction_open) //Check if the door is open.
@@ -267,6 +273,23 @@ tile_popup_menu_force_draw:
 												_popup_menu->event_tile->ground_popup_menu->fields[_popup_menu->event_tile->ground_popup_menu->fields.size() - 1].parent_menu = _popup_menu->event_tile->ground_popup_menu; //Assign the new field's parent menu.
 											}
 										}
+										else if(_popup_menu->event_tile->local_construction->teleporter == true)
+										{
+											cout << "Transferring control to construction.\n";
+
+											Interface.active_popup_menus.clear(); //Empty this.
+											active_popup_menu = false; //No active popup menu...
+											allow_unit_selection = true; //Allow units to be selected/deselected.
+											selected_tile->selected = false; //This tile is selected no longer.
+											tile_selected = false; //No selected tile.
+											selected_tile = NULL; //Reset this.
+
+											_popup_menu->event_tile->local_construction->select();
+
+											_popup_menu = NULL;
+
+											stored = false;
+										}
 									}
 									else
 									{
@@ -276,7 +299,10 @@ tile_popup_menu_force_draw:
 										_popup_menu->event_tile->ground_popup_menu->fields[_popup_menu->event_tile->ground_popup_menu->fields.size() - 1].parent_menu = _popup_menu->event_tile->ground_popup_menu; //Assign the new field's parent menu.
 									}
 
-									cout << "Storing popup menu of the tile.\n"; //Debugging output.
+									if(stored)
+										cout << "Storing popup menu of the tile.\n"; //Debugging output.
+									else
+										cout << "Not storing popup menu of the tile.\n"; //Debugging output.
 								}
 
 								leftclick_tile_id = -1; //Reset this so that units don't go walking around when you issue this...
@@ -377,9 +403,8 @@ tile_popup_menu_force_draw:
 												std::cout << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n"; //Debugging output.
 												out_string << "Position of that tile: (" << Map[leftclick_tile_id].wx << "," << Map[leftclick_tile_id].wy << "," << Map[leftclick_tile_id].layer << ") and index is: " << i << "\n"; //Debugging output.
 
-												if(!unit_selected)
+												if(!unit_selected && !construction_selected)
 												{
-													cout << "Bringing up popup menu for tile.\n"; //Debugging output.
 													//Bring up an 'actions' menu (Like in LRR).
 
 													Map[leftclick_tile_id].selected = true; //Let the tile know it is now selected.
@@ -404,7 +429,43 @@ tile_popup_menu_force_draw:
 														cout << "Found. Adding to active map.\n";
 													}
 
-													goto tile_popup_menu_force_draw; //Force it to draw the popup menu of the tile on this click. This way, tiles don't have to be double clicked for them to draw their popup menu.
+													bool allow_goto = true;
+
+													if(selected_tile->has_construction) //Check if the tile has a construction on it.
+													{
+														if(selected_tile->local_construction->teleporter) //Check if the construction is a teleporter.
+														{
+															selected_tile->local_construction->selected = true; //Tell the teleporter it just got selected.
+															construction_selected = true; //Tell the game a construction is selected.
+															selected_construction = selected_tile->local_construction; //Tell the game which construction it is that was selected.
+
+															allow_unit_selection = false; //Units cannot be selected...
+
+															allow_goto = false;
+
+															tile_selected = false; //Let the game know that a tile is currently selected.
+															selected_tile->selected = false; //Deselect the tile.
+															selected_tile = NULL; //Store a pointer to the currently selected
+
+															cout << "Selected construction.\n";
+														}
+													}
+
+													if(allow_goto)
+													{
+														goto tile_popup_menu_force_draw; //Force it to draw the popup menu of the tile on this click. This way, tiles don't have to be double clicked for them to draw their popup menu.
+														cout << "Bringing up popup menu for tile.\n"; //Debugging output.
+													}
+												}
+												else
+												{
+													cout << "Whee.\n";
+													if(construction_selected)
+													{
+														cout << "Time to deselect.\n";
+
+														selected_construction->select();
+													}
 												}
 											}
 

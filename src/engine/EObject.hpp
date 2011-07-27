@@ -34,6 +34,8 @@ class construction;
 
 class job_que;
 
+typedef bClassUnit unit;
+
 class message;
 class draw_message_handler //Handles all the messages to be drawn.
 {
