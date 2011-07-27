@@ -248,6 +248,8 @@ void construction::select() //Checks if the player selected/deselected the const
 					{
 						construction_selected = false;
 						selected_construction = NULL;
+
+						allow_unit_selection = true;
 					}
 				}
 			}
