@@ -27,9 +27,6 @@ void poll_events() //Checks for keyboard events, mouse events, all the good stuf
 				{
 					if(!server) //If not in server mode...
 					{
-						//--------------------------------------------------------------------
-						//KEEP IN MIND THE FOLLOWING CODE IS OUT OF DATE AND MUST BE REWRITTEN.
-						//--------------------------------------------------------------------
 						std::cout << "\nLeft click\n"; //Debugging output.
 						out_string << "\nLeft click\n"; //Debugging output.
 
@@ -334,13 +331,18 @@ tile_popup_menu_force_draw:
 								Interface.active_popup_menus.clear(); //Empty this, of course.
 							}
 						}
+						//--------------------------------------------------------------------
+						//KEEP IN MIND THE FOLLOWING CODE IS OUT OF DATE AND MUST BE REWRITTEN.
+						//--------------------------------------------------------------------
 						else if(Interface.g_teleport_button.clicked()) //Check this first, so that it doesn't deselect or select anything if true is returned.
 						{
 							//Teleport code here
 							std::cout << "\nGlobal teleport button clicked.\n"; //Debugging output.
 							out_string << "\nGlobal teleport button clicked.\n"; //Debugging output.
 
-							bool found = false; //Found an empty slot in the teleport que?
+							g_teleport_que.push_back("unit.0"); //Add the entity to the global teleport que. TODO: Make this accept any and all entities.
+
+							/*bool found = false; //Found an empty slot in the teleport que?
 							bool continue_ = true; //There's a two part if-check thing below. This controls part of it.
 
 							for(int i = 0; i < 9; i++) //Loop through the teleport que to find a free spot.
@@ -356,7 +358,7 @@ tile_popup_menu_force_draw:
 									g_teleport_que ++;
 									continue_ = false;
 								}
-							}
+							}*/
 						}
 						//--------------------------------------------------------------------
 						//END OF OBSOLETE CODE.
@@ -828,6 +830,15 @@ tile_popup_menu_force_draw:
 							paused = false; //Unpuase the game if it's paused.
 							std::cout << "Unpaused.\n"; //Debugging output.
 							out_string << "Unpaused.\n";
+						}
+						break;
+					case SDLK_1: //Here, we check if the 1 key was pressed...
+						if(!def_teleporter && construction_selected) //Check if there isn't already a default teleporter and check if a construction is already selected.
+						{
+							if(selected_construction->teleporter) //Check if the selected construction is a teleporter.
+							{
+								def_teleporter = selected_construction; //Let the game know this teleporter has been set to the default one.
+							}
 						}
 						break;
 					case SDLK_2:

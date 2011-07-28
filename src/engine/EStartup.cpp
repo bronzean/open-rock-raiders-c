@@ -100,15 +100,11 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	title_screen_text2_spr = TTF_RenderText_Solid(font1, "Tales of Mining and Great Riches", c_white); //Nifty little saying on the title screen.
 
 	cout << "Setting global teleport button's variables.\n";
-	//Interface.g_teleport_button.sprite = img_load3(teleport_button_path); //Load the sprite.
-	//img_load_safe(teleport_button_path, *Interface.g_teleport_button.sprite); //Load the sprite.
 	if(!img_load_safe(teleport_button_path, &Interface.g_teleport_button.sprite)) //Load the sprite.
 	{
 		cout << "Failed loading teleport button sprite.\n";
 		return false;
 	}
-	//Interface.g_teleport_button.d_sprite = img_load3(no_teleport_button_path); //Load the disabled button's sprites.
-	//img_load_safe(no_teleport_button_path, *Interface.g_teleport_button.d_sprite); //Load the disabled button's sprites.
 	if(!img_load_safe(no_teleport_button_path, &Interface.g_teleport_button.d_sprite)) //Load the disabled button's sprites.
 	{
 		cout << "Failed loading teleport button disabled sprite.\n";

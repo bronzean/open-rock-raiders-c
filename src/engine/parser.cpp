@@ -432,7 +432,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 					newUnit.wx = Map[atoi(stage_object[1].c_str())].wx; //Assign the new unit's world x.
 					newUnit.wy = Map[atoi(stage_object[1].c_str())].wy; //Assign the new unit's world y.
 					newUnit.layer = Map[atoi(stage_object[1].c_str())].layer; //Assign the new unit's layer.
-					newUnit.c_health = 100; //Assign the new unit's current health.					
+					newUnit.c_health = 100; //Assign the new unit's current health.
 					//std::cout << "Created new unit.\n";
 
 					newUnit.rubble_popup_menu = new popup_menu;

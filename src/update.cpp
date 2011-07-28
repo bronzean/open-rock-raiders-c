@@ -120,7 +120,7 @@ int update()
 	{
 		if(keystates[SDLK_RETURN]) //If enter was pressed...
 		{
-		GameState = Loading; //Load everything.
+			GameState = Loading; //Load everything.
 		}
 
 		if(screen_needs_updating == false) //Make sure it's ok to draw this.
@@ -156,44 +156,46 @@ int update()
 
 		try
 		{
-		for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
-		{
-			Map[Active_Map[counter]].update(); //Update all the tiles it holds.
+			for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
+			{
+				cout << "counter: " << counter << "\n";
+				cout << "Value: " << Active_Map[counter] << "\n";
+				Map[Active_Map[counter]].update(); //Update all the tiles it holds.
 			}
 		}
-                        catch(...)
-                        {
-                                cerr << "Caught exception when updating Active_Map.\n";
-                                out_string << "Caught exception when updating Active_Map.\n";
-                        }
-                        counter = 0;
-                        if(screen_needs_updating == false)
-                        {
-                                if(!threed_gfx)
-                                {
-                                        for(iterator2 = Draw_Map.begin(); iterator2 < Draw_Map.end(); iterator2++, counter++) //Loop through unit_type_list
-                                        {
-                                                Map[Draw_Map[counter]].draw_sprite(); //Draw all the tiles that need drawing.
-                                        }
-                                }
-                        }
+		catch(...)
+		{
+			cerr << "Caught exception when updating Active_Map.\n";
+			out_string << "Caught exception when updating Active_Map.\n";
+		}
+		counter = 0;
+		if(screen_needs_updating == false)
+		{
+			if(!threed_gfx)
+			{
+				for(iterator2 = Draw_Map.begin(); iterator2 < Draw_Map.end(); iterator2++, counter++) //Loop through unit_type_list
+				{
+					Map[Draw_Map[counter]].draw_sprite(); //Draw all the tiles that need drawing.
+				}
+			}
+		}
 
-                        if(keystates[SDLK_a])
-                        {
-                                PCamera->set_pos(PCamera->get_wx() - camera_move_speed, PCamera->get_wy());
-                                std::cout << "\nCamera world x = " << PCamera->get_wx() << std::endl;
-                                out_string << "\nCamera world x = " << PCamera->get_wx() << "\n";
-                                std::cout << "\nCamera world y = " << PCamera->get_wy() << std::endl;
-                                out_string << "\nCamera world y = " << PCamera->get_wy() << "\n";
+		if(keystates[SDLK_a])
+		{
+			PCamera->set_pos(PCamera->get_wx() - camera_move_speed, PCamera->get_wy());
+			std::cout << "\nCamera world x = " << PCamera->get_wx() << std::endl;
+			out_string << "\nCamera world x = " << PCamera->get_wx() << "\n";
+			std::cout << "\nCamera world y = " << PCamera->get_wy() << std::endl;
+			out_string << "\nCamera world y = " << PCamera->get_wy() << "\n";
 
-                                //Now add all the tiles that have come into the camera's view, and remove the old ones.
-                                int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
-                                int current_tile = layer_offset; //The current tile it's working on.
-                                int num_rows_done = 0; //The number of rows it's calculated.
+			//Now add all the tiles that have come into the camera's view, and remove the old ones.
+			int layer_offset = (num_row_objects * num_col_objects * PCamera->layer); //Assign the layer offset.
+			int current_tile = layer_offset; //The current tile it's working on.
+			int num_rows_done = 0; //The number of rows it's calculated.
 
-                                bool done = false; //Is it done calculating the new Draw_Map?
+			bool done = false; //Is it done calculating the new Draw_Map?
 
-                                /* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
+			/* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
                                 int start_id = 0; //The ID of the starting tile.
                                 int camera_wx = 0;
                                 int camera_wy = 0;

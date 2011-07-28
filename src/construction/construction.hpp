@@ -27,7 +27,8 @@ public:
 
 	bool teleporter; //Is it a teleporter?
 	int teleport_signal_strength; //The teleport signal strength.
-	unit* teleport_unit_type; //What type of unit does it deleport?
+	unit* teleport_unit_type; //What type of unit does it deleport? NOTE: OBSOLETE.
+	//int unit_to_teleport_id; //The type id of the unit to teleport.
 
 	SDL_Surface *sprite; //The construction's sprite.
 	SDL_Surface *sprite_select; //The construction's selected sprite.
@@ -72,6 +73,8 @@ public:
 	void close_thyself(bool automatic); //Close the construction! (Door, for example.)
 
 	void select(); //Checks if the player selected/deselected the construction.
+
+	void update(); //Update whatever needs updating.
 
 	construction(); //Constructor. Initializes an empty construction.
 	~construction() //Deconstructor.

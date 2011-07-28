@@ -15,12 +15,12 @@ void interface::update()
 	{
 		if(GameState == Level)
 		{
-			if(def_teleporter < 0) //Check if no default teleporter is set.
+			if(!def_teleporter) //Check if no default teleporter is set.
 			{
 				g_teleport_button.state = 0;
 				g_teleport_button.update();
 			}
-			else if(def_teleporter >= 0) //If there is a default teleporter, then do this.
+			else if(def_teleporter) //If there is a default teleporter, then do this.
 			{
 				g_teleport_button.state = 1;
 				g_teleport_button.update();

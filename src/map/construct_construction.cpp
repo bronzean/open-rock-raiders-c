@@ -18,4 +18,24 @@ void tile::construct_construction(construction c_type) //Creates a construction 
 		obstruction = true; //Since the construction is a wall, then this tile is an obstruction.
 	}
 	local_construction->containing_tile = this; //Let the construction know what tile contains it.
+
+	if(c_type.teleporter) //Check if the construction is a teleporter.
+	{
+		bool exists = false;
+
+		for(int i = 0; i < Active_Map.size(); i++)
+		{
+			if(Active_Map[i] == ID)
+			{
+				exists = true;
+			}
+		}
+
+		if(!exists)
+		{
+			Active_Map.push_back(ID); //Tell the active map this tile needs updating.
+
+			cout << "ID: " << ID << "\n";
+		}
+	}
 }

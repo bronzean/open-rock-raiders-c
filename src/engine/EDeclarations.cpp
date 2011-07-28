@@ -40,15 +40,14 @@ camera Camera(1);
 camera *PCamera = &Camera;
 int camera_move_speed = 10;
 
-int g_teleport_que;
-std::string g_teleport_que_name[9];
-
 SDL_Surface *teleport_button_spr = NULL;
 SDL_Surface *no_teleport_button_spr = NULL;
 std::string teleport_button_path = "";
 std::string no_teleport_button_path = "";
 
-int def_teleporter = -1;
+//These 2 have to do with teleporting objects.
+vector<string> g_teleport_que;
+construction* def_teleporter = NULL; //This tells the game what building in the building list is the default teleporter. -1 means none. Remember to allow the map creator to define the default teleporter, and also remember to make the first teleporter in the list the default if it is unhidden.
 
 int num_tiles;
 

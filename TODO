@@ -225,8 +225,18 @@ while(num_move_left >= 0)
 		num_move_left = 0;
 	}
 }
+#145b.
+Actually, remove the num_move_left thing;
+while(rand(blarg)) //Get a random true or false.
+{
+	tile_to_teleport_on = blarg_tile;
+}
+//The chance of getting a true or a false varies by teleporter strength. The more strength, the higher the chance it'll return false (which means it hath found a tile). And which also means higher accuracy.
 
-146. Currently, when a tile with a teleporter is clicked on, the active tile seems to get stuck or something. It'll always think that tile is selected for the popup menus.
+147. Somehow, when a unit is teleported in, a nonexistant tile is added to the active map...
+
+Expanding on 147:
+Turns out after the teleported unit is told to move, and there are two units on the tile, the game will get an insanely large value added into the active map for some reason.
 
 
 
@@ -339,6 +349,8 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 128. Take the repositioning code (seen in the unit's construct_construction.cpp, for example) and put it into it's own function so that it deson't have to be rewritten 100 times. - DONE.
 
 130. Make the unit go to the closest job. - DONE.
+
+146. Currently, when a tile with a teleporter is clicked on, the active tile seems to get stuck or something. It'll always think that tile is selected for the popup menus. - DONE.
 
 
 

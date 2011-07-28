@@ -111,6 +111,11 @@ void tile::update()
 {
 	//draw_sprite(); //Draw the tile's sprite
 
+	if(has_construction) //Check if it has a construction on it.
+	{
+		local_construction->update(); //Update the local construction.
+	}
+
 	if(!server)
 	{
 		if(active_popup_menu && selected)

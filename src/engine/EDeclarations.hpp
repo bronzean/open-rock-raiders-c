@@ -76,9 +76,9 @@ extern int camera_move_speed;
 
 
 //These 2 have to do with teleporting objects.
-extern int g_teleport_que;
-extern std::string g_teleport_que_name[9];
-extern int def_teleporter; //This tells the game what building in the building list is the default teleporter. -1 means none. Remember to allow the map creator to define the default teleporter, and also remember to make the first teleporter in the list the default if it is unhidden.
+extern std::vector<std::string> g_teleport_que;
+class construction; //Forward declaration so that variables work properly.
+extern construction* def_teleporter; //This tells the game what building in the building list is the default teleporter. -1 means none. Remember to allow the map creator to define the default teleporter, and also remember to make the first teleporter in the list the default if it is unhidden.
 
 extern int num_tiles; //This tells the game how many tiles there are.
 
@@ -188,5 +188,4 @@ class tile; //Forward declaration so that the selected_tile variable works prope
 extern tile* selected_tile; //Pointer to the selected tile.
 
 extern bool construction_selected; //Is a construction currently selected?
-class construction; //Forward declaration so that the selected_construction variable works properly.
 extern construction* selected_construction; //Pointer to the selected construction.
