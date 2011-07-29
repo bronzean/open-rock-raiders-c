@@ -156,8 +156,10 @@ int update()
 
 		try
 		{
-			for(iterator2 = Active_Map.begin(); iterator2 < Active_Map.end(); iterator2++, counter++) //Loop through Active_Map.
+			out_string << "active map's size: " << Active_Map.size() << "\n";
+			for(counter = 0; counter < Active_Map.size(); counter++) //Loop through Active_Map.
 			{
+				cout << "active map's size: " << Active_Map.size() << "\n";
 				cout << "counter: " << counter << "\n";
 				cout << "Value: " << Active_Map[counter] << "\n";
 				Map[Active_Map[counter]].update(); //Update all the tiles it holds.

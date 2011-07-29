@@ -13,7 +13,7 @@ void construction::update() //Update whatever needs updating.
 			//cout << "Is default teleporter.\n";
 			if(!g_teleport_que.empty()) //Make sure the global teleport que is not empty.
 			{
-				//cout << "Stuff to teleport.\n";
+				cout << "Stuff to teleport.\n";
 				//cout << "Stuff to teleport.\n";
 
 				char temp = ' ';

@@ -763,31 +763,51 @@ void tile::move_unit(int i)
 
 			if(unitlist.size() < 1)
 			{
-				cout << "Removing tile from Active_Map.\n"; //Debugging output.
-				bool done = false;
-				for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++)
+				bool allow_remove = true;
+
+				if(has_construction)
 				{
-					if(Map[Active_Map[i2]].ID == ID && done == false)
+					if(local_construction->teleporter)
 					{
-						Active_Map.erase(Active_Map.begin() + i2); //Remove this tile from Active_Map.
-						done = true;
+						allow_remove = false;
+					}
+				}
+
+				if(allow_remove)
+				{
+					cout << "Removing tile from Active_Map.\n"; //Debugging output.
+					bool done = false;
+					for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++)
+					{
+						if(Map[Active_Map[i2]].ID == ID && done == false)
+						{
+							Active_Map.erase(Active_Map.begin() + i2); //Remove this tile from Active_Map.
+							done = true;
+							cout << "Erased from active_map.\n";
+							out_string << "Erased from active_map.\n";
+						}
 					}
 				}
 			}
-			//TODO: Make sure the tile isn't already in active map.
+			//Make sure the tile isn't already in active map.
 			bool found_entry = false;
 			for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++)
 			{
 				if(Map[Active_Map[i2]].ID == Map[new_tile_id].ID)
 				{
 					found_entry = true;
+					cout << "Tile already in active_map.\n";
+					out_string << "Tile already in active_map.\n";
 				}
 			}
 			if(found_entry == false)
 			{
 				Active_Map.push_back(Map[new_tile_id].ID); //Add the index of the tile the unit just moved to to Active_Map.
-				cout << "Entry: " << Active_Map.size() - 1 << "\n";
-				out_string << "Entry: " << Active_Map.size() - 1 << "\n";
+				cout << "Entry (active_map.size() - 1): " << Active_Map.size() - 1 << "\n";
+				out_string << "Entry(active_map.size() - 1): " << Active_Map.size() - 1 << "\n";
+
+				cout << "Active_Map[Active_Map.size() - 1]: " << Active_Map[Active_Map.size() - 1] << "\n";
+				out_string << "Active_Map[Active_Map.size() - 1]: " << Active_Map[Active_Map.size() - 1] << "\n";
 			}
 
 			std::cout << "Succesfully moved unit.\n\n"; //Debugging output.

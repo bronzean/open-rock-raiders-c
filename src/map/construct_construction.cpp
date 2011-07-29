@@ -35,7 +35,7 @@ void tile::construct_construction(construction c_type) //Creates a construction 
 		{
 			Active_Map.push_back(ID); //Tell the active map this tile needs updating.
 
-			cout << "ID: " << ID << "\n";
+			cout << "ID in active map: " << Active_Map[Active_Map.size() - 1] << "\n";
 		}
 	}
 }

@@ -1,0 +1,65 @@
+1. The teleportation/moving raiders thing.
+So, randomally, when a raider, which you just teleported in, is issued a moveto command, the game will one too many entries to active_map. This extra addition is always an insanely large value.
+Another weird thing that happened; One time, it populated the active map with several hundred entries. Each of these entries excess entries (save the last one), had a value of 0.
+The last one had an insanely large value.
+
+Very peculiar. Now take a look at this:
+Left click
+A popup menu's field has been clicked.
+counter: 0
+Value: 29
+counter: 1
+Value: 15
+counter: 2
+Value: 26
+counter: 3
+Value: 25
+
+I see my moveto has been clicked.
+Path to ramp found!
+Position of new tile: (320,32,0)
+Index of new tile: 24
+Transferring over selected unit status.
+Entry (active_map.size() - 1): 4
+Active_Map[Active_Map.size() - 1]: 24
+Succesfully moved unit.
+
+counter: 4
+Value: 24
+
+Deselected Rock Raider
+counter: 5
+Value: 0
+counter: 6
+Value: 1768711273
+Segmentation fault
+ciprian@HQ:~/orr-c$ 
+
+See?
+Everything's fine at first. 3 entries in active_map. All have sane values.
+Then this:
+I see my moveto has been clicked.
+Path to ramp found!
+Position of new tile: (320,32,0)
+Index of new tile: 24
+Transferring over selected unit status.
+Entry (active_map.size() - 1): 4
+Active_Map[Active_Map.size() - 1]: 24
+Succesfully moved unit.
+
+That's right.
+It adds itself as the 4th entry into active_map, and it has a sane value.
+
+...And then, somewhere along the line,
+counter: 4
+Value: 24
+
+Deselected Rock Raider
+counter: 5
+Value: 0
+counter: 6
+Value: 1768711273
+Segmentation fault
+
+There, the tile we just added. But wait, what's that second part?
+Counter shoulda stopped at 4. Somewhere along the line, an additional entry was added to active_map, and it contains the insane value of "1768711273".

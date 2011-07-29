@@ -307,16 +307,27 @@ tile_popup_menu_force_draw:
 							else //Ya, tile doesn't yet have a popup menu.
 							{
 								//Remove the tile from the active map (if applicable).
-								if(selected_tile->unitlist.size() < 1)
+								if(selected_tile->unitlist.size() <= 0)
 								{
-									cout << "Removing tile from Active_Map.\n"; //Debugging output.
-									bool done = false;
-									for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++)
+									bool allow_remove = true;
+									if(selected_tile->has_construction)
 									{
-										if(Map[Active_Map[i2]].ID == selected_tile->ID && done == false)
+										if(selected_tile->local_construction->teleporter)
 										{
-											Active_Map.erase(Active_Map.begin() + i2); //Remove this tile from Active_Map.
-											done = true;
+											allow_remove = false;
+										}
+									}
+									if(allow_remove)
+									{
+										cout << "Removing tile from Active_Map.\n"; //Debugging output.
+										bool done = false;
+										for(unsigned int i2 = 0; i2 < Active_Map.size(); i2++)
+										{
+											if(Map[Active_Map[i2]].ID == selected_tile->ID && done == false)
+											{
+												Active_Map.erase(Active_Map.begin() + i2); //Remove this tile from Active_Map.
+												done = true;
+											}
 										}
 									}
 								}
@@ -429,6 +440,8 @@ tile_popup_menu_force_draw:
 														Active_Map.push_back(selected_tile->ID);
 
 														cout << "Found. Adding to active map.\n";
+
+														cout << "Active_Map[Active_Map.size() - 1]: " << Active_Map[Active_Map.size() - 1] << "\n";
 													}
 
 													bool allow_goto = true;
