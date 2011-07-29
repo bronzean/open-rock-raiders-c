@@ -33,6 +33,7 @@ public:
 	SDL_Surface *sprite; //The construction's sprite.
 	SDL_Surface *sprite_select; //The construction's selected sprite.
 	SDL_Surface *sprite_open; //The construction's open sprite.
+	SDL_Surface *construction_qued_sprite; //The sprite displayed when the construction is qued.
 
 	bool door; //Is it a door?
 	bool locked; //Is it locked? (Used by doors and the like)
@@ -75,6 +76,7 @@ public:
 	void select(); //Checks if the player selected/deselected the construction.
 
 	void update(); //Update whatever needs updating.
+
 
 	construction(); //Constructor. Initializes an empty construction.
 	~construction() //Deconstructor.

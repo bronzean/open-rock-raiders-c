@@ -41,6 +41,9 @@ tile::tile() //Constructor. Initialize an empty tile.
 	selected = false;
 	visible = false;
 
+	qued_construction = false;
+	qued_construction_sprite = NULL;
+
 	wall_popup_menu = NULL;
 	ground_popup_menu = NULL;
 	rubble_popup_menu = NULL;
@@ -98,6 +101,13 @@ void tile::draw_sprite()
 		{
 			//draw(get_wx() - (PCamera->wx), get_wy() - (PCamera->wy), local_construction->sprite, screen);
 			local_construction->draw_sprite(wx, wy, layer); //Draw the construction's sprite.
+		}
+		else if(construction_in_progress) //If a construction is in progress.
+		{
+		}
+		else if(qued_construction) //If it has a qued construction on it.
+		{
+			draw(wx - (PCamera->wx), wy - (PCamera->wy), qued_construction_sprite, screen);
 		}
 		if(unitlist.size() != 0) //If the tile has units on it.
 		{

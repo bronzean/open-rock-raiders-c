@@ -391,5 +391,51 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 	move_path = thisMove;
 
+	cout << "Blarg. Done calculating path.\n";
+
+	for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
+	{
+		cout << "Looping.\n";
+		cout << "current = " << move_path[i] << "\n";
+		if(i > 0)
+		{
+			cout << "Previous = " << move_path[i - 1] << "\n";
+			if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
+			{
+				move_path.erase(move_path.begin() + (i - 1)); //Remove.
+				//i--; //Deincrement to avoid skipping entries.
+
+				cout << "Removed duplicate.\n";
+			}
+		}
+		if(i < move_path.size() - 1)
+		{
+			cout << "next = " << move_path[i] + 1 << "\n";
+
+			if(move_path[i] == move_path[i + 1])
+			{
+				move_path.erase(move_path.begin() + (i + 1)); //Remove.
+				//i--; //Deincrement to avoid skipping entries.
+
+				cout << "Removed duplicate.\n";
+			}
+		}
+
+		if(i > 0 && i < move_path.size() - 1)
+		{
+			if(move_path[i - 1] == move_path[i + 1])
+			{
+				move_path.erase(move_path.begin() + (i + 1)); //Remove.
+				//i--; //Deincrement to avoid skipping entries.
+
+				cout << "Removed duplicate.\n";
+			}
+		}
+
+		cout << "\n";
+	}
+
+	cout << "\n\n\n";
+
 	return true; //Succesfully calculated a path. That's what the original comment says.
 }

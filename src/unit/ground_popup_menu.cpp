@@ -80,7 +80,7 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 
 			int layer_offset = (num_row_objects * num_col_objects * event_tile->layer); //Assign the layer offset.
 
-			if(calculate_path() == false) //Now, calculate the path.
+			if(!get_free_neighbor_tile(event_tile)) //Now, calculate the path.
 			{
 				//What...Something done borked. The tile is inaccessible.
 				move = false; //Tell the unit it's staying put
@@ -95,6 +95,9 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 				my_job->construction_type = "wall";
 				my_job->tasked_tile = event_tile;
 				my_job->taken = true;
+
+				event_tile->qued_construction = true;
+				event_tile->qued_construction_sprite = c_wall.construction_qued_sprite;
 			}
 
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
@@ -115,7 +118,7 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 
 			int layer_offset = (num_row_objects * num_col_objects * event_tile->layer); //Assign the layer offset.
 
-			if(calculate_path() == false) //Now, calculate the path.
+			if(!get_free_neighbor_tile(event_tile)) //Now, calculate the path.
 			{
 				//What...Something done borked. The tile is inaccessible.
 				move = false; //Tell the unit it's staying put

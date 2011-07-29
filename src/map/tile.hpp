@@ -83,6 +83,8 @@ public:
 	construction *local_construction; //The construction that's on this tile
 	bool has_construction; //Does this tile have a construction present on it?
 	bool construction_in_progress; //Is something currently building a construction on this? //TODO: IMPLEMENT THIS.
+	bool qued_construction; //Is a construction currently qued?
+	SDL_Surface* qued_construction_sprite; //The sprite displayed when the construction is qued.
 
 	bool obstruction; //Is this tile an obstruction? Wall tiles, for example, are obstructions.
 

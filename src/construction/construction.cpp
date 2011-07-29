@@ -13,6 +13,7 @@ construction::construction() //Constructor. Initializes an empty construction.
 	sprite = NULL;
 	sprite_select = NULL;
 	sprite_open = NULL;
+	construction_qued_sprite = NULL;
 
 	teleporter = false;
 	teleport_signal_strength = 0;
@@ -105,6 +106,8 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	teleporter = Construction.teleporter;
 	teleport_signal_strength = Construction.teleport_signal_strength;
 	teleport_unit_type = Construction.teleport_unit_type;
+
+	construction_qued_sprite = Construction.construction_qued_sprite;
 }
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.

@@ -227,6 +227,11 @@ bool load_game() //Load the game.
 	{
 		return false;
 	}
+	img_load_safe("data/construction/wall/sprite_ghost.png", &c_wall.construction_qued_sprite);
+	if(!c_wall.construction_qued_sprite)
+	{
+		return false;
+	}
 	//c_floor.init(); //TODO: Ya, this needs to be done...
 
 	c_teleporter1.init("teleporter1", false, false, false, true, 0, 2, "data/construction/teleporter1/sprite.png");

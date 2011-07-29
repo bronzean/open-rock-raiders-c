@@ -52,7 +52,8 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				//shovel_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
 				move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 
-				if(calculate_path() == false) //If it can't calculate find a path...
+				//if(calculate_path() == false) //If it can't calculate find a path...
+				if(!get_free_neighbor_tile(Job_Que.jobs[i].tasked_tile))
 				{
 					cancel_current_activity();
 				}

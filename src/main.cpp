@@ -335,8 +335,12 @@ int main( int argc, char* argv[] )
 	TTF_CloseFont(font2); //Free font2.
 	SDL_FreeSurface(field_drill_wall.sprite);
 
-        SDL_FreeSurface(Interface.construct_wall_button.sprite);
-        SDL_FreeSurface(Interface.construct_door_button.sprite);
+	SDL_FreeSurface(Interface.construct_wall_button.sprite);
+	SDL_FreeSurface(Interface.construct_door_button.sprite);
+
+	SDL_FreeSurface(c_wall.sprite);
+	SDL_FreeSurface(c_door.sprite);
+	SDL_FreeSurface(c_teleporter1.sprite);
 
 	SDL_Quit(); //Exit SDL.
 

@@ -43,6 +43,9 @@ void tile::ground_popup_menu_update() //Update the tile_popup_menu.
 
 			cout << "Added job!\n";
 
+			qued_construction = true;
+			qued_construction_sprite = c_wall.construction_qued_sprite;
+
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
 			ground_popup_menu->clicked_field = NULL; //Reset this.
 		}

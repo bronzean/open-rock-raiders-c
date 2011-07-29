@@ -519,7 +519,7 @@ tile_popup_menu_force_draw:
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true)
+								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction)
 								{
 									cout << "Invalid tile!\n\n";
 
@@ -544,6 +544,9 @@ tile_popup_menu_force_draw:
 									allow_unit_selection = true;
 									construction_wall_location_select = false;
 									construction_location_select = false;
+
+									Map[tile_id].qued_construction = true; //Let the tile know a construction hath been assigned on it.
+									Map[tile_id].qued_construction_sprite = c_wall.construction_qued_sprite; //The ghosted version of the construction.
 								}
 							}
 							else if(construction_door_location_select)
@@ -569,7 +572,7 @@ tile_popup_menu_force_draw:
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true)
+								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction)
 								{
 									cout << "Invalid tile!\n\n";
 
