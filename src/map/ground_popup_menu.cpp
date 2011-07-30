@@ -38,6 +38,20 @@ void tile::ground_popup_menu_update() //Update the tile_popup_menu.
 			new_job.type = "construct";
 			new_job.construction_type = "wall";
 			new_job.tasked_tile = this;
+			new_job.build_time = c_wall.build_time;
+
+			if(c_wall.build_animation) //Check if the wall construction has a build animation.
+			{
+				new_job.construction_health = new_job.build_time * c_wall.animations[c_wall.build_animation_entry].num_frames; //Set the health of the construction accordingally.
+				new_job._animation = new animation;
+				*new_job._animation = c_wall.animations[c_wall.build_animation_entry]; //Assign a pointer to the build animation.
+
+				cout << "Wall construction has a build animation.\n"; //Debugging output.
+			}
+			else //Does not have an animation.
+			{
+				new_job.construction_health = new_job.build_time; //Set the construct time.
+			}
 
 			Job_Que.add_job(new_job);
 
@@ -59,6 +73,20 @@ void tile::ground_popup_menu_update() //Update the tile_popup_menu.
 			new_job.type = "construct";
 			new_job.construction_type = "door";
 			new_job.tasked_tile = this;
+			new_job.build_time = c_door.build_time;
+
+			if(c_door.build_animation) //Check if the door construction has a build animation.
+			{
+				new_job.construction_health = new_job.build_time * c_door.animations[c_door.build_animation_entry].num_frames; //Set the health of the construction accordingally.
+				new_job._animation = new animation;
+				*new_job._animation = c_door.animations[c_door.build_animation_entry]; //Assign a pointer to the build animation.
+
+				cout << "Door construction has a build animation.\n"; //Debugging output.
+			}
+			else //Does not have an animation.
+			{
+				new_job.construction_health = new_job.build_time; //Set the construct time.
+			}
 
 			Job_Que.add_job(new_job);
 

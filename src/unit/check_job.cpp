@@ -62,11 +62,11 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				{
 					for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
 					{
-						cout << "Looping.\n";
-						cout << "current = " << move_path[i] << "\n";
+						//cout << "Looping.\n";
+						//cout << "current = " << move_path[i] << "\n";
 						if(i > 0)
 						{
-							cout << "Previous = " << move_path[i - 1] << "\n";
+							//cout << "Previous = " << move_path[i - 1] << "\n";
 							if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
 							{
 								move_path.erase(move_path.begin() + (i - 1)); //Remove.
@@ -77,7 +77,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 						}
 						if(i < move_path.size() - 1)
 						{
-							cout << "next = " << move_path[i] + 1 << "\n";
+							//cout << "next = " << move_path[i] + 1 << "\n";
 
 							if(move_path[i] == move_path[i + 1])
 							{
@@ -138,11 +138,11 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				{
 					for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
 					{
-						cout << "Looping.\n";
-						cout << "current = " << move_path[i] << "\n";
+						//cout << "Looping.\n";
+						//cout << "current = " << move_path[i] << "\n";
 						if(i > 0)
 						{
-							cout << "Previous = " << move_path[i - 1] << "\n";
+							//cout << "Previous = " << move_path[i - 1] << "\n";
 							if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
 							{
 								move_path.erase(move_path.begin() + (i - 1)); //Remove.
@@ -153,7 +153,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 						}
 						if(i < move_path.size() - 1)
 						{
-							cout << "next = " << move_path[i] + 1 << "\n";
+							//cout << "next = " << move_path[i] + 1 << "\n";
 
 							if(move_path[i] == move_path[i + 1])
 							{
@@ -212,11 +212,11 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				{
 					for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
 					{
-						cout << "Looping.\n";
-						cout << "current = " << move_path[i] << "\n";
+						//cout << "Looping.\n";
+						//cout << "current = " << move_path[i] << "\n";
 						if(i > 0)
 						{
-							cout << "Previous = " << move_path[i - 1] << "\n";
+							//cout << "Previous = " << move_path[i - 1] << "\n";
 							if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
 							{
 								move_path.erase(move_path.begin() + (i - 1)); //Remove.
@@ -227,7 +227,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 						}
 						if(i < move_path.size() - 1)
 						{
-							cout << "next = " << move_path[i] + 1 << "\n";
+							//cout << "next = " << move_path[i] + 1 << "\n";
 
 							if(move_path[i] == move_path[i + 1])
 							{
@@ -285,11 +285,11 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				{
 					for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
 					{
-						cout << "Looping.\n";
-						cout << "current = " << move_path[i] << "\n";
+						//cout << "Looping.\n";
+						//cout << "current = " << move_path[i] << "\n";
 						if(i > 0)
 						{
-							cout << "Previous = " << move_path[i - 1] << "\n";
+							//cout << "Previous = " << move_path[i - 1] << "\n";
 							if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
 							{
 								move_path.erase(move_path.begin() + (i - 1)); //Remove.
@@ -300,7 +300,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 						}
 						if(i < move_path.size() - 1)
 						{
-							cout << "next = " << move_path[i] + 1 << "\n";
+							//cout << "next = " << move_path[i] + 1 << "\n";
 
 							if(move_path[i] == move_path[i + 1])
 							{
@@ -350,11 +350,11 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				{
 					for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
 					{
-						cout << "Looping.\n";
-						cout << "current = " << move_path[i] << "\n";
+						//cout << "Looping.\n";
+						//cout << "current = " << move_path[i] << "\n";
 						if(i > 0)
 						{
-							cout << "Previous = " << move_path[i - 1] << "\n";
+							//cout << "Previous = " << move_path[i - 1] << "\n";
 							if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
 							{
 								move_path.erase(move_path.begin() + (i - 1)); //Remove.
@@ -365,7 +365,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 						}
 						if(i < move_path.size() - 1)
 						{
-							cout << "next = " << move_path[i] + 1 << "\n";
+							//cout << "next = " << move_path[i] + 1 << "\n";
 
 							if(move_path[i] == move_path[i + 1])
 							{
@@ -415,11 +415,11 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 				{
 					for(int i = 0; i < move_path.size(); i++) //Loop through the move path and delete all duplicates.
 					{
-						cout << "Looping.\n";
-						cout << "current = " << move_path[i] << "\n";
+						//cout << "Looping.\n";
+						//cout << "current = " << move_path[i] << "\n";
 						if(i > 0)
 						{
-							cout << "Previous = " << move_path[i - 1] << "\n";
+							//cout << "Previous = " << move_path[i - 1] << "\n";
 							if(move_path[i] == move_path[i - 1]) //Is it a duplicate?
 							{
 								move_path.erase(move_path.begin() + (i - 1)); //Remove.
@@ -430,7 +430,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 						}
 						if(i < move_path.size() - 1)
 						{
-							cout << "next = " << move_path[i] + 1 << "\n";
+							//cout << "next = " << move_path[i] + 1 << "\n";
 
 							if(move_path[i] == move_path[i + 1])
 							{
