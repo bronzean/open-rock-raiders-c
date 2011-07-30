@@ -41,6 +41,8 @@ tile::tile() //Constructor. Initialize an empty tile.
 	selected = false;
 	visible = false;
 
+	construction_in_progress_animation = NULL;
+
 	qued_construction = false;
 	qued_construction_sprite = NULL;
 
@@ -104,6 +106,10 @@ void tile::draw_sprite()
 		}
 		else if(construction_in_progress) //If a construction is in progress.
 		{
+			if(construction_in_progress_animation)
+			{
+				construction_in_progress_animation->draw_sprite(wx, wy, layer);
+			}
 		}
 		else if(qued_construction) //If it has a qued construction on it.
 		{

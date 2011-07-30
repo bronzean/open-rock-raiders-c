@@ -43,6 +43,10 @@ construction::construction() //Constructor. Initializes an empty construction.
 	open_animation_entry = 0;
 	close_animation = false;
 	close_animation_entry = 0;
+	build_animation = false;
+	build_animation_entry = 0;
+
+	build_time = 25;
 
 	containing_tile = NULL;
 
@@ -102,12 +106,16 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	open_animation_entry = Construction.open_animation_entry;
 	close_animation = Construction.close_animation;
 	close_animation_entry = Construction.close_animation_entry;
+	build_animation = Construction.build_animation;
+	build_animation_entry = Construction.build_animation_entry;
 
 	teleporter = Construction.teleporter;
 	teleport_signal_strength = Construction.teleport_signal_strength;
 	teleport_unit_type = Construction.teleport_unit_type;
 
 	construction_qued_sprite = Construction.construction_qued_sprite;
+
+	build_time = Construction.build_time;
 }
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.

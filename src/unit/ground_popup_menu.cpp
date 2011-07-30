@@ -95,6 +95,20 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 				my_job->construction_type = "wall";
 				my_job->tasked_tile = event_tile;
 				my_job->taken = true;
+				my_job->build_time = c_wall.build_time;
+
+				if(c_wall.build_animation) //Check if the wall construction has a build animation.
+				{
+					my_job->construction_health = my_job->build_time * c_wall.animations[c_wall.build_animation_entry].num_frames; //Set the health of the construction accordingally.
+					my_job->_animation = new animation;
+					*my_job->_animation = c_wall.animations[c_wall.build_animation_entry]; //Assign a pointer to the build animation.
+
+					cout << "Wall construction has an animation.\n"; //Debugging output.
+				}
+				else //Does not have an animation.
+				{
+					my_job->construction_health = my_job->build_time; //Set the construct time.
+				}
 
 				event_tile->qued_construction = true;
 				event_tile->qued_construction_sprite = c_wall.construction_qued_sprite;
@@ -133,6 +147,9 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 				my_job->construction_type = "door";
 				my_job->tasked_tile = event_tile;
 				my_job->taken = true;
+
+				event_tile->qued_construction = true;
+				event_tile->qued_construction_sprite = c_door.construction_qued_sprite;
 			}
 
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.

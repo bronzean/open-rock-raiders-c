@@ -23,6 +23,7 @@ public:
 	bool selected; //Is the tile currently selected?
 
 	SDL_Surface *sprite; //The tile's sprite
+	animation *construction_in_progress_animation; //If a construction is currently being built on this tile, then this is a pointer to the build animation of that tile, if it has a build animaiton.
 
 	int width, height;//The width and the height of the object. It is obtained from the width and and the height of the image.
 

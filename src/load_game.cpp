@@ -227,6 +227,12 @@ bool load_game() //Load the game.
 	{
 		return false;
 	}
+	if(!c_wall.load_config("data/construction/wall/"))
+	{
+		cout << "Failed to load wall construction configuration.\n"; //Debugging output.
+		out_string << "Failed to load wall construction configuration.\n"; //Debugging output.
+		return false; //ABORT.
+	}
 	img_load_safe("data/construction/wall/sprite_ghost.png", &c_wall.construction_qued_sprite);
 	if(!c_wall.construction_qued_sprite)
 	{
@@ -261,6 +267,11 @@ bool load_game() //Load the game.
 		cout << "Failed to load door construction configuration.\n"; //Debugging output.
 		out_string << "Failed to load door construction configuration.\n"; //Debugging output.
 		return false; //ABORT.
+	}
+	img_load_safe("data/construction/door/sprite_ghost.png", &c_door.construction_qued_sprite);
+	if(!c_door.construction_qued_sprite)
+	{
+		return false;
 	}
 
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);

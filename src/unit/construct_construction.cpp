@@ -24,7 +24,24 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 			my_job->tasked_tile->qued_construction = false;
 
 			//TODO: Progress the construction animation.
-			
+
+			if(my_job->_animation) //Check if the job has an animation.
+			{
+				cout << "Has build animation.\n";
+				//TODO: Check if it's time to progress the animation.
+				//(float)open_ammount / (float)open_time >= (float)animations[open_animation_entry].current_frame + 1
+				//if((float)my_job->construction_health / (float)my_job->build_time >= (float)my_job->_animation->current_frame + 1)
+				if( (float)((my_job->build_time * my_job->_animation->num_frames) - my_job->construction_health) / (float)my_job->build_time >= (float)my_job->_animation->current_frame + 1)
+				{
+					my_job->_animation->proceed_animation();
+
+					cout << "Time to increase the sprite.\n";
+				}
+
+				my_job->tasked_tile->construction_in_progress_animation = my_job->_animation;
+
+				//my_job->_animation->draw_sprite(my_job->tasked_tile->wx, my_job->tasked_tile->wy, my_job->tasked_tile->layer);
+			}
 
 			if(my_job->construction_health <= 0 /*&& construction_repositioning == 2*/) //Check if it's done constructing, and if the unit has already moved off the building's tile.
 			{

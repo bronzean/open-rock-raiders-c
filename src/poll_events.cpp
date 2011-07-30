@@ -535,6 +535,20 @@ tile_popup_menu_force_draw:
 									new_job.type = "construct";
 									new_job.construction_type = "wall";
 									new_job.tasked_tile = &Map[tile_id];
+									new_job.build_time = c_wall.build_time;
+
+									if(c_wall.build_animation) //Check if the wall construction has a build animation.
+									{
+										new_job.construction_health = new_job.build_time * c_wall.animations[c_wall.build_animation_entry].num_frames; //Set the health of the construction accordingally.
+										new_job._animation = new animation;
+										*new_job._animation = c_wall.animations[c_wall.build_animation_entry]; //Assign a pointer to the build animation.
+
+										cout << "Wall construction has a build animation.\n"; //Debugging output.
+									}
+									else //Does not have an animation.
+									{
+										new_job.construction_health = new_job.build_time; //Set the construct time.
+									}
 
 									Job_Que.add_job(new_job);
 									//Job_Que.jobs[Job_Que.jobs.size() - 1].tasked_tile = &Map[tile_id];
@@ -597,6 +611,9 @@ tile_popup_menu_force_draw:
 									allow_unit_selection = true;
 									construction_door_location_select = false;
 									construction_location_select = false;
+
+									Map[tile_id].qued_construction = true; //Let the tile know a construction hath been assigned on it.
+									Map[tile_id].qued_construction_sprite = c_door.construction_qued_sprite; //The ghosted version of the construction.
 								}
 							}
 							else

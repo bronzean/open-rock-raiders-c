@@ -16,6 +16,8 @@ public:
 	tile *tasked_tile; //Pointer to the tile that involves this task.
 	bool taken; //Is the job being done by another unit?
 	int construction_health; //Ya, same old health system. Once this reaches 0, the construction is done and BOB the builder can go home. TODO: Unhardcode, of course.
+	int build_time; //Used in constructing constructions.
+	animation *_animation; //Pointer to the animation associated with this job.
 
 	job(); //Constructor.
 	~job() { } //Deconstructor.

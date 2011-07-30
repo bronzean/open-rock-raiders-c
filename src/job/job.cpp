@@ -13,6 +13,8 @@ job::job() //Constructor.
 	tasked_tile = NULL;
 	taken = false;
 	construction_health = 100;
+	build_time = 0;
+	_animation = NULL;
 }
 
 bool job::compare(job *JOB)
@@ -67,4 +69,6 @@ void job::nullify()
 	tasked_tile = NULL;
 	taken = false;
 	construction_health = 0;
+	build_time = 0;
+	_animation = NULL;
 }

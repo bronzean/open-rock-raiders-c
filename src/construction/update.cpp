@@ -11,10 +11,9 @@ void construction::update() //Update whatever needs updating.
 		if(def_teleporter == this) //Check if this is the default teleporter.
 		{
 			//cout << "Is default teleporter.\n";
-			if(!g_teleport_que.empty()) //Make sure the global teleport que is not empty.
+			if(!g_teleport_que.empty() && !paused) //Make sure the global teleport que is not empty, and the game is not paused.
 			{
 				cout << "Stuff to teleport.\n";
-				//cout << "Stuff to teleport.\n";
 
 				char temp = ' ';
 				string variable = "";

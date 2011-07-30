@@ -3,8 +3,8 @@
 
 bool construction::load_config(std::string folderpath)
 {
-	cout << "Loading construction animation!\n"; //Debugging output.
-	out_string << "Loading construction animation!\n"; //Debugging output.
+	cout << "Loading construction animations!\n"; //Debugging output.
+	out_string << "Loading construction animations!\n"; //Debugging output.
 
 	string command = ""; //When it isn't a comment, it appends everything to this. Then this is checked to see if it matches any commands.
 	string num_command = ""; //If the command takes parameters, here they are stored.
@@ -116,10 +116,51 @@ bool construction::load_config(std::string folderpath)
 
 						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
 
-						animations.push_back(new_animation); //Add the open animation to the construction's animation vector.
-						close_animation_entry = animations.size() - 1; //Let the game know what the open animation's location in the animations vector is.
+						animations.push_back(new_animation); //Add the close animation to the construction's animation vector.
+						close_animation_entry = animations.size() - 1; //Let the game know what the close animation's location in the animations vector is.
 
-						close_animation = true; //Let's the game know that the construction has an open animation.
+						close_animation = true; //Let's the game know that the construction has a close animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "BUILD_ANIMATION") //Found the entry that specifies where the construction's build animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						//Debugging output.
+						out_string << "Kay, I found the stuff that has to do with the building animation.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						animations.push_back(new_animation); //Add the build animation to the construction's animation vector.
+						build_animation_entry = animations.size() - 1; //Let the game know what the build animation's location in the animations vector is.
+
+						build_animation = true; //Let's the game know that the construction has a build animation.
 					}
 					else if(temp == '(')
 					{
@@ -174,6 +215,33 @@ bool construction::load_config(std::string folderpath)
 						quit = true;
 
 						close_time = atoi(num_command.c_str()); //Save the value, of course.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "BUILD_TIME") //Found the entry that specifies the build time.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						build_time = atoi(num_command.c_str()); //Save the value, of course.
 					}
 					else if(temp == '(')
 					{

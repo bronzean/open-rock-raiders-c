@@ -52,6 +52,7 @@ public:
 
 	int open_time; //How many frames it takes for the construction to open. If using animations, then how much time is spent on each frame of the animation.
 	int close_time; //How many framed it takes for the construction to open. If using animations, then how much time is spent on each frame of the animation.
+	int build_time; //How many frames it takes for the construction to open. If using animations, specifies how much time is spent on each frame of the animation.
 
 	std::vector<animation> animations; //Stores all of the tile's animations.
 	bool active_animation; //Is an animation currently going on?
@@ -61,6 +62,8 @@ public:
 	int open_animation_entry; //Stores the index of the open animation's entry in the animations vector.
 	bool close_animation; //Does the construction have a closing animation?
 	int close_animation_entry; //Stores the index of the close animation's entry in the animations vector.
+	bool build_animation; ///Does the construction have a build animation?
+	int build_animation_entry; //Stores the index of the build animation's entry in the animations vector.
 
 	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
