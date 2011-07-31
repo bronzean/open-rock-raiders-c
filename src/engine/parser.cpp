@@ -466,6 +466,32 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 						}
 					}
 
+					//Now handle the animations.
+					if(temp_unit.move_left) //If there is a move left animation for this unit.
+					{
+						out_string << "Giving unit its move_left animation.\n";
+						newUnit.move_left = new animation; //Create the new animation.
+						*newUnit.move_left = *temp_unit.move_left; //Assign the animation.
+					}
+					if(temp_unit.move_right) //If there is a move right animation for this unit.
+					{
+						out_string << "Giving unit its move_right animation.\n";
+						newUnit.move_right = new animation; //Create the new animation.
+						*newUnit.move_right = *temp_unit.move_right; //Assign the animation.
+					}
+					if(temp_unit.move_up) //If there is a move up animation for this unit.
+					{
+						out_string << "Giving unit its move_up animation.\n";
+						newUnit.move_up = new animation; //Create the new animation.
+						*newUnit.move_up = *temp_unit.move_up; //Assign the animation.
+					}
+					if(temp_unit.move_down) //If there is a move down animation for this unit.
+					{
+						out_string << "Giving unit its move_down animation.\n";
+						newUnit.move_down = new animation; //Create the new animation.
+						*newUnit.move_down = *temp_unit.move_down; //Assign the animation.
+					}
+
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);
 
 					//Map[atoi(stage_object[1].c_str())].unitlist[Map[atoi(stage_object[1].c_str())].unitlist.size()].init(); //Initialise the unit.

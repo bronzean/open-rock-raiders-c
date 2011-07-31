@@ -126,6 +126,32 @@ void construction::update() //Update whatever needs updating.
 								newUnit.ground_popup_menu->fields.push_back(field_moveto); //Add this to the unit's popup menu.
 								newUnit.ground_popup_menu->fields[newUnit.ground_popup_menu->fields.size() - 1].set_parent_menu(newUnit.ground_popup_menu); //Let the new field know what popup_menu contains it.
 
+								//Now handle the animations.
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_left) //If there is a move left animation for this unit.
+								{
+									out_string << "Giving unit its move_left animation.\n";
+									newUnit.move_left = new animation; //Create the new animation.
+									*newUnit.move_left = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_left; //Assign the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_right) //If there is a move right animation for this unit.
+								{
+									out_string << "Giving unit its move_right animation.\n";
+									newUnit.move_right = new animation; //Create the new animation.
+									*newUnit.move_right = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_right; //Assign the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_up) //If there is a move up animation for this unit.
+								{
+									out_string << "Giving unit its move_up animation.\n";
+									newUnit.move_up = new animation; //Create the new animation.
+									*newUnit.move_up = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_up; //Assign the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_down) //If there is a move down animation for this unit.
+								{
+									out_string << "Giving unit its move_down animation.\n";
+									newUnit.move_down = new animation; //Create the new animation.
+									*newUnit.move_down = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_down; //Assign the animation.
+								}
+
 								Map[dest_tile].unitlist.push_back(newUnit); //Add the new unit to the tile.
 
 								bool exists = false;

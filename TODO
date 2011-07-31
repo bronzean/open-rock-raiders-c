@@ -233,10 +233,15 @@ while(rand(blarg)) //Get a random true or false.
 }
 //The chance of getting a true or a false varies by teleporter strength. The more strength, the higher the chance it'll return false (which means it hath found a tile). And which also means higher accuracy.
 
-147. Somehow, when a unit is teleported in, a nonexistant tile is added to the active map...
+148. Remove the animations vector from the constructions and tiles and instead do what I did with units.
 
-Expanding on 147:
-Turns out after the teleported unit is told to move, and there are two units on the tile, the game will get an insanely large value added into the active map for some reason.
+149. Instead of giving every sprite a selected version, simply overlay the sprite with the green selection box if it's selected.
+
+150. Make the close_door variables of the unit vectors, so that the unit will be able to handle multiple close door tasks.
+
+151. Make every game object use sprite_wrapper for its sprites instead of the current direct SDL_Surface.
+
+152. Make the unit check if the door is already being opened. If it is, then just sit there waiting for it to finish being opened. Afterwards, this unit does not have to close the door; the unit that opened the door must stop being lazy and do its job for once.
 
 
 
@@ -351,6 +356,11 @@ Hehehe, cheap animation! - CANCELLED. FOund better way.
 130. Make the unit go to the closest job. - DONE.
 
 146. Currently, when a tile with a teleporter is clicked on, the active tile seems to get stuck or something. It'll always think that tile is selected for the popup menus. - DONE.
+
+147. Somehow, when a unit is teleported in, a nonexistant tile is added to the active map...
+
+Expanding on 147:
+Turns out after the teleported unit is told to move, and there are two units on the tile, the game will get an insanely large value added into the active map for some reason. - DONE.
 
 
 

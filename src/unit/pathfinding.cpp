@@ -437,5 +437,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 
 	cout << "\n\n\n";
 
+	allow_move = false; //Reset this so that the moving animations don't glitch.
+	frames_since_last_move = 0; //Reset this so that the moving animations don't glitch.
+	active_animation = NULL; //Reset this becuase there's gonna be a new animation in use.
+
 	return true; //Succesfully calculated a path. That's what the original comment says.
 }

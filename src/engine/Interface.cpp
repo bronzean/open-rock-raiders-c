@@ -40,6 +40,8 @@ void interface::update()
 	//{
 		draw_ui();
 	//}
+
+	draw_sprites_that_need_drawing();
 }
 
 void interface::draw_ui()
@@ -118,6 +120,24 @@ void draw_message_handler::draw_all() //Draw everything it's supposed to draw. T
 			messages[counter].message_duration--; //"Tick the timer".
 		}
 	}
+}
+
+void interface::draw_sprites_that_need_drawing() //Draw the sprites that need drawing.
+{
+	for(int i = 0; i < sprites_to_draw.size(); i++)
+	{
+		if(allow_draw)
+		{
+			sprites_to_draw[i]->draw_sprite();
+		}
+	}
+
+	sprites_to_draw.clear(); //Empty this.
+}
+
+void interface::add_sprite_that_needs_drawing(sprite_wrapper *_sprite) //Add a sprite to the sprites_to_draw vector.
+{
+	sprites_to_draw.push_back(_sprite); //Store the sprite.
 }
 
 draw_message_handler Draw_Message_Handler; //Handles all the messages to be drawn.

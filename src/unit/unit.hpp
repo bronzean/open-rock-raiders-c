@@ -56,6 +56,9 @@ public:
 	bool need_path; //Does the unit's path need to be calculated?
 	bool allow_move; //Is the unit allowed to move?
 	int frames_since_last_move; //The number of frames that have passed since the last move.
+	animation *move_left, *move_right, *move_up, *move_down; //The move left, right, up, and down animations.
+
+	animation *active_animation; //Pointer to the currently active animation.
 
 	int draw_frame; //The frame it last was drawn in.
 
@@ -94,10 +97,11 @@ public:
 	bool pick_up_mode; //Is the unit waiting for the player to specify what it's going to be picking up?
 	int pick_up_object_type; //The type of object the unit is picking up. -1 = not picking up anything. 0 = ore. 1 = Energy Crystal. 2 = tool.
 	int pick_up_stage; //Used in the check_pick_up_command function.
+	bool holding_object; //Is the unit currently holding an object in its arms?
 	std::string select_object_to_pick_up_str; //Used in the "Select object to pick up" stuff.
 	SDL_Surface *select_object_to_pick_up_spr; //Used in the "Select object to pick up" stuff.
 
-	std::string status; //What's it doing? IDLE = not doing anything. Check the ai related files for the rest of the status stuff.
+	std::string status; //What's it doing? IDLE = not doing anything. Check the ai related files for the rest of the status stuff. NOTE: OBSOLETE.
 	bool ai_pick_up_ore; //Is the unit allowed to automatically pick up ore?
 
 	bool player; //Is this the player? (Used in the mode where the user is controlling only one unit in an RPG sort of thing.
