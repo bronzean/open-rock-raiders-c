@@ -268,7 +268,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 					cancel_current_activity();
 				}
 			}
-			else if(Job_Que.jobs[i].type == "pick up ore" && Job_Que.jobs[i].taken == false) //Check if the job is a pick up ore job.
+			else if(Job_Que.jobs[i].type == "pick up ore" && Job_Que.jobs[i].taken == false && !carrying_resource) //Check if the job is a pick up ore job.
 			{
 				cout << "Found pick up ore job.\n"; //Debugging output.
 

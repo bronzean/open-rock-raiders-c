@@ -12,56 +12,259 @@ std::string bClassUnit::update()
 
 	if(move && !paused) //If the unit is moving somewhere.
 	{
-		if(Map[move_path[0]].wx < wx && move_left != NULL) //Check if the tile is to the left.
+		if(!carrying_resource)
 		{
-			cout << "Blarg. Tile to the left and has move left animation.\n";
-
-			bool can_animate = true;
-			if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+			if(Map[move_path[0]].wx < wx && move_left != NULL) //Check if the tile is to the left and if the unit has a moving left animation.
 			{
-				if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+				cout << "Blarg. Tile to the left and has move left animation.\n";
+
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
-					cout << "Waiting for door to open.\n";
-					can_animate = false;
-
-					Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
-
-					bool allowed_to_close_door = true;
-
-					if(my_job)
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
 					{
-						if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
+
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
 						{
-							allowed_to_close_door = false;
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
 						}
 					}
+				}
 
-					if(allowed_to_close_door)
+				if(can_animate)
+				{
+					active_animation = move_left;
+
+					//Progress the animation.
+					//(float)open_ammount / (float)open_time >= (float)animations[open_animation_entry].current_frame + 1
+					//if( (float)((my_job->build_time * my_job->_animation->num_frames) - my_job->construction_health) / (float)my_job->build_time >= (float)my_job->_animation->current_frame + 1)
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_left->current_frame + 1) //Check if it is time to update the animation.
 					{
-						needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
-						needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
-						moves_till_close_door_time = 1;
+						move_left->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wx -= tile_width / move_left->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_left->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
 					}
 				}
 			}
-
-			if(can_animate)
+			else if(Map[move_path[0]].wx > wx && move_right != NULL) //Check if the tile is to the right and the unit has a move right animation.
 			{
-				active_animation = move_left;
+				cout << "Blarg. Tile to the right and has move right animation.\n";
 
-				//Progress the animation.
-				//(float)open_ammount / (float)open_time >= (float)animations[open_animation_entry].current_frame + 1
-				//if( (float)((my_job->build_time * my_job->_animation->num_frames) - my_job->construction_health) / (float)my_job->build_time >= (float)my_job->_animation->current_frame + 1)
-				if((float)frames_since_last_move / (float)move_speed >= (float)move_left->current_frame + 1) //Check if it is time to update the animation.
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
-					move_left->proceed_animation(); //PROGRESS THE ANIMATION.
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+					{
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
 
-					wx -= tile_width / move_right->num_frames; //To make it look like it's moving.
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
+						{
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
+						}
+					}
 				}
 
-				if(!allow_move)
+				if(can_animate)
 				{
-					if(frames_since_last_move >= move_speed * move_left->num_frames) //If the number of frames that have passed >= the move speed...
+					active_animation = move_right;
+
+					//Progress the animation.
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_right->current_frame + 1) //Check if it is time to update the animation.
+					{
+						move_right->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wx += tile_width / move_right->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_right->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+					}
+				}
+			}
+			else if(Map[move_path[0]].wy < wy && move_up != NULL) //Check if the tile is to the north and the unit has a move up animation.
+			{
+				cout << "Blarg. Tile to the north and has move up animation.\n";
+
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+				{
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+					{
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
+
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
+						{
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
+						}
+					}
+				}
+
+				if(can_animate)
+				{
+					active_animation = move_up;
+
+					//Progress the animation.
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_up->current_frame + 1) //Check if it is time to update the animation.
+					{
+						move_up->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wy -= tile_width / move_up->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_up->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+					}
+				}
+			}
+			else if(Map[move_path[0]].wy > wy && move_down != NULL) //Check if the tile is to the south and the unit has a move down animation.
+			{
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+				{
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+					{
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
+
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
+						{
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
+						}
+					}
+				}
+
+				if(can_animate)
+				{
+					cout << "Blarg. Tile to the south and has move down animation.\n";
+
+					active_animation = move_down;
+
+					//Progress the animation.
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_down->current_frame + 1) //Check if it is time to update the animation.
+					{
+						move_down->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wy += tile_width / move_down->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_down->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+					}
+				}
+			}
+			else
+			{
+				if(allow_move == false) //If the unit is not allowed to move...
+				{
+					if(frames_since_last_move >= move_speed) //If the number of frames that have passed >= the move speed...
 					{
 						allow_move = true; //Allow movement again.
 						frames_since_last_move = 0; //Reset frames_since_last_move.
@@ -75,54 +278,259 @@ std::string bClassUnit::update()
 				}
 			}
 		}
-		else if(Map[move_path[0]].wx > wx && move_right != NULL) //Check if the tile is to the right.
+		else //Carrying resource.
 		{
-			cout << "Blarg. Tile to the right and has move right animation.\n";
-
-			bool can_animate = true;
-			if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+			if(Map[move_path[0]].wx < wx && move_left_carryore != NULL) //Check if the tile is to the left and if the unit has a moving left carryore animation.
 			{
-				if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+				cout << "Blarg. Tile to the left and has move left carryore animation.\n";
+
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
-					cout << "Waiting for door to open.\n";
-					can_animate = false;
-
-					Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
-
-					bool allowed_to_close_door = true;
-
-					if(my_job)
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
 					{
-						if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
+
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
 						{
-							allowed_to_close_door = false;
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
 						}
 					}
+				}
 
-					if(allowed_to_close_door)
+				if(can_animate)
+				{
+					active_animation = move_left_carryore;
+
+					//Progress the animation.
+					//(float)open_ammount / (float)open_time >= (float)animations[open_animation_entry].current_frame + 1
+					//if( (float)((my_job->build_time * my_job->_animation->num_frames) - my_job->construction_health) / (float)my_job->build_time >= (float)my_job->_animation->current_frame + 1)
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_left_carryore->current_frame + 1) //Check if it is time to update the animation.
 					{
-						needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
-						needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
-						moves_till_close_door_time = 1;
+						move_left_carryore->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wx -= tile_width / move_left_carryore->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_left_carryore->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
 					}
 				}
 			}
-
-			if(can_animate)
+			else if(Map[move_path[0]].wx > wx && move_right_carryore != NULL) //Check if the tile is to the right and the unit has a move right carryore animation.
 			{
-				active_animation = move_right;
+				cout << "Blarg. Tile to the right and has move right carryore animation.\n";
 
-				//Progress the animation.
-				if((float)frames_since_last_move / (float)move_speed >= (float)move_right->current_frame + 1) //Check if it is time to update the animation.
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
-					move_right->proceed_animation(); //PROGRESS THE ANIMATION.
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+					{
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
 
-					wx += tile_width / move_right->num_frames; //To make it look like it's moving.
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
+						{
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
+						}
+					}
 				}
 
-				if(!allow_move)
+				if(can_animate)
 				{
-					if(frames_since_last_move >= move_speed * move_left->num_frames) //If the number of frames that have passed >= the move speed...
+					active_animation = move_right_carryore;
+
+					//Progress the animation.
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_right_carryore->current_frame + 1) //Check if it is time to update the animation.
+					{
+						move_right_carryore->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wx += tile_width / move_right_carryore->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_right_carryore->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+					}
+				}
+			}
+			else if(Map[move_path[0]].wy < wy && move_up_carryore != NULL) //Check if the tile is to the north and the unit has a move up carryore animation.
+			{
+				cout << "Blarg. Tile to the north and has move up carryore animation.\n";
+
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+				{
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+					{
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
+
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
+						{
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
+						}
+					}
+				}
+
+				if(can_animate)
+				{
+					active_animation = move_up_carryore;
+
+					//Progress the animation.
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_up_carryore->current_frame + 1) //Check if it is time to update the animation.
+					{
+						move_up_carryore->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wy -= tile_width / move_up_carryore->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_up_carryore->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+					}
+				}
+			}
+			else if(Map[move_path[0]].wy > wy && move_down_carryore != NULL) //Check if the tile is to the south and the unit has a move down animation.
+			{
+				bool can_animate = true;
+				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
+				{
+					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
+					{
+						cout << "Waiting for door to open.\n";
+						can_animate = false;
+
+						Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
+
+						bool allowed_to_close_door = true;
+
+						if(my_job)
+						{
+							if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
+							{
+								allowed_to_close_door = false;
+							}
+						}
+
+						if(allowed_to_close_door)
+						{
+							needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
+							needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
+							moves_till_close_door_time = 1;
+						}
+					}
+				}
+
+				if(can_animate)
+				{
+					cout << "Blarg. Tile to the south and has move down carryore animation.\n";
+
+					active_animation = move_down_carryore;
+
+					//Progress the animation.
+					if((float)frames_since_last_move / (float)move_speed >= (float)move_down_carryore->current_frame + 1) //Check if it is time to update the animation.
+					{
+						move_down_carryore->proceed_animation(); //PROGRESS THE ANIMATION.
+
+						wy += tile_width / move_down_carryore->num_frames; //To make it look like it's moving.
+					}
+
+					if(!allow_move)
+					{
+						if(frames_since_last_move >= move_speed * move_down_carryore->num_frames) //If the number of frames that have passed >= the move speed...
+						{
+							allow_move = true; //Allow movement again.
+							frames_since_last_move = 0; //Reset frames_since_last_move.
+						}
+						frames_since_last_move++; //Increment the frames that have passed since the last move.
+					}
+
+					if(job_state == "constructing")
+					{
+						Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
+					}
+				}
+			}
+			else
+			{
+				if(allow_move == false) //If the unit is not allowed to move...
+				{
+					if(frames_since_last_move >= move_speed) //If the number of frames that have passed >= the move speed...
 					{
 						allow_move = true; //Allow movement again.
 						frames_since_last_move = 0; //Reset frames_since_last_move.
@@ -134,145 +542,6 @@ std::string bClassUnit::update()
 				{
 					Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
 				}
-			}
-		}
-		else if(Map[move_path[0]].wy < wy && move_up != NULL) //Check if the tile is to the north.
-		{
-			cout << "Blarg. Tile to the north and has move up animation.\n";
-
-			bool can_animate = true;
-			if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
-			{
-				if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
-				{
-					cout << "Waiting for door to open.\n";
-					can_animate = false;
-
-					Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
-
-					bool allowed_to_close_door = true;
-
-					if(my_job)
-					{
-						if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
-						{
-							allowed_to_close_door = false;
-						}
-					}
-
-					if(allowed_to_close_door)
-					{
-						needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
-						needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
-						moves_till_close_door_time = 1;
-					}
-				}
-			}
-
-			if(can_animate)
-			{
-				active_animation = move_up;
-
-				//Progress the animation.
-				if((float)frames_since_last_move / (float)move_speed >= (float)move_up->current_frame + 1) //Check if it is time to update the animation.
-				{
-					move_up->proceed_animation(); //PROGRESS THE ANIMATION.
-
-					wy -= tile_width / move_up->num_frames; //To make it look like it's moving.
-				}
-
-				if(!allow_move)
-				{
-					if(frames_since_last_move >= move_speed * move_left->num_frames) //If the number of frames that have passed >= the move speed...
-					{
-						allow_move = true; //Allow movement again.
-						frames_since_last_move = 0; //Reset frames_since_last_move.
-					}
-					frames_since_last_move++; //Increment the frames that have passed since the last move.
-				}
-
-				if(job_state == "constructing")
-				{
-					Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
-				}
-			}
-		}
-		else if(Map[move_path[0]].wy > wy && move_down != NULL) //Check if the tile is to the south.
-		{
-			bool can_animate = true;
-			if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
-			{
-				if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
-				{
-					cout << "Waiting for door to open.\n";
-					can_animate = false;
-
-					Map[move_path[0]].local_construction->open_thyself(false); //OPEN THE DOOR.
-
-					bool allowed_to_close_door = true;
-
-					if(my_job)
-					{
-						if(my_job->type == "open door" && my_job->tasked_tile == &Map[move_path[0]]) //Specifically check to make sure the unit is not supposed to close the door afterwards.
-						{
-							allowed_to_close_door = false;
-						}
-					}
-
-					if(allowed_to_close_door)
-					{
-						needs_to_close_door = true; //Tell the unit it needs to close the door behind itself.
-						needs_to_close_door_tile = &Map[move_path[0]]; //Tell the unit which tile is the one that at needs to close the door of.
-						moves_till_close_door_time = 1;
-					}
-				}
-			}
-
-			if(can_animate)
-			{
-				cout << "Blarg. Tile to the south and has move down animation.\n";
-
-				active_animation = move_down;
-
-				//Progress the animation.
-				if((float)frames_since_last_move / (float)move_speed >= (float)move_down->current_frame + 1) //Check if it is time to update the animation.
-				{
-					move_down->proceed_animation(); //PROGRESS THE ANIMATION.
-
-					wy += tile_width / move_down->num_frames; //To make it look like it's moving.
-				}
-
-				if(!allow_move)
-				{
-					if(frames_since_last_move >= move_speed * move_left->num_frames) //If the number of frames that have passed >= the move speed...
-					{
-						allow_move = true; //Allow movement again.
-						frames_since_last_move = 0; //Reset frames_since_last_move.
-					}
-					frames_since_last_move++; //Increment the frames that have passed since the last move.
-				}
-
-				if(job_state == "constructing")
-				{
-					Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
-				}
-			}
-		}
-		else
-		{
-			if(allow_move == false) //If the unit is not allowed to move...
-			{
-				if(frames_since_last_move >= move_speed) //If the number of frames that have passed >= the move speed...
-				{
-					allow_move = true; //Allow movement again.
-					frames_since_last_move = 0; //Reset frames_since_last_move.
-				}
-				frames_since_last_move++; //Increment the frames that have passed since the last move.
-			}
-
-			if(job_state == "constructing")
-			{
-				Draw_Message_Handler.add_message(wx + tile_width, wy, PCamera->layer, construct_walking_message_spr, 1, false); //Draw the "I'm coming to construct stuff!" message.
 			}
 		}
 	}

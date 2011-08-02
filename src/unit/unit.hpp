@@ -56,7 +56,9 @@ public:
 	bool need_path; //Does the unit's path need to be calculated?
 	bool allow_move; //Is the unit allowed to move?
 	int frames_since_last_move; //The number of frames that have passed since the last move.
+
 	animation *move_left, *move_right, *move_up, *move_down; //The move left, right, up, and down animations.
+	animation *move_left_carryore, *move_right_carryore, *move_up_carryore, *move_down_carryore; //The move left while carrying something, move right while carrying something, up and down too, animations.
 
 	animation *active_animation; //Pointer to the currently active animation.
 
@@ -88,8 +90,19 @@ public:
 	bool mining; //Is the unit currently mining a tile? Used in drill times.
 	std::string mining_message_str; //A message that is displayed while the unit is mining.
 	SDL_Surface *mining_message_spr; //A message that is displayed while the unit is mining.
-	bool drilling_animation_left; //Does the unit have an animation that plays while it is drilling a wall to the left?
-	int drilling_animation_left_entry; //Stores the index of the drilling animation left's entry in the animations vector.
+
+	bool taking_out_drill; //Is the unit currently taking out its drill? (used in the drilling animation)
+	bool drill_out; //Did it take its drill out?
+	bool putting_drill_away; //Is the unit currently putting its drill away?
+	animation *takeout_drill_left, *takeout_drill_right, *takeout_drill_up, *takeout_drill_down; //The take out drill animations.
+	animation *drill_left, *drill_right, *drill_up, *drill_down; //The drill left/right/up/down animations.
+	animation *putaway_drill; //The put away the drill animation.
+	int take_out_drill_time; //The number of frames the unit spends taking out its drill. If it has an animation for it, then it's the number of frames spent on each frame of the animation.
+	int drill_time; //The number of frames the unit spends on each frame of the drilling animation.
+	int putaway_drill_time; //The number of frames the unit spends putting away its drill. If it has an animation for it, then it's the number of frames spent on each frame of the animation.
+	int take_out_drill_progress; //How far into taking out the drill has the unit gone?
+	int put_away_drill_progress; //How far into putting the drill away has the unit gone?
+	
 
 	bool allow_deselect; //Allow the unit to be deselected?
 
@@ -97,7 +110,7 @@ public:
 	bool pick_up_mode; //Is the unit waiting for the player to specify what it's going to be picking up?
 	int pick_up_object_type; //The type of object the unit is picking up. -1 = not picking up anything. 0 = ore. 1 = Energy Crystal. 2 = tool.
 	int pick_up_stage; //Used in the check_pick_up_command function.
-	bool holding_object; //Is the unit currently holding an object in its arms?
+	//bool holding_object; //Is the unit currently holding an object in its arms?
 	std::string select_object_to_pick_up_str; //Used in the "Select object to pick up" stuff.
 	SDL_Surface *select_object_to_pick_up_spr; //Used in the "Select object to pick up" stuff.
 
@@ -153,9 +166,6 @@ public:
 	SDL_Surface *constructing_message_spr; //A messaged that is displayed while the unit is constructing something.
 	std::string construct_walking_message_str;
 	SDL_Surface *construct_walking_message_spr;
-
-	bool animation_playing; //Is the unit currently playing an animation?
-	std::vector<animation> animations; //Stores all of the tile's animations.
 
 	//static popup_menu unit_popup_menu; //The unit's popup menu. NOTE: Unused
 	popup_menu *wall_popup_menu; //When the user clicks on a wall (with this unit selected)...This is the popup menu that's used.
@@ -232,6 +242,8 @@ public:
 	void ground_popup_menu_update(); //Update the ground_popup_menu.
 
 	void cancel_current_activity(); //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
+
+	void take_out_drill(); //Take out its drill.
 
 	/* --------------------------------------------------------------
 	 * The get_free_neighbor_tile function finds a free tile adjacent to the tile passed to it, and returns a pointer to it. Returns null on fail.

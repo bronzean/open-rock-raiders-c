@@ -289,46 +289,6 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
-			else if(command == "DRILLING_ANIMATION_LEFT") //Found the entry that specifies where the unit's drilling animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-						//new_animation.init(); //Initialize an empty animation. //Redundant.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the drilling animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.animations.push_back(new_animation); //Add the drill animation to the unit's animation vector.
-						new_unit.drilling_animation_left_entry = new_unit.animations.size() - 1; //Let the game know what the drill animation's location in the animations vector is.
-						new_unit.drilling_animation_left = true; //Let's the game know that the tile has a drilling animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
 			else if(command == "MOVE_ANIMATION_LEFT") //Found the entry that specifies where the unit's moving left animation's cfg is located.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -470,6 +430,158 @@ bool unit_type_manager::load_unit(string folderpath)
 
 						new_unit.move_down = new animation; //Create the new animation.
 						*new_unit.move_down = new_animation; //Assign the new animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "CARRYORE_ANIMATION_LEFT") //Found the entry that specifies where the unit's carrying ore left animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						out_string << "Kay, I found the stuff that has to do with the carrying ore left animation of the unit.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						new_unit.move_left_carryore = new animation; //Create the new animation.
+						*new_unit.move_left_carryore = new_animation; //Assign the new animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "CARRYORE_ANIMATION_RIGHT") //Found the entry that specifies where the unit's carrying ore right animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						out_string << "Kay, I found the stuff that has to do with the carrying ore right animation of the unit.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						new_unit.move_right_carryore = new animation; //Create the new animation.
+						*new_unit.move_right_carryore = new_animation; //Assign the new animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "CARRYORE_ANIMATION_UP") //Found the entry that specifies where the unit's carrying ore up animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						out_string << "Kay, I found the stuff that has to do with the carrying ore up animation of the unit.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						new_unit.move_up_carryore = new animation; //Create the new animation.
+						*new_unit.move_up_carryore = new_animation; //Assign the new animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "CARRYORE_ANIMATION_DOWN") //Found the entry that specifies where the unit's carrying ore down animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						out_string << "Kay, I found the stuff that has to do with the carrying ore down animation of the unit.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						new_unit.move_down_carryore = new animation; //Create the new animation.
+						*new_unit.move_down_carryore = new_animation; //Assign the new animation.
 					}
 					else if(temp == '(')
 					{

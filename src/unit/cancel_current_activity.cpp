@@ -32,6 +32,10 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 	closing_door = false;
 	close_door_tile = NULL;
 
+	drill_out = false;
+	taking_out_drill = false;
+	putting_drill_away = false;
+
 	job_state = "idling";
 	if(my_job /* && my_job_is_global */)
 	{

@@ -7,6 +7,7 @@ SDL_TTF
 SDL_mixer
 SDL_net
 pthreads (Also known as posix?)
+Clang++ (You can change the makefile to use g++, if you don't want to install clang.)
 I'f I'm forgetting anything, please let me know.
 
 

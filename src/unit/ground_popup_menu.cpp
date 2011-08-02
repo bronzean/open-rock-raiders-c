@@ -53,13 +53,15 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 
 			int layer_offset = (num_row_objects * num_col_objects * event_tile->layer); //Assign the layer offset.
 
-			if(calculate_path() == false) //Now, calculate the path.
+			if(calculate_path() == false || carrying_resource) //Now, calculate the path.
 			{
 				//What...Something done borked. The tile is inaccessible.
 				move = false; //Tell the unit it's staying put
 				move_destination = 0; //Reset the unit's move destination.
 				pick_up_on_reach_goal = false; //Ya, let the unit know it ain't shoveling any rubble.
 				pick_up_object_type = -1; //Reset this so that the game knows to not shovel the tile...
+
+				cout << "Failed to find path, or already holding something.\n";
 			}
 
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.

@@ -1,2 +1,3 @@
 SDL 1.2 and the appropiate sdl_image and sdl_ttf versions.
 pthreads (also known as posix?). Not sure what version. Latest I guess?
+Clang++ (You can change the makefile to use g++ (You'll need to in Cygwin), but whatever.)

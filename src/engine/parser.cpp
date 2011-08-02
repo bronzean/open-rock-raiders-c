@@ -471,25 +471,49 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 					{
 						out_string << "Giving unit its move_left animation.\n";
 						newUnit.move_left = new animation; //Create the new animation.
-						*newUnit.move_left = *temp_unit.move_left; //Assign the animation.
+						*newUnit.move_left = *temp_unit.move_left; //Copy over the animation.
 					}
 					if(temp_unit.move_right) //If there is a move right animation for this unit.
 					{
 						out_string << "Giving unit its move_right animation.\n";
 						newUnit.move_right = new animation; //Create the new animation.
-						*newUnit.move_right = *temp_unit.move_right; //Assign the animation.
+						*newUnit.move_right = *temp_unit.move_right; //Copy over the animation.
 					}
 					if(temp_unit.move_up) //If there is a move up animation for this unit.
 					{
 						out_string << "Giving unit its move_up animation.\n";
 						newUnit.move_up = new animation; //Create the new animation.
-						*newUnit.move_up = *temp_unit.move_up; //Assign the animation.
+						*newUnit.move_up = *temp_unit.move_up; //Copy over the animation.
 					}
 					if(temp_unit.move_down) //If there is a move down animation for this unit.
 					{
 						out_string << "Giving unit its move_down animation.\n";
 						newUnit.move_down = new animation; //Create the new animation.
-						*newUnit.move_down = *temp_unit.move_down; //Assign the animation.
+						*newUnit.move_down = *temp_unit.move_down; //Copy over the animation.
+					}
+					if(temp_unit.move_left_carryore) //If there is a move left carryore animation for this unit.
+					{
+						out_string << "Giving unit its move_left_carryore animation.\n";
+						newUnit.move_left_carryore = new animation; //Create the new animation.
+						*newUnit.move_left_carryore = *temp_unit.move_left_carryore; //Copy over the animation.
+					}
+					if(temp_unit.move_right_carryore) //If there is a move right carryore animation for this unit.
+					{
+						out_string << "Giving unit its move_right_carryore animation.\n";
+						newUnit.move_right_carryore = new animation; //Create the new animation.
+						*newUnit.move_right_carryore = *temp_unit.move_right_carryore; //Copy over the animation.
+					}
+					if(temp_unit.move_up_carryore) //If there is a move up carryore animation for this unit.
+					{
+						out_string << "Giving unit its move_up_carryore animation.\n";
+						newUnit.move_up_carryore = new animation; //Create the new animation.
+						*newUnit.move_up_carryore = *temp_unit.move_up_carryore; //Copy over the animation.
+					}
+					if(temp_unit.move_down_carryore) //If there is a move down carryore animation for this unit.
+					{
+						out_string << "Giving unit its move_down_carryore animation.\n";
+						newUnit.move_down_carryore = new animation; //Create the new animation.
+						*newUnit.move_down_carryore = *temp_unit.move_down_carryore; //Copy over the animation.
 					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);

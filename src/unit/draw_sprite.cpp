@@ -25,7 +25,11 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 			}
 			else
 			{
-				draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+				if(allow_draw)
+				{
+					//if(carrying)
+					draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+				}
 			}
 			if(selected) //If it is selected...
 			{

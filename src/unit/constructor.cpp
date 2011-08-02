@@ -75,15 +75,12 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	select_rubble_to_shovel_spr = NULL;
 	shovelling_message_str = "I'mma shovel some rubble!";
 	shovelling_message_spr = NULL;
-	animation_playing = false;
 	job_state = "idling";
 	construct_rate = 1;
 	constructing_message_str = "Bob the builder!";
 	constructing_message_spr = NULL;
 	construct_walking_message_str = "Here I come my aunt cinnamon!";
 	construct_walking_message_spr = NULL;
-	drilling_animation_left_entry = 0;
-	drilling_animation_left = false;
 	construction_repositioning = 0;
 
 	wall_popup_menu = NULL;
@@ -103,14 +100,36 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 
 	can_shovel_rubble = false;
 
-	holding_object = false;
+	//holding_object = false;
 
 	move_left = NULL;
 	move_right = NULL;
 	move_up = NULL;
 	move_down = NULL;
+	move_left_carryore = NULL;
+	move_right_carryore = NULL;
+	move_up_carryore = NULL;
+	move_down_carryore = NULL;
 
 	active_animation = NULL;
+
+	taking_out_drill = false;
+	drill_out = false;
+	putting_drill_away = false;
+	takeout_drill_left = NULL;
+	takeout_drill_right = NULL;
+	takeout_drill_up = NULL;
+	takeout_drill_down = NULL;
+	drill_left = NULL;
+	drill_right = NULL;
+	drill_up = NULL;
+	drill_down = NULL;
+	take_out_drill_time = 0;
+	drill_time = 0;
+	putaway_drill = NULL;
+	putaway_drill_time = 0;
+	take_out_drill_progress = 0;
+	put_away_drill_progress = 0;
 
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.

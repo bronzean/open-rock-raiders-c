@@ -36,12 +36,12 @@ void interface::update()
 		}
 	}
 
+	draw_sprites_that_need_drawing();
+
 	//if(screen_needs_updating == false)
 	//{
 		draw_ui();
 	//}
-
-	draw_sprites_that_need_drawing();
 }
 
 void interface::draw_ui()
@@ -129,6 +129,7 @@ void interface::draw_sprites_that_need_drawing() //Draw the sprites that need dr
 		if(allow_draw)
 		{
 			sprites_to_draw[i]->draw_sprite();
+			delete sprites_to_draw[i];
 		}
 	}
 
