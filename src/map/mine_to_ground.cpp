@@ -9,21 +9,6 @@ void tile::mine_to_ground(int i)
 		if(!paused) //Make sure the game isn't paused.
 		{
 			unitlist[i].take_out_drill(); //TAKE OUT THE UNIT'S DRILL.
-
-			/* //Check if it has the animation.
-			if(Map[unitlist[i].mine_tile_id].wx < unitlist[i].wx && unitlist[i].takeout_drill_left) //Tile is to left and has animation?
-			{
-				//PROGRESS THE ANIMATION AS NEEDED>
-				cout << "Blarg. Tile to left and has takeout drill left animation.\n";
-			}
-			else
-			{
-				if(unitlist[i].take_out_drill_progress >= unitlist[i].take_out_drill_time)
-				{
-					//THE DRILL IS OUT.
-					cout << "Yay. Drill out. Now go slap yourself silly. Er, I mean, watch your raider drill das wall.\n";
-				}
-			}*/
 		}
 	}
 	else
