@@ -16,6 +16,9 @@ void tile::mine_to_ground(int i)
 		Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!"
 		if(!paused)
 		{
+
+			unitlist[i].drilling_animation(); //Animate the drilling, if applicable.
+
 			//bClassUnit *temp_unit = &unitlist[i];
 			if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels /*- 1*/] <= 0 && Map[unitlist[i].mine_tile_id].num_shovels <= 0) //This checks if the mining is completely done.
 			{
@@ -82,6 +85,8 @@ void tile::mine_to_ground(int i)
 				}
 
 				unitlist[i].cancel_current_activity();
+
+				unitlist[i].active_animation = NULL;
 			}
 			else if(Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] <= 0) //This checks if the current drill is done.
 			{

@@ -36,6 +36,8 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 	taking_out_drill = false;
 	putting_drill_away = false;
 
+	drill_animation_frame_progress = 0;
+
 	job_state = "idling";
 	if(my_job /* && my_job_is_global */)
 	{

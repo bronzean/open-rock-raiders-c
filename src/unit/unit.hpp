@@ -99,6 +99,7 @@ public:
 	animation *putaway_drill; //The put away the drill animation.
 	int take_out_drill_time; //The number of frames the unit spends taking out its drill. If it has an animation for it, then it's the number of frames spent on each frame of the animation.
 	int drill_time; //The number of frames the unit spends on each frame of the drilling animation.
+	int drill_animation_frame_progress; //How far into the time allocated on each frame of the drilling animation has the unit gone?
 	int putaway_drill_time; //The number of frames the unit spends putting away its drill. If it has an animation for it, then it's the number of frames spent on each frame of the animation.
 	int take_out_drill_progress; //How far into taking out the drill has the unit gone?
 	int put_away_drill_progress; //How far into putting the drill away has the unit gone?
@@ -244,6 +245,8 @@ public:
 	void cancel_current_activity(); //Instead of always writing "mining = false; shovelling = false; etc", simply call this function and it'll do it ALL.
 
 	void take_out_drill(); //Take out its drill.
+
+	void drilling_animation(); //Handles animating the drilling animation.
 
 	/* --------------------------------------------------------------
 	 * The get_free_neighbor_tile function finds a free tile adjacent to the tile passed to it, and returns a pointer to it. Returns null on fail.

@@ -515,6 +515,54 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 						newUnit.move_down_carryore = new animation; //Create the new animation.
 						*newUnit.move_down_carryore = *temp_unit.move_down_carryore; //Copy over the animation.
 					}
+					if(temp_unit.takeout_drill_left) //If there is a takeout drill left animation for this unit.
+					{
+						out_string << "Giving unit its takeout_drill_left animation.\n";
+						newUnit.takeout_drill_left = new animation; //Create the new animation.
+						*newUnit.takeout_drill_left = *temp_unit.takeout_drill_left; //Copy over the animation.
+					}
+					if(temp_unit.takeout_drill_right) //If there is a takeout drill right animation for this unit.
+					{
+						out_string << "Giving unit its takeout_drill_right animation.\n";
+						newUnit.takeout_drill_right = new animation; //Create the new animation.
+						*newUnit.takeout_drill_right = *temp_unit.takeout_drill_right; //Copy over the animation.
+					}
+					if(temp_unit.takeout_drill_up) //If there is a takeout drill up animation for this unit.
+					{
+						out_string << "Giving unit its takeout_drill_up animation.\n";
+						newUnit.takeout_drill_up = new animation; //Create the new animation.
+						*newUnit.takeout_drill_up = *temp_unit.takeout_drill_up; //Copy over the animation.
+					}
+					if(temp_unit.takeout_drill_down) //If there is a takeout drill left animation for this unit.
+					{
+						out_string << "Giving unit its takeout_drill_down animation.\n";
+						newUnit.takeout_drill_down = new animation; //Create the new animation.
+						*newUnit.takeout_drill_down = *temp_unit.takeout_drill_down; //Copy over the animation.
+					}
+					if(temp_unit.drill_left) //If there is a drill left animation for this unit.
+					{
+						out_string << "Giving unit its drill_left animation.\n";
+						newUnit.drill_left = new animation; //Create the new animation.
+						*newUnit.drill_left = *temp_unit.drill_left; //Copy over the animation.
+					}
+					if(temp_unit.drill_right) //If there is a drill right animation for this unit.
+					{
+						out_string << "Giving unit its drill_right animation.\n";
+						newUnit.drill_right = new animation; //Create the new animation.
+						*newUnit.drill_right = *temp_unit.drill_right; //Copy over the animation.
+					}
+					if(temp_unit.drill_up) //If there is a drill up animation for this unit.
+					{
+						out_string << "Giving unit its drill_up animation.\n";
+						newUnit.drill_up = new animation; //Create the new animation.
+						*newUnit.drill_up = *temp_unit.drill_up; //Copy over the animation.
+					}
+					if(temp_unit.drill_down) //If there is a drill down animation for this unit.
+					{
+						out_string << "Giving unit its drill_down animation.\n";
+						newUnit.drill_down = new animation; //Create the new animation.
+						*newUnit.drill_down = *temp_unit.drill_down; //Copy over the animation.
+					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);
 

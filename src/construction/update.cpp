@@ -175,6 +175,55 @@ void construction::update() //Update whatever needs updating.
 									newUnit.move_down_carryore = new animation; //Create the new animation.
 									*newUnit.move_down_carryore = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).move_down_carryore; //Copy over the animation.
 								}
+								//Drilling animations.
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_left) //If there is a takeout drill left animation for this unit.
+								{
+									out_string << "Giving unit its takeout_drill_left animation.\n";
+									newUnit.takeout_drill_left = new animation; //Create the new animation.
+									*newUnit.takeout_drill_left = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_left; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_right) //If there is a takeout drill right animation for this unit.
+								{
+									out_string << "Giving unit its takeout_drill_right animation.\n";
+									newUnit.takeout_drill_right = new animation; //Create the new animation.
+									*newUnit.takeout_drill_right = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_right; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_up) //If there is a takeout drill up animation for this unit.
+								{
+									out_string << "Giving unit its takeout_drill_up animation.\n";
+									newUnit.takeout_drill_up = new animation; //Create the new animation.
+									*newUnit.takeout_drill_up = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_up; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_down) //If there is a takeout drill left animation for this unit.
+								{
+									out_string << "Giving unit its takeout_drill_down animation.\n";
+									newUnit.takeout_drill_down = new animation; //Create the new animation.
+									*newUnit.takeout_drill_down = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).takeout_drill_down; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_left) //If there is a drill left animation for this unit.
+								{
+									out_string << "Giving unit its drill_left animation.\n";
+									newUnit.drill_left = new animation; //Create the new animation.
+									*newUnit.drill_left = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_left; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_right) //If there is a drill right animation for this unit.
+								{
+									out_string << "Giving unit its drill_right animation.\n";
+									newUnit.drill_right = new animation; //Create the new animation.
+									*newUnit.drill_right = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_right; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_up) //If there is a drill up animation for this unit.
+								{
+									out_string << "Giving unit its drill_up animation.\n";
+									newUnit.drill_up = new animation; //Create the new animation.
+									*newUnit.drill_up = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_up; //Copy over the animation.
+								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_down) //If there is a drill down animation for this unit.
+								{
+									out_string << "Giving unit its drill_down animation.\n";
+									newUnit.drill_down = new animation; //Create the new animation.
+									*newUnit.drill_down = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_down; //Copy over the animation.
+								}
 
 								Map[dest_tile].unitlist.push_back(newUnit); //Add the new unit to the tile.
 

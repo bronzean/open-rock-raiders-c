@@ -130,6 +130,7 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	putaway_drill_time = 0;
 	take_out_drill_progress = 0;
 	put_away_drill_progress = 0;
+	drill_animation_frame_progress = 0;
 
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
