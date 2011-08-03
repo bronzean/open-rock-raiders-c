@@ -224,6 +224,12 @@ void construction::update() //Update whatever needs updating.
 									newUnit.drill_down = new animation; //Create the new animation.
 									*newUnit.drill_down = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).drill_down; //Copy over the animation.
 								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).shovel_animation) //If there is a shovel animation for this unit.
+								{
+									out_string << "Giving unit its shovel animation.\n";
+									newUnit.shovel_animation = new animation; //Create the new animation.
+									*newUnit.shovel_animation = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).shovel_animation; //Copy over the animation.
+								}
 
 								Map[dest_tile].unitlist.push_back(newUnit); //Add the new unit to the tile.
 

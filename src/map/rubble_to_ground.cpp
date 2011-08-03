@@ -8,6 +8,8 @@ void tile::rubble_to_ground(int i)
 
 	if(!paused)
 	{
+		unitlist[i].shoveling_animation(); //Animate the shoveling, if applicable.
+
 		//if(health[num_shovels - 1] <= 0 && num_shovels <= 0) //This checks if the shovelling is completely done.
 		if(num_shovels <= 0 && health[0] <= 0) //This checks if the shovelling is completely done.
 		{
@@ -98,6 +100,8 @@ void tile::rubble_to_ground(int i)
 			}
 
 			unitlist[i].cancel_current_activity();
+
+			unitlist[i].active_animation = NULL;
 		}
 		//else if(health[num_shovels - 1] <= 0) //This checks if the current shovel is done.
 		else if(health[num_shovels - 1] <= 0) //This checks if the current shovel is done.

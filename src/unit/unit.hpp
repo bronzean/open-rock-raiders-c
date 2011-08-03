@@ -139,6 +139,10 @@ public:
 	std::string shovelling_message_str; //A message that is displayed while the unit is shovelling.
 	SDL_Surface *shovelling_message_spr; //A message that is displayed while the unit is shovelling.
 
+	animation *shovel_animation; //The shovelling animation.
+	int shovel_time; //The number of frames the unit spends on each frame of the shoveling animation.
+	int shovel_animation_frame_progress; //How far into the time allocated on each frame of the shoveling animation has the unit gone?
+
 
 	job *my_job; //The current job this guy is doing.
 	std::string job_state; //What is the unit currently doing?
@@ -247,6 +251,8 @@ public:
 	void take_out_drill(); //Take out its drill.
 
 	void drilling_animation(); //Handles animating the drilling animation.
+
+	void shoveling_animation(); //Handles animating the shoveling animation.
 
 	/* --------------------------------------------------------------
 	 * The get_free_neighbor_tile function finds a free tile adjacent to the tile passed to it, and returns a pointer to it. Returns null on fail.

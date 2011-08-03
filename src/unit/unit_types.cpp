@@ -949,6 +949,70 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
+			else if(command == "SHOVEL_ANIMATION") //Found the entry that specifies where the unit's shovel animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						out_string << "Kay, I found the stuff that has to do with the shovel animation of the unit.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						new_unit.shovel_animation = new animation; //Create the new animation.
+						*new_unit.shovel_animation = new_animation; //Assign the new animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "SHOVEL_TIME") //Found the entry that specifies the unit's drill time.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						new_unit.shovel_time = atoi(num_command.c_str());
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
 			check_command = false;
 			command = "";
 			num_command = "";

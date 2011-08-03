@@ -563,6 +563,12 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 						newUnit.drill_down = new animation; //Create the new animation.
 						*newUnit.drill_down = *temp_unit.drill_down; //Copy over the animation.
 					}
+					if(temp_unit.shovel_animation) //If there is a shovel animation animation for this unit.
+					{
+						out_string << "Giving unit its shovel animation.\n";
+						newUnit.shovel_animation = new animation; //Create the new animation.
+						*newUnit.shovel_animation = *temp_unit.shovel_animation; //Copy over the animation.
+					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);
 
