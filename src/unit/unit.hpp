@@ -28,7 +28,7 @@ public:
 	int m_health; //The max health.
 	int c_health; //The current health.
 
-	SDL_Surface *sprite; //The unit's sprite.
+	SDL_Surface *sprite, *sprite_left, *sprite_right, *sprite_up; //The unit's sprite. Sprite is facing down, all the rest face their specified direction.
 	SDL_Surface *sprite_select; //This is the sprite that is used when the object is selected.
 	SDL_Surface *sprite_ore_left, *sprite_ore_right, *sprite_ore_up, *sprite_ore_down; //These sprites are used when the unit is facing the specified direction and carrying ore at the same time.
 	std::string spr_extend; //The file extension of the sprite's image

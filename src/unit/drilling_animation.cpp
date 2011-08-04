@@ -14,6 +14,8 @@ void bClassUnit::drilling_animation() //Handles animating the drilling animation
 
 			active_animation = drill_left;
 
+			heading = 270;
+
 			if(drill_animation_frame_progress >= drill_time)
 			{
 				cout << "Progressing animation.\n";
@@ -30,6 +32,8 @@ void bClassUnit::drilling_animation() //Handles animating the drilling animation
 			cout << "Blarg. Tile to right and has drill right animation.\n"; //Debugging output.
 
 			active_animation = drill_right;
+
+			heading = 90;
 
 			if(drill_animation_frame_progress >= drill_time)
 			{
@@ -48,6 +52,8 @@ void bClassUnit::drilling_animation() //Handles animating the drilling animation
 
 			active_animation = drill_up;
 
+			heading = 0;
+
 			if(drill_animation_frame_progress >= drill_time)
 			{
 				cout << "Progressing animation.\n";
@@ -64,6 +70,8 @@ void bClassUnit::drilling_animation() //Handles animating the drilling animation
 			cout << "Blarg. Tile to south and has drill down animation.\n"; //Debugging output.
 
 			active_animation = drill_down;
+
+			heading = 180;
 
 			if(drill_animation_frame_progress >= drill_time)
 			{

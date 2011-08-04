@@ -52,16 +52,15 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 					//if(carrying)
 					if(carrying_resource)
 					{
-						//TODO: Check if it's carrying ore and draw the carrying ore sprite.
-						//draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'carrying ore' sprite.
+						//Check if it's carrying ore and draw the carrying ore sprite.
 
 						if(sprite_ore_up && heading == 0)
 						{
-							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_ore_up, screen); //Draw the 'carrying ore down' sprite.
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_ore_up, screen); //Draw the 'carrying ore up' sprite.
 						}
 						else if(sprite_ore_right && heading == 90)
 						{
-							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_ore_right, screen); //Draw the 'carrying ore down' sprite.
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_ore_right, screen); //Draw the 'carrying ore right' sprite.
 						}
 						else if(sprite_ore_down && heading == 180)
 						{
@@ -70,7 +69,7 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 						}
 						else if(sprite_ore_left && heading == 270)
 						{
-							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_ore_left, screen); //Draw the 'carrying ore down' sprite.
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_ore_left, screen); //Draw the 'carrying ore left' sprite.
 						}
 						else
 						{
@@ -79,7 +78,22 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 					}
 					else
 					{
-						draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+						if(sprite_up && heading == 0)
+						{
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_up, screen); //Draw the 'facing up' sprite.
+						}
+						else if(sprite_right && heading == 90)
+						{
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_right, screen); //Draw the 'facing right' sprite.
+						}
+						else if(sprite_left && heading ==270)
+						{
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite_left, screen); //Draw the 'facing left' sprite.
+						}
+						else
+						{
+							draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal/facing down' sprite.
+						}
 					}
 				}
 			}

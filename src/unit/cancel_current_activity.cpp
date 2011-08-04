@@ -43,6 +43,83 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 
 	active_animation = NULL;
 
+	if(shovel_animation)
+	{
+		shovel_animation->current_frame = 0;
+	}
+	if(pick_up)
+	{
+		pick_up->current_frame = 0;
+	}
+	if(takeout_drill_left)
+	{
+		takeout_drill_left->current_frame = 0;
+	}
+	if(takeout_drill_right)
+	{
+		takeout_drill_right->current_frame = 0;
+	}
+	if(takeout_drill_up)
+	{
+		takeout_drill_up->current_frame = 0;
+	}
+	if(takeout_drill_down)
+	{
+		takeout_drill_down->current_frame = 0;
+	}
+	if(drill_left)
+	{
+		drill_left->current_frame = 0;
+	}
+	if(drill_right)
+	{
+		drill_right->current_frame = 0;
+	}
+	if(drill_up)
+	{
+		drill_up->current_frame = 0;
+	}
+	if(drill_down)
+	{
+		drill_down->current_frame = 0;
+	}
+	if(putaway_drill)
+	{
+		putaway_drill->current_frame = 0;
+	}
+	if(move_left)
+	{
+		move_left->current_frame = 0;
+	}
+	if(move_right)
+	{
+		move_right->current_frame = 0;
+	}
+	if(move_up)
+	{
+		move_up->current_frame = 0;
+	}
+	if(move_down)
+	{
+		move_down->current_frame = 0;
+	}
+	if(move_left_carryore)
+	{
+		move_left_carryore->current_frame = 0;
+	}
+	if(move_right_carryore)
+	{
+		move_right_carryore->current_frame = 0;
+	}
+	if(move_up_carryore)
+	{
+		move_up_carryore->current_frame = 0;
+	}
+	if(move_down_carryore)
+	{
+		move_down_carryore->current_frame = 0;
+	}
+
 	job_state = "idling";
 	if(my_job /* && my_job_is_global */)
 	{

@@ -1094,6 +1094,28 @@ bool unit_type_manager::load_unit(string folderpath)
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
 		return false;
 	}
+	filepath = folderpath + "/sprite_left.png"; //The path to the left sprite.
+	if(!img_load_safe(filepath, &new_unit.sprite_left))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_left = NULL;
+	}
+	filepath = folderpath + "/sprite_right.png"; //The path to the right sprite.
+	if(!img_load_safe(filepath, &new_unit.sprite_right))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_right = NULL;
+	}
+	filepath = folderpath + "/sprite_up.png"; //The path to the up sprite.
+	if(!img_load_safe(filepath, &new_unit.sprite_up))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_up = NULL;
+	}
+
 	filepath = folderpath + "/sprite_select.png"; //The path to the selected sprite.
 	//unit_sprite_select = img_load(filepath); //Load the selected sprite.
 	if(!img_load_safe(filepath, &unit_sprite_select))

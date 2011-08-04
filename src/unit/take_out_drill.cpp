@@ -14,6 +14,8 @@ void bClassUnit::take_out_drill() //Take out its drill.
 
 			active_animation = takeout_drill_left;
 
+			heading = 270;
+
 			if(take_out_drill_progress >= take_out_drill_time && takeout_drill_left->current_frame < takeout_drill_left->num_frames - 1)
 			{
 				cout << "Progressing animation.\n";
@@ -40,6 +42,8 @@ void bClassUnit::take_out_drill() //Take out its drill.
 			cout << "Blarg. Tile to right and has takeout drill right animation.\n"; //Debugging output.
 
 			active_animation = takeout_drill_right;
+
+			heading = 90;
 
 			if(take_out_drill_progress >= take_out_drill_time && takeout_drill_right->current_frame < takeout_drill_right->num_frames - 1)
 			{
@@ -68,6 +72,8 @@ void bClassUnit::take_out_drill() //Take out its drill.
 
 			active_animation = takeout_drill_up;
 
+			heading = 0;
+
 			if(take_out_drill_progress >= take_out_drill_time && takeout_drill_up->current_frame < takeout_drill_up->num_frames - 1)
 			{
 				cout << "Progressing animation.\n";
@@ -94,6 +100,8 @@ void bClassUnit::take_out_drill() //Take out its drill.
 			cout << "Blarg. Tile to south and has takeout drill down animation.\n"; //Debugging output.
 
 			active_animation = takeout_drill_down;
+
+			heading = 180;
 
 			if(take_out_drill_progress >= take_out_drill_time && takeout_drill_down->current_frame < takeout_drill_down->num_frames - 1)
 			{

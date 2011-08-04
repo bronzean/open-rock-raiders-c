@@ -16,6 +16,9 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	wz = 0;
 	layer = 0;
 	sprite = NULL;
+	sprite_left = NULL;
+	sprite_right = NULL;
+	sprite_up = NULL;
 	sprite_select = NULL;
 	color_key = false;
 	que_num = 0;
@@ -142,7 +145,7 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	pickup_progress= 0;
 	picked_up = false;
 
-	heading = 0;
+	heading = 180;
 
 	sprite_ore_left = NULL;
 	sprite_ore_right = NULL;
