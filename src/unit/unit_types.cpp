@@ -987,7 +987,7 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
-			else if(command == "SHOVEL_TIME") //Found the entry that specifies the unit's drill time.
+			else if(command == "SHOVEL_TIME") //Found the entry that specifies the unit's shovel time.
 			{
 				bool quit = false; //Controlls the loop below.
 				bool start = false; //Start recording the parameter?
@@ -1002,6 +1002,70 @@ bool unit_type_manager::load_unit(string folderpath)
 						start = false;
 						quit = true;
 						new_unit.shovel_time = atoi(num_command.c_str());
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "PICKUP_ANIMATION") //Found the entry that specifies where the unit's pickup animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation that's going to be added to the animations vector.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						out_string << "Kay, I found the stuff that has to do with the pickup animation of the unit.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						new_unit.pick_up = new animation; //Create the new animation.
+						*new_unit.pick_up = new_animation; //Assign the new animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "PICKUP_TIME") //Found the entry that specifies the unit's pickup time.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+						new_unit.pickup_time = atoi(num_command.c_str());
 					}
 					else if(temp == '(')
 					{
@@ -1037,6 +1101,35 @@ bool unit_type_manager::load_unit(string folderpath)
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
 		return false;
+	}
+
+	filepath = folderpath + "/sprite_ore_left.png"; //The path to the ore left.
+	if(!img_load_safe(filepath, &new_unit.sprite_ore_left))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_ore_left = NULL;
+	}
+	filepath = folderpath + "/sprite_ore_right.png"; //The path to the ore right.
+	if(!img_load_safe(filepath, &new_unit.sprite_ore_right))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_ore_right = NULL;
+	}
+	filepath = folderpath + "/sprite_ore_up.png"; //The path to the ore up.
+	if(!img_load_safe(filepath, &new_unit.sprite_ore_right))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_ore_up = NULL;
+	}
+	filepath = folderpath + "/sprite_ore_down.png"; //The path to the ore down.
+	if(!img_load_safe(filepath, &new_unit.sprite_ore_right))
+	{
+		cout << "Sprite filepath " << filepath << " does not exist!\n";
+		out_string << "Sprite filepath " << filepath << " does not exist!\n";
+		new_unit.sprite_ore_down = NULL;
 	}
 
 	//new_unit.init(unit_type, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.

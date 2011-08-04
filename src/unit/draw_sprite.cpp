@@ -1,6 +1,7 @@
 /* Copyright the ORR-C Dev Team */
 #include "unit.hpp" //Blablabla, include the unit header.
 #include "../engine/Interface.hpp"
+#include "../engine/sprite/pickup_sprite.hpp"
 using namespace std;
 
 /* --------------------------------------------------------------
@@ -22,13 +23,42 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 				_sprite->wy = wy;
 				_sprite->image = active_animation->frames_spr[active_animation->current_frame];
 				Interface.add_sprite_that_needs_drawing(_sprite);
+
+				/*if(active_animation == pick_up) //Check if the active animation is the pick up animation.
+				{
+					if(pick_up_objects_sprite) //Check if the object being picked up has a pick up version of its sprite.
+					{
+						//SDL_Surface* overlay = NULL;
+
+						//overlay = pick_up_objects_sprite->image;
+
+						//pick_up_objects_sprite->draw_self(wx, wy, layer, overlay)
+
+						pickup_sprite* _pickup_sprite = new pickup_sprite;
+						*_pickup_sprite = *pick_up_objects_sprite;
+
+						_pickup_sprite->wx = wx;
+						_pickup_sprite->wy = wy;
+						_pickup_sprite->layer = layer;
+						Interface.add_sprite_that_needs_drawing(_pickup_sprite);
+					}
+				}*/
+
 			}
 			else
 			{
 				if(allow_draw)
 				{
 					//if(carrying)
-					draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+					if(carrying_resource)
+					{
+						//TODO: Check if it's carrying ore and draw the carrying ore sprite.
+						draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'carrying ore' sprite.
+					}
+					else
+					{
+						draw(wx - (PCamera->wx), wy - (PCamera->wy), sprite, screen); //Draw the 'normal' sprite.
+					}
 				}
 			}
 			if(selected) //If it is selected...

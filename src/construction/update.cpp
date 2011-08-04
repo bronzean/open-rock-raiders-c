@@ -230,6 +230,12 @@ void construction::update() //Update whatever needs updating.
 									newUnit.shovel_animation = new animation; //Create the new animation.
 									*newUnit.shovel_animation = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).shovel_animation; //Copy over the animation.
 								}
+								if(Unit_Type_Manager.get_by_id(unit_id_to_teleport).pick_up) //If there is a pickup animation for this unit.
+								{
+									out_string << "Giving unit its pickup animation.\n";
+									newUnit.pick_up = new animation; //Create the new animation.
+									*newUnit.pick_up = *Unit_Type_Manager.get_by_id(unit_id_to_teleport).pick_up; //Copy over the animation.
+								}
 
 								Map[dest_tile].unitlist.push_back(newUnit); //Add the new unit to the tile.
 

@@ -16,6 +16,8 @@ class job;
 class tile;
 class popup_menu;
 
+class pickup_sprite;
+
 //This is the blase class of all the units that the game will be using
 class bClassUnit
 {
@@ -28,6 +30,7 @@ public:
 
 	SDL_Surface *sprite; //The unit's sprite.
 	SDL_Surface *sprite_select; //This is the sprite that is used when the object is selected.
+	SDL_Surface *sprite_ore_left, *sprite_ore_right, *sprite_ore_up, *sprite_ore_down; //These sprites are used when the unit is facing the specified direction and carrying ore at the same time.
 	std::string spr_extend; //The file extension of the sprite's image
 	bool color_key; //Draw with a color key?
 
@@ -114,6 +117,12 @@ public:
 	//bool holding_object; //Is the unit currently holding an object in its arms?
 	std::string select_object_to_pick_up_str; //Used in the "Select object to pick up" stuff.
 	SDL_Surface *select_object_to_pick_up_spr; //Used in the "Select object to pick up" stuff.
+
+	animation *pick_up; //The pick up animation.
+	pickup_sprite *pick_up_objects_sprite; //The pick up animation is a general pick up animation. Every object that can be picked up has a pick up version of the sprite. This sprite is overlayed over the pick up animation at the specified position.
+	int pickup_time; //The number of frames the unit spends picking up an object. If it has an animation for it, then it's the number of frames spent on each frame of the animation.
+	int pickup_progress; //How far into pickup up the object has the unit gone?
+	bool picked_up; //This is set to true once the pickup time has expired.
 
 	std::string status; //What's it doing? IDLE = not doing anything. Check the ai related files for the rest of the status stuff. NOTE: OBSOLETE.
 	bool ai_pick_up_ore; //Is the unit allowed to automatically pick up ore?
@@ -253,6 +262,8 @@ public:
 	void drilling_animation(); //Handles animating the drilling animation.
 
 	void shoveling_animation(); //Handles animating the shoveling animation.
+
+	void _pick_up(); //Picks up objects. Well. Does the timing stuff, and the animating, if the unit has an animation.
 
 	/* --------------------------------------------------------------
 	 * The get_free_neighbor_tile function finds a free tile adjacent to the tile passed to it, and returns a pointer to it. Returns null on fail.

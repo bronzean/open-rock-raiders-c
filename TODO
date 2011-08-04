@@ -243,6 +243,8 @@ while(rand(blarg)) //Get a random true or false.
 
 152. Make the unit check if the door is already being opened. If it is, then just sit there waiting for it to finish being opened. Afterwards, this unit does not have to close the door; the unit that opened the door must stop being lazy and do its job for once.
 
+153. Give units a direction and make the sprites show the direction they're facing.
+
 
 
 --Done--
