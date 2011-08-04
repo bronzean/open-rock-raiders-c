@@ -5,6 +5,8 @@ void bClassUnit::_pick_up() //Picks up objects. Well. Does the timing stuff, and
 {
 	if(!paused)
 	{
+		heading = 180;
+
 		if(pick_up) //If it has a pick up animation
 		{
 			//PROGRESS THE ANIMATION AS NEEDED.

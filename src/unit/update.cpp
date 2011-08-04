@@ -19,6 +19,9 @@ std::string bClassUnit::update()
 				cout << "Blarg. Tile to the left and has move left animation.\n";
 
 				bool can_animate = true;
+
+				heading = 270;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -82,6 +85,9 @@ std::string bClassUnit::update()
 				cout << "Blarg. Tile to the right and has move right animation.\n";
 
 				bool can_animate = true;
+
+				heading = 90;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -143,6 +149,9 @@ std::string bClassUnit::update()
 				cout << "Blarg. Tile to the north and has move up animation.\n";
 
 				bool can_animate = true;
+
+				heading = 0;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -202,6 +211,9 @@ std::string bClassUnit::update()
 			else if(Map[move_path[0]].wy > wy && move_down != NULL) //Check if the tile is to the south and the unit has a move down animation.
 			{
 				bool can_animate = true;
+
+				heading = 180;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -285,6 +297,9 @@ std::string bClassUnit::update()
 				cout << "Blarg. Tile to the left and has move left carryore animation.\n";
 
 				bool can_animate = true;
+
+				heading = 270;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -348,6 +363,9 @@ std::string bClassUnit::update()
 				cout << "Blarg. Tile to the right and has move right carryore animation.\n";
 
 				bool can_animate = true;
+
+				heading = 90;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -409,6 +427,9 @@ std::string bClassUnit::update()
 				cout << "Blarg. Tile to the north and has move up carryore animation.\n";
 
 				bool can_animate = true;
+
+				heading = 0;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)
@@ -468,6 +489,9 @@ std::string bClassUnit::update()
 			else if(Map[move_path[0]].wy > wy && move_down_carryore != NULL) //Check if the tile is to the south and the unit has a move down animation.
 			{
 				bool can_animate = true;
+
+				heading = 180;
+
 				if(Map[move_path[0]].has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 				{
 					if(Map[move_path[0]].local_construction->door && !Map[move_path[0]].local_construction->construction_open)

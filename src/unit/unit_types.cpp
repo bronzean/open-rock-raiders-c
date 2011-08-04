@@ -1118,14 +1118,14 @@ bool unit_type_manager::load_unit(string folderpath)
 		new_unit.sprite_ore_right = NULL;
 	}
 	filepath = folderpath + "/sprite_ore_up.png"; //The path to the ore up.
-	if(!img_load_safe(filepath, &new_unit.sprite_ore_right))
+	if(!img_load_safe(filepath, &new_unit.sprite_ore_up))
 	{
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
 		new_unit.sprite_ore_up = NULL;
 	}
 	filepath = folderpath + "/sprite_ore_down.png"; //The path to the ore down.
-	if(!img_load_safe(filepath, &new_unit.sprite_ore_right))
+	if(!img_load_safe(filepath, &new_unit.sprite_ore_down))
 	{
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
@@ -1134,6 +1134,7 @@ bool unit_type_manager::load_unit(string folderpath)
 
 	//new_unit.init(unit_type, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
 	new_unit.init(0, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
+
 	unit_list.push_back(new_unit);
 
 	return true;

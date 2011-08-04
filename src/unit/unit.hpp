@@ -59,6 +59,7 @@ public:
 	bool need_path; //Does the unit's path need to be calculated?
 	bool allow_move; //Is the unit allowed to move?
 	int frames_since_last_move; //The number of frames that have passed since the last move.
+	int heading; //The direction the unit is facing. = 0 North. 90 = east. 180 = south. 270 = west.
 
 	animation *move_left, *move_right, *move_up, *move_down; //The move left, right, up, and down animations.
 	animation *move_left_carryore, *move_right_carryore, *move_up_carryore, *move_down_carryore; //The move left while carrying something, move right while carrying something, up and down too, animations.
