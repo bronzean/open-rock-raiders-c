@@ -15,6 +15,9 @@ construction::construction() //Constructor. Initializes an empty construction.
 	sprite_open = NULL;
 	construction_qued_sprite = NULL;
 
+	four_way_spr, corner_left_down_spr, corner_left_up_spr, corner_right_down_spr, corner_right_up_spr, horz_downcon_spr, horz_endsopen_spr, horz_leftend_spr, horz_rightend_spr, horz_upcon_spr, vert_downend_spr, vert_endsopen_spr, vert_leftcon_spr, vert_rightcon_spr, ver_upend_spr = NULL;
+	connection = NULL;
+
 	teleporter = false;
 	teleport_signal_strength = 0;
 	teleport_unit_type = NULL;
@@ -53,6 +56,8 @@ construction::construction() //Constructor. Initializes an empty construction.
 	selectable = false;
 	selected = false;
 	allow_deselect = true;
+
+	neighbour_left, neighbour_right, neighbour_up, neighbour_down = NULL;
 }
 
 void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.
@@ -140,7 +145,10 @@ void construction::draw_sprite(int wx, int wy, int layer) //Draw the constructio
 			}
 			else
 			{
-				draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
+				//if(!draw_connection()) //Check if the tile is connected. If it is, then draw its sprite (in the function).
+				//{
+					draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
+				//}
 			}
 		}
 	}

@@ -189,3 +189,5 @@ extern tile* selected_tile; //Pointer to the selected tile.
 
 extern bool construction_selected; //Is a construction currently selected?
 extern construction* selected_construction; //Pointer to the selected construction.
+
+extern std::vector<construction*> constructions_on_map; //Vector of all the constructions on the map.

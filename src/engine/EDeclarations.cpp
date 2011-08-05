@@ -141,3 +141,5 @@ bool allow_unit_selection = true; //Only if no buttons were clicked and whatnot 
 
 bool construction_selected = false; //Is a construction currently selected?
 construction* selected_construction = NULL; //Pointer to the selected construction.
+
+vector<construction*> constructions_on_map; //Vector of all the constructions on the map.

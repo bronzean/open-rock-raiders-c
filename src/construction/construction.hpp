@@ -65,6 +65,12 @@ public:
 	bool build_animation; ///Does the construction have a build animation?
 	int build_animation_entry; //Stores the index of the build animation's entry in the animations vector.
 
+	//Here are all the possible connections. Used for walls and the like.
+	SDL_Surface *four_way_spr, *corner_left_down_spr, *corner_left_up_spr, *corner_right_down_spr, *corner_right_up_spr, *horz_downcon_spr, *horz_endsopen_spr, *horz_leftend_spr, *horz_rightend_spr, *horz_upcon_spr, *vert_downend_spr, *vert_endsopen_spr, *vert_leftcon_spr, *vert_rightcon_spr, *ver_upend_spr; //All the connection sprites.
+	SDL_Surface* connection; //A pointer to the current connection. NULL for none.
+
+	construction *neighbour_left, *neighbour_right, *neighbour_up, *neighbour_down; //The construction's neighbouring constructions.
+
 	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
 	void copy_from(construction Construction); //Give this tile the properties of the one being copied.
