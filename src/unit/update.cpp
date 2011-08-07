@@ -16,7 +16,7 @@ std::string bClassUnit::update()
 		{
 			if(Map[move_path[0]].wx < wx && move_left != NULL) //Check if the tile is to the left and if the unit has a moving left animation.
 			{
-				cout << "Blarg. Tile to the left and has move left animation.\n";
+				//cout << "Blarg. Tile to the left and has move left animation.\n";
 
 				bool can_animate = true;
 
@@ -82,7 +82,7 @@ std::string bClassUnit::update()
 			}
 			else if(Map[move_path[0]].wx > wx && move_right != NULL) //Check if the tile is to the right and the unit has a move right animation.
 			{
-				cout << "Blarg. Tile to the right and has move right animation.\n";
+				//cout << "Blarg. Tile to the right and has move right animation.\n";
 
 				bool can_animate = true;
 
@@ -146,7 +146,7 @@ std::string bClassUnit::update()
 			}
 			else if(Map[move_path[0]].wy < wy && move_up != NULL) //Check if the tile is to the north and the unit has a move up animation.
 			{
-				cout << "Blarg. Tile to the north and has move up animation.\n";
+				//cout << "Blarg. Tile to the north and has move up animation.\n";
 
 				bool can_animate = true;
 
@@ -244,7 +244,7 @@ std::string bClassUnit::update()
 
 				if(can_animate)
 				{
-					cout << "Blarg. Tile to the south and has move down animation.\n";
+					//cout << "Blarg. Tile to the south and has move down animation.\n";
 
 					active_animation = move_down;
 
@@ -294,7 +294,7 @@ std::string bClassUnit::update()
 		{
 			if(Map[move_path[0]].wx < wx && move_left_carryore != NULL) //Check if the tile is to the left and if the unit has a moving left carryore animation.
 			{
-				cout << "Blarg. Tile to the left and has move left carryore animation.\n";
+				//cout << "Blarg. Tile to the left and has move left carryore animation.\n";
 
 				bool can_animate = true;
 
@@ -360,7 +360,7 @@ std::string bClassUnit::update()
 			}
 			else if(Map[move_path[0]].wx > wx && move_right_carryore != NULL) //Check if the tile is to the right and the unit has a move right carryore animation.
 			{
-				cout << "Blarg. Tile to the right and has move right carryore animation.\n";
+				//cout << "Blarg. Tile to the right and has move right carryore animation.\n";
 
 				bool can_animate = true;
 
@@ -424,7 +424,7 @@ std::string bClassUnit::update()
 			}
 			else if(Map[move_path[0]].wy < wy && move_up_carryore != NULL) //Check if the tile is to the north and the unit has a move up carryore animation.
 			{
-				cout << "Blarg. Tile to the north and has move up carryore animation.\n";
+				//cout << "Blarg. Tile to the north and has move up carryore animation.\n";
 
 				bool can_animate = true;
 
@@ -522,7 +522,7 @@ std::string bClassUnit::update()
 
 				if(can_animate)
 				{
-					cout << "Blarg. Tile to the south and has move down carryore animation.\n";
+					//cout << "Blarg. Tile to the south and has move down carryore animation.\n";
 
 					active_animation = move_down_carryore;
 

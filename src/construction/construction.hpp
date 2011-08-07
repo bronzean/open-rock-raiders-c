@@ -66,7 +66,7 @@ public:
 	int build_animation_entry; //Stores the index of the build animation's entry in the animations vector.
 
 	//Here are all the possible connections. Used for walls and the like.
-	SDL_Surface *four_way_spr, *corner_left_down_spr, *corner_left_up_spr, *corner_right_down_spr, *corner_right_up_spr, *horz_downcon_spr, *horz_endsopen_spr, *horz_leftend_spr, *horz_rightend_spr, *horz_upcon_spr, *vert_downend_spr, *vert_endsopen_spr, *vert_leftcon_spr, *vert_rightcon_spr, *ver_upend_spr; //All the connection sprites.
+	SDL_Surface *four_way_spr, *corner_left_down_spr, *corner_left_up_spr, *corner_right_down_spr, *corner_right_up_spr, *horz_downcon_spr, *horz_endsopen_spr, *horz_leftend_spr, *horz_rightend_spr, *horz_upcon_spr, *vert_downend_spr, *vert_endsopen_spr, *vert_leftcon_spr, *vert_rightcon_spr, *vert_upend_spr; //All the connection sprites.
 	SDL_Surface* connection; //A pointer to the current connection. NULL for none.
 
 	construction *neighbour_left, *neighbour_right, *neighbour_up, *neighbour_down; //The construction's neighbouring constructions.
@@ -85,6 +85,10 @@ public:
 	void select(); //Checks if the player selected/deselected the construction.
 
 	void update(); //Update whatever needs updating.
+
+	void update_connections(); //Updates this tile's connection sprite.
+
+	void load_connection_sprites(std::string folderpath); //Load the tile's connection sprites.
 
 
 	construction(); //Constructor. Initializes an empty construction.

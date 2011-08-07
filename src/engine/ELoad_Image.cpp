@@ -137,7 +137,7 @@ bool img_load_safe(std::string filename, SDL_Surface **Original) //Doesn't memle
 		out_string << "Error: Couldn't load \"" + filename + "\".";
 		SDL_Surface *null_spr = NULL;
 		//Original = null_spr;
-		Original = NULL;
+		*Original = NULL;
 		return false;
 	}
 	return true; //Success!

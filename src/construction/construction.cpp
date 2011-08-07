@@ -15,7 +15,7 @@ construction::construction() //Constructor. Initializes an empty construction.
 	sprite_open = NULL;
 	construction_qued_sprite = NULL;
 
-	four_way_spr, corner_left_down_spr, corner_left_up_spr, corner_right_down_spr, corner_right_up_spr, horz_downcon_spr, horz_endsopen_spr, horz_leftend_spr, horz_rightend_spr, horz_upcon_spr, vert_downend_spr, vert_endsopen_spr, vert_leftcon_spr, vert_rightcon_spr, ver_upend_spr = NULL;
+	four_way_spr, corner_left_down_spr, corner_left_up_spr, corner_right_down_spr, corner_right_up_spr, horz_downcon_spr, horz_endsopen_spr, horz_leftend_spr, horz_rightend_spr, horz_upcon_spr, vert_downend_spr, vert_endsopen_spr, vert_leftcon_spr, vert_rightcon_spr, vert_upend_spr = NULL;
 	connection = NULL;
 
 	teleporter = false;
@@ -57,7 +57,10 @@ construction::construction() //Constructor. Initializes an empty construction.
 	selected = false;
 	allow_deselect = true;
 
-	neighbour_left, neighbour_right, neighbour_up, neighbour_down = NULL;
+	neighbour_left = NULL;
+	neighbour_right = NULL;
+	neighbour_up = NULL;
+	neighbour_down = NULL;
 }
 
 void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.
@@ -121,6 +124,22 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	construction_qued_sprite = Construction.construction_qued_sprite;
 
 	build_time = Construction.build_time;
+
+	four_way_spr = Construction.four_way_spr;
+	corner_left_down_spr = Construction.corner_left_down_spr;
+	corner_left_up_spr = Construction.corner_left_up_spr;
+	corner_right_down_spr = Construction.corner_right_down_spr;
+	corner_right_up_spr = Construction.corner_right_up_spr;
+	horz_downcon_spr = Construction.horz_downcon_spr;
+	horz_endsopen_spr = Construction.horz_endsopen_spr;
+	horz_leftend_spr = Construction.horz_leftend_spr;
+	horz_rightend_spr = Construction.horz_rightend_spr;
+	horz_upcon_spr = Construction.horz_upcon_spr;
+	vert_downend_spr = Construction.vert_downend_spr;
+	vert_endsopen_spr = Construction.vert_endsopen_spr;
+	vert_leftcon_spr = Construction.vert_leftcon_spr;
+	vert_rightcon_spr = Construction.vert_rightcon_spr;
+	vert_upend_spr = Construction.vert_upend_spr;
 }
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.
@@ -145,10 +164,18 @@ void construction::draw_sprite(int wx, int wy, int layer) //Draw the constructio
 			}
 			else
 			{
-				//if(!draw_connection()) //Check if the tile is connected. If it is, then draw its sprite (in the function).
-				//{
+				//cout << "Blarg.\n";
+				if(connection)
+				{
+					draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), connection, screen); //Now draw the sprite to the screen.
+
+					//cout << "Connection.\n";
+				}
+				else
+				{
+					//cout << "Normal.\n";
 					draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
-				//}
+				}
 			}
 		}
 	}

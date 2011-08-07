@@ -245,6 +245,8 @@ while(rand(blarg)) //Get a random true or false.
 
 153. Give units a direction and make the sprites show the direction they're facing.
 
+154. Move the check neighbours code in map/construct_construction.cpp to the construction's code.
+
 
 
 --Done--

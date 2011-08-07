@@ -238,6 +238,8 @@ bool load_game() //Load the game.
 	{
 		return false;
 	}
+	c_wall.load_connection_sprites("data/construction/wall/"); //Load the wall's connection sprites.
+
 	//c_floor.init(); //TODO: Ya, this needs to be done...
 
 	c_teleporter1.init("teleporter1", false, false, false, true, 0, 2, "data/construction/teleporter1/sprite.png");

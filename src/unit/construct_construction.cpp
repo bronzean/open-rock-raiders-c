@@ -29,7 +29,7 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 
 				if(my_job->_animation) //Check if the job has an animation.
 				{
-					cout << "Has build animation.\n";
+					//cout << "Has build animation.\n";
 					//TODO: Check if it's time to progress the animation.
 					//(float)open_ammount / (float)open_time >= (float)animations[open_animation_entry].current_frame + 1
 					//if((float)my_job->construction_health / (float)my_job->build_time >= (float)my_job->_animation->current_frame + 1)
@@ -37,7 +37,7 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 					{
 						my_job->_animation->proceed_animation();
 
-						cout << "Time to increase the sprite.\n";
+						//cout << "Time to increase the sprite.\n";
 					}
 
 					my_job->tasked_tile->construction_in_progress_animation = my_job->_animation;
