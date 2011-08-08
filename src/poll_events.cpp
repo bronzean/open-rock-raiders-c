@@ -389,7 +389,17 @@ tile_popup_menu_force_draw:
 
 							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_door_location_spr, 1, false); //Adds a message to be drawn.
 							allow_unit_selection = false; //Since the construct door button was clicked, disable selection of units and whatnot.
-							construction_door_location_select = true; 
+							construction_door_location_select = true; //Let's the game know a door's location is currently being chosen.
+							construction_location_select = true; //Tells the game the player is selecting the location of a construction to be built.
+						}
+						else if(Interface.construct_teleporter_button.clicked() && !construction_location_select) //Check if the construct teleporter button was clicked.
+						{
+							std::cout << "\nConstruct teleporter button clicked.\n"; //Debugging output.
+
+							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_teleporter_location_spr, 1, false); //Adds a message to be drawn.
+
+							allow_unit_selection = false; //Since the construct door button was clicked, disable selection of units and whatnot.
+							construction_teleporter_location_select = true; //Let's the game know a teleporter's location is currently being choosen.
 							construction_location_select = true; //Tells the game the player is selecting the location of a construction to be built.
 						}
 						else

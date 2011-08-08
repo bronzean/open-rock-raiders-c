@@ -85,6 +85,11 @@ int update()
 		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_door_location_spr, 1, true); //Displays the "Choose location of door construction" message.
 	}
 
+	if(construction_teleporter_location_select && !server) //Is the user selecting the location of a teleporter construction?
+	{
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_teleporter_location_spr, 1, true); //Displays the "Choose location of teleporter construction" message.
+	}
+
 	poll_events(); //Event handling.
 
 	//If the escape key was pressed...

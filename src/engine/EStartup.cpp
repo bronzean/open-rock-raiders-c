@@ -159,6 +159,22 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
         Interface.construct_door_button.y2 = Interface.construct_door_button.y1 + Interface.construct_door_button.sprite->h; //Set the construct door button's bottom right corner's y.
 
         choose_door_location_spr = TTF_RenderText_Solid(font1, choose_door_location_str.c_str(), c_white);
+        temp_spr = NULL; //Reset this for use with next button.
+
+        if(!img_load_safe("data/resource/interface/button/construction/build_teleporter.png", &temp_spr))
+        {
+                cout << "Failed loading teleporter construction button sprite.\n";
+                return false;
+        }
+        Interface.construct_teleporter_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct wall button.
+        Interface.construct_teleporter_button.state = 1; //Make it start out enabled!
+        Interface.construct_teleporter_button.x1 = Interface.construct_door_button.x1; //TODO: Make this be loaded from the interface cfg.
+        Interface.construct_teleporter_button.y1 = Interface.construct_door_button.y2 + 1; //TODO: Make this be loaded from the interface cfg.
+        Interface.construct_teleporter_button.x2 = Interface.construct_teleporter_button.x1 + Interface.construct_teleporter_button.sprite->w; //Set the construct door button's bottom right corner's x.
+        Interface.construct_teleporter_button.y2 = Interface.construct_teleporter_button.y1 + Interface.construct_teleporter_button.sprite->h; //Set the construct door button's bottom right corner's y.
+
+        choose_teleporter_location_spr = TTF_RenderText_Solid(font1, choose_teleporter_location_str.c_str(), c_white);
+        temp_spr = NULL; //Reset this for use with next button.
 
 	//Everything initialized fine.
 	return true;

@@ -11,6 +11,7 @@ public:
 	button g_teleport_button; //The global teleport button.
 	button construct_wall_button; //The construct wall button.
 	button construct_door_button; //The construct door button.
+	button construct_teleporter_button; //The construct teleporter button.
 
 	std::vector<popup_menu*> active_popup_menus; //Vector containin the active popup menus.
 
