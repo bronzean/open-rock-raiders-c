@@ -1,0 +1,2 @@
+[BUILD_ANIMATION](build_animation.2dap)
+[BUILD_TIME](25) Number of frames the game spends on each stage of the build animation. If no animation is provided, ammount of time that transpires until it is built.

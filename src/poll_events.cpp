@@ -392,14 +392,14 @@ tile_popup_menu_force_draw:
 							construction_door_location_select = true; //Let's the game know a door's location is currently being chosen.
 							construction_location_select = true; //Tells the game the player is selecting the location of a construction to be built.
 						}
-						else if(Interface.construct_teleporter_button.clicked() && !construction_location_select) //Check if the construct teleporter button was clicked.
+						else if(Interface.construct_teleporter1_button.clicked() && !construction_location_select) //Check if the construct teleporter button was clicked.
 						{
-							std::cout << "\nConstruct teleporter button clicked.\n"; //Debugging output.
+							std::cout << "\nConstruct teleporter1 button clicked.\n"; //Debugging output.
 
-							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_teleporter_location_spr, 1, false); //Adds a message to be drawn.
+							Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_teleporter1_location_spr, 1, false); //Adds a message to be drawn.
 
 							allow_unit_selection = false; //Since the construct door button was clicked, disable selection of units and whatnot.
-							construction_teleporter_location_select = true; //Let's the game know a teleporter's location is currently being choosen.
+							construction_teleporter1_location_select = true; //Let's the game know a teleporter's location is currently being choosen.
 							construction_location_select = true; //Tells the game the player is selecting the location of a construction to be built.
 						}
 						else
@@ -601,7 +601,7 @@ tile_popup_menu_force_draw:
 									cout << "Invalid tile!\n\n";
 
 									allow_unit_selection = true;
-									construction_wall_location_select = false;
+									construction_door_location_select = false;
 									construction_location_select = false;
 								}
 								else
@@ -638,6 +638,72 @@ tile_popup_menu_force_draw:
 
 									Map[tile_id].qued_construction = true; //Let the tile know a construction hath been assigned on it.
 									Map[tile_id].qued_construction_sprite = c_door.construction_qued_sprite; //The ghosted version of the construction.
+								}
+							}
+							else if(construction_teleporter1_location_select)
+							{
+								//Find the tile that was selected.
+								bool run = true; //Controls the loop below.
+								int tile_id = 0; //The ID of the tile that was selected.
+
+								//Check if a tile was clicked.
+								for(int i = 0; i < (num_col_objects * num_row_objects) * num_layers; i++)
+								{
+									if(run)
+									{
+										//Check if the tile is 'in bounds'.
+										if(event_struct.button.x + PCamera->wx >= Map[i].wx && event_struct.button.x + PCamera->wx <= Map[i].wx + Map[i].width && event_struct.button.y + PCamera->wy >= Map[i].wy && event_struct.button.y + PCamera->wy <= Map[i].wy + Map[i].height && PCamera->layer == Map[i].layer)
+										{
+											tile_id = i; //Save the ID of this tile only if no units are on this tile.
+
+											cout << "Found the tile!\n";
+
+											run = false;
+										}
+									}
+								}
+
+								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction)
+								{
+									cout << "Invalid tile!\n\n";
+
+									allow_unit_selection = true;
+									construction_teleporter1_location_select = false;
+									construction_location_select = false;
+								}
+								else
+								{
+									//Add a construct teleporter1 command to the job que.
+									job new_job;
+
+									new_job.type = "construct";
+									new_job.construction_type = "teleporter1";
+									new_job.tasked_tile = &Map[tile_id];
+									new_job.build_time = c_teleporter1.build_time;
+
+									if(c_teleporter1.build_animation) //Check if the teleporter1 construction has a build animation.
+									{
+										new_job.construction_health = new_job.build_time * c_teleporter1.animations[c_teleporter1.build_animation_entry].num_frames; //Set the health of the construction accordingally.
+										new_job._animation = new animation;
+										*new_job._animation = c_teleporter1.animations[c_teleporter1.build_animation_entry]; //Assign a pointer to the build animation.
+
+										cout << "Teleporter1 construction has a build animation.\n"; //Debugging output.
+									}
+									else //Does not have an animation.
+									{
+										new_job.construction_health = new_job.build_time; //Set the construct time.
+									}
+
+									Job_Que.add_job(new_job);
+
+									cout << "Added job!\n";
+
+									allow_unit_selection = true;
+									construction_teleporter1_location_select = false;
+									construction_location_select = false;
+
+									Map[tile_id].qued_construction = true; //Let the tile know a construction hath been assigned on it.
+									Map[tile_id].qued_construction_sprite = c_teleporter1.construction_qued_sprite; //The ghosted version of the construction.
 								}
 							}
 							else

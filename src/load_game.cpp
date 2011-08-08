@@ -253,6 +253,17 @@ bool load_game() //Load the game.
 	{
 		return false;
 	}
+	if(!c_teleporter1.load_config("data/construction/teleporter1/"))
+	{
+		cout << "Failed to load teleporter1 construction configuration.\n"; //Debugging output.
+		out_string << "Failed to load teleporter1 construction configuration.\n"; //Debugging output.
+		return false; //ABORT.
+	}
+	img_load_safe("data/construction/teleporter1/sprite_ghost.png", &c_teleporter1.construction_qued_sprite);
+	if(!c_teleporter1.construction_qued_sprite)
+	{
+		return false;
+	}
 
 	c_door.init("door", false, false, true, false, 2, 1, "data/construction/door/sprite.png");
 	if(c_door.sprite == NULL)

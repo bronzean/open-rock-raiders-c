@@ -62,6 +62,10 @@ void bClassUnit::construct_construction() //Does the stuff related to constructi
 					{
 						my_job->tasked_tile->construct_construction(c_door); //Add the door construction to the specified tile.
 					}
+					else if(my_job->construction_type == "teleporter1") //Check if the unit is building a teleporter1.
+					{
+						my_job->tasked_tile->construct_construction(c_teleporter1); //Add the teleporter1 construction to the specified tile.
+					}
 
 					my_job->tasked_tile->construction_in_progress = false;
 
