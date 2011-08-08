@@ -31,8 +31,10 @@ extern popup_menu_field field_shovel_rubble; //This field is used whenever a "Sh
 extern popup_menu_field field_moveto; //This field is used whenever a "Move to this tile" field is needed in a popup menu.
 extern popup_menu_field field_construct_wall; //This field is used whenever a "Construct a wall on this tile" field is needed in a popup menu.
 extern popup_menu_field field_construct_door; //This field is used whenever a "Construct a door on this tile" field is needed in a popup menu.
+extern popup_menu_field field_construct_teleporter1; //This field is used whenever a "Construct a teleporter1 on this tile" field is needed in a popup menu.
 extern popup_menu_field field_pickup_ore; //This field is used whenever a "Pick up ore" field is needed in a popup menu.
 extern popup_menu_field field_pickup_any_ore; //This field is used whenever a "Pick up any ore" field is needed in a popup menu.
 extern popup_menu_field field_pickup_all_ore; //This field is used whenever a "Pick up all ore" field is needed in a popup menu.
+extern popup_menu_field field_drop_carried; //This field is used whenever a "Drop what you're carrying" field is needed in a popup menu.
 extern popup_menu_field field_open_door; //This field is used whenever a "open door" field is needed in a popup menu.
 extern popup_menu_field field_close_door; //This field is used whenever a "close door" field is needed in a popup menu.

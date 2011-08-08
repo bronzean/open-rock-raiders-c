@@ -85,6 +85,15 @@ bool load_game() //Load the game.
 	}
 	field_construct_door.field_data = "construct door"; //Let the game know that this is a construct door field.
 
+	if(!field_construct_teleporter1.load_sprite("data/resource/interface/menu/fields/construct_teleporter1.png"))
+	{
+		cout << "Failed to load construct_teleporter1 popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load construct_teleporter1 popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_construct_teleporter1.field_data = "construct teleporter1"; //Let the game know that this is a construct teleporter1 field.
+
 	if(!field_open_door.load_sprite("data/resource/interface/menu/fields/open_door.png"))
 	{
 		cout << "Failed to load open_door popup_menu_field sprite.\n"; //Debugging output.
