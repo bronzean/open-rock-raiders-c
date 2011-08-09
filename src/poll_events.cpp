@@ -287,7 +287,7 @@ tile_popup_menu_force_draw:
 											stored = false;
 										}
 									}
-									else
+									else if(_popup_menu->event_tile->orelist.size() == 0)
 									{
 										_popup_menu->event_tile->ground_popup_menu->fields.push_back(field_construct_wall); //Add the "close door" field.
 										_popup_menu->event_tile->ground_popup_menu->fields[_popup_menu->event_tile->ground_popup_menu->fields.size() - 1].parent_menu = _popup_menu->event_tile->ground_popup_menu; //Assign the new field's parent menu.
@@ -528,7 +528,15 @@ tile_popup_menu_force_draw:
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction)
+								if(tile_id <= -1)
+								{
+									cout << "Nonexistant tile.\n";
+
+									allow_unit_selection = true;
+									construction_wall_location_select = false;
+									construction_location_select = false;
+								}
+								else if(Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction || Map[tile_id].orelist.size() >= 1)
 								{
 									cout << "Invalid tile!\n\n";
 
@@ -595,7 +603,15 @@ tile_popup_menu_force_draw:
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction)
+								if(tile_id <= -1)
+								{
+									cout << "Nonexistant tile.\n\n";
+
+									allow_unit_selection = true;
+									construction_door_location_select = false;
+									construction_location_select = false;
+								}
+								else if(Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction || Map[tile_id].orelist.size() >= 1)
 								{
 									cout << "Invalid tile!\n\n";
 
@@ -662,7 +678,15 @@ tile_popup_menu_force_draw:
 									}
 								}
 
-								if(tile_id <= -1 || Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction)
+								if(tile_id <= -1)
+								{
+									cout << "Nonexistant tile.\n\n";
+
+									allow_unit_selection = true;
+									construction_teleporter1_location_select = false;
+									construction_location_select = false;
+								}
+								else if(Map[tile_id].wall == true || Map[tile_id].tree == true || Map[tile_id].rubble == true || Map[tile_id].has_construction == true || Map[tile_id].qued_construction || Map[tile_id].orelist.size() >= 1)
 								{
 									cout << "Invalid tile!\n\n";
 

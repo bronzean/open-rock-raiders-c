@@ -14,7 +14,12 @@ std::string bClassUnit::update()
 	{
 		if(!carrying_resource)
 		{
-			if(Map[move_path[0]].wx < wx && move_left != NULL) //Check if the tile is to the left and if the unit has a moving left animation.
+			if(move_path[0] < 0 || move_path[0] >= num_tiles)
+			{
+				cout << "Error. Invalid movepath.\n";
+				cancel_current_activity();
+			}
+			else if(Map[move_path[0]].wx < wx && move_left != NULL) //Check if the tile is to the left and if the unit has a moving left animation.
 			{
 				//cout << "Blarg. Tile to the left and has move left animation.\n";
 
