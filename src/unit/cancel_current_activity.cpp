@@ -43,6 +43,8 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 
 	active_animation = NULL;
 
+	drop_carried = false;
+
 	if(shovel_animation)
 	{
 		shovel_animation->current_frame = 0;

@@ -933,7 +933,7 @@ tile_popup_menu_force_draw:
 										if(selected_unit->carrying)
 										{
 											selected_unit->ground_popup_menu->fields.push_back(field_drop_carried); //Add the "drop carried" field.
-											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->rubble_popup_menu; //Assign the new field's parent menu.
+											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
 										}
 
 										cout << "Storing popup menu of the unit.\n"; //Debugging output.

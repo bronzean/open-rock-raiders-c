@@ -38,8 +38,8 @@ void popup_menu::draw_menu()
 	//TODO: Loop through all the fields and draw their sprites.
 	for(int i = 0; i < fields.size(); i++, iterator++)
 	{
-		cout << "i = " << i << "\n";
-		cout << "fields[i].field_data = " << fields[i].field_data << "\n";
+		//cout << "i = " << i << "\n";
+		//cout << "fields[i].field_data = " << fields[i].field_data << "\n";
 
 		fields[i].x = new_x;
 		fields[i].y = new_y;
