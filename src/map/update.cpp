@@ -35,6 +35,8 @@ void tile::update()
 				if(!ground_popup_menu->fields.empty()) //Make sure that ground_popup_menu is not empty.
 				{
 					ground_popup_menu_update(); //Update the ground_popup_menu.
+
+					cout << "Ground popup menu fields size: " << ground_popup_menu->fields.size() << "\n";
 				}
 			}
 		}
@@ -479,6 +481,7 @@ void tile::update()
 							orelist.erase(orelist.begin()); //Remove the ore from the tile's orelist.
 
 							unitlist[i].carrying_resource = true;
+							unitlist[i].carrying = true;
 
 							if(unitlist[i].my_job)
 							{
@@ -499,6 +502,37 @@ void tile::update()
 				{
 					unitlist[i].close_door = false; //Reset this,
 					unitlist[i].closing_door = true; //Let the game know the unit is now in the process of closing the door.
+				}
+				else if(unitlist[i].drop_carried)
+				{
+
+					if(unitlist[i].carrying) //If the unit even is carrying anything.
+					{
+						if(unitlist[i].carrying_resource) //If the unit is carrying a resource.
+						{
+							if(unitlist[i].ore_list.size() > 0) //If the unit is carrying ore.
+							{
+								orelist.push_back(unitlist[i].ore_list[0]); //Copy the ore into the tile's unitlist.
+
+								unitlist[i].ore_list.erase(unitlist[i].ore_list.begin()); //Remove the ore from the unit.
+								unitlist[i].carrying_resource = false; //Unit not carrying a resource anymore.
+								unitlist[i].carrying = false; //Unit not carrying anything anymore.
+
+								ore_on_map.push_back(&orelist[orelist.size() - 1]); //Add the new ore into the ore on map list.
+								//ore_on_map[ore_on_map.size() - 1]->containing_tile = this; //I guess this has to be reset for some weird reason.
+							}
+						}
+						else
+						{
+							cout << "Unknown carried...thing.\n";
+						}
+					}
+					else
+					{
+						cout << "Not even carrying anything!\n";
+					}
+
+					unitlist[i].cancel_current_activity();
 				}
 				else //Just a simple moveto command.
 				{

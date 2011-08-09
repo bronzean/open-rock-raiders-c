@@ -211,7 +211,6 @@ tile_popup_menu_force_draw:
 									//Do NOTHING.
 
 									cout << "Do NOTHING 2.\n";
-									cout << "Event tile id: " << _popup_menu->event_tile->ID << "\n";
 
 									Interface.active_popup_menus.clear(); //Empty this.
 									active_popup_menu = false; //No active popup menu...
@@ -841,6 +840,12 @@ tile_popup_menu_force_draw:
 										//TODO: Add a "Pick up ore" field for every ore.
 									}
 
+									if(selected_unit->carrying)
+									{
+										selected_unit->rubble_popup_menu->fields.push_back(field_drop_carried); //Add the "drop carried" field.
+										selected_unit->rubble_popup_menu->fields[selected_unit->rubble_popup_menu->fields.size() - 1].parent_menu = selected_unit->rubble_popup_menu; //Assign the new field's parent menu.
+									}
+
 									cout << "Storing popup menu of the unit.\n"; //Debugging output.
 								}
 
@@ -885,7 +890,7 @@ tile_popup_menu_force_draw:
 
 										for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore", and the constructions, fields, and close/open fields.
 										{
-											if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "close door") //Check if the current field is one to be removed.
+											if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "drop carried") //Check if the current field is one to be removed.
 											{
 												_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
 												i--; //Deincrement this so that no entries are skipped.
@@ -923,6 +928,12 @@ tile_popup_menu_force_draw:
 													selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
 												}
 											}
+										}
+
+										if(selected_unit->carrying)
+										{
+											selected_unit->ground_popup_menu->fields.push_back(field_drop_carried); //Add the "drop carried" field.
+											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->rubble_popup_menu; //Assign the new field's parent menu.
 										}
 
 										cout << "Storing popup menu of the unit.\n"; //Debugging output.

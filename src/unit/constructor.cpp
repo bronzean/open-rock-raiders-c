@@ -90,6 +90,9 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	rubble_popup_menu = NULL;
 	ground_popup_menu = NULL;
 
+	carrying = false;
+	drop_carried = false;
+
 	my_job = NULL;
 
 	close_door = false;

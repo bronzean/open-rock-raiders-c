@@ -245,6 +245,53 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 
 			cout << "\n";
 		}
+		else if(ground_popup_menu->clicked_field->field_data == "drop carried") //Check if the clicked field is a "drop carried" field.
+		{
+			cout << "\nI see my drop carried field has been clicked.\n"; //Debugging output.
+
+			cancel_current_activity(); //Cancel whatever the unit is currently doing.
+
+			tile* event_tile = ground_popup_menu->event_tile; //Copy this over so that there's no need to write the ground_popup_menu part.
+
+			cout << "Event tile ID: " << event_tile->ID << "\n";
+
+			job_state = "drop carried";
+
+			drop_carried = true; //Let the unit know it gonna be dropping whatever it's carrying.
+
+			int layer_offset = (num_row_objects * num_col_objects * event_tile->layer); //Assign the layer offset.
+			move = true; //Let the game know this unit is moving.
+			move_destination = event_tile->ID;
+
+			if(calculate_path() == false) //Now, calculate the path.
+			{
+				//What...Something done borked. The tile is inaccessible.
+				move = false; //Tell the unit it's staying put
+				move_destination = 0; //Reset the unit's move destination.
+				pick_up_on_reach_goal = false; //Ya, let the unit know it ain't shoveling any rubble.
+				pick_up_object_type = -1; //Reset this so that the game knows to not shovel the tile...
+
+				cout << "Failed to find path, or already holding something.\n";
+			}
+
+			/*if(carrying) //If the unit even is carrying anything.
+			{
+				if(carrying_resource) //If the unit is carrying a resource.
+				{
+				}
+				else
+				{
+					cout << "Unknown carried...thing.\n";
+				}
+			}
+			else
+			{
+				cout << "Not even carrying anything!\n";
+			}*/
+
+			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
+			ground_popup_menu->clicked_field = NULL; //Reset this.
+		}
 		else
 		{
 			cout << "TODO: Find out what field was clicked in the unit's ground_popup_menu.\n"; //Debugging output.

@@ -36,8 +36,11 @@ void popup_menu::draw_menu()
 	vector<popup_menu_field>::iterator iterator = fields.begin(); //Used to loop through the fields vector.
 
 	//TODO: Loop through all the fields and draw their sprites.
-	for(int i = 0; iterator < fields.end(); i++, iterator++)
+	for(int i = 0; i < fields.size(); i++, iterator++)
 	{
+		cout << "i = " << i << "\n";
+		cout << "fields[i].field_data = " << fields[i].field_data << "\n";
+
 		fields[i].x = new_x;
 		fields[i].y = new_y;
 		fields[i].draw_sprite(); //Draw the sprite of the field.

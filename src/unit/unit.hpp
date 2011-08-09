@@ -84,6 +84,8 @@ public:
 	std::vector<energy_crystal>::iterator iterator3; //Used for navigating the energy crystal.
 
 	bool carrying_resource; //If it's carrying an ore or energy crystal, set this to true, so that it doesn't pick up any others...
+	bool carrying; //If it's carrying something...
+	bool drop_carried; //Is the unit supposed to drop what it's carrying?
 
 	bool mining_mode; //Used in the mining code.
 	bool can_mine_wall; //Can the unit even mine stuff?
@@ -107,7 +109,6 @@ public:
 	int putaway_drill_time; //The number of frames the unit spends putting away its drill. If it has an animation for it, then it's the number of frames spent on each frame of the animation.
 	int take_out_drill_progress; //How far into taking out the drill has the unit gone?
 	int put_away_drill_progress; //How far into putting the drill away has the unit gone?
-	
 
 	bool allow_deselect; //Allow the unit to be deselected?
 

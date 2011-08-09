@@ -67,14 +67,33 @@ bool load_game() //Load the game.
 	}
 	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a pickup any ore field.
 
-	if(!field_construct_wall.load_sprite("data/resource/interface/menu/fields/construct_wall.png"))
+	if(!field_pickup_any_ore.load_sprite("data/resource/interface/menu/fields/pickup_any_ore.png"))
 	{
-		cout << "Failed to load construct_wall popup_menu_field sprite.\n"; //Debugging output.
-		out_string << "Failed to load construct_wall popup_menu_field sprite.\n"; //Debugging output.
+		cout << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
 
 		return false;
 	}
-	field_construct_wall.field_data = "construct wall"; //Let the game know that this is a construct wall field.
+	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a pickup any ore field.
+
+//extern popup_menu_field field_drop_carried; //This field is used whenever a "Drop what you're carrying" field is needed in a popup menu.
+	if(!field_drop_carried.load_sprite("data/resource/interface/menu/fields/drop_carried.png"))
+	{
+		cout << "Failed to load drop_carried popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load drop_carried popup_menu_field sprite.\n"; //Debugging output.
+
+		return false;
+	}
+	field_drop_carried.field_data = "drop carried"; //Let the game know that this is a drop carried field.
+
+        if(!field_construct_wall.load_sprite("data/resource/interface/menu/fields/construct_wall.png"))
+        {
+                cout << "Failed to load construct_wall popup_menu_field sprite.\n"; //Debugging output.
+                out_string << "Failed to load construct_wall popup_menu_field sprite.\n"; //Debugging output.
+
+                return false;
+        }
+        field_construct_wall.field_data = "construct wall"; //Let the game know that this is a construct wall field.
 
 	if(!field_construct_door.load_sprite("data/resource/interface/menu/fields/construct_door.png"))
 	{
