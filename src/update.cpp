@@ -75,21 +75,6 @@ int update()
 	rightclick_tile_id = -1; //Reset rightclick_tile_id
 	leftclick_tile_id = -1; //Reset leftclick_tile_id
 
-	if(construction_wall_location_select == true && server == false) //Is the user selecting the location of a wall construction?
-	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 1, true); //Displays the "Choose location of wall construction" message.
-	}
-
-	if(construction_door_location_select && !server) //Is the user selecting the location of a door construction?
-	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_door_location_spr, 1, true); //Displays the "Choose location of door construction" message.
-	}
-
-	if(construction_teleporter1_location_select && !server) //Is the user selecting the location of a teleporter construction?
-	{
-		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_teleporter1_location_spr, 1, true); //Displays the "Choose location of teleporter construction" message.
-	}
-
 	poll_events(); //Event handling.
 
 	//If the escape key was pressed...
@@ -156,37 +141,6 @@ int update()
 
 	else if(GameState == Level && gameover != true)
 	{
-		vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
-		int counter = 0; //Used in the for loop below...
-
-		try
-		{
-			//out_string << "active map's size: " << Active_Map.size() << "\n";
-			for(counter = 0; counter < Active_Map.size(); counter++) //Loop through Active_Map.
-			{
-				//cout << "active map's size: " << Active_Map.size() << "\n";
-				//cout << "counter: " << counter << "\n";
-				//cout << "Value: " << Active_Map[counter] << "\n";
-				Map[Active_Map[counter]].update(); //Update all the tiles it holds.
-			}
-		}
-		catch(...)
-		{
-			cerr << "Caught exception when updating Active_Map.\n";
-			out_string << "Caught exception when updating Active_Map.\n";
-		}
-		counter = 0;
-		if(screen_needs_updating == false)
-		{
-			if(!threed_gfx)
-			{
-				for(iterator2 = Draw_Map.begin(); iterator2 < Draw_Map.end(); iterator2++, counter++) //Loop through unit_type_list
-				{
-					Map[Draw_Map[counter]].draw_sprite(); //Draw all the tiles that need drawing.
-				}
-			}
-		}
-
 		if(keystates[SDLK_a])
 		{
 			PCamera->set_pos(PCamera->get_wx() - camera_move_speed, PCamera->get_wy());
@@ -437,7 +391,53 @@ int update()
                                                 }
                                         }
                                 }
-                        }
+		}
+
+		vector<int>::iterator iterator2; //Used for navigating the int array that stores the indexes of all the tiles that are to be drawn.
+		int counter = 0; //Used in the for loop below...
+
+		try
+		{
+			//out_string << "active map's size: " << Active_Map.size() << "\n";
+			for(counter = 0; counter < Active_Map.size(); counter++) //Loop through Active_Map.
+			{
+				//cout << "active map's size: " << Active_Map.size() << "\n";
+				//cout << "counter: " << counter << "\n";
+				//cout << "Value: " << Active_Map[counter] << "\n";
+				Map[Active_Map[counter]].update(); //Update all the tiles it holds.
+			}
+		}
+		catch(...)
+		{
+			cerr << "Caught exception when updating Active_Map.\n";
+			out_string << "Caught exception when updating Active_Map.\n";
+		}
+		counter = 0;
+		if(screen_needs_updating == false)
+		{
+			if(!threed_gfx)
+			{
+				for(iterator2 = Draw_Map.begin(); iterator2 < Draw_Map.end(); iterator2++, counter++) //Loop through unit_type_list
+				{
+					Map[Draw_Map[counter]].draw_sprite(); //Draw all the tiles that need drawing.
+				}
+			}
+		}
+	}
+
+	if(construction_wall_location_select == true && server == false) //Is the user selecting the location of a wall construction?
+	{
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_wall_location_spr , 1, false); //Displays the "Choose location of wall construction" message.
+	}
+
+	if(construction_door_location_select && !server) //Is the user selecting the location of a door construction?
+	{
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_door_location_spr, 1, false); //Displays the "Choose location of door construction" message.
+	}
+
+	if(construction_teleporter1_location_select && !server) //Is the user selecting the location of a teleporter construction?
+	{
+		Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, choose_teleporter1_location_spr, 1, false); //Displays the "Choose location of teleporter construction" message.
 	}
 
 	Interface.update();

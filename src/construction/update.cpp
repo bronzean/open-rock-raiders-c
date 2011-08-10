@@ -309,5 +309,14 @@ void construction::update() //Update whatever needs updating.
 				}
 			}
 		}
+		else if(!g_teleport_que.empty())
+		{
+			if(teleport_animation)
+			{
+				teleport_animation->current_frame = 0; //Reset the teleport animation.
+				active_animation = NULL;
+			}
+			teleport_progress = 0;
+		}
 	}
 }

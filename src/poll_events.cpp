@@ -1005,7 +1005,7 @@ tile_popup_menu_force_draw:
 						}
 						break;
 					case SDLK_1: //Here, we check if the 1 key was pressed...
-						if(!def_teleporter && construction_selected) //Check if there isn't already a default teleporter and check if a construction is already selected.
+						if(/*!def_teleporter && */construction_selected) //Check if there isn't already a default teleporter and check if a construction is already selected.
 						{
 							if(selected_construction->teleporter) //Check if the selected construction is a teleporter.
 							{

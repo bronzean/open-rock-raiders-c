@@ -145,7 +145,11 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	vert_upend_spr = Construction.vert_upend_spr;
 
 	teleport_time = Construction.teleport_time;
-	teleport_animation = Construction.teleport_animation;
+	if(Construction.teleport_animation)
+	{
+		teleport_animation = new animation;
+		*teleport_animation = *Construction.teleport_animation;
+	}
 }
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.
