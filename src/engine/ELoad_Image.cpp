@@ -114,7 +114,7 @@ SDL_Surface *img_load3(std::string filename)
 //Loads the image
 bool img_load_safe(std::string filename, SDL_Surface **Original) //Doesn't memleak. Copy of img_load3.
 {
-	std::cout << "\nLoading image...";
+	std::cout << "\nLoading image..."; 
 	out_string << "\nLoading image...";
 
 	SDL_Surface* loadedImage = NULL; //The image that's loaded
@@ -125,7 +125,7 @@ bool img_load_safe(std::string filename, SDL_Surface **Original) //Doesn't memle
 	if(loadedImage != NULL) //If the image loaded
 	{
 		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
-		*Original = optimizedImage; //TODO: This isn't actually modifying Original...
+		*Original = optimizedImage;
 
 		SDL_FreeSurface(loadedImage); //Free the old image
 		std::cout << "Succesfully loaded\n";
