@@ -171,6 +171,58 @@ void bClassUnit::ground_popup_menu_update() //Update the ground_popup_menu.
 			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
 			ground_popup_menu->clicked_field = NULL; //Reset this.
 		}
+		else if(ground_popup_menu->clicked_field->field_data == "construct teleporter1") //Check if the clicked field is a "construct door" field.
+		{
+			cout << "\nI see my construct teleporter1 field has been clicked.\n"; //Debugging output.
+
+			cancel_current_activity(); //Cancel whatever the unit is currently doing.
+
+			tile* event_tile = ground_popup_menu->event_tile; //Copy this over so that there's no need to write the ground_popup_menu part.
+
+			move = true; //Let the game know this unit is moving.
+			move_destination = event_tile->ID; //Let the game know where the unit is going.
+
+			cout << "Event tile ID: " << event_tile->ID << "\n";
+
+			int layer_offset = (num_row_objects * num_col_objects * event_tile->layer); //Assign the layer offset.
+
+			if(!get_free_neighbor_tile(event_tile)) //Now, calculate the path.
+			{
+				//What...Something done borked. The tile is inaccessible.
+				move = false; //Tell the unit it's staying put
+				move_destination = 0; //Reset the unit's move destination.
+			}
+			else
+			{
+				//Create the new job.
+				job_state = "constructing";
+				my_job = new job;
+				my_job->type = "construct";
+				my_job->construction_type = "teleporter1";
+				my_job->tasked_tile = event_tile;
+				my_job->taken = true;
+				my_job->build_time = c_teleporter1.build_time;
+
+				if(c_teleporter1.build_animation) //Check if the door construction has a build animation.
+				{
+					my_job->construction_health = my_job->build_time * c_teleporter1.animations[c_teleporter1.build_animation_entry].num_frames; //Set the health of the construction accordingally.
+					my_job->_animation = new animation;
+					*my_job->_animation = c_teleporter1.animations[c_teleporter1.build_animation_entry]; //Assign a pointer to the build animation.
+
+					cout << "Teleporter1 construction has an animation.\n"; //Debugging output.
+				}
+				else //Does not have an animation.
+				{
+					my_job->construction_health = my_job->build_time; //Set the construct time.
+				}
+
+				event_tile->qued_construction = true;
+				event_tile->qued_construction_sprite = c_teleporter1.construction_qued_sprite;
+			}
+
+			ground_popup_menu->has_clicked_field = false; //Has a clicked field no longer.
+			ground_popup_menu->clicked_field = NULL; //Reset this.
+		}
 		else if(ground_popup_menu->clicked_field->field_data == "open door") //Check if the clicked field is a "open door" field.
 		{
 			cout << "\nI see my open door field has been clicked.\n"; //Debugging output.

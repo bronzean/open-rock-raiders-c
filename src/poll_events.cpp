@@ -168,7 +168,7 @@ tile_popup_menu_force_draw:
 
 									for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore" fields.
 									{
-										if(_popup_menu->fields[i].field_data == "pickup any ore") //Check if the current field is a "pickup any ore" field.
+										if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "pickup all ore") //Check if the current field is a "pickup any ore" field.
 										{
 											_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
 											i--; //Deincrement this so that no entries are skipped.
@@ -178,6 +178,9 @@ tile_popup_menu_force_draw:
 									if(_popup_menu->event_tile->orelist.size() >= 1) //Check if there's any ore on the tile.
 									{
 										_popup_menu->fields.push_back(field_pickup_any_ore); //There is ore. Add the "pickup any ore" field.
+										_popup_menu->fields[_popup_menu->fields.size() - 1].parent_menu = _popup_menu; //Tell the field which popup menu it is a part of.
+
+										_popup_menu->fields.push_back(field_pickup_all_ore); //There is ore. Add the "pickup any ore" field.
 										_popup_menu->fields[_popup_menu->fields.size() - 1].parent_menu = _popup_menu; //Tell the field which popup menu it is a part of.
 									}
 
@@ -238,7 +241,7 @@ tile_popup_menu_force_draw:
 
 									for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore" fields.
 									{
-										if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "open door") //Check if the current field is a "pickup any ore", or one of the construction fields.
+										if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "pickup all ore") //Check if the current field is a "pickup any ore", or one of the construction fields.
 										{
 											_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
 											i--; //Deincrement this so that no entries are skipped.
@@ -248,6 +251,9 @@ tile_popup_menu_force_draw:
 									if(_popup_menu->event_tile->orelist.size() >= 1) //Check if there's any ore on the tile.
 									{
 										_popup_menu->fields.push_back(field_pickup_any_ore); //There is ore. Add the "pickup any ore" field.
+										_popup_menu->fields[_popup_menu->fields.size() - 1].parent_menu = _popup_menu; //Tell the field which popup menu it is a part of.
+
+										_popup_menu->fields.push_back(field_pickup_all_ore); //There is ore. Add the "pickup any ore" field.
 										_popup_menu->fields[_popup_menu->fields.size() - 1].parent_menu = _popup_menu; //Tell the field which popup menu it is a part of.
 									}
 
@@ -291,7 +297,11 @@ tile_popup_menu_force_draw:
 									{
 										_popup_menu->event_tile->ground_popup_menu->fields.push_back(field_construct_wall); //Add the "close door" field.
 										_popup_menu->event_tile->ground_popup_menu->fields[_popup_menu->event_tile->ground_popup_menu->fields.size() - 1].parent_menu = _popup_menu->event_tile->ground_popup_menu; //Assign the new field's parent menu.
+
 										_popup_menu->event_tile->ground_popup_menu->fields.push_back(field_construct_door); //Add the "close door" field.
+										_popup_menu->event_tile->ground_popup_menu->fields[_popup_menu->event_tile->ground_popup_menu->fields.size() - 1].parent_menu = _popup_menu->event_tile->ground_popup_menu; //Assign the new field's parent menu.
+
+										_popup_menu->event_tile->ground_popup_menu->fields.push_back(field_construct_teleporter1); //Add the "construct teleporter1" field.
 										_popup_menu->event_tile->ground_popup_menu->fields[_popup_menu->event_tile->ground_popup_menu->fields.size() - 1].parent_menu = _popup_menu->event_tile->ground_popup_menu; //Assign the new field's parent menu.
 									}
 
@@ -929,11 +939,15 @@ tile_popup_menu_force_draw:
 
 											//TODO: Add a "Pick up ore" field for every ore.
 										}
-										else if(!Map[rightclick_tile_id].has_construction) //No ore. Check if there is a construction on here.
+										else if(!Map[rightclick_tile_id].has_construction && Map[rightclick_tile_id].orelist.size == 0) //No ore. Check if there is a construction on here.
 										{
 											selected_unit->ground_popup_menu->fields.push_back(field_construct_wall); //Add the "construct wall" field.
 											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+
 											selected_unit->ground_popup_menu->fields.push_back(field_construct_door); //Add the "construct door" field.
+											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
+
+											selected_unit->ground_popup_menu->fields.push_back(field_construct_teleporter1); //Add the "construct teleporter1" field.
 											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
 										}
 

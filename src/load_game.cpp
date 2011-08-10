@@ -67,14 +67,14 @@ bool load_game() //Load the game.
 	}
 	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a pickup any ore field.
 
-	if(!field_pickup_any_ore.load_sprite("data/resource/interface/menu/fields/pickup_any_ore.png"))
+	if(!field_pickup_all_ore.load_sprite("data/resource/interface/menu/fields/pickup_all_ore.png"))
 	{
-		cout << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
-		out_string << "Failed to load pickup_any_ore popup_menu_field sprite.\n"; //Debugging output.
+		cout << "Failed to load pickup_all_ore popup_menu_field sprite.\n"; //Debugging output.
+		out_string << "Failed to load pickup_all_ore popup_menu_field sprite.\n"; //Debugging output.
 
 		return false;
 	}
-	field_pickup_any_ore.field_data = "pickup any ore"; //Let the game know that this is a pickup any ore field.
+	field_pickup_all_ore.field_data = "pickup all ore"; //Let the game know that this is a pickup all ore field.
 
 //extern popup_menu_field field_drop_carried; //This field is used whenever a "Drop what you're carrying" field is needed in a popup menu.
 	if(!field_drop_carried.load_sprite("data/resource/interface/menu/fields/drop_carried.png"))
