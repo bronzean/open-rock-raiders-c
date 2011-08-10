@@ -124,7 +124,7 @@ bool img_load_safe(std::string filename, SDL_Surface **Original) //Doesn't memle
 	
 	if(loadedImage != NULL) //If the image loaded
 	{
-		optimizedImage = SDL_DisplayFormat(loadedImage);
+		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 		*Original = optimizedImage; //TODO: This isn't actually modifying Original...
 
 		SDL_FreeSurface(loadedImage); //Free the old image
