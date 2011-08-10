@@ -39,8 +39,7 @@ construction::construction() //Constructor. Initializes an empty construction.
 	door_open_animation_entry = 0;
 	door_close_animation_entry = 0;*/
 
-	active_animation = false;
-	active_animation_entry = 0;
+	active_animation = NULL;
 
 	open_animation = false;
 	open_animation_entry = 0;
@@ -61,6 +60,11 @@ construction::construction() //Constructor. Initializes an empty construction.
 	neighbour_right = NULL;
 	neighbour_up = NULL;
 	neighbour_down = NULL;
+
+	teleport_time = 0;
+	teleport_progress = 0;
+	teleport_animation = NULL;
+	teleport_animation_done = false;
 }
 
 void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.
@@ -107,7 +111,6 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	can_automatic_open = Construction.can_automatic_open;
 
 	active_animation = Construction.active_animation;
-	active_animation_entry = Construction.active_animation_entry;
 
 	animations = Construction.animations;
 	open_animation = Construction.open_animation;
@@ -140,13 +143,20 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 	vert_leftcon_spr = Construction.vert_leftcon_spr;
 	vert_rightcon_spr = Construction.vert_rightcon_spr;
 	vert_upend_spr = Construction.vert_upend_spr;
+
+	teleport_time = Construction.teleport_time;
+	teleport_animation = Construction.teleport_animation;
 }
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.
 {
-	if(active_animation == true) //If an animation is going on...
+	/*if(active_animation == true) //If an animation is going on...
 	{
 		animations[active_animation_entry].draw_sprite(wx, wy, layer); //Draw the animation.
+	}*/
+	if(active_animation)
+	{
+		active_animation->draw_sprite(wx, wy, layer); //Draw the animation.
 	}
 	else
 	{
@@ -192,14 +202,14 @@ void construction::open_thyself(bool automatic)  //Open the construction! (Door,
 
 		if(open_animation) //If it has an opening animation...
 		{
-			active_animation = true;
-			active_animation_entry = open_animation_entry;
+			active_animation = &animations[open_animation_entry];
+			//active_animation_entry = open_animation_entry;
 			if(open_ammount >= open_time * animations[open_animation_entry].num_frames) //Check if it is done opening.
 			{
 				opening = false; //Not opening anymore, it is open!
 				construction_open = true; //Let the game know the door is now open.
-				active_animation = false; //Let the game know the animation is over.
-				active_animation_entry = 0; //Let the game know the active animation's entry.
+				active_animation = NULL; //Let the game know the animation is over.
+				//active_animation_entry = 0; //Let the game know the active animation's entry.
 				close_ammount = 0;
 				open_ammount = 0;
 				animations[open_animation_entry].current_frame = 0;
@@ -236,14 +246,14 @@ void construction::close_thyself(bool automatic) //Close the construction! (Door
 
 	if(close_animation) //If it has a closing animation...
 	{
-		active_animation = true;
-		active_animation_entry = close_animation_entry;
+		active_animation = &animations[close_animation_entry];
+		//active_animation_entry = close_animation_entry;
 		if(close_ammount >= close_time * animations[close_animation_entry].num_frames) //Check if it is done closing.
 		{
 			closing = false; //Not closing anymore, it is closed!
 			construction_open = false; //Let the game know the door is now closed.
-			active_animation = false; //Let the game know the animation is over.
-			active_animation_entry = 0; //Let the game know the active animation's entry.
+			active_animation = NULL; //Let the game know the animation is over.
+			//active_animation_entry = 0; //Let the game know the active animation's entry.
 			close_ammount = 0;
 			open_ammount = 0;
 			animations[close_animation_entry].current_frame = 0;

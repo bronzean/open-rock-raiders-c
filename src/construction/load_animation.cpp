@@ -172,6 +172,45 @@ bool construction::load_config(std::string folderpath)
 					}
 				}
 			}
+			else if(command == "TELEPORT_ANIMATION") //Found the entry that specifies where the construction's teleport animation's cfg is located.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						animation new_animation; //The new animation.
+
+						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+						//Debugging output.
+						out_string << "Kay, I found the stuff that has to do with the building animation.\n";
+						out_string << "Folderpath: " << new_animation.folder_path << "\n";
+						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
+
+						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
+
+						teleport_animation = new animation; //Allocate space for a new animation.
+						*teleport_animation = new_animation; //Save the animation.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
 			else if(command == "OPEN_TIME") //Found the entry that specifies the open time.
 			{
 				bool quit = false; //Controlls the loop below.
@@ -242,6 +281,33 @@ bool construction::load_config(std::string folderpath)
 						quit = true;
 
 						build_time = atoi(num_command.c_str()); //Save the value, of course.
+					}
+					else if(temp == '(')
+					{
+						start = true;
+					}
+					else if(start)
+					{
+						num_command += temp;
+					}
+				}
+			}
+			else if(command == "TELEPORT_TIME") //Found the entry that specifies the teleport time.
+			{
+				bool quit = false; //Controlls the loop below.
+				bool start = false; //Start recording the parameter?
+
+				while(c != EOF && quit == false)
+				{
+					c = getc(file);
+					temp = (char) c;
+
+					if(temp == '\n' || temp == ')')
+					{
+						start = false;
+						quit = true;
+
+						teleport_time = atoi(num_command.c_str()); //Save the value, of course.
 					}
 					else if(temp == '(')
 					{

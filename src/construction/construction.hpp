@@ -55,8 +55,7 @@ public:
 	int build_time; //How many frames it takes for the construction to open. If using animations, specifies how much time is spent on each frame of the animation.
 
 	std::vector<animation> animations; //Stores all of the tile's animations.
-	bool active_animation; //Is an animation currently going on?
-	int active_animation_entry; //The entry of the active animation in the animations vector.
+	animation* active_animation; //Is an animation currently going on?
 
 	bool open_animation; //Does the construction have an opening animation?
 	int open_animation_entry; //Stores the index of the open animation's entry in the animations vector.
@@ -70,6 +69,11 @@ public:
 	SDL_Surface* connection; //A pointer to the current connection. NULL for none.
 
 	construction *neighbour_left, *neighbour_right, *neighbour_up, *neighbour_down; //The construction's neighbouring constructions.
+
+	int teleport_time; //The number of frames the teleporter spends on each frame of the teleport animation. If no teleport animation, then the amount of time that passes untill the bingy bingy is teleported.
+	int teleport_progress; //How far into the time allocated on each frame of the teleport animation has the unit gone? If no animation, how far into the teleport time.
+	animation* teleport_animation; //The teleport animation.
+	bool teleport_animation_done; //Is the teleport animation done?
 
 	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
