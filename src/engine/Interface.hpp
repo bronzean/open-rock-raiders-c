@@ -25,6 +25,8 @@ public:
 
 	void draw_sprites_that_need_drawing(); //Draw the sprites that need drawing.
 	void add_sprite_that_needs_drawing(sprite_wrapper *_sprite); //Add a sprite to the sprites_to_draw vector.
+
+	void update_2d_graphic_effects(); //Update active 2d graphic effects.
 };
 
 extern interface Interface; //The interface object.

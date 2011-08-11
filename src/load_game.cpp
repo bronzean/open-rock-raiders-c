@@ -2,6 +2,7 @@
 #include "main.hpp"
 #include "engine/EObject.hpp"
 #include "engine/Interface.hpp"
+#include "effects/graphic_effect_2d.hpp"
 
 /* --------------------------------------------------------------
  * Loads the level and whatnot. Also cleans up the update.cpp file a bit!
@@ -11,6 +12,27 @@ bool load_game() //Load the game.
 {
 	string load_text = "";
 	SDL_Surface *load_text_sprite = NULL;
+
+
+	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
+	load_text = "Loading 2d graphical effects."; //Let the user know the interface stuff is being loaded...
+	load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
+	SDL_FreeSurface(load_text_sprite);
+	if(SDL_Flip(screen) == -1)
+	{
+		std::cerr << "\nError Updating Screen\n";
+		out_string << "\nError Updating Screen\n";
+		fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
+		fflush(GameLog);
+
+		return false;
+	}
+	if(!load_2d_graphics_effects()) //Load the graphical 2d effects. With error checking.
+	{
+		gameover = true;
+		return false;
+	}
 
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.

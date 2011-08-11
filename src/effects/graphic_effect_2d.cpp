@@ -9,6 +9,8 @@ graphic_effect_2d::graphic_effect_2d() //Constructor.
 	wy = 0;
 	layer = 0;
 	the_animation = NULL;
+	time_per_frame = 0;
+	time_progress = 0;
 }
 
 graphic_effect_2d::~graphic_effect_2d() //Deconstructor.
@@ -31,7 +33,9 @@ void graphic_effect_2d::animate() //Progress the animation.
 
 bool graphic_effect_2d::init(std::string folderpath) //Initialize this.
 {
-	if(!the_animation->load_settings(folderpath + "/animation.2dap")) //Load the effect's animation. With error checking.
+	the_animation = new animation; //Allocate memory for a new animation.
+	the_animation->folder_path = folderpath + "/";
+	if(!the_animation->load_settings(folderpath + "animation.2dap")) //Load the effect's animation. With error checking.
 	{
 		return false;
 	}
@@ -40,3 +44,5 @@ bool graphic_effect_2d::init(std::string folderpath) //Initialize this.
 }
 
 graphic_effect_2d whiteflash1; //White flash #1.
+
+std::vector<graphic_effect_2d> active_2d_graphic_effects; //It's a vector of all the active 2d graphical effects on the map.

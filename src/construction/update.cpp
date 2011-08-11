@@ -1,5 +1,6 @@
 /* Copyright the ORR-C Dev Team */
 #include "construction.hpp"
+#include "../effects/graphic_effect_2d.hpp"
 
 void construction::update() //Update whatever needs updating.
 {
@@ -156,6 +157,8 @@ void construction::update() //Update whatever needs updating.
 									newUnit.wy = Map[dest_tile].wy; //Assign the new unit's world y.
 									newUnit.layer = Map[dest_tile].layer; //Assign the new unit's layer.
 									newUnit.c_health = 100; //Assign the new unit's current health.
+
+									create_flash(Map[dest_tile].wx + (tile_width / 2), Map[dest_tile].wy + (tile_height / 2), Map[dest_tile].layer, &whiteflash1); //Create a white flash at the specified location.
 
 									newUnit.rubble_popup_menu = new popup_menu;
 									newUnit.rubble_popup_menu->fields.push_back(field_moveto); //Add this to the unit's popup menu.

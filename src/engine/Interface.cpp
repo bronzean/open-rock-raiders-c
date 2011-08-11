@@ -1,5 +1,6 @@
 /* Copyright the ORR-C Dev Team */
 #include "Interface.hpp"
+#include "../effects/graphic_effect_2d.hpp"
 
 interface::interface() //Constructor.
 {
@@ -43,6 +44,11 @@ void interface::update()
 	//{
 		draw_ui();
 	//}
+
+	if(active_2d_graphic_effects.size() > 0) //Check if there are any active 2d graphic effects.
+	{
+		update_2d_graphic_effects(); //There are. Update them.
+	}
 }
 
 void interface::draw_ui()
@@ -140,6 +146,35 @@ void interface::draw_sprites_that_need_drawing() //Draw the sprites that need dr
 void interface::add_sprite_that_needs_drawing(sprite_wrapper *_sprite) //Add a sprite to the sprites_to_draw vector.
 {
 	sprites_to_draw.push_back(_sprite); //Store the sprite.
+}
+
+void interface::update_2d_graphic_effects() //Update active 2d graphic effects.
+{
+	for(int i = 0; i < active_2d_graphic_effects.size(); i++)
+	{
+		if(allow_draw)
+		{
+			active_2d_graphic_effects[i].draw_self(); //Draw the effect.
+		}
+
+		active_2d_graphic_effects[i].time_progress++; //Increment this since time has passed.
+
+		if(active_2d_graphic_effects[i].time_progress > active_2d_graphic_effects[i].time_per_frame) //If it's done with the next frame.
+		{
+			if(active_2d_graphic_effects[i].the_animation->current_frame >= active_2d_graphic_effects[i].the_animation->num_frames - 1) //If the end of the animation has been reached.
+			{
+				delete active_2d_graphic_effects[i].the_animation; //Delete this since it's just a copy.
+
+				active_2d_graphic_effects.erase(active_2d_graphic_effects.begin() + 1); //Remove this effect.
+				i--; //Deincrement this so that none are skipped.
+			}
+			else
+			{
+				active_2d_graphic_effects[i].the_animation->proceed_animation(); //Progress the animation.
+				active_2d_graphic_effects[i].time_progress = 0; //Reset the progress.
+			}
+		}
+	}
 }
 
 draw_message_handler Draw_Message_Handler; //Handles all the messages to be drawn.
