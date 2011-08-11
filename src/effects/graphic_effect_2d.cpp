@@ -1,6 +1,4 @@
 /* Copyright the ORR-C Dev Team */
-
-#pragma once
 #include "graphic_effect_2d.hpp"
 #include "../engine/sprite/sprite.hpp"
 #include "../engine/Interface.hpp"
@@ -31,9 +29,14 @@ void graphic_effect_2d::animate() //Progress the animation.
 	the_animation->proceed_animation(); //Progress the animation.
 }
 
-void graphic_effect_2d::init(std::string folderpath) //Initialize this.
+bool graphic_effect_2d::init(std::string folderpath) //Initialize this.
 {
-	the_animation->load_settings(folderpath + "/animation.2dap"); //Load the effect's animation.
+	if(!the_animation->load_settings(folderpath + "/animation.2dap")) //Load the effect's animation. With error checking.
+	{
+		return false;
+	}
+
+	return true;
 }
 
 graphic_effect_2d whiteflash1; //White flash #1.
