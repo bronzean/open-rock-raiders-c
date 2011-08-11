@@ -2,6 +2,8 @@
 
 #pragma once
 #include "graphic_effect_2d.hpp"
+#include "../engine/sprite/sprite.hpp"
+#include "../engine/Interface.hpp"
 
 graphic_effect_2d::graphic_effect_2d() //Constructor.
 {
@@ -20,7 +22,7 @@ void graphic_effect_2d::draw_self() //Draw the effect.
 	sprite_wrapper* _sprite = new sprite_wrapper;
 	_sprite->wx = wx;
 	_sprite->wy = wy;
-	_sprite->image = the_animation->frames_spr[active_animation->current_frame];
+	_sprite->image = the_animation->frames_spr[the_animation->current_frame];
 	Interface.add_sprite_that_needs_drawing(_sprite);
 }
 
