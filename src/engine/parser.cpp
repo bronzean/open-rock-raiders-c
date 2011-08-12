@@ -586,11 +586,11 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 						newUnit.pick_up = new animation; //Create the new animation.
 						*newUnit.pick_up = *temp_unit.pick_up; //Copy over the animation.
 					}
-					if(temp_unit.teleport_animation) //If there is a teleport animation for this unit.
+					if(temp_unit.teleport_in_animation) //If there is a teleport animation for this unit.
 					{
-						out_string << "Giving unit its teleport animation.\n";
-						newUnit.teleport_animation = new animation; //Create the new animation.
-						*newUnit.teleport_animation = *temp_unit.teleport_animation; //Copy over the animation.
+						out_string << "Giving unit its teleport in animation.\n";
+						newUnit.teleport_in_animation = new animation; //Create the new animation.
+						*newUnit.teleport_in_animation = *temp_unit.teleport_in_animation; //Copy over the animation.
 					}
 
 					Map[atoi(stage_object[1].c_str())].unitlist.push_back(newUnit);

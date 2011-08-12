@@ -1077,7 +1077,7 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
-			else if(command == "TELEPORT_ANIMATION") //Found the entry that specifies where the unit's teleport animation's cfg is located.
+			else if(command == "TELEPORT_IN_ANIMATION") //Found the entry that specifies where the unit's teleport animation's cfg is located.
 			{
 				bool quit = false; //Controlls the loop below.
 				bool start = false; //Start recording the parameter?
@@ -1096,14 +1096,14 @@ bool unit_type_manager::load_unit(string folderpath)
 
 						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
 
-						out_string << "Kay, I found the stuff that has to do with the teleport animation of the unit.\n";
+						out_string << "Kay, I found the stuff that has to do with the teleport in animation of the unit.\n";
 						out_string << "Folderpath: " << new_animation.folder_path << "\n";
 						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
 
 						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
 
-						new_unit.teleport_animation = new animation; //Create the new animation.
-						*new_unit.teleport_animation = new_animation; //Assign the new animation.
+						new_unit.teleport_in_animation = new animation; //Create the new animation.
+						*new_unit.teleport_in_animation = new_animation; //Assign the new animation.
 					}
 					else if(temp == '(')
 					{
@@ -1115,7 +1115,7 @@ bool unit_type_manager::load_unit(string folderpath)
 					}
 				}
 			}
-			else if(command == "TELEPORT_TIME") //Found the entry that specifies the unit's teleport time.
+			else if(command == "TELEPORT_IN_TIME") //Found the entry that specifies the unit's teleport time.
 			{
 				bool quit = false; //Controlls the loop below.
 				bool start = false; //Start recording the parameter?
@@ -1129,7 +1129,7 @@ bool unit_type_manager::load_unit(string folderpath)
 					{
 						start = false;
 						quit = true;
-						new_unit.teleport_time = atoi(num_command.c_str());
+						new_unit.teleport_in_time = atoi(num_command.c_str());
 					}
 					else if(temp == '(')
 					{

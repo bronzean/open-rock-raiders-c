@@ -65,6 +65,10 @@ construction::construction() //Constructor. Initializes an empty construction.
 	teleport_progress = 0;
 	teleport_animation = NULL;
 	teleport_animation_done = false;
+
+	newUnit = NULL;
+	creating_unit = false;
+	dest_tile = 0;
 }
 
 void construction::init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE) //Initalize a new construction type.

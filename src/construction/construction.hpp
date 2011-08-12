@@ -75,6 +75,10 @@ public:
 	animation* teleport_animation; //The teleport animation.
 	bool teleport_animation_done; //Is the teleport animation done?
 
+	unit* newUnit; //The new unit it's teleporting.
+	bool creating_unit; //Creating a new unit?
+	int dest_tile; //The tile the unit's gonna get created on.
+
 	void init(std::string NAME, bool WALL, bool FLOOR, bool DOOR, bool TELEPORTER, int DOOR_STRENGTH, int TYPE_ID, std::string SPRITE); //Initalize a new construction type.
 
 	void copy_from(construction Construction); //Give this tile the properties of the one being copied.

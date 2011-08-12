@@ -155,10 +155,10 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	sprite_ore_up = NULL;
 	sprite_ore_down = NULL;
 
-	teleport_time = 0;
-	teleport_progress = 0;
-	teleport_animation = NULL;
-	teleport_animation_done = false;
+	teleport_in_time = 0;
+	teleport_in_progress = 0;
+	teleport_in_animation = NULL;
+	teleport_in_animation_done = false;
 
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.

@@ -195,10 +195,13 @@ public:
 	tile* needs_to_close_door_tile; //Pointer to the tile containing the door the unit needs to close.
 	int moves_till_close_door_time; //In what number of moves does the unit need to close the door behind itself? (Used in conjuction with needs_to_close_door)
 
-	int teleport_time; //The number of frames the teleporter spends on each frame of the teleport animation. If no teleport animation, then the amount of time that passes untill the bingy bingy is teleported.
-	int teleport_progress; //How far into the time allocated on each frame of the teleport animation has the unit gone? If no animation, how far into the teleport time.
-	animation* teleport_animation; //The teleport animation.
-	bool teleport_animation_done; //Is the teleport animation done?
+	int teleport_in_time; //The number of frames the teleporter spends on each frame of the teleport in animation. If no teleport in animation, then the amount of time that passes until the bingy bingy is teleported in.
+	int teleport_in_progress; //How far into the time allocated on each frame of the teleport in animation has the unit gone? If no animation, how far into the teleport in time.
+	animation* teleport_in_animation; //The teleport in animation.
+	bool teleport_in_animation_done; //Is the teleport in animation done?
+
+
+
 
 	bClassUnit(); //Constructor. Initializes an empty unit.
 	//bClassUnit(const bClassUnit &source); //Copy constructor.

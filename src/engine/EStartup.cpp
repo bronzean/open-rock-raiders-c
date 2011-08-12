@@ -110,6 +110,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 		cout << "Failed loading teleport button disabled sprite.\n";
 		return false;
 	}
+	Interface.g_teleport_button.x1 = SCREEN_WIDTH - (Interface.g_teleport_button.sprite->w); //Set the x1...
 	Interface.g_teleport_button.x2 = Interface.g_teleport_button.x1 + Interface.g_teleport_button.sprite->w; //Set the x of the botomn right corner of the teleport button.
 	cout << "2\n";
 	Interface.g_teleport_button.y2 = Interface.g_teleport_button.y1 + Interface.g_teleport_button.sprite->h; //Set the y of the botomn right corner of the teleport button.
@@ -136,7 +137,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
 	}
 	Interface.construct_wall_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct wall button.
 	Interface.construct_wall_button.state = 1; //Make it start out enabled!
-	Interface.construct_wall_button.x1 = 550; //TODO: Make this be loaded from the interface cfg.
+	Interface.construct_wall_button.x1 = SCREEN_WIDTH - (Interface.construct_wall_button.sprite->w); //TODO: Make this be loaded from the interface cfg.
 	Interface.construct_wall_button.y1 = 100; //TODO: Make this be loaded from the interface cfg.
 	Interface.construct_wall_button.x2 = Interface.construct_wall_button.x1 + Interface.construct_wall_button.sprite->w; //Set the construct wall button's bottom right corner's x.
 	Interface.construct_wall_button.y2 = Interface.construct_wall_button.y1 + Interface.construct_wall_button.sprite->h; //Set the construct wall button's bottom right corner's y.
@@ -153,7 +154,7 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
         }
         Interface.construct_door_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct door button.
         Interface.construct_door_button.state = 1; //Make it start out enabled!
-        Interface.construct_door_button.x1 = Interface.construct_wall_button.x1; //TODO: Make this be loaded from the interface cfg.
+        Interface.construct_door_button.x1 = SCREEN_WIDTH - (Interface.construct_door_button.sprite->w); //TODO: Make this be loaded from the interface cfg.
         Interface.construct_door_button.y1 = Interface.construct_wall_button.y2 + 1; //TODO: Make this be loaded from the interface cfg.
         Interface.construct_door_button.x2 = Interface.construct_door_button.x1 + Interface.construct_door_button.sprite->w; //Set the construct door button's bottom right corner's x.
         Interface.construct_door_button.y2 = Interface.construct_door_button.y1 + Interface.construct_door_button.sprite->h; //Set the construct door button's bottom right corner's y.
@@ -161,14 +162,14 @@ bool startup(bool fullscreen, int screen_w, int screen_h, int screen_bpp, std::s
         choose_door_location_spr = TTF_RenderText_Solid(font1, choose_door_location_str.c_str(), c_white);
         temp_spr = NULL; //Reset this for use with next button.
 
-        if(!img_load_safe("data/resource/interface/button/construction/build_teleporter.png", &temp_spr))
+        if(!img_load_safe("data/resource/interface/button/construction/build_teleporter1.png", &temp_spr))
         {
                 cout << "Failed loading teleporter construction button sprite.\n";
                 return false;
         }
         Interface.construct_teleporter1_button.init(temp_spr->w, temp_spr->h, 0, 0, temp_spr, NULL); //Initialize the construct teleporter1 button.
         Interface.construct_teleporter1_button.state = 1; //Make it start out enabled!
-        Interface.construct_teleporter1_button.x1 = Interface.construct_door_button.x1; //TODO: Make this be loaded from the interface cfg.
+        Interface.construct_teleporter1_button.x1 = SCREEN_WIDTH - (Interface.construct_teleporter1_button.sprite->w); //TODO: Make this be loaded from the interface cfg.
         Interface.construct_teleporter1_button.y1 = Interface.construct_door_button.y2 + 1; //TODO: Make this be loaded from the interface cfg.
         Interface.construct_teleporter1_button.x2 = Interface.construct_teleporter1_button.x1 + Interface.construct_teleporter1_button.sprite->w; //Set the construct teleporter1 button's bottom right corner's x.
         Interface.construct_teleporter1_button.y2 = Interface.construct_teleporter1_button.y1 + Interface.construct_teleporter1_button.sprite->h; //Set the construct teleporter1 button's bottom right corner's y.

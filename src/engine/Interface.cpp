@@ -157,21 +157,24 @@ void interface::update_2d_graphic_effects() //Update active 2d graphic effects.
 			active_2d_graphic_effects[i].draw_self(); //Draw the effect.
 		}
 
-		active_2d_graphic_effects[i].time_progress++; //Increment this since time has passed.
-
-		if(active_2d_graphic_effects[i].time_progress > active_2d_graphic_effects[i].time_per_frame) //If it's done with the next frame.
+		if(!paused)
 		{
-			if(active_2d_graphic_effects[i].the_animation->current_frame >= active_2d_graphic_effects[i].the_animation->num_frames - 1) //If the end of the animation has been reached.
-			{
-				delete active_2d_graphic_effects[i].the_animation; //Delete this since it's just a copy.
+			active_2d_graphic_effects[i].time_progress++; //Increment this since time has passed.
 
-				active_2d_graphic_effects.erase(active_2d_graphic_effects.begin() + 1); //Remove this effect.
-				i--; //Deincrement this so that none are skipped.
-			}
-			else
+			if(active_2d_graphic_effects[i].time_progress > active_2d_graphic_effects[i].time_per_frame) //If it's done with the next frame.
 			{
-				active_2d_graphic_effects[i].the_animation->proceed_animation(); //Progress the animation.
-				active_2d_graphic_effects[i].time_progress = 0; //Reset the progress.
+				if(active_2d_graphic_effects[i].the_animation->current_frame >= active_2d_graphic_effects[i].the_animation->num_frames - 1) //If the end of the animation has been reached.
+				{
+					delete active_2d_graphic_effects[i].the_animation; //Delete this since it's just a copy.
+
+					active_2d_graphic_effects.erase(active_2d_graphic_effects.begin() + 1); //Remove this effect.
+					i--; //Deincrement this so that none are skipped.
+				}
+				else
+				{
+					active_2d_graphic_effects[i].the_animation->proceed_animation(); //Progress the animation.
+					active_2d_graphic_effects[i].time_progress = 0; //Reset the progress.
+				}
 			}
 		}
 	}
