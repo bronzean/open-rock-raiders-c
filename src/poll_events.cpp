@@ -939,7 +939,7 @@ tile_popup_menu_force_draw:
 
 											//TODO: Add a "Pick up ore" field for every ore.
 										}
-										else if(!Map[rightclick_tile_id].has_construction && Map[rightclick_tile_id].orelist.size == 0) //No ore. Check if there is a construction on here.
+										else if(!Map[rightclick_tile_id].has_construction && Map[rightclick_tile_id].orelist.size() == 0) //No ore. Check if there is a construction on here.
 										{
 											selected_unit->ground_popup_menu->fields.push_back(field_construct_wall); //Add the "construct wall" field.
 											selected_unit->ground_popup_menu->fields[selected_unit->ground_popup_menu->fields.size() - 1].parent_menu = selected_unit->ground_popup_menu; //Assign the new field's parent menu.
