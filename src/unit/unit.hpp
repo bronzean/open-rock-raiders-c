@@ -8,7 +8,7 @@
 #include "../engine/EObject.hpp"
 #include "../engine/interface/popup_menu.hpp"
 
-class tool;
+class object;
 class ore;
 class energy_crystal;
 class animation;
@@ -68,8 +68,8 @@ public:
 
 	int draw_frame; //The frame it last was drawn in.
 
-	std::vector<tool> tool_list; //Contains all the tools that the raider is carrying.
-	std::vector<tool>::iterator iterator; //Used for navigating the tool list.
+	std::vector<object> object_list; //Contains all the objects that the raider is carrying.
+	std::vector<object>::iterator iterator; //Used for navigating the object list.
 
 	bool hovering; //Is the unit hovering?
 	int hover_duration; //For how many more frames is the unit going to hover?

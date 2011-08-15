@@ -82,19 +82,19 @@ void bClassUnit::draw_inventory() //Lets the player know what tools this guy is 
 
 	draw(0, (SCREEN_HEIGHT - carrying_message_sprite->h), carrying_message_sprite, screen); //Draw the carrying message onto the screen.
 
-	for(iterator = tool_list.begin(); iterator < tool_list.end(); iterator++, counter++) //Loop through the tool list
+	for(iterator = object_list.begin(); iterator < object_list.end(); iterator++, counter++) //Loop through the object list
 	{
-		draw_y = SCREEN_HEIGHT - tool_list[counter].icon_sprite->h; //Assign draw_y to be the screen's y resolution minus the tool's icon's height.
+		draw_y = SCREEN_HEIGHT - object_list[counter].icon_sprite->h; //Assign draw_y to be the screen's y resolution minus the object's icon's height.
 
-		draw(draw_x, draw_y, tool_list[counter].icon_sprite, screen); //Now draw the tool's icon's sprite.
+		draw(draw_x, draw_y, object_list[counter].icon_sprite, screen); //Now draw the object's icon's sprite.
 
-		draw_x += tool_list[counter].icon_sprite->w; //Add the icon's width onto draw x.
+		draw_x += object_list[counter].icon_sprite->w; //Add the icon's width onto draw x.
 		draw_x += 10; //Add 10 onto draw x.
 	}
 
 
 
-	//Now we go draw the ore he's carrying.
+	//Now we go draw the ore it's carrying.
 	counter = 0; //Reset counter...
 
 	for(iterator2 = ore_list.begin();  iterator2 < ore_list.end(); iterator2++, counter++) //Loop through the ore list.

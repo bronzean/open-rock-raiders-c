@@ -123,13 +123,13 @@ void tile::mine_to_ground(int i)
 
 				//Subtract the raider's drill's damage from the health of the tile.
 				int counter = 0;
-				bool found = false; //Did it find the tool that meets its requirements?
+				bool found = false; //Did it find the object that meets its requirements?
 
-				for(unitlist[i].iterator = unitlist[i].tool_list.begin(); unitlist[i].iterator < unitlist[i].tool_list.end(); unitlist[i].iterator++, counter++) //Loop through the tool list
+				for(unitlist[i].iterator = unitlist[i].object_list.begin(); unitlist[i].iterator < unitlist[i].object_list.end(); unitlist[i].iterator++, counter++) //Loop through the object list.
 				{
-					if(found == false && unitlist[i].tool_list[counter].can_drill_wall == true && Map[unitlist[i].mine_tile_id].minimumn_mining_power <= unitlist[i].tool_list[counter].drill_power) //If the tool meets all the requirements to mine this wall...
+					if(found == false && unitlist[i].object_list[counter].can_drill_wall == true && Map[unitlist[i].mine_tile_id].minimumn_mining_power <= unitlist[i].object_list[counter].drill_power) //If the object meets all the requirements to mine this wall...
 					{
-						Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's drill rate from this tile's health.
+						Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1] -= unitlist[i].object_list[counter].drill_rate; //Subtract the object's drill rate from this tile's health.
 						found = true;
 						//cout << "Wall's new health: " << Map[unitlist[i].mine_tile_id].health[Map[unitlist[i].mine_tile_id].num_shovels - 1]<< "\n";
 						Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].mining_message_spr, 1, false); //Draw the "Whee, mining!" message.

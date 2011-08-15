@@ -456,10 +456,10 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 
 					if(stage_object[2] != "0")
 					{
-						tool new_tool = Tool_Type_Manager.get_by_id(atoi(stage_object[3].c_str())); //Find the tool with the specified ID.
-						newUnit.tool_list.push_back(new_tool); //Add the tool it found to the new unit's tool list.
+						object new_object = Object_Type_Manager.get_by_id(atoi(stage_object[3].c_str())); //Find the object with the specified ID.
+						newUnit.object_list.push_back(new_object); //Add the object it found to the new unit's object list.
 
-						if(newUnit.tool_list[newUnit.tool_list.size() - 1].can_drill_wall == true) //Check if the raider is carying a drill.
+						if(newUnit.object_list[newUnit.object_list.size() - 1].can_drill_wall == true) //Check if the raider is carying a drill.
 						{
 							newUnit.wall_popup_menu = new popup_menu;
 							newUnit.wall_popup_menu->fields.push_back(field_drill_wall); //Add this to the unit's popup menu.
@@ -468,7 +468,7 @@ bool parser::parse_map_layer(const char folderpath[200]) //TODO: Finish this
 							newUnit.can_mine_wall = true; //Let the game know this unit has the ability to drill.
 						}
 
-						if(newUnit.tool_list[newUnit.tool_list.size() - 1].can_clear_rubble == true) //Check if the raider is carying a shovel.
+						if(newUnit.object_list[newUnit.object_list.size() - 1].can_clear_rubble == true) //Check if the raider is carying a shovel.
 						{
 							newUnit.rubble_popup_menu->fields.push_back(field_shovel_rubble); //Add this to the unit's popup menu.
 							newUnit.rubble_popup_menu->fields[newUnit.rubble_popup_menu->fields.size() - 1].set_parent_menu(newUnit.rubble_popup_menu); //Let the new field know what popup_menu contains it.

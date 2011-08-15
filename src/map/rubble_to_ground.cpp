@@ -166,14 +166,14 @@ void tile::rubble_to_ground(int i)
 
 			//Subtract the raider's shovel's damage from the health of the tile.
 			int counter = 0; //Used in the for loop below.
-			bool found = false; //Did it find the tool that meets its requirements?
+			bool found = false; //Did it find the object that meets the requirements?
 
-			for(unitlist[i].iterator = unitlist[i].tool_list.begin(); unitlist[i].iterator < unitlist[i].tool_list.end(); unitlist[i].iterator++, counter++) //Loop through the tool list
+			for(unitlist[i].iterator = unitlist[i].object_list.begin(); unitlist[i].iterator < unitlist[i].object_list.end(); unitlist[i].iterator++, counter++) //Loop through the object list.
 			{
-				if(found == false && unitlist[i].tool_list[counter].can_clear_rubble == true && minimumn_mining_power <= unitlist[i].tool_list[counter].shovel_power) //If the tool meets all the requirements to shovel this rubble...
+				if(found == false && unitlist[i].object_list[counter].can_clear_rubble == true && minimumn_mining_power <= unitlist[i].object_list[counter].shovel_power) //If the object meets all the requirements to shovel this rubble...
 				{
-					health[num_shovels - 1] -= unitlist[i].tool_list[counter].default_rubble_damage; //Subtract the tool's shovel rate from this tile's health.
-					found = true; //Found the appropiate tool.
+					health[num_shovels - 1] -= unitlist[i].object_list[counter].default_rubble_damage; //Subtract the object's shovel rate from this tile's health.
+					found = true; //Found the appropiate object.
 					//cout << "Rubble's new health: " << health[num_shovels - 1]<< "\n";
 				}
 			}

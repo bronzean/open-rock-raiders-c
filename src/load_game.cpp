@@ -180,8 +180,8 @@ bool load_game() //Load the game.
 	out_string.str(""); //Reset out_string
 
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); //Clear the screen.
-	//Let the user know the tool types are being loaded...
-	load_text = "Loading tool types";
+	//Let the user know the object types are being loaded...
+	load_text = "Loading object types";
 	load_text_sprite = TTF_RenderText_Solid(font1, load_text.c_str(), c_white); //Render the text onto the sprite
 	draw((SCREEN_WIDTH / 2) - (load_text_sprite->w / 2), (SCREEN_HEIGHT / 2) - (load_text_sprite->h / 2), load_text_sprite, screen);
 	SDL_FreeSurface(load_text_sprite);
@@ -193,7 +193,7 @@ bool load_game() //Load the game.
 		fflush(GameLog);
 		return false;
 	}
-	Tool_Type_Manager.load_types_from_file("data/tools.cfg"); //load tool types
+	Object_Type_Manager.load_types_from_file("data/objects.cfg"); //Load object types.
 	fwrite(out_string.str().c_str(), 1, strlen(out_string.str().c_str()), GameLog);
 	fflush(GameLog);
 	out_string.str(""); //Reset out_string

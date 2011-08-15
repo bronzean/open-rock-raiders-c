@@ -111,7 +111,7 @@ void bClassUnit::draw_sprite() //Draw the unit's sprite.
 		}
 		if(selected || player) //If the unit is selected...Or it is th player's unit...
 		{
-			if(tool_list.size() != 0) //If the unit's tool list size is not equal to 0.
+			if(object_list.size() != 0) //If the unit's tool list size is not equal to 0.
 			{
 				draw_inventory(); //Let the player know what tools this guy is carrying.
 			}

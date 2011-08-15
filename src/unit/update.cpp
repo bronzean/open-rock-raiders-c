@@ -635,9 +635,9 @@ std::string bClassUnit::update()
 			{
 				bool found = false; //Did the game find a drill in the player's inventory?
 
-				for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a drill.
+				for(unsigned int i = 0; i < object_list.size(); i++) //Find out if the unit is carrying a drill.
 				{
-					if(tool_list[i].can_drill_wall == true) //If the the tool at index i in this tile's tool_list is able to drill walls...
+					if(object_list[i].can_drill_wall == true) //If the the object at index i in this unit's object_list is able to drill walls...
 
 					{
 						found = true; //Let's the game know it found a drill in the unit's inventory.
@@ -682,15 +682,15 @@ std::string bClassUnit::update()
 
 					bool found = false; //Did the game find an axe or something in the player's inventory?
 
-					for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a tool that can chop trees.
+					for(unsigned int i = 0; i < object_list.size(); i++) //Find out if the unit is carrying an object that can chop trees.
 					{
-						if(tool_list[i].can_chop_tree == true) //If the tool at index i of this tile's tool list is able to chop trees...
+						if(object_list[i].can_chop_tree == true) //If the object at index i of this tile's object list is able to chop trees...
 						{
 							found = true; //Let's the game know it found a tool that can chop trees in the unit's inventory.
 						}
 					}
 
-					if(found == true) //If it found a tool that can chop trees...
+					if(found == true) //If it found an object that can chop trees...
 					{				
 						chop_mode = true; //Let the game know that the player is going to chop a tree.
 						allow_deselect = false; //Make sure the unit can't be unselected...
@@ -698,7 +698,7 @@ std::string bClassUnit::update()
 					}
 					else //Didn't find an axe.
 					{
-						cout << "You need a tool that can chop trees!\n"; //Debugging output.
+						cout << "You need an object that can chop trees!\n"; //Debugging output.
 					}
 				}
 			}
@@ -714,9 +714,9 @@ std::string bClassUnit::update()
 			{
 				bool found = false; //Did the game find a shovel in the player's inventory?
 
-				for(unsigned int i = 0; i < tool_list.size(); i++) //Find out if the unit is carrying a shovel.
+				for(unsigned int i = 0; i < object_list.size(); i++) //Find out if the unit is carrying a shovel.
 				{
-					if(tool_list[i].can_clear_rubble == true) //If the tool at index i of this unit's tool list is able to clear rubble...
+					if(object_list[i].can_clear_rubble == true) //If the object at index i of this unit's object list is able to clear rubble...
 					{
 						found = true; //Let's the game know it found a shovel in the unit's inventory.
 					}

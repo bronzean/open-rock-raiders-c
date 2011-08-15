@@ -3,7 +3,7 @@
 #pragma once
 #include "../Engine.hpp"
 #include "../unit/unit.hpp"
-#include "../tool/tool.hpp"
+#include "../object/object.hpp"
 #include "../map/tile.hpp"
 #include "../ore/ore.hpp"
 #include "../energy_crystal/energy_crystal.hpp"
@@ -11,8 +11,8 @@
 #include "../job/job_que.hpp"
 #include <vector>
 
-class tool;
-class tool_manager;
+class object;
+class object_manager;
 
 class ore;
 class ore_manager;
@@ -100,7 +100,7 @@ public:
 
 extern unit_type_manager Unit_Type_Manager; //The unit manager.
 
-extern tool_manager Tool_Type_Manager; //Manages all the tool types.
+extern object_manager Object_Type_Manager; //Manages all the object types.
 
 extern tile_manager Tile_Type_Manager; //Manages all the tile types.
 

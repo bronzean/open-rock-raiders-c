@@ -3,7 +3,8 @@
 
 
 void tile::chop_to_ground(int i)
-{	if(!paused)
+{
+	/*if(!paused)
 	{
 		if(Map[unitlist[i].mine_tile_id].health[0] <= 0) //TODO: Remember when going through and changing chopping that this needs to be changed too.
 		{
@@ -79,18 +80,18 @@ void tile::chop_to_ground(int i)
 
 
 			int counter = 0;
-			bool found = false; //Did it find a tool that meets the requirements?
+			bool found = false; //Did it find an object that meets the requirements?
 
-			for(unitlist[i].iterator = unitlist[i].tool_list.begin(); unitlist[i].iterator < unitlist[i].tool_list.end(); unitlist[i].iterator++, counter++) //Loop through the tool list
+			for(unitlist[i].iterator = unitlist[i].object_list.begin(); unitlist[i].iterator < unitlist[i].object_list.end(); unitlist[i].iterator++, counter++) //Loop through the object list.
 			{
-				if(found == false && unitlist[i].tool_list[counter].can_chop_tree == true && Map[unitlist[i].mine_tile_id].minimumn_mining_power <= unitlist[i].tool_list[counter].drill_power) //If the tool meets all the requirements to chop down this tree...
+				if(found == false && unitlist[i].object_list[counter].can_chop_tree == true && Map[unitlist[i].mine_tile_id].minimumn_chopping_power <= unitlist[i].object_list[counter].drill_power) //If the object meets all the requirements to chop down this tree...
 				{
-					Map[unitlist[i].mine_tile_id].health[0] -= unitlist[i].tool_list[counter].drill_rate; //Subtract the tool's drill rate from this tile's health. //TODO: Remember when going through and changing mining that this needs to be changed too.
+					Map[unitlist[i].mine_tile_id].health[0] -= unitlist[i].object_list[counter].chop_rate; //Subtract the tool's drill rate from this tile's health. //TODO: Remember when going through and changing mining that this needs to be changed too.
 					found = true;
 					cout << "Tree's new health: " << Map[unitlist[i].mine_tile_id].health[0] << "\n"; //TODO: Remember when going through and changing chopping that this needs to be changed too.
 					Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].chopping_message_spr, 1, false); //Draw the "Whee, mining!" message.
 				}
 			}
 		}
-	}
+	}*/
 }
