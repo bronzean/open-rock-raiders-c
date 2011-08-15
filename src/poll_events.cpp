@@ -241,7 +241,7 @@ tile_popup_menu_force_draw:
 
 									for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore" fields.
 									{
-										if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "pickup all ore") //Check if the current field is a "pickup any ore", or one of the construction fields.
+										if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "construct teleporter1" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "pickup all ore") //Check if the current field is a "pickup any ore", or one of the construction fields.
 										{
 											_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
 											i--; //Deincrement this so that no entries are skipped.
@@ -924,7 +924,7 @@ tile_popup_menu_force_draw:
 
 										for(int i = 0; i < _popup_menu->fields.size(); i++) //Remove all "pickup any ore", and the constructions, fields, and close/open fields.
 										{
-											if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "drop carried") //Check if the current field is one to be removed.
+											if(_popup_menu->fields[i].field_data == "pickup any ore" || _popup_menu->fields[i].field_data == "construct wall" || _popup_menu->fields[i].field_data == "construct door" || _popup_menu->fields[i].field_data == "construct teleporter1" || _popup_menu->fields[i].field_data == "open door" || _popup_menu->fields[i].field_data == "close door" || _popup_menu->fields[i].field_data == "drop carried") //Check if the current field is one to be removed.
 											{
 												_popup_menu->fields.erase(_popup_menu->fields.begin() + i); //Remove  it.
 												i--; //Deincrement this so that no entries are skipped.
