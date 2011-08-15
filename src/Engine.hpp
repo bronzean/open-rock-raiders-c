@@ -23,6 +23,8 @@
 #include <vector>
 #include <pthread.h>
 #include <memory>
+#include <cctype>
+#include <algorithm>
 
 #ifdef WIN32
 #include <winsock2.h>

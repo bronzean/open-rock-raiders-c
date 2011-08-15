@@ -1,7 +1,6 @@
 /* Copyright the ORR-C Dev Team */
 #include "tile.hpp"
 
-
 void tile::rubble_to_ground(int i)
 {
 	Draw_Message_Handler.add_message(wx + 32, wy, layer, unitlist[i].shovelling_message_spr, 1, false); //Draw the "I'm shovelling" message.
