@@ -1,5 +1,7 @@
 /* Copyright the ORR-C Dev Team */
 #include "construction.hpp"
+#include "../engine/Interface.hpp"
+#include "../engine/sprite/pickup_sprite.hpp"
 
 construction::construction() //Constructor. Initializes an empty construction.
 {
@@ -158,10 +160,6 @@ void construction::copy_from(construction Construction) //Give this tile the pro
 
 void construction::draw_sprite(int wx, int wy, int layer) //Draw the construction's sprite.
 {
-	/*if(active_animation == true) //If an animation is going on...
-	{
-		animations[active_animation_entry].draw_sprite(wx, wy, layer); //Draw the animation.
-	}*/
 	if(active_animation)
 	{
 		active_animation->draw_sprite(wx, wy, layer); //Draw the animation.
@@ -176,26 +174,23 @@ void construction::draw_sprite(int wx, int wy, int layer) //Draw the constructio
 		}
 		else //Not open? Ok then, draw the normal sprite (Which doubles as the closed sprite for constructions which also have a sprite_open).
 		{
-			if(selected)
+			if(connection)
 			{
-				draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite_select, screen); //Now draw the sprite to the screen.
+				draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), connection, screen); //Now draw the sprite to the screen.
 			}
 			else
 			{
-				//cout << "Blarg.\n";
-				if(connection)
-				{
-					draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), connection, screen); //Now draw the sprite to the screen.
-
-					//cout << "Connection.\n";
-				}
-				else
-				{
-					//cout << "Normal.\n";
-					draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
-				}
+				draw((wx) - (PCamera->wx), (wy) - (PCamera->wy), sprite, screen); //Now draw the sprite to the screen.
 			}
 		}
+	}
+	if(selected) //If it is selected...
+	{
+		sprite_wrapper* _sprite = new sprite_wrapper;
+		_sprite->wx = wx;
+		_sprite->wy = wy;
+		_sprite->image = sprite_select;
+		Interface.add_sprite_that_needs_drawing(_sprite);
 	}
 }
 
@@ -211,13 +206,11 @@ void construction::open_thyself(bool automatic)  //Open the construction! (Door,
 		if(open_animation) //If it has an opening animation...
 		{
 			active_animation = &animations[open_animation_entry];
-			//active_animation_entry = open_animation_entry;
 			if(open_ammount >= open_time * animations[open_animation_entry].num_frames) //Check if it is done opening.
 			{
 				opening = false; //Not opening anymore, it is open!
 				construction_open = true; //Let the game know the door is now open.
 				active_animation = NULL; //Let the game know the animation is over.
-				//active_animation_entry = 0; //Let the game know the active animation's entry.
 				close_ammount = 0;
 				open_ammount = 0;
 				animations[open_animation_entry].current_frame = 0;
