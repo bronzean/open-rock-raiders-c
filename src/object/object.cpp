@@ -124,100 +124,9 @@ bool object_manager::load_objects(string folderpath)
 {
 	object new_object; //The object we're going to create.
 
-	//--------The new tool's properties.------
-	string tool_name = ""; //The name.
-	int tool_id = 0; //The ID.
-	bool tool_is_tool = false; //Is it a tool?
-	bool tool_is_weapon = false; //Is it a weapon?
-	bool tool_can_drill_wall = false; //Can it drill walls?
-	bool tool_can_drill_ground = false; //Can it drill the ground?
-	bool tool_can_clear_rubble = false; //Can it clear rubble?
-	int tool_default_damage = 0; //It's default damage?
-	bool tool_jetpack = false; //Is it a jetpack?
-	int tool_jetpack_duration = 0; //How long it keeps the raider 'afloat'.
-	int tool_drill_rate = 0; //How much damage the tool inflicts to a tile per frame.
-	//int tool_drill_ground_time = 0; //TODO: Implement this.
-	int tool_rubble_clear_time = 0; //TODO: Implement this.
-	int tool_drill_power = 0; //If this is greater than or equal to a wall's minimumn required mining power, then this tool can drill that wall!
-	SDL_Surface *tool_icon_sprite = NULL; //Its icon.
-	bool tool_can_chop_tree = false; //Can this tool chop down trees.
-	int tool_default_rubble_damage = 0;
-	int tool_shovel_rate = 0;
-	int tool_shovel_power = 0;
-	//----------------------------------------
-
-	/*string command = ""; //When it isn't a comment, it appends everything to this. Then this is checked to see if it matches any commands.
-	string num_command = ""; //If the command takes parameters, here they are stored.
-	bool comment = true; //Did a comment start?
-	bool check_command = false; //Is it time to check a command?
-	char temp = ' '; //Holds the last char read...*/
-
 	string filepath = folderpath + "/config";//The path to the config file...
 
-	/*FILE *file = fopen(filepath.c_str(), "r"); //Open the file.
-	if(file == NULL) //If the file doesn't exist.
-	{
-		cout << "The file \"" << filepath << "\" does not exist!\n"; //Debugging output...
-		out_string << "The file \"" << filepath << "\" does not exist!\n"; //Debugging output...
-		return false; //Tell the caller that it failed.
-	}
-	cout << "Filepath is: " << filepath << "\n"; //Debugging output.
-	out_string << "Filepath is: " << filepath << "\n"; //Debugging output.
-	int c = 0; //It's location in the file
-
-	while (c != EOF) //While the end of the file hasn't been reached.
-	{
-        	c = getc(file); //Read the current char.
-		temp = (char) c; //Convert it into something we can use.
-
-		if(temp == ']' || temp == '\n') //If it's found the end of the line or the closing ']'...
-		{
-			comment = true; //Tell it everything after this is a comment.
-			check_command = true; //Tell it to check the data it read in.
-		}
-		if(!comment) //If it's not a comment...
-		{
-			command += temp; //Add the character we just read to command.
-		}
-
-		if(temp == '[') //If it found an opening '['
-		{
-			comment = false; //Let it know commenting is off.
-		}
-
-		if(check_command) //If it's time to check the data we read...
-		{
-//			else if(command == "ID") //Found the entry that specifies the tool's ID.
-//			{
-//				bool quit = false; //Controlls the loop below.
-//				bool start = false; //Start recording the parameter?
-//
-//				while(c != EOF && quit == false)
-//				{
-//					c = getc(file);
-//					temp = (char) c;
-//
-//					if(temp == '\n' || temp == ')')
-//					{
-//						start = false;
-//						quit = true;
-//						tool_id = atoi(num_command.c_str()); //Assign the tool's ID.
-//					}
-//					else if(temp == '(')
-//					{
-//						start = true;
-//					}
-//					else if(start)
-//					{
-//						num_command += temp;
-//					}
-//				}
-//			}
-	}
-
-	fclose(file);*/
-
-	std::vector<cfg::variable> variables;
+	vector<cfg::variable> variables;
 
 	if(!cfg::parse_config_file(filepath, &variables)) //Parses the cfg.
 	{
@@ -322,6 +231,11 @@ bool object_manager::load_objects(string folderpath)
 		else if(variables[i].name == "CHOP_RATE") //Found the entry that specifies the rate at which the object chops trees.
 		{
 			new_object.chop_rate = atoi(variables[i].values[0].c_str());
+		}
+		else
+		{
+			out_string << "Unknown variable for this object!!!\n";
+			out_string << "Variable: " << variables[i].name << "\n";
 		}
 	}
 
