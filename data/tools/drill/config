@@ -1,5 +1,5 @@
 [NAME](handheld drill)
-[IS_TOOL](TRUE)
+IS_TOOL](TRUE)
 [DRILL_RATE](1)
 [CAN_DRILL_WALL](TRUE)
 [DRILL_POWER](1)
