@@ -83,12 +83,16 @@ namespace cfg
 					}
 				}
 
+				out_string << "Variable name: " << variable_name << "\n";
+
 				variable_name = ""; //Reset this.
 
 				variables->push_back(new_variable); //Save this new variable.
 
 				new_variable.name = ""; //Reset this.
 				new_variable.values.clear(); //Empty this.
+
+				done_reading_variable = false;
 			}
 		}
 
