@@ -1,5 +1,6 @@
 /* Copyright the ORR-C Dev Team */
 #include "unit.hpp"
+#include "../library/cfg/parser.hpp"
 using namespace std;
 
 //Add a new unit type.
@@ -99,1060 +100,379 @@ bool unit_type_manager::load_unit(string folderpath)
 {
 	bClassUnit new_unit; //The unit we're going to create
 
-	//--------The new unit's properties.------
-	string unit_name = ""; //The new unit's name.
-	int unit_type = 0; //The new unit's type/ID.
-	SDL_Surface *unit_sprite = NULL; //The new unit's sprite.
-	SDL_Surface *unit_sprite_select = NULL; //The new unit's selected sprite.
-	bool unit_selectable = false; //Can this new unit be selected?
-	int unit_move_speed = 0; //The speed the unit moves at.
-	int unit_max_health = 100; //The maximumn health of the unit.
-	//----------------------------------------
-
-	string command = ""; //When it isn't a comment, it appends everything to this. Then this is checked to see if it matches any commands.
-	string num_command = ""; //If the command takes parameters, here they are stored.
-	bool comment = true; //Did a comment start?
-	bool check_command = false; //Is it time to check a command?
-	char temp = ' '; //Holds the last char read...
-
 	string filepath = folderpath + "/config";//The path to the config file...
 
-	FILE *file = fopen(filepath.c_str(), "r"); //Open the file.
-	if(file == NULL) //If the file doesn't exist.
+	vector<cfg::variable> variables;
+
+	if(!cfg::parse_config_file(filepath, &variables)) //Parses the cfg.
 	{
-		cout << "The file \"" << filepath << "\" does not exist!\n"; //Debugging output...
-		out_string << "The file \"" << filepath << "\" does not exist!\n"; //Debugging output...
-		return false; //Tell the caller that it failed.
+		cout << "Failed to load object's cfg.\n"; //Tell the user it failed.
+
+		return false; //Abort! Abort!
 	}
-	cout << "Filepath is: " << filepath << "\n"; //Debugging output.
-	out_string << "Filepath is: " << filepath << "\n"; //Debugging output.
-	int c = 0; //It's location in the file
 
-	while (c != EOF) //While the end of the file hasn't been reached.
+	for(int i = 0; i < variables.size(); i++) //Loop through the variable list.
 	{
-        	c = getc(file); //Read the current char.
-		temp = (char) c; //Convert it into something we can use.
-
-		if(temp == ']' || temp == '\n') //If it's found the end of the line or the closing ']'...
+		if(variables[i].name == "NAME") //Found the entry that specifies the unit's name.
 		{
-			comment = true; //Tell it everything after this is a comment.
-			check_command = true; //Tell it to check the data it read in.
+			new_unit.name = variables[i].values[0]; //Assign the new unit's name.
 		}
-		if(!comment) //If it's not a comment...
+		else if(variables[i].name == "SELECTABLE") //Found the entry that specifies whether or not this unit can be selected.
 		{
-			command += temp; //Add the character we just read to command.
+			out_string << "Encountered selectable...\n";
+			if(variables[i].values[0] == "TRUE" || variables[i].values[0] == "true") //Check if the stuff inside the parantheses is telling the game that this unit can be selected.
+			{
+				new_unit.selectable = true;
+			}
+			else
+			{
+				new_unit.selectable = false; //Can't touch that. Er, can't select this unit.
+			}
 		}
-
-		if(temp == '[') //If it found an opening '['
+		else if(variables[i].name == "MOVE_SPEED") //Found the entry that specifies the unit's move speed.
 		{
-			comment = false; //Let it know commenting is off.
+			new_unit.move_speed = atoi(variables[i].values[0].c_str()); //The base movement speed. And by base, I mean foundation, not your super epic base. The 'fancy' atoi function simply converts the string to an integer.
 		}
-
-		if(check_command) //If it's time to check the data we read...
+		else if(variables[i].name == "MAX_HEALTH") //Found the entry that specifies the unit's max health.
 		{
-			if(command == "NAME") //Found the entry that specifies the unit's name.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						unit_name = num_command; //Assign the new unit's name.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-//			else if(command == "ID") //Found the entry that specifies the unit's ID.
-//			{
-//				bool quit = false; //Controlls the loop below.
-//				bool start = false; //Start recording the parameter?
-//
-//				while(c != EOF && quit == false)
-//				{
-//					c = getc(file);
-//					temp = (char) c;
-//
-//					if(temp == '\n' || temp == ')')
-//					{
-//						start = false;
-///						quit = true;
-//						unit_type = atoi(num_command.c_str()); //Assign the unit's type/ID.
-//						std::cout << "Unit type's ID: " << unit_type << "\n";
-//						out_string << "Unit type's ID: " << num_command << "\n";
-//					}
-//					else if(temp == '(')
-//					{
-//						start = true;
-//					}
-//					else if(start)
-//					{
-//						num_command += temp;
-//					}
-//				}
-//			}
-			else if(command == "SELECTABLE") //Found the entry that specifies whether or not the unit is selectable.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						if(num_command == "TRUE" || num_command == "true")
-						{
-							unit_selectable = true;
-						}
-						else
-						{
-							unit_selectable = false;
-						}
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "MOVE_SPEED") //Found the entry that specifies the unit's move speed.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						unit_move_speed = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "MAX_HEALTH") //Found the entry that specifies the unit's max health.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						unit_max_health = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "MOVE_ANIMATION_LEFT") //Found the entry that specifies where the unit's moving left animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the moving left animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_left = new animation; //Create the new animation.
-						*new_unit.move_left = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "MOVE_ANIMATION_RIGHT") //Found the entry that specifies where the unit's moving right animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the moving right animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_right = new animation; //Create the new animation.
-						*new_unit.move_right = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "MOVE_ANIMATION_UP") //Found the entry that specifies where the unit's moving up animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the moving up animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_up = new animation; //Create the new animation.
-						*new_unit.move_up = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "MOVE_ANIMATION_DOWN") //Found the entry that specifies where the unit's moving down animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the moving down animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_down = new animation; //Create the new animation.
-						*new_unit.move_down = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "CARRYORE_ANIMATION_LEFT") //Found the entry that specifies where the unit's carrying ore left animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the carrying ore left animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_left_carryore = new animation; //Create the new animation.
-						*new_unit.move_left_carryore = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "CARRYORE_ANIMATION_RIGHT") //Found the entry that specifies where the unit's carrying ore right animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the carrying ore right animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_right_carryore = new animation; //Create the new animation.
-						*new_unit.move_right_carryore = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "CARRYORE_ANIMATION_UP") //Found the entry that specifies where the unit's carrying ore up animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the carrying ore up animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_up_carryore = new animation; //Create the new animation.
-						*new_unit.move_up_carryore = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "CARRYORE_ANIMATION_DOWN") //Found the entry that specifies where the unit's carrying ore down animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the carrying ore down animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.move_down_carryore = new animation; //Create the new animation.
-						*new_unit.move_down_carryore = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TAKEOUT_DRILL_ANIMATION_LEFT") //Found the entry that specifies where the unit's takeout drill left animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the takeout drill left animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.takeout_drill_left = new animation; //Create the new animation.
-						*new_unit.takeout_drill_left = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TAKEOUT_DRILL_ANIMATION_RIGHT") //Found the entry that specifies where the unit's takeout drill right animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the takeout drill right animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.takeout_drill_right = new animation; //Create the new animation.
-						*new_unit.takeout_drill_right = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TAKEOUT_DRILL_ANIMATION_UP") //Found the entry that specifies where the unit's takeout drill up animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the takeout drill up animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.takeout_drill_up = new animation; //Create the new animation.
-						*new_unit.takeout_drill_up = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TAKEOUT_DRILL_ANIMATION_DOWN") //Found the entry that specifies where the unit's takeout drill down animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the takeout drill down animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.takeout_drill_down = new animation; //Create the new animation.
-						*new_unit.takeout_drill_down = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TAKEOUT_DRILL_TIME") //Found the entry that specifies the unit's move speed.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						new_unit.take_out_drill_time = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "DRILL_ANIMATION_LEFT") //Found the entry that specifies where the unit's drill left animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the drill left animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.drill_left = new animation; //Create the new animation.
-						*new_unit.drill_left = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "DRILL_ANIMATION_RIGHT") //Found the entry that specifies where the unit's drill right animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the drill right animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.drill_right = new animation; //Create the new animation.
-						*new_unit.drill_right = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "DRILL_ANIMATION_UP") //Found the entry that specifies where the unit's drill up animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the drill up animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.drill_up = new animation; //Create the new animation.
-						*new_unit.drill_up = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "DRILL_ANIMATION_DOWN") //Found the entry that specifies where the unit's drill down animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the drill down animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.drill_down = new animation; //Create the new animation.
-						*new_unit.drill_down = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "DRILL_TIME") //Found the entry that specifies the unit's drill time.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						new_unit.drill_time = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "SHOVEL_ANIMATION") //Found the entry that specifies where the unit's shovel animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the shovel animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.shovel_animation = new animation; //Create the new animation.
-						*new_unit.shovel_animation = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "SHOVEL_TIME") //Found the entry that specifies the unit's shovel time.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						new_unit.shovel_time = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "PICKUP_ANIMATION") //Found the entry that specifies where the unit's pickup animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation that's going to be added to the animations vector.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the pickup animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.pick_up = new animation; //Create the new animation.
-						*new_unit.pick_up = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "PICKUP_TIME") //Found the entry that specifies the unit's pickup time.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						new_unit.pickup_time = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TELEPORT_IN_ANIMATION") //Found the entry that specifies where the unit's teleport animation's cfg is located.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-
-						animation new_animation; //The new animation.
-
-						new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
-
-						out_string << "Kay, I found the stuff that has to do with the teleport in animation of the unit.\n";
-						out_string << "Folderpath: " << new_animation.folder_path << "\n";
-						out_string << "CFG path: " << new_animation.folder_path + num_command << "\n\n";
-
-						new_animation.load_settings(new_animation.folder_path + num_command); //Load the animation's settings.
-
-						new_unit.teleport_in_animation = new animation; //Create the new animation.
-						*new_unit.teleport_in_animation = new_animation; //Assign the new animation.
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			else if(command == "TELEPORT_IN_TIME") //Found the entry that specifies the unit's teleport time.
-			{
-				bool quit = false; //Controlls the loop below.
-				bool start = false; //Start recording the parameter?
-
-				while(c != EOF && quit == false)
-				{
-					c = getc(file);
-					temp = (char) c;
-
-					if(temp == '\n' || temp == ')')
-					{
-						start = false;
-						quit = true;
-						new_unit.teleport_in_time = atoi(num_command.c_str());
-					}
-					else if(temp == '(')
-					{
-						start = true;
-					}
-					else if(start)
-					{
-						num_command += temp;
-					}
-				}
-			}
-			check_command = false;
-			command = "";
-			num_command = "";
+			new_unit.m_health = atoi(variables[i].values[0].c_str()); //This will soon get replaced with a realistic health system. For now, set the unit's max health to this. The 'fancy' atoi function simply converts the string to an integer.
+		}
+		else if(variables[i].name == "TELEPORT_IN_TIME") //Found the entry that specifies the unit's teleport time.
+		{
+			new_unit.teleport_in_time = atoi(variables[i].values[0].c_str()); //Set the unit's teleport in time. The 'fancy' atoi function simply converts the string to an integer.
+		}
+		else if(variables[i].name == "PICKUP_TIME") //Found the entry that specifies the unit's pickup time.
+		{
+			new_unit.pickup_time = atoi(variables[i].values[0].c_str()); //Set the unit's pickup time. The 'fancy' atoi function simply converts the string to an integer.
+		}
+		else if(variables[i].name == "SHOVEL_TIME") //Found the entry that specifies the unit's shovel time.
+		{
+			new_unit.shovel_time = atoi(variables[i].values[0].c_str()); //Set the unit's shovel time. The 'fancy' atoi function simply converts the string to an integer.
+		}
+		else if(variables[i].name == "TAKEOUT_DRILL_TIME") //Found the entry that specifies the unit's take out drill time.
+		{
+			new_unit.take_out_drill_time = atoi(variables[i].values[0].c_str());
+		}
+		else if(variables[i].name == "DRILL_TIME") //Found the entry that specifies the unit's drill time.
+		{
+			new_unit.drill_time = atoi(variables[i].values[0].c_str()); //Set the unit's drill time. The 'fancy' atoi function simply converts the string to an integer.
+		}
+		else if(variables[i].name == "MOVE_ANIMATION_LEFT") //Found the entry that specifies where the unit's moving left animation's cfg is located.
+		{
+			animation new_animation; //Placeholder animation.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Lots of debugging output.
+			out_string << "Kay, I found the stuff that has to do with the moving left animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_left = new animation; //Allocate space for the new animation.
+			*new_unit.move_left = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "MOVE_ANIMATION_RIGHT") //Found the entry that specifies where the unit's moving right animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Lots of *hopefully* useful debugging output.
+			out_string << "Kay, I found the stuff that has to do with the moving right animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_right = new animation; //Allocate space for the new animation.
+			*new_unit.move_right = new_animation; //Assign the new animation.
+
+		}
+		else if(variables[i].name == "MOVE_ANIMATION_UP") //Found the entry that specifies where the unit's moving up animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Lots of useful debugging output.
+			out_string << "Kay, I found the stuff that has to do with the moving up animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_up = new animation; //Allocate space for the new animation.
+			*new_unit.move_up = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "MOVE_ANIMATION_DOWN") //Found the entry that specifies where the unit's moving down animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Lots of debugging output. Nuff said.
+			out_string << "Kay, I found the stuff that has to do with the moving down animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_down = new animation; //Allocate space for the new animation.
+			*new_unit.move_down = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "CARRYORE_ANIMATION_LEFT") //Found the entry that specifies where the unit's carrying ore left animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the carrying ore left animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_left_carryore = new animation; //Allocate space for the new animation.
+			*new_unit.move_left_carryore = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "CARRYORE_ANIMATION_RIGHT") //Found the entry that specifies where the unit's carrying ore right animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the carrying ore right animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_right_carryore = new animation; //Allocate space for the new animation.
+			*new_unit.move_right_carryore = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "CARRYORE_ANIMATION_UP") //Found the entry that specifies where the unit's carrying ore up animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the carrying ore up animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_up_carryore = new animation; //Allocate space for the new animation.
+			*new_unit.move_up_carryore = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "CARRYORE_ANIMATION_DOWN") //Found the entry that specifies where the unit's carrying ore down animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the carrying ore down animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.move_down_carryore = new animation; //Allocate space for the new animation.
+			*new_unit.move_down_carryore = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "TAKEOUT_DRILL_ANIMATION_LEFT") //Found the entry that specifies where the unit's takeout drill left animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the takeout drill left animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.takeout_drill_left = new animation; //Allocate space for the new animation.
+			*new_unit.takeout_drill_left = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "TAKEOUT_DRILL_ANIMATION_RIGHT") //Found the entry that specifies where the unit's takeout drill right animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Has it really come to this?
+			out_string << "Kay, I found the stuff that has to do with the takeout drill right animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.takeout_drill_right = new animation; //Allocate space for the new animation.
+			*new_unit.takeout_drill_right = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "TAKEOUT_DRILL_ANIMATION_UP") //Found the entry that specifies where the unit's takeout drill up animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Why am I the one left doing this?
+			out_string << "Kay, I found the stuff that has to do with the takeout drill up animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.takeout_drill_up = new animation; //Allocate space for the new animation.
+			*new_unit.takeout_drill_up = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "TAKEOUT_DRILL_ANIMATION_DOWN") //Found the entry that specifies where the unit's takeout drill down animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//CAN'T YOU GUYS SEE IT'S DEBUGGING OUTPUT???
+			out_string << "Kay, I found the stuff that has to do with the takeout drill down animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.takeout_drill_down = new animation; //Allocate space for the new animation.
+			*new_unit.takeout_drill_down = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "DRILL_ANIMATION_LEFT") //Found the entry that specifies where the unit's drill left animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the drill left animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.drill_left = new animation; //Allocate space for the new animation.
+			*new_unit.drill_left = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "DRILL_ANIMATION_RIGHT") //Found the entry that specifies where the unit's drill right animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//More Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the drill right animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.drill_right = new animation; //Allocate space for the new animation.
+			*new_unit.drill_right = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "DRILL_ANIMATION_UP") //Found the entry that specifies where the unit's drill up animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output's debut.
+			out_string << "Kay, I found the stuff that has to do with the drill up animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.drill_up = new animation; //Allocate space for the new animation.
+			*new_unit.drill_up = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "DRILL_ANIMATION_DOWN") //Found the entry that specifies where the unit's drill down animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the drill down animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.drill_down = new animation; //Allocate space for the new animation.
+			*new_unit.drill_down = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "SHOVEL_ANIMATION") //Found the entry that specifies where the unit's shovel animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the shovel animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.shovel_animation = new animation; //Allocate space for the new animation.
+			*new_unit.shovel_animation = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "PICKUP_ANIMATION") //Found the entry that specifies where the unit's pickup animation's cfg is located.
+		{
+			animation new_animation; //The new animation that's going to be added to the animations vector.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output.
+			out_string << "Kay, I found the stuff that has to do with the pickup animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.pick_up = new animation; //Allocate space for the new animation.
+			*new_unit.pick_up = new_animation; //Assign the new animation.
+		}
+		else if(variables[i].name == "TELEPORT_IN_ANIMATION") //Found the entry that specifies where the unit's teleport animation's cfg is located.
+		{
+			animation new_animation; //The new animation.
+
+			new_animation.folder_path = folderpath + "/"; //Assign the object's folder path.
+
+			//Debugging output...
+			out_string << "Kay, I found the stuff that has to do with the teleport in animation of the unit.\n";
+			out_string << "Folderpath: " << new_animation.folder_path << "\n";
+			out_string << "CFG path: " << new_animation.folder_path + variables[i].values[0] << "\n\n";
+
+			new_animation.load_settings(new_animation.folder_path + variables[i].values[0]); //Load the animation's settings.
+
+			new_unit.teleport_in_animation = new animation; //Allocate space for the new animation.
+			*new_unit.teleport_in_animation = new_animation; //Assign the new animation.
+		}
+		else
+		{
+			out_string << "Unknown variable for this object!!!\n";
+			out_string << "Variable: " << variables[i].name << "\n";
 		}
 	}
 
-	fclose(file);
 
 	//Time to load the unit's sprite.
 	filepath = folderpath + "/sprite.png";//The path to the sprite...
-	//unit_sprite = img_load3(filepath); //Load the sprite.
-	if(!img_load_safe(filepath, &unit_sprite))
+	if(!img_load_safe(filepath, &new_unit.sprite))
 	{
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
@@ -1182,7 +502,7 @@ bool unit_type_manager::load_unit(string folderpath)
 
 	filepath = folderpath + "/sprite_select.png"; //The path to the selected sprite.
 	//unit_sprite_select = img_load(filepath); //Load the selected sprite.
-	if(!img_load_safe(filepath, &unit_sprite_select))
+	if(!img_load_safe(filepath, &new_unit.sprite_select))
 	{
 		cout << "Sprite filepath " << filepath << " does not exist!\n";
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
@@ -1217,9 +537,6 @@ bool unit_type_manager::load_unit(string folderpath)
 		out_string << "Sprite filepath " << filepath << " does not exist!\n";
 		new_unit.sprite_ore_down = NULL;
 	}
-
-	//new_unit.init(unit_type, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
-	new_unit.init(0, unit_sprite, unit_name, unit_sprite_select, unit_selectable, unit_move_speed, unit_max_health); //Initialize the new unit.
 
 	unit_list.push_back(new_unit);
 

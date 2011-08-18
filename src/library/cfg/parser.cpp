@@ -36,7 +36,10 @@ namespace cfg
 			if(current_char == ']' || current_char == '\n') //If the end of the line hath been read in or the closing bracket hath been found...
 			{
 				comment = true; //Comment started! That means we do NOT save what we read just read in.
-				done_reading_variable = true; //Yay, we read in the variable. Now it's time to grab its paramaters and then add all this to the vector of variables we are given in the function paramaters.
+				if(variable_name.size() > 0)
+				{
+					done_reading_variable = true; //Yay, we read in the variable. Now it's time to grab its paramaters and then add all this to the vector of variables we are given in the function paramaters.
+				}
 			}
 
 			if(!comment) //Checks if we're currently NOT in a comment.
