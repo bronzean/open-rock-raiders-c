@@ -8,23 +8,45 @@ using namespace std;
 
 void bClassUnit::check_job() //Give the unit something to do out of the job que.
 {
-	checking_job = true;
-	done_checking_job = false;
+	if(!checking_job)
+	{
+		//cout << "Spawning check job thread.\n";
+		checking_job = true;
+		done_checking_job = false;
 
-	//spawn thread here.
+		//spawn thread here.
+		pthread_t new_thread; //The new thread.
+		threads.push_back(new_thread); //Add it to the list of threads.
+		pthread_create(&threads[threads.size() - 1], NULL, bClassUnit::spawn_check_job_thread, this); //Then tell the check job thread to get to calculating the path.
+	}
+	else
+	{
+		cout << "Already checking job!!!\n";
+	}
 }
 
 void bClassUnit::actually_check_job() //Give the unit something to do out of the job que.
 {
+	if(!pthread_mutex_trylock(&Job_Que.job_mutex)) //If it can't get a lock on the job que, then cancel the job.
+	{
+		checking_job = false;
+		done_checking_job = false;
+
+		//cout << "Please wait for the other check job thread to finish.|||||||||||TODO: Allow multiple threads to check jobs at the same time.\n";
+		//cout << "Locked.\n";
+
+		pthread_exit(NULL);
+
+		return;
+	}
+
 	//Look through the job que until a job is found that this unit can perform.
 	//TODO: Assign the closest job.
 
+	//cout << "Checking job.\n";
+
 	vector<int> jobs;
 	vector<vector<int> > movepaths;
-
-	if(selected)
-	{
-	}
 
 	int i = 0;
 	bool done = false;
@@ -39,6 +61,7 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 		}
 		else
 		{
+			cout << "Blarg.\n";
 			if(Job_Que.jobs[i].type == "construct" && Job_Que.jobs[i].taken == false)
 			{
 
@@ -60,22 +83,15 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 				//shovel_on_reach_goal = false; //Let the game know the unit isn't moving to that tile anymore.
 				move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 
-				//if(calculate_path() == false) //If it can't calculate find a path...
-				if(!get_free_neighbor_tile(Job_Que.jobs[i].tasked_tile))
+
+				cout << "Calculating path.\n";
+				if(!get_free_neighbor_tile(Job_Que.jobs[i].tasked_tile)) //Find a free tile next to the construction.
 				{
+					cout << "Could not find path.\n";
 					cancel_current_activity();
 				}
-
 				else
 				{
-					/*Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
-					job_state = "constructing"; //The unit is constructing something.
-					//my_job = &Job_Que.jobs[i]; //Let the unit know which job it's doing.
-					my_job = new job;
-					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
-					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
-					*/
-
 					cout << "Saving construction job.\n";
 
 					jobs.push_back(i); //Store the index of this job.
@@ -102,21 +118,25 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 				}
 				else
 				{
-					/*Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
-					job_state = "drilling"; //The unit is drilling a wall now.
-					my_job = new job;
-					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
-					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
+					while(path_being_calculated) //While the path is being calculated...
+					{
+						cout << "Path being calculated.\n";
+						SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+					}
 
-					mine_on_reach_goal = true; //Let the game know the unit will be mining a wall upon reaching its destination.
-					mine_tile_id = my_job->tasked_tile->ID; //Let the game know which tile the unit has been commanded to mine.*/
+					if(path_calculated)
+					{
+						jobs.push_back(i); //Store the index of this job.
+						movepaths.push_back(move_path);
 
-					jobs.push_back(i); //Store the index of this job.
-					movepaths.push_back(move_path);
+						cout << "Saving drill job.\n";
 
-					cout << "Saving drill job.\n";
-
-					cancel_current_activity();
+						cancel_current_activity();
+					}
+					else
+					{
+						cancel_current_activity();
+					}
 				}
 			}
 			else if(Job_Que.jobs[i].type == "shovel rubble" && Job_Que.jobs[i].taken == false && can_shovel_rubble) //Check if the job is a shovel rubble job.
@@ -134,20 +154,25 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 				}
 				else
 				{
-					/*Job_Que.jobs[i].taken = true; //The job has been taken. Let everybody know that.
-					job_state = "shoveling"; //The unit is drilling a wall now.
-					my_job = new job;
-					*my_job = Job_Que.jobs[i]; //Let the unit know which job it's doing.
-					Job_Que.jobs.erase(Job_Que.jobs.begin() + i); //Remove the job from the job que.
+					while(path_being_calculated) //While the path is being calculated...
+					{
+						cout << "Path being calculated.\n";
+						SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+					}
 
-					shovel_on_reach_goal = true; //Let the game know the unit will be shoveling rubble upon reaching its destination.*/
+					if(path_calculated)
+					{
+						jobs.push_back(i); //Store the index of this job.
+						movepaths.push_back(move_path);
 
-					jobs.push_back(i); //Store the index of this job.
-					movepaths.push_back(move_path);
+						cout << "Saving shovel rubble job.\n";
 
-					cout << "Saving shovel rubble job.\n";
-
-					cancel_current_activity();
+						cancel_current_activity();
+					}
+					else
+					{
+						cancel_current_activity();
+					}
 				}
 			}
 			else if(Job_Que.jobs[i].type == "pick up ore" && Job_Que.jobs[i].taken == false && !carrying_resource) //Check if the job is a pick up ore job.
@@ -165,12 +190,25 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 				}
 				else
 				{
-					jobs.push_back(i); //Store the index of this job.
-					movepaths.push_back(move_path);
+					while(path_being_calculated) //While the path is being calculated...
+					{
+						cout << "Path being calculated.\n";
+						SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+					}
 
-					cout << "Saving pick up ore job.\n";
+					if(path_calculated)
+					{
+						jobs.push_back(i); //Store the index of this job.
+						movepaths.push_back(move_path);
 
-					cancel_current_activity();
+						cout << "Saving pick up ore job.\n";
+
+						cancel_current_activity();
+					}
+					else
+					{
+						cancel_current_activity();
+					}
 				}
 			}
 			else if(Job_Que.jobs[i].type == "open door" && Job_Que.jobs[i].taken == false) //Check if the job is a pick up ore job.
@@ -188,12 +226,25 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 				}
 				else
 				{
-					jobs.push_back(i); //Store the index of this job.
-					movepaths.push_back(move_path);
+					while(path_being_calculated) //While the path is being calculated...
+					{
+						cout << "Path being calculated.\n";
+						SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+					}
 
-					cout << "Saving open door job.\n";
+					if(path_calculated)
+					{
+						jobs.push_back(i); //Store the index of this job.
+						movepaths.push_back(move_path);
 
-					cancel_current_activity();
+						cout << "Saving open door job.\n";
+
+						cancel_current_activity();
+					}
+					else
+					{
+						cancel_current_activity();
+					}
 				}
 			}
 			else if(Job_Que.jobs[i].type == "incide_usa" && Job_Que.jobs[i].taken == false) //Check if the job is a pick up ore job.
@@ -232,6 +283,7 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 	int closest_job = 0;
 	bool found = false;
 	int closest_job_movepath = 0;
+	//job* closest_job;
 
 	for(int i2 = 0; i2 < jobs.size(); i2++)
 	{
@@ -260,7 +312,6 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 
 	if(found)
 	{
-
 		cout << "closest_job: " << closest_job << "\n";
 		cout << "jobs.size(): " << jobs.size() << "\n";
 		cout << "Found job. Adding.\n";
@@ -381,4 +432,11 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 	}
 
 	//cout << "Done with job.\n";
+
+	checking_job = false;
+	done_checking_job = true;
+
+	pthread_mutex_unlock(&Job_Que.job_mutex); //Don't forget to unlock this!
+
+	pthread_exit(NULL);
 }

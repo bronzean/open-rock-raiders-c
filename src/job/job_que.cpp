@@ -8,6 +8,12 @@ using namespace std;
 
 job_que::job_que() //Constructor.
 {
+	pthread_mutex_init(&job_mutex, NULL); //Initialize this.
+}
+
+job_que::~job_que() //Deconstructor.
+{
+	pthread_mutex_destroy(&job_mutex);
 }
 
 void job_que::add_job(job JOB)

@@ -12,14 +12,23 @@ tile* bClassUnit::get_free_neighbor_tile(tile* src_tile)
 	move_destination = src_tile->ID;
 	if(calculate_path()) //Calculate the path.
 	{
-		move_destination = move_path[move_path.size() - 2];
-		if(calculate_path() && Map[move_destination].construction_in_progress == false)
+		while(path_being_calculated) //While the path is being calculated...
 		{
-			return &Map[move_destination]; //Return the tile it found.
+			cout << "Path being calculated.\n";
+			SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
 		}
-		else if(Map[move_destination].construction_in_progress == true)
+
+		if(path_calculated) //Check if the pathfinding was successful.
 		{
-			cout << "Construction in progress on this tile.\n";
+			move_destination = move_path[move_path.size() - 2];
+			if(calculate_path() && Map[move_destination].construction_in_progress == false)
+			{
+				return &Map[move_destination]; //Return the tile it found.
+			}
+			else if(Map[move_destination].construction_in_progress == true)
+			{
+				cout << "Construction in progress on this tile.\n";
+			}
 		}
 	}
 	
@@ -33,20 +42,39 @@ tile* bClassUnit::get_free_neighbor_tile(tile* src_tile)
  	cout << "Move_destination = " << move_destination << ".\n"; //Debugging output.
 
 
+			/*while(path_being_calculated) //While the path is being calculated...
+			{
+				SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+			}*/
+
 	if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile is "in bounds".
 	{
 		if(calculate_path() == false || Map[move_destination].construction_in_progress == true) //Calculate the path.
 		{
 			calculate_next_tile = true; //Calculate the next tile to see if it works.
 
-			if(Map[move_destination].construction_in_progress == true)
+			if(Map[move_destination].construction_in_progress == true) //If a construction is currently in progress on that tile, don't use this tile for the construction path.
 			{
 				cout << "Construction in progress.\n";
 			}
 		}
 		else
 		{
-			return &Map[move_destination]; //Return the tile it found.
+			while(path_being_calculated) //While the path is being calculated...
+			{
+				cout << "Path being calculated.\n";
+				SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+			}
+
+			if(path_calculated) //If it found a path...
+			{
+				return &Map[move_destination]; //Return the tile it found.
+			}
+			else //Failure!
+			{
+				calculate_next_tile = true; //Calculate the next tile to see if it works.
+				cout << "Failed to find path.\n"; //Debugging output.
+			}
 		}
 	}
 
@@ -64,14 +92,28 @@ tile* bClassUnit::get_free_neighbor_tile(tile* src_tile)
 			{
 				calculate_next_tile = true; //Eh, calculate next tile to see if that works.
 
-				if(Map[move_destination].construction_in_progress == true)
+				if(Map[move_destination].construction_in_progress == true) //If something's being constructed on the destination tile...
 				{
-					cout << "Construction in progress.\n";
+					cout << "Construction in progress.\n"; //Debuggint output.
 				}
 			}
 			else
 			{
-				return &Map[move_destination]; //Return the tile it found.
+				while(path_being_calculated) //While the path is being calculated...
+				{
+					cout << "Path being calculated.\n";
+					SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+				}
+
+				if(path_calculated)
+				{
+					return &Map[move_destination]; //Return the tile it found.
+				}
+				else
+				{
+					calculate_next_tile = true;
+					cout << "Failed to find path.\n";
+				}
 			}
 		}
 	}
@@ -91,14 +133,28 @@ tile* bClassUnit::get_free_neighbor_tile(tile* src_tile)
 			{
 				calculate_next_tile = true; //Oh boy, last check to follow.
 
-				if(Map[move_destination].construction_in_progress == true)
+				if(Map[move_destination].construction_in_progress == true) //If something's being constructed on this tile...
 				{
-					cout << "Construction in progress.\n";
+					cout << "Construction in progress.\n"; //Debugging output.
 				}
 			}
 			else
 			{
-				return &Map[move_destination]; //Return the tile it found.
+				while(path_being_calculated) //While the path is being calculated...
+				{
+					cout << "Path being calculated.\n";
+					SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+				}
+
+				if(path_calculated)
+				{
+					return &Map[move_destination]; //Return the tile it found.
+				}
+				else
+				{
+					calculate_next_tile = true;
+					cout << "Failed to find path!\n";
+				}
 			}
 		}
 	}
@@ -111,24 +167,36 @@ tile* bClassUnit::get_free_neighbor_tile(tile* src_tile)
 
  		cout << "Move_destination = " << move_destination << ".\n"; //Debugging output.
 
+
+
 		if(move_destination > 0 && move_destination < num_tiles) //Make sure the tile in question even exists!
 		{
 			if(calculate_path() == false || Map[move_destination].construction_in_progress == true) //Calculate the path.
 			{
-				//OH COME ON. WHAT IS WRONG WITH THIS PLAYER. THEY CLICKED ON AN INACCESSIBLE TILE!
-				move = false; //Tell the unit it's staying put
-				move_destination = 0; //Reset the unit's move destination.
+				calculate_next_tile = true; //Oh boy, last check to follow.
 
-				if(Map[move_destination].construction_in_progress == true)
+				if(Map[move_destination].construction_in_progress == true) //If something's being constructed on this tile...
 				{
-					cout << "Construction in progress.\n";
+					cout << "Construction in progress.\n"; //Debugging output.
 				}
-
-				cout << "What's this? Failed all the checks...\n"; //Debugging output.
 			}
 			else
 			{
-				return &Map[move_destination]; //Return the tile it found.
+				while(path_being_calculated) //While the path is being calculated...
+				{
+					cout << "Path being calculated.\n";
+					SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+				}
+
+				if(path_calculated)
+				{
+					return &Map[move_destination]; //Return the tile it found.
+				}
+				else
+				{
+					calculate_next_tile = true;
+					cout << "Failed to find path!\n";
+				}
 			}
 		}
 	}

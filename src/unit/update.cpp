@@ -10,7 +10,10 @@ std::string bClassUnit::update()
 {
 	update_return = ""; //The variable it returns.
 
-	if(move && !paused && !checking_job && !path_being_calculated) //If the unit is moving somewhere.
+	if(checking_job && path_being_calculated)
+	{
+	}
+	else if(move && !paused) //If the unit is moving somewhere.
 	{
 		if(!carrying_resource)
 		{
@@ -620,7 +623,7 @@ std::string bClassUnit::update()
 			select(); //Check if the unit has selected/deselected it.
 		}
 
-		if(mining_mode) //If the unit is awaiting the user to tell it which wall to mine.
+		if(mining_mode && !checking_job && !path_being_calculated) //If the unit is awaiting the user to tell it which wall to mine.
 		{
 			//Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1); //Draw the "Whee, mining!" message.
 			Draw_Message_Handler.add_message(PCamera->wx, PCamera->wy, PCamera->layer, select_wall_to_mine_spr, 1, false);
@@ -667,7 +670,7 @@ std::string bClassUnit::update()
 				job_state = "picking_up";
 			}
 		}
-		else //Ok, so pick up mode equals true.
+		else if(!checking_job && !path_being_calculated) //Ok, so pick up mode equals true.
 		{
 			draw(0, 0, select_object_to_pick_up_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
 			check_pick_up_command(); //Check if the player is ordering the unit to pick up an object.
@@ -703,7 +706,7 @@ std::string bClassUnit::update()
 				}
 			}
 		}
-		else //Ok, this means that the game is waiting for the user to tell the unit which tree to chop.
+		else if(!checking_job && !path_being_calculated) //Ok, this means that the game is waiting for the user to tell the unit which tree to chop.
 		{
 			draw(0, 0, select_tree_to_chop_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
 		}
@@ -734,7 +737,7 @@ std::string bClassUnit::update()
 				}
 			}
 		}
-		else //So, a shovel command has allready been issued.
+		else if(!checking_job && !path_being_calculated) //So, a shovel command has allready been issued.
 		{
 			draw(0, 0, select_rubble_to_shovel_spr, screen); //Draw the "select rubble to shovel" message.
 			check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
@@ -768,7 +771,7 @@ std::string bClassUnit::update()
 		}
 	}
 
-	if(job_state == "idling"&& !checking_job && !path_being_calculated)
+	if(job_state == "idling" && !checking_job && !path_being_calculated)
 	{
 		try
 		{
@@ -780,7 +783,7 @@ std::string bClassUnit::update()
 			gameover = true;
 		}
 	}
-	else if(job_state == "constructing")
+	else if(job_state == "constructing" && !checking_job && !path_being_calculated)
 	{
 		construct_construction(); //Build the construction!!!
 	}
