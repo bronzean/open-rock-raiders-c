@@ -1,11 +1,49 @@
 /* Copyright the ORR-C Dev Team */
 #include "unit.hpp" //Blablabla, include unit.hpp
 #include <queue> //Include this for pathfinding?
-#include "../engine/copied_ptr.h"
 
 /* --------------------------------------------------------------
  * Everything related to the unit's pathfinding is defined here.
  * ----------------------------------------------------------- */
+
+bool bClassUnit::calculate_path() //Spawns the pathfinding thread.
+{
+	if(path_being_calculated)
+	{
+		cout << "Another path calculation is in progress!\n";
+		return false;
+	}
+
+	if(move == false) //If the unit isn't going anywhere...
+	{
+		cout << "Error: Can't calculate a path becuase there is no destination!\n";
+		out_string << "Error: Can't calculate a path becuase there is no destination!\n";
+		return false; //Return to the calling function. False lets it know that no path has been found. The above things log why it failed.
+	}
+
+	if(Map[move_destination].wall == true || Map[move_destination].air == true || Map[move_destination].obstruction) //If the destination is a wall, air tile, or an obstruction...
+	{
+		cout << "Error: Can't move onto the unmovable!\n";
+		out_string << "Error: Can't move onto the unmovable!\n";
+
+		cout << "Map[move_destination].wall = " << Map[move_destination].wall << ", Map[move_destination].air = " << Map[move_destination].air << ", Map[move_destination].obstruction = " << Map[move_destination].obstruction << "\nID of said tile: " << Map[move_destination].ID << "\nmove_destination = " << move_destination << ".\n";
+		return false; //Return to the calling function. False lets it know that no path is found. The above things log why it failed.
+	}
+
+	path_being_calculated = true; //Let the game know a path is currently being calculated.
+	path_calculated = false; //Reset this just becuase. Nah, kidding. Read the source code, you'll see why it has to be set to false here.
+
+	cout << "Spawning pathfinding thread.\n";
+
+	//Spawn the new thread here.
+	pthread_t new_thread; //The new thread.
+	threads.push_back(new_thread); //Add it to the list of threads.
+	pthread_create(&threads[threads.size() - 1], NULL, bClassUnit::spawn_pathfinding_thread, this); //Then tell the pathfinding thread to get to calculating the path.
+
+	//SDL_Delay(10000);
+
+	return true; //Succesfully calculated a path. That's what the original comment says.
+}
 
 class node
 {
@@ -148,25 +186,9 @@ public:
 //	return nodeA.fCost > nodeB.fCost;
 //}
 
-bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either way, it's part of the pathfinding.
+void bClassUnit::actually_calculate_path() //The main pathfinding code. I think. Either way, it's part of the pathfinding.
 {
-	if(move == false) //If the unit isn't going anywhere...
-	{
-		cout << "Error: Can't calculate a path becuase there is no destination!\n";
-		out_string << "Error: Can't calculate a path becuase there is no destination!\n";
-		return false; //Return to the calling function. False lets it know that no path has been found. The above things log why it failed.
-	}
-
-	if(Map[move_destination].wall == true || Map[move_destination].air == true || Map[move_destination].obstruction) //If the destination is a wall, air tile, or an obstruction...
-	{
-		cout << "Error: Can't move onto the unmovable!\n";
-		out_string << "Error: Can't move onto the unmovable!\n";
-
-		cout << "Map[move_destination].wall = " << Map[move_destination].wall << ", Map[move_destination].air = " << Map[move_destination].air << ", Map[move_destination].obstruction = " << Map[move_destination].obstruction << "\nID of said tile: " << Map[move_destination].ID << "\nmove_destination = " << move_destination << ".\n";
-		return false; //Return to the calling function. False lets it know that no path is found. The above things log why it failed.
-	}
-
-	if (Map[move_destination].ramp && Map[move_destination].layer == this->layer) //Once upon a time I knew what this was for.
+	if(Map[move_destination].ramp && Map[move_destination].layer == this->layer) //Once upon a time I knew what this was for.
 	{
 		move_destination = (num_col_objects * num_row_objects) * (Map[move_destination].up_ramp ? 1 : -1) + move_destination;
 	}
@@ -201,7 +223,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 				//cout << "Problem at line 657\n"; //I commented this out becuase it's sort of obsolete... Replaced with the below.
 				cout << "Pathfinding failed at the if i < 0 || i > Map.size() check in the calculate best ramp function.\n";
 				out_string << "Pathfinding failed at the if i < 0 || i > Map.size() check in the calculate best ramp function.\n";
-				return false;
+				path_calculated = false;
+				path_being_calculated = false;
+				pthread_exit(NULL); //Terminate it.
 			}
 
 			//Is this a ramp in the right direction? That's what the original comment says.
@@ -230,7 +254,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		if(bestRamp == -1)
 		{
 			cout << "Error unable to find suitable ramp on this level\n";
-			return false;
+			path_calculated = false;
+			path_being_calculated = false;
+			pthread_exit(NULL); //Terminate it.
 		}
 		//Now we know which ramp is the closest to 'current'. That's what the original comment says.
 
@@ -260,7 +286,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		{
 			cerr << "Blargh pathfinding failed. Out of bounds or NULL.\n";
 			out_string << "Blargh pathfinding failed. Out of bounds or NULL.\n";
-			return false;
+			path_calculated = false;
+			path_being_calculated = false;
+			pthread_exit(NULL); //Terminate it.
 		}
 
 		try
@@ -276,7 +304,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		{
 			cerr << "Blargh pathfinding failed.\n";
 			out_string << "Blargh pathfinding failed.\n";
-			return false;
+			path_calculated = false;
+			path_being_calculated = false;
+			pthread_exit(NULL); //Terminate it.
 		}
 
 		while(!examineSet.empty()) //While we have objects to check. That's what the original comment says.
@@ -371,7 +401,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 				if(layerChange == 0)
 				{
 					cout << "No Path Found\n";
-					return false;
+					path_calculated = false;
+					path_being_calculated = false;
+					pthread_exit(NULL); //Terminate it.
 				}
 				//Set the current location to a different layer than the current one. That's what the original comment says.
 				current = destination + ((num_col_objects * num_row_objects) * (layerChange));
@@ -382,7 +414,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 		else
 		{
 			cout << "Couldn't find a path to the destination\n";
-			return false;
+			path_calculated = false;
+			path_being_calculated = false;
+			pthread_exit(NULL); //Terminate it.
 			//In the future this would step back and say, "Ok, Lets try a different ramp!". That's what the original comment says.
 			//As well as store the info that you can get to whatever layer from this ramp...That's what the original comment says.
 		}
@@ -441,5 +475,9 @@ bool bClassUnit::calculate_path() //The main pathfinding code. I think. Either w
 	frames_since_last_move = 0; //Reset this so that the moving animations don't glitch.
 	active_animation = NULL; //Reset this becuase there's gonna be a new animation in use.
 
-	return true; //Succesfully calculated a path. That's what the original comment says.
+	path_being_calculated = false; //No longer calculating path...
+	path_calculated = true; //Tell the unit its path has been calculated.
+
+	pthread_exit(NULL); //Success! Terminate this thread.
 }
+

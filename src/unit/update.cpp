@@ -10,7 +10,7 @@ std::string bClassUnit::update()
 {
 	update_return = ""; //The variable it returns.
 
-	if(move && !paused) //If the unit is moving somewhere.
+	if(move && !paused && !checking_job && !path_being_calculated) //If the unit is moving somewhere.
 	{
 		if(!carrying_resource)
 		{
@@ -586,7 +586,7 @@ std::string bClassUnit::update()
 		frames_since_last_move++; //Increment the frames that have passed since the last move.
 	}
 
-	if(closing_door)
+	if(closing_door && !checking_job && !path_being_calculated)
 	{
 		if(close_door_tile->has_construction) //Check if the tile has a construction, and if the construction is a door, check if its open.
 		{
@@ -615,7 +615,7 @@ std::string bClassUnit::update()
 	if(!server) //If this is not the server.
 	{
 
-		if(allow_deselect && allow_unit_selection) //If the unit is allowed to be deselected...TODO: If shift or some other key is pressed, make it so that allow_deselect will equal false.
+		if(allow_deselect && allow_unit_selection && !checking_job && !path_being_calculated) //If the unit is allowed to be deselected...TODO: If shift or some other key is pressed, make it so that allow_deselect will equal false.
 		{
 			select(); //Check if the unit has selected/deselected it.
 		}
@@ -629,7 +629,7 @@ std::string bClassUnit::update()
 			cout << "Mining mode.\n";
 		}
 
-		if(!mining_mode) //So, it isn't mining mode...
+		if(!mining_mode && !checking_job && !path_being_calculated) //So, it isn't mining mode...
 		{
 			if(keystates[SDLK_4] && selected == true) //If '4' was pressed
 			{
@@ -657,7 +657,7 @@ std::string bClassUnit::update()
 			}
 		}
 
-		if(!pick_up_mode) //Here the game checks if the player is ordering this unit to get out its axe.
+		if(!pick_up_mode && !checking_job && !path_being_calculated) //Here the game checks if the player is ordering this unit to get out its axe.
 		{
 			if(keystates[SDLK_g] && selected == true) //If the key 'g' was pressed.
 			{
@@ -673,7 +673,7 @@ std::string bClassUnit::update()
 			check_pick_up_command(); //Check if the player is ordering the unit to pick up an object.
 		}
 
-		if(!chop_mode) //So, is chop mode equal to false?
+		if(!chop_mode && !checking_job && !path_being_calculated) //So, is chop mode equal to false?
 		{
 			if(keystates[SDLK_c]) //Check if the 'c' key was pressed.
 			{
@@ -708,7 +708,7 @@ std::string bClassUnit::update()
 			draw(0, 0, select_tree_to_chop_spr, screen); //Draw message "Select an object to pick up." TODO: Make this use messages...
 		}
 
-		if(!shovel_mode) //If the user hasn't allready given the unit a shovel order...
+		if(!shovel_mode && !checking_job && !path_being_calculated) //If the user hasn't allready given the unit a shovel order...
 		{
 			if(keystates[SDLK_r] && selected == true) //Check if the 'r' key was pressed.
 			{
@@ -740,7 +740,7 @@ std::string bClassUnit::update()
 			check_shovel_command(); //Check if the player is ordering the unit to shovel rubble.
 		}
 
-		if(active_popup_menu)
+		if(active_popup_menu && !checking_job && !path_being_calculated)
 		{
 			if(wall_popup_menu != NULL) //Make sure that wall_popup_menu even exists.
 			{
@@ -768,7 +768,7 @@ std::string bClassUnit::update()
 		}
 	}
 
-	if(job_state == "idling")
+	if(job_state == "idling"&& !checking_job && !path_being_calculated)
 	{
 		try
 		{

@@ -160,6 +160,13 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	teleport_in_animation = NULL;
 	teleport_in_animation_done = false;
 
+	path_being_calculated = false;
+	path_calculated = false;
+
+	checking_job = false;
+	done_checking_job = false;
+	job_check_interval = 100;
+
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
 	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.

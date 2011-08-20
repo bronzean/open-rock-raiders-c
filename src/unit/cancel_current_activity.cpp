@@ -45,6 +45,8 @@ void bClassUnit::cancel_current_activity() //Instead of always writing "mining =
 
 	drop_carried = false;
 
+	path_calculated = false;
+
 	if(shovel_animation)
 	{
 		shovel_animation->current_frame = 0;

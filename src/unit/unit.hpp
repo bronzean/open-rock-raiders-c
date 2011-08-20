@@ -60,6 +60,8 @@ public:
 	bool allow_move; //Is the unit allowed to move?
 	int frames_since_last_move; //The number of frames that have passed since the last move.
 	int heading; //The direction the unit is facing. = 0 North. 90 = east. 180 = south. 270 = west.
+	bool path_being_calculated; //Is the path currently being calculated?
+	bool path_calculated; //Has the path been calculated?
 
 	animation *move_left, *move_right, *move_up, *move_down; //The move left, right, up, and down animations.
 	animation *move_left_carryore, *move_right_carryore, *move_up_carryore, *move_down_carryore; //The move left while carrying something, move right while carrying something, up and down too, animations.
@@ -176,6 +178,10 @@ public:
 	 * - Means the unit is closing a door.
 	 */
 
+	bool checking_job; //Is the unit currently in the process of checking for a new job?
+	bool done_checking_job; //Is it done with checking the jobs?
+	int job_check_interval; //The interval at which to check jobs at. Measured in frames.
+
 	int construction_repositioning; //A unit has to move off the construction it is building when it nears completion. This variable is used in that. 0 = false. 1 = true. 2 = Already done.
 	int construct_rate; //The rate at which it constructs buildings. TODO: Unhardcode.
 	std::string constructing_message_str; //A messaged that is displayed while the unit is constructing something.
@@ -251,13 +257,25 @@ public:
 
 	void select(); //Select the object.
 
-	bool calculate_path(); //Calculate a path to move_destination.
+	bool calculate_path(); //Spawn the pathfinding thread. Part 1.
+	void actually_calculate_path(); //The main pathfinding code. I think. Either way, it's part of the pathfinding.
+	static void *spawn_pathfinding_thread(void *param) //This is the function that actually spawns the thread. Paramater: The unit to calculate the path of.
+	{
+		bClassUnit *the_unit = (bClassUnit *)param; //Convert the paramater to a pointer to the unit.
+		the_unit->actually_calculate_path(); //Calculate the unit's path.
+	}
 
 	bool check_mine_command(); //Checks if a mine command was issued.
 	bool check_pick_up_command(); //Checks if a pick up object command was issued.
 	bool check_shovel_command(); //Checks if a shovel command was issued.
 
 	void check_job(); //Give the unit something to do out of the job que.
+	void actually_check_job(); //THIS is the function that checks for jobs. The other two simply are used in spawning the thread for it.
+	static void *spawn_check_job_thread(void *param) //THIS is the function that actually spawns the check job thread. Paramater: The unit to grab a job for.
+	{
+		bClassUnit *the_unit = (bClassUnit *)param; //Convert the paramater to a pointer to the unit.
+		the_unit->actually_check_job(); //Grab a job for the unit.
+	}
 
 	void construct_construction(); //Does the stuff related to constructions.
 

@@ -123,10 +123,12 @@ bool unit_type_manager::load_unit(string folderpath)
 			if(variables[i].values[0] == "TRUE" || variables[i].values[0] == "true") //Check if the stuff inside the parantheses is telling the game that this unit can be selected.
 			{
 				new_unit.selectable = true;
+				out_string << "Selectable.\n";
 			}
 			else
 			{
 				new_unit.selectable = false; //Can't touch that. Er, can't select this unit.
+				out_string << "Not selectable.\n";
 			}
 		}
 		else if(variables[i].name == "MOVE_SPEED") //Found the entry that specifies the unit's move speed.

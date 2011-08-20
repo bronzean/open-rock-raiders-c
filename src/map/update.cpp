@@ -56,7 +56,7 @@ void tile::update()
 			return; //Error!
 		}
 
-		//If the unit is selected and the tile the right click tookl place != -1 (-1 means that it took place outside of the map)...
+		//If the unit is selected and the tile the right click took place != -1 (-1 means that it took place outside of the map)...
 		if(unitlist[i].selected == true && rightclick_tile_id != -1 && unitlist[i].move_frame != fps_counter)
 		{
 			//Check if the tile the unit was told to move to is the tile it's currently standing on.
@@ -298,7 +298,11 @@ void tile::update()
 			}
 		}
 
-		if(unitlist[i].move_path.empty() == true && unitlist[i].move == true) //If it cycled through everything in the move path...
+		if(unitlist[i].path_being_calculated) //Make sure the path ain't being calculated.
+		{
+			cout << "Blarg. Still calculating path.\n";
+		}
+		else if(unitlist[i].move_path.empty() == true && unitlist[i].move == true) //If it cycled through everything in the move path...
 		{
 			unitlist[i].move_frame = 0; //Reset this to prevent the "skip first tile in move_path" bug.
 			cout << "Reached destination.\n\n";
