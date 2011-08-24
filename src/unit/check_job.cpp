@@ -27,7 +27,7 @@ void bClassUnit::check_job() //Give the unit something to do out of the job que.
 
 void bClassUnit::actually_check_job() //Give the unit something to do out of the job que.
 {
-	if(!pthread_mutex_trylock(&Job_Que.job_mutex)) //If it can't get a lock on the job que, then cancel the job.
+	/*if(!pthread_mutex_trylock(&Job_Que.job_mutex)) //If it can't get a lock on the job que, then cancel the job.
 	{
 		checking_job = false;
 		done_checking_job = false;
@@ -38,7 +38,9 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 		pthread_exit(NULL);
 
 		return;
-	}
+	}*/
+
+	pthread_mutex_lock(&Job_Que.job_mutex);
 
 	//Look through the job que until a job is found that this unit can perform.
 	//TODO: Assign the closest job.
