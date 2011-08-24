@@ -540,6 +540,17 @@ bool unit_type_manager::load_unit(string folderpath)
 		new_unit.sprite_ore_down = NULL;
 	}
 
+	new_unit.carrying_message_sprite = TTF_RenderText_Solid(font1, new_unit.carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	new_unit.select_wall_to_mine_spr = TTF_RenderText_Solid(font1, new_unit.select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
+	new_unit.mining_message_spr = TTF_RenderText_Solid(font2, new_unit.mining_message_str.c_str(), c_green);
+	new_unit.select_object_to_pick_up_spr = TTF_RenderText_Solid(font1, new_unit.select_object_to_pick_up_str.c_str(), c_white);
+	new_unit.chopping_message_spr = TTF_RenderText_Solid(font2, new_unit.chopping_message_str.c_str(), c_green);
+	new_unit.select_tree_to_chop_spr = TTF_RenderText_Solid(font1, new_unit.select_tree_to_chop_str.c_str(), c_white);
+	new_unit.shovelling_message_spr = TTF_RenderText_Solid(font2, new_unit.shovelling_message_str.c_str(), c_green);
+	new_unit.select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, new_unit.select_rubble_to_shovel_str.c_str(), c_white);
+	new_unit.constructing_message_spr = TTF_RenderText_Solid(font1, new_unit.constructing_message_str.c_str(), c_green);
+	new_unit.construct_walking_message_spr = TTF_RenderText_Solid(font1, new_unit.construct_walking_message_str.c_str(), c_green);
+
 	unit_list.push_back(new_unit);
 
 	return true;

@@ -10,7 +10,7 @@ std::string bClassUnit::update()
 {
 	update_return = ""; //The variable it returns.
 
-	if(checking_job && path_being_calculated)
+	if(checking_job || path_being_calculated)
 	{
 	}
 	else if(move && !paused) //If the unit is moving somewhere.

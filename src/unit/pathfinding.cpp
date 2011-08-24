@@ -30,19 +30,34 @@ bool bClassUnit::calculate_path() //Spawns the pathfinding thread.
 		return false; //Return to the calling function. False lets it know that no path is found. The above things log why it failed.
 	}
 
-	path_being_calculated = true; //Let the game know a path is currently being calculated.
-	path_calculated = false; //Reset this just becuase. Nah, kidding. Read the source code, you'll see why it has to be set to false here.
+	if(!calculate_path_thread) //If the unit's check job thread pointer is null (thus meaning no thread)...
+	{
+		cout << "Creating the pathfinding thread.\n";
+		path_being_calculated = true; //Let the game know a path is currently being calculated.
+		path_calculated = false; //Reset this just becuase. Nah, kidding. Read the source code, you'll see why it has to be set to false here.
 
-	cout << "Spawning pathfinding thread.\n";
+		//Spawn the new thread here.
+		pthread_t new_thread; //The new thread.
+		threads.push_back(new_thread); //Add it to the list of threads.
+		calculate_path_thread = &threads[threads.size() - 1]; //Assign the pointer.
+		pthread_create(calculate_path_thread, NULL, bClassUnit::spawn_pathfinding_thread, this); //Then tell the pathfinding thread to get to calculating the path.
 
-	//Spawn the new thread here.
-	pthread_t new_thread; //The new thread.
-	threads.push_back(new_thread); //Add it to the list of threads.
-	pthread_create(&threads[threads.size() - 1], NULL, bClassUnit::spawn_pathfinding_thread, this); //Then tell the pathfinding thread to get to calculating the path.
+		//SDL_Delay(10000);
 
-	//SDL_Delay(10000);
+		return true; //Succesfully calculated a path. That's what the original comment says.
+	}
+	else
+	{
+		cout << "Spawning pathfinding thread.\n";
+		path_being_calculated = true; //Let the game know a path is currently being calculated.
+		path_calculated = false; //Reset this just becuase. Nah, kidding. Read the source code, you'll see why it has to be set to false here.
 
-	return true; //Succesfully calculated a path. That's what the original comment says.
+		pthread_create(calculate_path_thread, NULL, bClassUnit::spawn_pathfinding_thread, this); //Then tell the pathfinding job thread to get to calculating the path.
+
+		return true; //Succesfully calculated a path. That's what the original comment says.
+	}
+
+	return false;
 }
 
 class node

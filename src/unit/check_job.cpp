@@ -8,16 +8,29 @@ using namespace std;
 
 void bClassUnit::check_job() //Give the unit something to do out of the job que.
 {
-	if(!checking_job)
+	if(!checking_job) //If not already checking for jobs.
 	{
-		//cout << "Spawning check job thread.\n";
-		checking_job = true;
-		done_checking_job = false;
+		if(Job_Que.jobs.size() > 0) //If there are even any jobs.
+		{
+			cout << "Spawning check job thread.\n";
+			checking_job = true;
+			done_checking_job = false;
 
-		//spawn thread here.
-		pthread_t new_thread; //The new thread.
-		threads.push_back(new_thread); //Add it to the list of threads.
-		pthread_create(&threads[threads.size() - 1], NULL, bClassUnit::spawn_check_job_thread, this); //Then tell the check job thread to get to calculating the path.
+			//spawn thread here.
+			if(!check_job_thread) //If the unit's check job thread pointer is null (thus meaning no thread)...
+			{
+				pthread_t new_thread; //The new thread.
+				threads.push_back(new_thread); //Add it to the list of threads.
+				check_job_thread = &threads[threads.size() - 1]; //Assign the pointer.
+				pthread_create(check_job_thread, NULL, bClassUnit::spawn_check_job_thread, this); //Then tell the check job thread to get to finding a job.
+
+				cout << "Created a new check job thread.\n";
+			}
+			else
+			{
+				pthread_create(check_job_thread, NULL, bClassUnit::spawn_check_job_thread, this); //Then tell the check job thread to get to finding a job.
+			}
+		}
 	}
 	else
 	{
@@ -40,10 +53,10 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 		return;
 	}*/
 
-	pthread_mutex_lock(&Job_Que.job_mutex);
+	pthread_mutex_lock(&Job_Que.job_mutex); //TODO: Allow multiple threads to check jobs at the same time.
 
 	//Look through the job que until a job is found that this unit can perform.
-	//TODO: Assign the closest job.
+	//Assign the closest job.
 
 	//cout << "Checking job.\n";
 

@@ -166,9 +166,12 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	checking_job = false;
 	done_checking_job = false;
 	job_check_interval = 100;
+	check_job_thread = NULL;
+
+	calculate_path_thread = NULL;
 
 	//TODO: Remove the need of this being here. Only the base unit should have this, and then every other unit should 'inherit' it.
-	carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
+	/*carrying_message_sprite = TTF_RenderText_Solid(font1, carrying_message_string.c_str(), c_white); //Render the current layer message onto current_layer_sprite.
 	select_wall_to_mine_spr = TTF_RenderText_Solid(font1, select_wall_to_mine_str.c_str(), c_white); //Render the message displayed when the unit enters mining mode.
 	mining_message_spr = TTF_RenderText_Solid(font2, mining_message_str.c_str(), c_green);
 	select_object_to_pick_up_spr = TTF_RenderText_Solid(font1, select_object_to_pick_up_str.c_str(), c_white);
@@ -177,5 +180,5 @@ bClassUnit::bClassUnit() //Constructor. Initializes an empty unit.
 	shovelling_message_spr = TTF_RenderText_Solid(font2, shovelling_message_str.c_str(), c_green);
 	select_rubble_to_shovel_spr = TTF_RenderText_Solid(font1, select_rubble_to_shovel_str.c_str(), c_white);
 	constructing_message_spr = TTF_RenderText_Solid(font1, constructing_message_str.c_str(), c_green);
-	construct_walking_message_spr = TTF_RenderText_Solid(font1, construct_walking_message_str.c_str(), c_green);
+	construct_walking_message_spr = TTF_RenderText_Solid(font1, construct_walking_message_str.c_str(), c_green);*/
 }

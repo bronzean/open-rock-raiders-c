@@ -247,6 +247,10 @@ while(rand(blarg)) //Get a random true or false.
 
 154. Move the check neighbours code in map/construct_construction.cpp to the construction's code.
 
+155. Change rubble from a tile type to objects that are on a tile.
+
+156. Allow multiple threads to check jobs at the same time.
+
 
 
 --Done--

@@ -62,6 +62,7 @@ public:
 	int heading; //The direction the unit is facing. = 0 North. 90 = east. 180 = south. 270 = west.
 	bool path_being_calculated; //Is the path currently being calculated?
 	bool path_calculated; //Has the path been calculated?
+	pthread_t *calculate_path_thread; //Pointer to the unit's calculate path thread.
 
 	animation *move_left, *move_right, *move_up, *move_down; //The move left, right, up, and down animations.
 	animation *move_left_carryore, *move_right_carryore, *move_up_carryore, *move_down_carryore; //The move left while carrying something, move right while carrying something, up and down too, animations.
@@ -181,6 +182,7 @@ public:
 	bool checking_job; //Is the unit currently in the process of checking for a new job?
 	bool done_checking_job; //Is it done with checking the jobs?
 	int job_check_interval; //The interval at which to check jobs at. Measured in frames.
+	pthread_t *check_job_thread; //Pointer to the unit's check job thread.
 
 	int construction_repositioning; //A unit has to move off the construction it is building when it nears completion. This variable is used in that. 0 = false. 1 = true. 2 = Already done.
 	int construct_rate; //The rate at which it constructs buildings. TODO: Unhardcode.
