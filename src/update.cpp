@@ -156,7 +156,7 @@ int update()
 
 			bool done = false; //Is it done calculating the new Draw_Map?
 
-			/* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
+			/* ----Calculate the starting tile's ID.---- */
                                 int start_id = 0; //The ID of the starting tile.
                                 int camera_wx = 0;
                                 int camera_wy = 0;
@@ -167,9 +167,9 @@ int update()
                                         cout << "Camera is in bounds wx-wise.\n";
                                 }
 
-                                if(PCamera->wy >= 0 && PCamera->wy <= num_col_objects * 32)
+                                if(PCamera->wy - tile_height >= 0 && PCamera->wy - tile_height <= num_col_objects * 32)
                                 {
-                                        camera_wy = PCamera->wy; //Since the wy of the camera is positive, copy it over.
+                                        camera_wy = PCamera->wy - tile_height; //Since the wy of the camera is positive, copy it over.
                                         cout << "Camera is in bounds wy-wise.\n";
                                 }
 
@@ -219,7 +219,7 @@ int update()
 
                                 bool done = false; //Is it done calculating the new Draw_Map?
 
-                                /* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
+                                /* ----Calculate the starting tile's ID.---- */
                                 int start_id = 0; //The ID of the starting tile.
                                 int camera_wx = 0;
                                 int camera_wy = 0;
@@ -230,9 +230,9 @@ int update()
                                         cout << "Camera is in bounds wx-wise.\n";
                                 }
 
-                                if(PCamera->wy >= 0 && PCamera->wy <= num_col_objects * 32)
+                                if(PCamera->wy - tile_height >= 0 && PCamera->wy - tile_height <= num_col_objects * 32)
                                 {
-                                        camera_wy = PCamera->wy; //Since the wy of the camera is positive, copy it over.
+                                        camera_wy = PCamera->wy - tile_height; //Since the wy of the camera is positive, copy it over.
                                         cout << "Camera is in bounds wy-wise.\n";
                                 }
 
@@ -282,7 +282,7 @@ int update()
 
                                 bool done = false; //Is it done calculating the new Draw_Map?
 
-                                /* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
+                                /* ----Calculate the starting tile's ID.---- */
                                 int start_id = 0; //The ID of the starting tile.
                                 int camera_wx = 0;
                                 int camera_wy = 0;
@@ -293,9 +293,9 @@ int update()
                                         cout << "Camera is in bounds wx-wise.\n";
                                 }
 
-                                if(PCamera->wy >= 0 && PCamera->wy <= num_col_objects * 32)
+                                if(PCamera->wy - tile_height >= 0 && PCamera->wy - tile_height <= num_col_objects * 32)
                                 {
-                                        camera_wy = PCamera->wy; //Since the wy of the camera is positive, copy it over.
+                                        camera_wy = PCamera->wy - tile_height; //Since the wy of the camera is positive, copy it over.
                                         cout << "Camera is in bounds wy-wise.\n";
                                 }
 
@@ -345,7 +345,7 @@ int update()
 
                                 bool done = false; //Is it done calculating the new Draw_Map?
 
-                                /* ----Calculate the starting tile's ID.---- */ //TODO: Oops! Need to take y into consideration!
+                                /* ----Calculate the starting tile's ID.---- */
                                 int start_id = 0; //The ID of the starting tile.
                                 int camera_wx = 0;
                                 int camera_wy = 0;
@@ -356,9 +356,9 @@ int update()
                                         cout << "Camera is in bounds wx-wise.\n";
                                 }
 
-                                if(PCamera->wy >= 0 && PCamera->wy <= num_col_objects * 32)
+                                if(PCamera->wy - tile_height >= 0 && PCamera->wy - tile_height <= num_col_objects * 32)
                                 {
-                                        camera_wy = PCamera->wy; //Since the wy of the camera is positive, copy it over.
+                                        camera_wy = PCamera->wy - tile_height; //Since the wy of the camera is positive, copy it over.
                                         cout << "Camera is in bounds wy-wise.\n";
                                 }
 

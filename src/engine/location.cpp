@@ -1,5 +1,4 @@
 /* Copyright the ORR-C Dev Team */
-#pragma once
 #include "location.hpp"
 using namespace std;
 

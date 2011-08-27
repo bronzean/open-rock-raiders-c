@@ -107,12 +107,25 @@ void bClassUnit::actually_check_job() //Give the unit something to do out of the
 				}
 				else
 				{
-					cout << "Saving construction job.\n";
+					while(path_being_calculated) //While the path is being calculated...
+					{
+						cout << "Path being calculated.\n";
+						SDL_Delay(100); //Pause 100 milliseconds (1/10th of a second).
+					}
 
-					jobs.push_back(i); //Store the index of this job.
-					movepaths.push_back(move_path);
+					if(path_calculated)
+					{
+						cout << "Saving construction job.\n";
 
-					cancel_current_activity();
+						jobs.push_back(i); //Store the index of this job.
+						movepaths.push_back(move_path);
+
+						cancel_current_activity();
+					}
+					else
+					{
+						cancel_current_activity();
+					}
 				}
 
 				done = true;
